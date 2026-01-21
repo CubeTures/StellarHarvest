@@ -33,6 +33,9 @@ public class Player : MonoBehaviour
     float _rotationX = 0f; // Horizontal rotation (Y-axis)
     float _rotationY = 0f; // Vertical rotation (X-axis)
 
+    bool _facingRight = true;
+    bool _facingFront = true;
+
     void Start()
     {
         _transform = GetComponent<Transform>();
@@ -89,6 +92,29 @@ public class Player : MonoBehaviour
 
         _vx = input.x;
         _vz = input.y;
+
+        // Swap sprites based on the direction the player is moving
+        if (_vx > 0 && _vx > _vz)
+        {
+            _facingRight = true;
+            _anim.SetInteger("Direction", 3);
+        }
+        else if (_vx < 0)
+        {
+            _facingRight = false;
+            _anim.SetInteger("Direction", 2);
+        }
+
+        if (_vz > 0 && _vz > _vx)
+        {
+            _facingFront = true;
+            _anim.SetInteger("Direction", 1);
+        }
+        else if (_vz < 0)
+        {
+            _facingFront = false;
+            _anim.SetInteger("Direction", 0);
+        }
     }
 
     public void Move()
