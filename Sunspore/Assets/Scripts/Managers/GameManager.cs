@@ -60,12 +60,6 @@ public class GameManager : MonoBehaviour
         EnableUIActionMap();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
     // get stored Player Prefs if they exist, otherwise go with defaults set on gameObject
     void RefreshPlayerState()
     {
@@ -81,6 +75,7 @@ public class GameManager : MonoBehaviour
     public void UpdateCredits(int amount)
     {
         credits += amount;
+        RefreshGUI();
     }
 
     public int GetScore()

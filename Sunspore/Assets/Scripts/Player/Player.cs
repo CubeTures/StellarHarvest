@@ -6,7 +6,9 @@ using UnityEngine.InputSystem;
 
 public class Player : MonoBehaviour
 {
-    public float speed = 7.5f;
+    public float speed = 8f;
+    public GameObject[] inventory;
+    public float gridSize = 1f; // Size of each grid cell
 
     [HideInInspector]
     public RaycastHit selectedObject;
@@ -158,6 +160,13 @@ public class Player : MonoBehaviour
                 selectedObject = hit;
                 // Draw green line to show successful raycast hit
                 Debug.DrawLine(ray.origin, hit.point, Color.green, 2f);
+
+                // If clicked on layer ground, instantiate a plant at grid-aligned position
+                if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Ground"))
+                {
+                    Vector3 snappedPosition = SnapToGrid(hit.point);
+                    Instantiate(inventory[0], snappedPosition, Quaternion.identity);
+                }
             }
             else
             {
@@ -197,6 +206,15 @@ public class Player : MonoBehaviour
     public void PlaySound(AudioClip clip)
     {
         _audioSource.PlayOneShot(clip);
+    }
+
+    // Snap position to grid
+    Vector3 SnapToGrid(Vector3 position)
+    {
+        float x = Mathf.Round(position.x / gridSize) * gridSize;
+        float y = position.y; // Keep original Y position (ground height)
+        float z = Mathf.Round(position.z / gridSize) * gridSize;
+        return new Vector3(x, y, z);
     }
 
     // Method to handle cursor locked/unlocked when game is paused
