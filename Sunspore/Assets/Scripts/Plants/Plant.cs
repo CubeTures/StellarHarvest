@@ -4,15 +4,17 @@ namespace Sunspore
 {
     public class Plant : MonoBehaviour
     {
-        public Sprite seedSprite;
-        public Sprite plantSprite;
-        public float growthTime = 15f;
+        [SerializeField] Sprite seedSprite;
+        [SerializeField] Sprite growingSprite;
+        [SerializeField] Sprite plantSprite;
+        [SerializeField] float growthTime = 15f;
         float initialGrowthTime;
-        public float growthTimeVariance = 5f;
+        [SerializeField] float growthTimeVariance = 5f;
         float _growthTimer = 0f;
-        public AudioClip harvestSound;
-        public AudioClip growSound;
-        public AudioClip plantSound;
+        [SerializeField] AudioClip harvestSound;
+        [SerializeField] AudioClip growSound;
+        [SerializeField] AudioClip plantSound;
+        [SerializeField] GameObject glowEffect;
 
         SpriteRenderer _spriteRenderer;
         AudioSource _audioSource;
@@ -37,6 +39,19 @@ namespace Sunspore
                 if (_growthTimer >= growthTime)
                 {
                     PlaySound(growSound);
+                    _spriteRenderer.sprite = growingSprite;
+                    growthTime = initialGrowthTime + Random.Range(0f, growthTimeVariance); // Reset growthTime
+                    _growthTimer = 0f; // Reset growthTimer
+                }
+            }
+
+            // If the plant is growing, grow it after the growth time
+            if (_spriteRenderer.sprite == growingSprite)
+            {
+                _growthTimer += Time.deltaTime;
+                if (_growthTimer >= growthTime)
+                {
+                    PlaySound(growSound);
                     _spriteRenderer.sprite = plantSprite;
                 }
             }
@@ -51,12 +66,13 @@ namespace Sunspore
             }
         }
 
-        public void Harvest()
+        void Harvest()
         {
             _spriteRenderer.sprite = seedSprite;
             _growthTimer = 0f;
             growthTime = initialGrowthTime + Random.Range(0f, growthTimeVariance);
             GameManager.gm.UpdateCredits(10);
+            Instantiate(glowEffect, transform.position, Quaternion.identity);
         }
 
         void PlaySound(AudioClip sound)
