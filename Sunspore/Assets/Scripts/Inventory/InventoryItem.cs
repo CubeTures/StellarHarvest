@@ -7,6 +7,8 @@ public class InventoryItem : ScriptableObject
     public string displayName;
     public Sprite icon;
     public bool stackable;
+    public bool placeable;
+    public GameObject prefab;
 
     public override bool Equals(object obj)
     {

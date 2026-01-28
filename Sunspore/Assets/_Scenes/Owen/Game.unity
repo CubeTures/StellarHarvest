@@ -1126,6 +1126,22 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 3f643afe5712ec598b6263ea751800ec, type: 2}
   - {fileID: 11400000, guid: f61f4a1f886a7c698b1b4292546866c6, type: 2}
   - {fileID: 11400000, guid: 2c417952a1a0bf12cbe924488b64a514, type: 2}
+--- !u!114 &673214648
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 673214638}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a01f79d1889402f5498472cf400a1f63, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Sunspore::PlacementManager
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 8
+  preview: {fileID: 4089703484701214872, guid: a57384b9e521dd883bbd6e4addbab43a, type: 3}
 --- !u!1001 &710021505
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4496,6 +4512,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 5651167634825025194, guid: 604f83d99ad6df74fbf8070044eae5a8, type: 3}
       insertIndex: -1
       addedObject: {fileID: 673214647}
+    - targetCorrespondingSourceObject: {fileID: 5651167634825025194, guid: 604f83d99ad6df74fbf8070044eae5a8, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 673214648}
   m_SourcePrefab: {fileID: 100100000, guid: 604f83d99ad6df74fbf8070044eae5a8, type: 3}
 --- !u!1001 &4869618884095501299
 PrefabInstance:

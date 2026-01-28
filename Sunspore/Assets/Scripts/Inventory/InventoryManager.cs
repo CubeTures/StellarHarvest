@@ -32,6 +32,11 @@ public class InventoryManager : MonoBehaviour
         }
     }
 
+    public InventoryItem GetSelectedItem()
+    {
+        return hotbar.GetSelectedItem(inventory);
+    }
+
     public void AddItem(InventoryItem item)
     {
         inventory.AddItem(item);
