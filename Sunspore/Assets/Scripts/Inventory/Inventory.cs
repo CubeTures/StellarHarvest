@@ -51,5 +51,10 @@ public class Inventory
             return items[index];
         }
     }
+
+    public List<InventorySlot> GetAllSlots()
+    {
+        return new List<InventorySlot>(items);
+    }
 }
 

@@ -16,13 +16,13 @@ namespace Sunspore
     [System.Serializable]
     public class ItemTypeAndAmount
     {
-        public ItemSO item;
+        public InventoryItem item;
         public int amount;
 
-        public ItemTypeAndAmount(ItemSO item, int amount)
+        public ItemTypeAndAmount(InventoryItem item, int amount)
         {
-            item = item;
-            amount = amount;
+            this.item = item;
+            this.amount = amount;
         }
     }
 }

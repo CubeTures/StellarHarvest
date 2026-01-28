@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 namespace Sunspore
 {
@@ -10,10 +11,32 @@ namespace Sunspore
         [SerializeField] GameObject recipeUIPrefab;
         [SerializeField] Transform recipeUIParent;
 
+        private List<ItemTypeAndAmount> items = new List<ItemTypeAndAmount>();
+
         private void OnEnable()
         {
             selectedRecipeType = RecipeType.tools;
             UpdateRecipeUI();
+        }
+
+        public bool CanCraftRecipe(ItemRecipeSO recipeSO)
+        {
+            items = InventoryManager.Instance.GetAllItems();
+            
+            int matchingIngredients = 0;
+
+            foreach (ItemTypeAndAmount ingredient in recipeSO.ingredients)
+            {
+                foreach (ItemTypeAndAmount foundItemAndCount in items)
+                {
+                    if (foundItemAndCount.item == ingredient.item && foundItemAndCount.amount >= ingredient.amount)
+                    {
+                        matchingIngredients++;
+                        break;
+                    }
+                }
+            }
+            return matchingIngredients == recipeSO.ingredients.Length;
         }
 
         private void UpdateRecipeUI()
