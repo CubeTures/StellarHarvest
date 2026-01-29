@@ -151,12 +151,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Sunspore::Sunspore.Plant
   seedSprite: {fileID: 21300000, guid: d3d6950584c2fc240b1af492c8afb77c, type: 3}
+  growingSprite: {fileID: 21300000, guid: a100110531eb80b4b8bce1561004afe9, type: 3}
   plantSprite: {fileID: 21300000, guid: 92923fac44802344eb8d8bcbb627f3b9, type: 3}
   growthTime: 10
   growthTimeVariance: 5
   harvestSound: {fileID: 8300000, guid: 35cccfa738cfa6743ba1d2f761199e1d, type: 3}
   growSound: {fileID: 8300000, guid: 35cccfa738cfa6743ba1d2f761199e1d, type: 3}
   plantSound: {fileID: 8300000, guid: 35cccfa738cfa6743ba1d2f761199e1d, type: 3}
+  glowEffect: {fileID: 2446270667391804717, guid: f46e2420a80d0964e9afd78cde433563, type: 3}
 --- !u!82 &4579549557802943057
 AudioSource:
   m_ObjectHideFlags: 0
