@@ -7,6 +7,7 @@ using UnityEngine;
     public Sprite icon;
     public bool stackable;
     public int maxStackSize;
+    public bool placeable;
     public GameObject prefab;
 
 

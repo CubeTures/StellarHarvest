@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -32,7 +33,7 @@ public class Hotbar : MonoBehaviour
         else if (scroll > 0)
         {
             selected -= 1;
-            if (selected <= 0)
+            if (selected < 0)
             {
                 selected = slots.Count - 1;
             }
@@ -41,7 +42,7 @@ public class Hotbar : MonoBehaviour
 
     public ItemSO GetSelectedItem(Inventory inventory)
     {
-        return inventory.GetIndex(selected).item;
+        return inventory.GetIndex(selected)?.item;
     }
 
     public void UpdateUI(Inventory inventory)

@@ -16,3 +16,5 @@ MonoBehaviour:
   displayName: Projectile
   icon: {fileID: 21300000, guid: 10e41c889b77e056f9aae57bc3e03274, type: 3}
   stackable: 1
+  placeable: 1
+  prefab: {fileID: 730164199014398880, guid: ac42470f34c91d682b613dc46342b33a, type: 3}

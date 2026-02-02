@@ -16,3 +16,5 @@ MonoBehaviour:
   displayName: Trap
   icon: {fileID: 21300000, guid: f91f015cb35e5b3d087adf19d6900fec, type: 3}
   stackable: 1
+  placeable: 1
+  prefab: {fileID: 55777360826986797, guid: 3bfb46af547823ed9ab33114259b0a53, type: 3}

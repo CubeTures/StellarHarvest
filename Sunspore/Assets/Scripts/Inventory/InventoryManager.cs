@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
 public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
-{   
+{
     public static InventoryManager Instance { get; private set; }
     public List<ItemTypeAndAmount> itemsToCraft = new List<ItemTypeAndAmount>();
     // cached list of all items in inventory + hotbar
@@ -41,7 +41,7 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
         // load inventory from some file
         // inventory = new Inventory();
         // hotbar.UpdateUI(inventory);
-        
+
         // if (Instance == null)
         // {
         //     Instance = this;
@@ -79,30 +79,30 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
             }
         }
 
-        if (draggedObject != null) 
+        if (draggedObject != null)
         {
             draggedObject.transform.position = Input.mousePosition;
         }
     }
 
-    private void CheckForHotbarInput() 
+    private void CheckForHotbarInput()
     {
-        if (Input.GetKeyDown(KeyCode.Alpha1)) 
+        if (Input.GetKeyDown(KeyCode.Alpha1))
         {
             selectedHotbarIndex = 0;
             HotBarItemChanged();
         }
-        else if (Input.GetKeyDown(KeyCode.Alpha2)) 
+        else if (Input.GetKeyDown(KeyCode.Alpha2))
         {
             selectedHotbarIndex = 1;
             HotBarItemChanged();
         }
-        else if (Input.GetKeyDown(KeyCode.Alpha3)) 
+        else if (Input.GetKeyDown(KeyCode.Alpha3))
         {
             selectedHotbarIndex = 2;
             HotBarItemChanged();
         }
-        else if (Input.GetKeyDown(KeyCode.Alpha4)) 
+        else if (Input.GetKeyDown(KeyCode.Alpha4))
         {
             selectedHotbarIndex = 3;
             HotBarItemChanged();
@@ -168,7 +168,7 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
     {
         items.Clear();
 
-        foreach(GameObject slot in slots)
+        foreach (GameObject slot in slots)
         {
             InventorySlot slotScript = slot.GetComponent<InventorySlot>();
 
@@ -242,11 +242,37 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
     //     hotbar.UpdateUI(inventory);
     // }
 
-    // public void UseItem(ItemSO item)
-    // {
-    //     inventory.UseItem(item);
-    //     hotbar.UpdateUI(inventory);
-    // }
+    public void UseSelectedItem()
+    {
+        if (hotbarSlots == null || hotbarSlots.Length == 0)
+            return;
+
+        if (selectedHotbarIndex < 0 || selectedHotbarIndex >= hotbarSlots.Length)
+            return;
+
+        InventorySlot slot = hotbarSlots[selectedHotbarIndex].GetComponent<InventorySlot>();
+        if (slot == null || slot.heldItem == null)
+            return;
+
+        InventoryItem invItem = slot.heldItem.GetComponent<InventoryItem>();
+        if (invItem == null)
+            return;
+
+        ItemSO itemSO = GetSelectedItem();
+        if (itemSO == null)
+            return;
+
+        invItem.stackCurrent--;
+
+        if (invItem.stackCurrent <= 0)
+        {
+            Destroy(slot.heldItem);
+            slot.heldItem = null;
+        }
+
+        HotBarItemChanged();
+    }
+
 
     public void OpenAndCloseCrafting()
     {
@@ -259,9 +285,10 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
             isCraftingOpened = true;
         }
     }
+    
     public void OnPointerDown(PointerEventData eventData)
     {
-        if (eventData.button == PointerEventData.InputButton.Left) 
+        if (eventData.button == PointerEventData.InputButton.Left)
         {
             GameObject clickedObject = eventData.pointerCurrentRaycast.gameObject;
             InventorySlot slot = clickedObject.GetComponent<InventorySlot>();
@@ -275,7 +302,7 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
         }
     }
 
-        public void OnPointerUp(PointerEventData eventData)
+    public void OnPointerUp(PointerEventData eventData)
     {
         if (draggedObject != null && eventData.pointerCurrentRaycast.gameObject != null && eventData.button == PointerEventData.InputButton.Left)
         {
@@ -343,7 +370,8 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
             draggedObject = null;
         }
     }
-  public void ItemPicked(GameObject pickedItem)
+
+    public void ItemPicked(GameObject pickedItem)
     {
         GameObject emptySlot = null;
 
@@ -371,4 +399,20 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
             Destroy(pickedItem);
         }
     }
+
+    public ItemSO GetSelectedItem()
+    {
+        if (hotbarSlots == null || hotbarSlots.Length == 0)
+            return null;
+
+        if (selectedHotbarIndex < 0 || selectedHotbarIndex >= hotbarSlots.Length)
+            return null;
+
+        InventorySlot slot = hotbarSlots[selectedHotbarIndex].GetComponent<InventorySlot>();
+        if (slot == null || slot.heldItem == null)
+            return null;
+
+        return slot.heldItem.GetComponent<InventoryItem>().itemScriptableObject;
+    }
+
 }

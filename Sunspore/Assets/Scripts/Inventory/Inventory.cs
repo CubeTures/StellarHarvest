@@ -37,6 +37,10 @@ public class Inventory
         if (index >= 0)
         {
             items[index].quantity -= 1;
+            if (items[index].quantity <= 0)
+            {
+                RemoveItem(items[index].item);
+            }
         }
     }
 
