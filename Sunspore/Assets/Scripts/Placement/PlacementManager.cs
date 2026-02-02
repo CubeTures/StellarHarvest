@@ -1,3 +1,6 @@
+using System.Collections.Generic;
+using System.Linq;
+using Sunspore;
 using UnityEngine;
 
 [RequireComponent(typeof(InventoryManager))]
@@ -10,7 +13,14 @@ public class PlacementManager : MonoBehaviour
 
     InventoryItem currentItem;
     [SerializeField] GameObject preview;
-    GameObject currentPreview;
+    List<GameObject> currentPreviews = new();
+    List<Vector2> footprints = new();
+
+    const float epsilon = 0.01f;
+    Color cannotPlace = new Color(245f / 255f, 103f / 255f, 105f / 255f);
+    Color canPlace = new Color(103f / 255f, 245f / 255f, 105f / 255f);
+    bool allowPlacement = false;
+
 
     void Awake()
     {
@@ -21,6 +31,7 @@ public class PlacementManager : MonoBehaviour
     void Update()
     {
         ShowPreview();
+        ColorPreviews();
 
         // placement
         if (Input.GetKeyDown(KeyCode.E))
@@ -31,38 +42,103 @@ public class PlacementManager : MonoBehaviour
 
     void ShowPreview()
     {
-        // get item
-        // get footprint of prefab
-        // show highlight
         if (ScreenToWorld(Input.mousePosition, out Vector3 position))
         {
-            if (inventoryManager.GetSelectedItem() is InventoryItem item && !item.Equals(currentItem))
+            InventoryItem item = inventoryManager.GetSelectedItem();
+            if (item == null || !item.Equals(currentItem))
             {
-                currentItem = item;
+                foreach (var _ in footprints)
+                {
+                    Destroy(currentPreviews[0]);
+                    currentPreviews.RemoveAt(0);
+                }
+
+                if (item != null)
+                {
+                    currentItem = item;
+                    GetFootprints(item);
+                }
             }
 
-            if (currentPreview == null)
+            if (currentPreviews.Count == 0)
             {
-                currentPreview = Instantiate(preview, position, Quaternion.identity);
+                foreach (var footprint in footprints)
+                {
+                    GameObject inst = Instantiate(preview, position, Quaternion.Euler(90f, 0, 0));
+                    inst.transform.localScale = new Vector3(footprint.x, footprint.y, inst.transform.localScale.z);
+                    currentPreviews.Add(inst);
+                }
             }
-            currentPreview.transform.position = SnapPosition(position);
-            currentPreview.SetActive(true);
+            foreach (var preview in currentPreviews)
+            {
+                preview.transform.position = SnapPosition(position);
+                preview.SetActive(true);
+            }
         }
         else
         {
-            if (currentPreview != null)
+            foreach (var preview in currentPreviews)
             {
-                currentPreview.SetActive(false);
+                preview.SetActive(false);
+            }
+            allowPlacement = false;
+        }
+    }
+
+    void ColorPreviews()
+    {
+        foreach (var preview in currentPreviews)
+        {
+            var sr = preview.GetComponent<SpriteRenderer>();
+
+            Vector3 box = new((preview.transform.localScale.x - epsilon) / 2, 0.5f, (preview.transform.localScale.z - epsilon) / 2);
+            var colliders = Physics.OverlapBox(preview.transform.position, box, Quaternion.identity, ~groundLayer);
+
+            if (colliders.Count() > 0)
+            {
+                sr.color = cannotPlace;
+                allowPlacement = false;
+            }
+            else
+            {
+                sr.color = canPlace;
+                allowPlacement = true;
             }
         }
     }
 
+    void GetFootprints(InventoryItem item)
+    {
+        footprints.Clear();
+
+        if (item.placeable)
+        {
+            GameObject prefab = item.prefab;
+            if (prefab.GetComponent<Plant>() is Plant plant)
+            {
+                // TODO iterate over all plant prefabs, record their footprints
+                footprints.Add(GetPrefabSize(prefab));
+            }
+            else
+            {
+                footprints.Add(GetPrefabSize(prefab));
+            }
+        }
+    }
+
+    Vector2 GetPrefabSize(GameObject prefab)
+    {
+        return new Vector2(prefab.transform.localScale.x, prefab.transform.localScale.z);
+    }
+
     void PlaceItem()
     {
-        // check overlap
-        // get item
-        // decrement amount
-        // place in world space
+        if (allowPlacement && currentPreviews.Count > 0)
+        {
+            GameObject prefab = currentItem.prefab;
+            Instantiate(prefab, currentPreviews[0].transform.position, Quaternion.identity);
+            inventoryManager.UseItem(currentItem);
+        }
     }
 
     public bool ScreenToWorld(Vector2 screenPosition, out Vector3 worldPosition)

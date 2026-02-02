@@ -20,16 +20,6 @@ public class InventoryManager : MonoBehaviour
             hotbar.ChangeSelected(axis);
             hotbar.UpdateUI(inventory);
         }
-
-        // use item
-        if (Input.GetKeyDown(KeyCode.E))
-        {
-            InventoryItem item = hotbar.GetSelectedItem(inventory);
-            if (item != null)
-            {
-                UseItem(item);
-            }
-        }
     }
 
     public InventoryItem GetSelectedItem()
