@@ -9,6 +9,7 @@ public class InventoryItem : ScriptableObject
     public bool stackable;
     public bool placeable;
     public GameObject prefab;
+    public bool weapon;
 
     public override bool Equals(object obj)
     {
