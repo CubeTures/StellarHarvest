@@ -4,7 +4,7 @@ public class Inventory
 {
     private List<InventorySlot> items = new();
 
-    public void AddItem(InventoryItem item)
+    public void AddItem(ItemSO item)
     {
         InventorySlot slot = items.Find(i => i.item.Equals(item));
         if (slot != null)
@@ -17,12 +17,12 @@ public class Inventory
         }
     }
 
-    public bool ContainsItem(InventoryItem item)
+    public bool ContainsItem(ItemSO item)
     {
         return items.Find(i => i.item.Equals(item)) != null;
     }
 
-    public void RemoveItem(InventoryItem item)
+    public void RemoveItem(ItemSO item)
     {
         InventorySlot slot = items.Find(i => i.item.Equals(item));
         if (slot != null)
@@ -31,7 +31,7 @@ public class Inventory
         }
     }
 
-    public void UseItem(InventoryItem item)
+    public void UseItem(ItemSO item)
     {
         int index = items.FindIndex(i => i.item.Equals(item));
         if (index >= 0)
@@ -55,5 +55,9 @@ public class Inventory
             return items[index];
         }
     }
-}
 
+    public List<InventorySlot> GetAllSlots()
+    {
+        return new List<InventorySlot>(items);
+    }
+}
