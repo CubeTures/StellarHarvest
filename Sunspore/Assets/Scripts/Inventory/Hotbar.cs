@@ -39,7 +39,7 @@ public class Hotbar : MonoBehaviour
         }
     }
 
-    public InventoryItem GetSelectedItem(Inventory inventory)
+    public ItemSO GetSelectedItem(Inventory inventory)
     {
         return inventory.GetIndex(selected).item;
     }

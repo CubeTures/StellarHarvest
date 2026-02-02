@@ -12,6 +12,11 @@ namespace Sunspore
         [SerializeField] GameObject plusIconPrefab;
         [SerializeField] GameObject equalIconPrefab;
 
+        private void Start()
+        {
+            UpdateRecipeUI(itemSO);
+        }
+
         public void UpdateRecipeUI(ItemRecipeSO newItemSO)
         {
             itemSO = newItemSO;

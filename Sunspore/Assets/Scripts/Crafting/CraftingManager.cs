@@ -5,13 +5,26 @@ namespace Sunspore
 {
     public class CraftingManager : MonoBehaviour
     {
-        public RecipeType selectedRecipeType;
-
+        public static CraftingManager Instance { get; private set; }
+        private RecipeType selectedRecipeType;
         [SerializeField] ItemRecipeSO[] recipes;
         [SerializeField] GameObject recipeUIPrefab;
         [SerializeField] Transform recipeUIParent;
 
         private List<ItemTypeAndAmount> items = new List<ItemTypeAndAmount>();
+
+        private void Awake()
+        {
+            if (Instance == null)
+            {
+                Instance = this;
+                DontDestroyOnLoad(gameObject);
+            }
+            else
+            {
+                Destroy(gameObject);
+            }
+        }
 
         private void OnEnable()
         {
@@ -51,7 +64,8 @@ namespace Sunspore
                 if (recipes[i].recipeType == selectedRecipeType)
                 {
                     GameObject newRecipeUI = Instantiate(recipeUIPrefab, recipeUIParent);
-                    newRecipeUI.name = recipes[i].name;
+                    // use the scriptable object's recipeName so later lookup matches
+                    newRecipeUI.name = recipes[i].recipeName;
                 }
             }
             for (int i = 0; i < recipeUIParent.childCount; i++)
@@ -67,28 +81,35 @@ namespace Sunspore
                         break;
                     }
                 }
+                if (itemRecipe == null)
+                {
+                    Debug.LogWarning($"CraftingManager: missing ItemRecipe component on '{recipeUIParent.GetChild(i).name}'");
+                    continue;
+                }
+
+                if (itemRecipeSO == null)
+                {
+                    Debug.LogWarning($"CraftingManager: no ItemRecipeSO found matching UI name '{recipeUIParent.GetChild(i).name}'");
+                    continue;
+                }
+
                 itemRecipe.UpdateRecipeUI(itemRecipeSO);
 
             }
         }
 
-        public void SelectedRecipeType(RecipeType type)
+        public void SelectedRecipeType(string type)
         {
             switch (type)
             {
-                case RecipeType.tools:
+                case "tools":
                     selectedRecipeType = RecipeType.tools;
                     break;
-                case RecipeType.weapons:
+                case "weapons":
                     selectedRecipeType = RecipeType.weapons;
                     break;
-                default:
-                    selectedRecipeType = RecipeType.tools;
-                    break;
             }
-
             UpdateRecipeUI();
         }
-
     }
 }
