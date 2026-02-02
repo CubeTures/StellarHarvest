@@ -9,6 +9,7 @@ TagManager:
   - Player bullet
   - Enemy bullet
   - Plant
+  - Weapon
   layers:
   - Default
   - TransparentFX
