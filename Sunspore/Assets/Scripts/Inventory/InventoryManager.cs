@@ -1,66 +1,418 @@
 using Sunspore;
-using System;
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
-public class InventoryManager : MonoBehaviour
+public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 {
+    public static InventoryManager Instance { get; private set; }
+    public List<ItemTypeAndAmount> itemsToCraft = new List<ItemTypeAndAmount>();
+    // cached list of all items in inventory + hotbar
+    private List<ItemTypeAndAmount> items = new List<ItemTypeAndAmount>();
     Inventory inventory;
     [SerializeField] Hotbar hotbar;
-    [SerializeField] WeaponManager weaponManager;
+    [SerializeField] GameObject craftingParent;
+    [SerializeField] GameObject inventoryParent;
+    [SerializeField] Transform handParent;
+    [SerializeField] GameObject itemPrefab;
+    [SerializeField] Camera cam;
 
+    [SerializeField] GameObject[] slots = new GameObject[12];
+    [SerializeField] GameObject[] hotbarSlots = new GameObject[3];
+
+    bool isCraftingOpened;
+    bool isInventoryOpened;
+    int selectedHotbarIndex = 0;
+    GameObject draggedObject;
+    GameObject lastItemSlot;
+    bool hasLoggedMissingHandParent = false;
+    bool hasLoggedMissingCraftingParent = false;
+    bool hasLoggedMissingInventoryParent = false;
+    bool hasLoggedMissingInventory = false;
+
+    void Start()
+    {
+        HotBarItemChanged();
+        Cursor.lockState = CursorLockMode.Locked;
+    }
     void Awake()
     {
         // load inventory from some file
-        inventory = new Inventory();
-        hotbar.UpdateUI(inventory);
-        weaponManager = GetComponent<WeaponManager>();
+        // inventory = new Inventory();
+        // hotbar.UpdateUI(inventory);
+
+        // if (Instance == null)
+        // {
+        //     Instance = this;
+        //     DontDestroyOnLoad(gameObject);
+        // }
+        // else
+        // {
+        //     Destroy(gameObject);
+        // }
     }
 
     void Update()
     {
-        // navigate inventory
-        if (Input.GetAxis("Mouse ScrollWheel") is float axis)
+        CheckForHotbarInput();
+        craftingParent.SetActive(isCraftingOpened);
+        inventoryParent.SetActive(isInventoryOpened);
+        // // navigate inventory
+        // if (Input.GetAxis("Mouse ScrollWheel") is float axis)
+        // {
+        //     hotbar.ChangeSelected(axis);
+        //     hotbar.UpdateUI(inventory);
+        // }
+        if (Input.GetKeyDown(KeyCode.E))
         {
-            if (hotbar.GetSelectedItem(inventory) != null && hotbar.GetSelectedItem(inventory).weapon)
+            if (isInventoryOpened)
             {
-                weaponManager.equipped = false;
+                Cursor.lockState = CursorLockMode.Locked;
+                isInventoryOpened = false;
+                isCraftingOpened = false;
+            }
+            else
+            {
+                Cursor.lockState = CursorLockMode.None;
+                isInventoryOpened = true;
+            }
+        }
+
+        if (draggedObject != null)
+        {
+            draggedObject.transform.position = Input.mousePosition;
+        }
+    }
+
+    private void CheckForHotbarInput()
+    {
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            selectedHotbarIndex = 0;
+            HotBarItemChanged();
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            selectedHotbarIndex = 1;
+            HotBarItemChanged();
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha3))
+        {
+            selectedHotbarIndex = 2;
+            HotBarItemChanged();
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha4))
+        {
+            selectedHotbarIndex = 3;
+            HotBarItemChanged();
+        }
+    }
+
+    private void HotBarItemChanged()
+    {
+        if (hotbarSlots == null || hotbarSlots.Length == 0) return;
+
+        if (selectedHotbarIndex < 0) selectedHotbarIndex = 0;
+        if (selectedHotbarIndex >= hotbarSlots.Length) selectedHotbarIndex = hotbarSlots.Length - 1;
+
+        if (handParent == null)
+        {
+            if (!hasLoggedMissingHandParent)
+            {
+                Debug.LogWarning("InventoryManager: 'handParent' is not assigned in the inspector. Hand visuals will be disabled.");
+                hasLoggedMissingHandParent = true;
+            }
+        }
+        else
+        {
+            for (int i = 0; i < handParent.childCount; i++)
+            {
+                handParent.GetChild(i).gameObject.SetActive(false);
+            }
+        }
+
+        foreach (GameObject slot in hotbarSlots)
+        {
+            if (slot == null) continue;
+
+            Vector3 scale = new Vector3(0.9f, 0.9f, 0.9f);
+
+            if (slot == hotbarSlots[selectedHotbarIndex])
+            {
+                scale = new Vector3(1.1f, 1.1f, 1.1f);
+
+                InventorySlot invSlot = slot.GetComponent<InventorySlot>();
+                if (invSlot != null && invSlot.heldItem != null && handParent != null)
+                {
+                    var heldInvItem = invSlot.heldItem.GetComponent<InventoryItem>();
+                    if (heldInvItem != null)
+                    {
+                        for (int i = 0; i < handParent.childCount; i++)
+                        {
+                            var handChild = handParent.GetChild(i).GetComponent<InventoryItem>();
+                            if (handChild != null && handChild.itemScriptableObject == heldInvItem.itemScriptableObject)
+                            {
+                                handParent.GetChild(i).gameObject.SetActive(true);
+                            }
+                        }
+                    }
+                }
             }
 
-            hotbar.ChangeSelected(axis);
-            hotbar.UpdateUI(inventory);
+            slot.transform.localScale = scale;
+        }
+    }
 
-            // check if the currenlty selected item is a weapon
-            if (hotbar.GetSelectedItem(inventory) != null && hotbar.GetSelectedItem(inventory).weapon)
+    public List<ItemTypeAndAmount> GetAllItems()
+    {
+        items.Clear();
+
+        foreach (GameObject slot in slots)
+        {
+            InventorySlot slotScript = slot.GetComponent<InventorySlot>();
+
+            if (slotScript.heldItem != null)
             {
-                weaponManager.equipped = true;
+                InventoryItem itemScript = slotScript.heldItem.GetComponent<InventoryItem>();
+
+                int i = 0;
+                bool wasItemAdded = false;
+
+                foreach (ItemTypeAndAmount itemAndCount in items)
+                {
+                    if (itemAndCount.item == itemScript.itemScriptableObject)
+                    {
+                        items[i].amount += itemScript.stackCurrent;
+                        wasItemAdded = true;
+                    }
+                    i++;
+                }
+
+                if (!wasItemAdded)
+                {
+                    items.Add(new ItemTypeAndAmount(itemScript.itemScriptableObject, itemScript.stackCurrent));
+                }
+            }
+        }
+
+        foreach (GameObject slot in hotbarSlots)
+        {
+            InventorySlot slotScript = slot.GetComponent<InventorySlot>();
+
+            if (slotScript.heldItem != null)
+            {
+                InventoryItem itemScript = slotScript.heldItem.GetComponent<InventoryItem>();
+
+                int i = 0;
+                bool wasItemAdded = false;
+
+                foreach (ItemTypeAndAmount itemAndCount in items)
+                {
+                    if (itemAndCount.item == itemScript.itemScriptableObject)
+                    {
+                        items[i].amount += itemScript.stackCurrent;
+                        wasItemAdded = true;
+                    }
+                    i++;
+                }
+
+                if (!wasItemAdded)
+                {
+                    items.Add(new ItemTypeAndAmount(itemScript.itemScriptableObject, itemScript.stackCurrent));
+                }
+            }
+        }
+        return items;
+    }
+
+    // public void AddItem(ItemSO item)
+    // {
+    //     inventory.AddItem(item);
+    //     hotbar.UpdateUI(inventory);
+    // }
+    // public bool ContainsItem(ItemSO item)
+    // {
+    //     return inventory.ContainsItem(item);
+    // }
+
+    // public void RemoveItem(ItemSO item)
+    // {
+    //     inventory.RemoveItem(item);
+    //     hotbar.UpdateUI(inventory);
+    // }
+
+    public void UseSelectedItem()
+    {
+        if (hotbarSlots == null || hotbarSlots.Length == 0)
+            return;
+
+        if (selectedHotbarIndex < 0 || selectedHotbarIndex >= hotbarSlots.Length)
+            return;
+
+        InventorySlot slot = hotbarSlots[selectedHotbarIndex].GetComponent<InventorySlot>();
+        if (slot == null || slot.heldItem == null)
+            return;
+
+        InventoryItem invItem = slot.heldItem.GetComponent<InventoryItem>();
+        if (invItem == null)
+            return;
+
+        ItemSO itemSO = GetSelectedItem();
+        if (itemSO == null)
+            return;
+
+        invItem.stackCurrent--;
+
+        if (invItem.stackCurrent <= 0)
+        {
+            Destroy(slot.heldItem);
+            slot.heldItem = null;
+        }
+
+        HotBarItemChanged();
+    }
+
+
+    public void OpenAndCloseCrafting()
+    {
+        if (isCraftingOpened)
+        {
+            isCraftingOpened = false;
+        }
+        else
+        {
+            isCraftingOpened = true;
+        }
+    }
+    
+    public void OnPointerDown(PointerEventData eventData)
+    {
+        if (eventData.button == PointerEventData.InputButton.Left)
+        {
+            GameObject clickedObject = eventData.pointerCurrentRaycast.gameObject;
+            InventorySlot slot = clickedObject.GetComponent<InventorySlot>();
+
+            if (slot != null && slot.heldItem != null)
+            {
+                draggedObject = slot.heldItem;
+                slot.heldItem = null;
+                lastItemSlot = clickedObject;
             }
         }
     }
 
-    public InventoryItem GetSelectedItem()
+    public void OnPointerUp(PointerEventData eventData)
     {
-        return hotbar.GetSelectedItem(inventory);
+        if (draggedObject != null && eventData.pointerCurrentRaycast.gameObject != null && eventData.button == PointerEventData.InputButton.Left)
+        {
+            GameObject clickedObject = eventData.pointerCurrentRaycast.gameObject;
+            InventorySlot slot = clickedObject.GetComponent<InventorySlot>();
+
+            //There isnt item in the slot - place item
+            if (slot != null && slot.heldItem == null)
+            {
+                slot.SetHeldItem(draggedObject);
+                draggedObject.transform.SetParent(slot.transform.parent.parent.GetChild(2));
+            }
+            //There is item in the slot - switch items
+            else if (slot != null && slot.heldItem != null && slot.heldItem.GetComponent<InventoryItem>().stackCurrent == slot.heldItem.GetComponent<InventoryItem>().stackMax
+                || slot != null && slot.heldItem != null && slot.heldItem.GetComponent<InventoryItem>().itemScriptableObject != draggedObject.GetComponent<InventoryItem>().itemScriptableObject)
+            {
+                lastItemSlot.GetComponent<InventorySlot>().SetHeldItem(slot.heldItem);
+                slot.heldItem.transform.SetParent(slot.transform.parent.parent.GetChild(2));
+
+                slot.SetHeldItem(draggedObject);
+                draggedObject.transform.SetParent(slot.transform.parent.parent.GetChild(2));
+            }
+
+            //Fill stack
+            else if (slot != null && slot.heldItem != null && slot.heldItem.GetComponent<InventoryItem>().stackCurrent < slot.heldItem.GetComponent<InventoryItem>().stackMax
+                && slot.heldItem.GetComponent<InventoryItem>().itemScriptableObject == draggedObject.GetComponent<InventoryItem>().itemScriptableObject)
+            {
+                InventoryItem slotHeldItem = slot.heldItem.GetComponent<InventoryItem>();
+                InventoryItem draggedItem = draggedObject.GetComponent<InventoryItem>();
+
+                int itemsToFillStack = slotHeldItem.stackMax - slotHeldItem.stackCurrent;
+
+                if (itemsToFillStack >= draggedItem.stackCurrent)
+                {
+                    slotHeldItem.stackCurrent += draggedItem.stackCurrent;
+                    Destroy(draggedObject);
+                }
+                else
+                {
+                    slotHeldItem.stackCurrent += itemsToFillStack;
+                    draggedItem.stackCurrent -= itemsToFillStack;
+                    lastItemSlot.GetComponent<InventorySlot>().SetHeldItem(draggedObject);
+                }
+            }
+            //Return item to last slot
+            else if (clickedObject.name != "DropItem")
+            {
+                lastItemSlot.GetComponent<InventorySlot>().SetHeldItem(draggedObject);
+                draggedObject.transform.SetParent(slot.transform.parent.parent.GetChild(2));
+            }
+            //Drop item
+            else
+            {
+                Ray ray = cam.ScreenPointToRay(Input.mousePosition);
+                Vector3 position = ray.GetPoint(3);
+
+                GameObject newItem = Instantiate(draggedObject.GetComponent<InventoryItem>().itemScriptableObject.prefab, position, new Quaternion());
+                newItem.GetComponent<itemPickable>().itemScriptableObject = draggedObject.GetComponent<InventoryItem>().itemScriptableObject;
+
+                lastItemSlot.GetComponent<InventorySlot>().heldItem = null;
+                Destroy(draggedObject);
+            }
+
+            HotBarItemChanged();
+            draggedObject = null;
+        }
     }
 
-    public void AddItem(InventoryItem item)
+    public void ItemPicked(GameObject pickedItem)
     {
-        inventory.AddItem(item);
-        hotbar.UpdateUI(inventory);
-    }
-    public bool ContainsItem(InventoryItem item)
-    {
-        return inventory.ContainsItem(item);
+        GameObject emptySlot = null;
+
+        for (int i = 0; i < slots.Length; i++)
+        {
+            InventorySlot slot = slots[i].GetComponent<InventorySlot>();
+
+            if (slot.heldItem == null)
+            {
+                emptySlot = slots[i];
+                break;
+            }
+        }
+
+        if (emptySlot != null)
+        {
+            GameObject newItem = Instantiate(itemPrefab);
+            newItem.GetComponent<InventoryItem>().itemScriptableObject = pickedItem.GetComponent<itemPickable>().itemScriptableObject;
+            newItem.transform.SetParent(emptySlot.transform.parent.parent.GetChild(2));
+            newItem.GetComponent<InventoryItem>().stackCurrent = 1;
+
+            emptySlot.GetComponent<InventorySlot>().SetHeldItem(newItem);
+            newItem.transform.localScale = new Vector3(1, 1, 1);
+
+            Destroy(pickedItem);
+        }
     }
 
-    public void RemoveItem(InventoryItem item)
+    public ItemSO GetSelectedItem()
     {
-        inventory.RemoveItem(item);
-        hotbar.UpdateUI(inventory);
+        if (hotbarSlots == null || hotbarSlots.Length == 0)
+            return null;
+
+        if (selectedHotbarIndex < 0 || selectedHotbarIndex >= hotbarSlots.Length)
+            return null;
+
+        InventorySlot slot = hotbarSlots[selectedHotbarIndex].GetComponent<InventorySlot>();
+        if (slot == null || slot.heldItem == null)
+            return null;
+
+        return slot.heldItem.GetComponent<InventoryItem>().itemScriptableObject;
     }
 
-    public void UseItem(InventoryItem item)
-    {
-        inventory.UseItem(item);
-        hotbar.UpdateUI(inventory);
-    }
 }
