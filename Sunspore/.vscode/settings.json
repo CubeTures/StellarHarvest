@@ -67,5 +67,5 @@
         "*.sln": "*.csproj",
         "*.slnx": "*.csproj"
     },
-    "dotnet.defaultSolution": "Sunspore.slnx"
+    "dotnet.defaultSolution": "Sunspore.slnx",
 }

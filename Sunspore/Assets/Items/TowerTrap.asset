@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b55df8fc0627f99cbf602cf22f90418, type: 3}
+  m_Name: TowerTrap
+  m_EditorClassIdentifier: Sunspore::InventoryItem
+  id: 2
+  displayName: Trap
+  icon: {fileID: 21300000, guid: f91f015cb35e5b3d087adf19d6900fec, type: 3}
+  stackable: 1
+  placeable: 1
+  prefab: {fileID: 55777360826986797, guid: 3bfb46af547823ed9ab33114259b0a53, type: 3}
