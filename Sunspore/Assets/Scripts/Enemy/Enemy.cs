@@ -1,19 +1,21 @@
+using UnityEditor.XR;
 using UnityEngine;
 
 namespace Sunspore
 {
     public class Enemy : MonoBehaviour
     {
-        // Start is called once before the first execution of Update after the MonoBehaviour is created
-        void Start()
-        {
-        
-        }
+        [SerializeField] int health = 100;
+        [SerializeField] int damage = 10;
+        [SerializeField] Player player;
 
-        // Update is called once per frame
-        void Update()
+        public void TakeDamage(int weaponDamage, Vector2 direction, float knockback)
         {
-        
+            health -= weaponDamage;
+            if (health <= 0)
+            {
+                Destroy(this.gameObject);
+            }
         }
     }
 }
