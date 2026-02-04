@@ -22,6 +22,8 @@ namespace Sunspore
         // Start is called once before the first execution of Update after the MonoBehaviour is created
         void Start()
         {
+            Pathfinding.Instance.AddPlant(transform, PlantTypes.VALUE);
+
             _audioSource = GetComponent<AudioSource>();
             _spriteRenderer = GetComponent<SpriteRenderer>();
             _spriteRenderer.sprite = seedSprite;
@@ -78,6 +80,11 @@ namespace Sunspore
         void PlaySound(AudioClip sound)
         {
             _audioSource.PlayOneShot(sound);
+        }
+
+        void OnDestroy()
+        {
+            Pathfinding.Instance.RemovePlant(transform);
         }
     }
 }
