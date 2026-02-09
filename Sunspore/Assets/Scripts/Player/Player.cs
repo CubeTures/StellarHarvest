@@ -40,6 +40,7 @@ public class Player : MonoBehaviour
 
     bool _facingRight = true;
     bool _facingFront = true;
+    int _currentDirection = -1;
 
     void Start()
     {
@@ -98,6 +99,7 @@ public class Player : MonoBehaviour
         _vx = input.x;
         _vz = input.y;
 
+<<<<<<< Updated upstream
         // Swap sprites based on the direction the player is moving
         if (_vx > 0 && _vx > _vz)
         {
@@ -111,21 +113,63 @@ public class Player : MonoBehaviour
             _anim.SetInteger("Direction", 2);
             weaponManager.setDirection(3);
         }
+=======
+        bool isMoving = input.sqrMagnitude > 0.01f;
+        _anim.SetBool("isMoving", isMoving);
+>>>>>>> Stashed changes
 
-        if (_vz > 0 && _vz > _vx)
+        if (!isMoving)
+            return;
+
+        // Decide direction based on dominant axis
+        if (Mathf.Abs(_vx) > Mathf.Abs(_vz))
         {
+<<<<<<< Updated upstream
             _facingFront = true;
             _anim.SetInteger("Direction", 1);
             weaponManager.setDirection(0);
+=======
+            // Horizontal wins
+            if (_vx > 0)
+            {
+                _facingRight = true;
+                SetDirection(1); // Right
+            }
+            else
+            {
+                _facingRight = false;
+                SetDirection(2); // Left
+            }
+>>>>>>> Stashed changes
         }
-        else if (_vz < 0)
+        else
         {
+<<<<<<< Updated upstream
             _facingFront = false;
             _anim.SetInteger("Direction", 0);
             weaponManager.setDirection(2);
+=======
+            // Vertical wins
+            if (_vz > 0)
+            {
+                _facingFront = true;
+                SetDirection(4); // Forward
+            }
+            else
+            {
+                _facingFront = false;
+                SetDirection(3); // Back
+            }
+>>>>>>> Stashed changes
         }
     }
 
+    public void SetDirection(int dir)
+    {
+        _currentDirection = dir;
+        _anim.SetInteger("Direction", dir);
+        _anim.SetBool("isMoving", true);
+    }
     public void Move()
     {
         Vector3 moveDirection = _transform.TransformDirection(new Vector3(_vx, 0, _vz));
