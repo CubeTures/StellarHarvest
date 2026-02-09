@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 82d9a8255bc232c44bfb5fe3e371f133, type: 3}
+  m_Name: CraftingTest2
+  m_EditorClassIdentifier: Sunspore::Sunspore.ItemRecipeSO
+  recipeName: Wall2
+  recipeType: 1
+  ingredients:
+  - item: {fileID: 11400000, guid: 80a2259b703fc1544a72a827b616a20b, type: 2}
+    amount: 1
+  - item: {fileID: 11400000, guid: 2a88fcec1171e7648a44b8e0c3e7a4e5, type: 2}
+    amount: 2
+  resultItem:
+  - item: {fileID: 11400000, guid: 2c417952a1a0bf12cbe924488b64a514, type: 2}
+    amount: 1

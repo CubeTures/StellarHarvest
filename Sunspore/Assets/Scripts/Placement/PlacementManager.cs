@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Sunspore;
 using UnityEngine;
+using UnityEngine.InputSystem.LowLevel;
 
 [RequireComponent(typeof(InventoryManager))]
 public class PlacementManager : MonoBehaviour
@@ -11,7 +12,7 @@ public class PlacementManager : MonoBehaviour
     Camera cam;
     InventoryManager inventoryManager;
 
-    InventoryItem currentItem;
+    ItemSO currentItem;
     [SerializeField] GameObject preview;
     List<GameObject> currentPreviews = new();
     List<Vector2> footprints = new();
@@ -34,7 +35,7 @@ public class PlacementManager : MonoBehaviour
         ColorPreviews();
 
         // placement
-        if (Input.GetKeyDown(KeyCode.E))
+        if (Input.GetMouseButtonDown(0))
         {
             PlaceItem();
         }
@@ -44,7 +45,7 @@ public class PlacementManager : MonoBehaviour
     {
         if (ScreenToWorld(Input.mousePosition, out Vector3 position))
         {
-            InventoryItem item = inventoryManager.GetSelectedItem();
+            ItemSO item = inventoryManager.GetSelectedItem();
             if (item == null || !item.Equals(currentItem))
             {
                 foreach (var _ in footprints)
@@ -107,7 +108,7 @@ public class PlacementManager : MonoBehaviour
         }
     }
 
-    void GetFootprints(InventoryItem item)
+    void GetFootprints(ItemSO item)
     {
         footprints.Clear();
 
@@ -137,7 +138,7 @@ public class PlacementManager : MonoBehaviour
         {
             GameObject prefab = currentItem.prefab;
             Instantiate(prefab, currentPreviews[0].transform.position, Quaternion.identity);
-            inventoryManager.UseItem(currentItem);
+            inventoryManager.UseSelectedItem();
         }
     }
 

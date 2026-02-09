@@ -1,24 +1,29 @@
 using UnityEngine;
+using UnityEngine.UI;
 
-[CreateAssetMenu(menuName = "Item")]
-public class InventoryItem : ScriptableObject
+namespace Sunspore
 {
-    public string id;
-    public string displayName;
-    public Sprite icon;
-    public bool stackable;
-    public bool placeable;
-    public GameObject prefab;
-    public bool weapon;
-
-    public override bool Equals(object obj)
+    public class InventoryItem : MonoBehaviour
     {
-        if (obj is not InventoryItem other) return false;
-        return id == other.id;
-    }
+        public ItemSO itemScriptableObject;
+        [SerializeField] Image iconImage;
+        [SerializeField] Text stackText;
 
-    public override int GetHashCode()
-    {
-        return id.GetHashCode();
+        public int stackCurrent = 1;
+        public int stackMax;
+
+        private void Start()
+        {
+            stackMax = itemScriptableObject.maxStackSize;
+        }
+        void Update()
+        {
+            iconImage.sprite = itemScriptableObject.icon;
+
+            if (stackMax > 1)
+            {
+                stackText.text = stackCurrent.ToString();
+            }
+        }
     }
 }

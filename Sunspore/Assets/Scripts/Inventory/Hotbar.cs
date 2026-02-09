@@ -40,9 +40,16 @@ public class Hotbar : MonoBehaviour
         }
     }
 
-    public InventoryItem GetSelectedItem(Inventory inventory)
+    public ItemSO GetSelectedItem(Inventory inventory)
     {
-        return inventory.GetIndex(selected)?.item;
+        if (inventory == null)
+            return null;
+
+        var slot = inventory.GetIndex(selected);
+        if (slot == null)
+            return null;
+
+        return slot.item;
     }
 
     public void UpdateUI(Inventory inventory)
