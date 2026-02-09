@@ -3,10 +3,19 @@ using System.Collections;
 using Unity.Cinemachine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
+using System.Diagnostics.Contracts;
+using Sunspore;
 
 public class Player : MonoBehaviour
 {
     public float speed = 8f;
+    public GameObject[] inventory;
+    public float gridSize = 1f; // Size of each grid cell
+    public WeaponManager weaponManager;
+
+    [HideInInspector]
+    public RaycastHit selectedObject;
+    private Transform hoveredObject;
 
     [HideInInspector]
     public bool playerCanMove = true;
@@ -40,6 +49,7 @@ public class Player : MonoBehaviour
         _rb = GetComponent<Rigidbody>();
         _audioSource = GetComponent<AudioSource>();
         _mainCamera = Camera.main;
+        weaponManager = GameObject.Find("Weapon Manager").GetComponent<WeaponManager>();
 
         // Find and setup Cinemachine Virtual Camera
         _cinemachineCamera = FindFirstObjectByType<CinemachineCamera>();
@@ -94,22 +104,26 @@ public class Player : MonoBehaviour
         {
             _facingRight = true;
             _anim.SetInteger("Direction", 3);
+            weaponManager.setDirection(1);
         }
         else if (_vx < 0)
         {
             _facingRight = false;
             _anim.SetInteger("Direction", 2);
+            weaponManager.setDirection(3);
         }
 
         if (_vz > 0 && _vz > _vx)
         {
             _facingFront = true;
             _anim.SetInteger("Direction", 1);
+            weaponManager.setDirection(0);
         }
         else if (_vz < 0)
         {
             _facingFront = false;
             _anim.SetInteger("Direction", 0);
+            weaponManager.setDirection(2);
         }
     }
 
