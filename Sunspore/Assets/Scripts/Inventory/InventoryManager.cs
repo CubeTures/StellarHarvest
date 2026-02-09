@@ -71,13 +71,11 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
         {
             if (isInventoryOpened)
             {
-                Cursor.lockState = CursorLockMode.Locked;
                 isInventoryOpened = false;
                 isCraftingOpened = false;
             }
             else
             {
-                Cursor.lockState = CursorLockMode.None;
                 isInventoryOpened = true;
             }
         }

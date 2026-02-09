@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b55df8fc0627f99cbf602cf22f90418, type: 3}
   m_Name: TowerTrap
   m_EditorClassIdentifier: Sunspore::InventoryItem
-  id: 2
   displayName: Trap
   icon: {fileID: 21300000, guid: f91f015cb35e5b3d087adf19d6900fec, type: 3}
   stackable: 1
+  maxStackSize: 0
   placeable: 1
-  prefab: {fileID: 55777360826986797, guid: 3bfb46af547823ed9ab33114259b0a53, type: 3}
+  prefab: {fileID: 8633157585367683789, guid: 930e8118936ff2448a069367ff714d88, type: 3}

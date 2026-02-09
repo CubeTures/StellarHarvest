@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Sunspore;
 using UnityEngine;
+using UnityEngine.InputSystem.LowLevel;
 
 [RequireComponent(typeof(InventoryManager))]
 public class PlacementManager : MonoBehaviour
@@ -34,7 +35,7 @@ public class PlacementManager : MonoBehaviour
         ColorPreviews();
 
         // placement
-        if (Input.GetKeyDown(KeyCode.E))
+        if (Input.GetMouseButtonDown(0))
         {
             PlaceItem();
         }

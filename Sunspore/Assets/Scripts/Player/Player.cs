@@ -135,56 +135,6 @@ public class Player : MonoBehaviour
         _rb.AddForce(velocityDiff * 15f, ForceMode.Acceleration);
     }
 
-    public void Select(InputAction.CallbackContext context)
-    {
-        if (context.phase == InputActionPhase.Started)
-        {
-            // Player started holding the button
-            isSelecting = true;
-        }
-        else if (context.phase == InputActionPhase.Canceled)
-        {
-            // Player released the button
-            isSelecting = false;
-        }
-
-        if (context.phase == InputActionPhase.Performed)
-        {
-            // Ensure camera is initialized
-            if (_mainCamera == null)
-            {
-                _mainCamera = Camera.main;
-                if (_mainCamera == null)
-                {
-                    return;
-                }
-            }
-
-            RaycastHit hit;
-            Ray ray = _mainCamera.ScreenPointToRay(Input.mousePosition);
-
-            if (Physics.Raycast(ray, out hit))
-            {
-                selectedObject = hit;
-                // Draw green line to show successful raycast hit
-                Debug.DrawLine(ray.origin, hit.point, Color.green, 2f);
-
-                // If clicked on layer ground, instantiate a plant at grid-aligned position
-                if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Ground"))
-                {
-                    Vector3 snappedPosition = SnapToGrid(hit.point);
-                    Instantiate(inventory[0], snappedPosition, Quaternion.identity);
-                }
-            }
-            else
-            {
-                selectedObject = new RaycastHit();
-                // Draw red line to show raycast miss (draw for 100 units)
-                Debug.DrawRay(ray.origin, ray.direction * 100f, Color.red, 2f);
-            }
-        }
-    }
-
     // public function to respawn the player at the appropriate location
     public void Respawn(Vector3 spawnloc)
     {
@@ -214,15 +164,6 @@ public class Player : MonoBehaviour
     public void PlaySound(AudioClip clip)
     {
         _audioSource.PlayOneShot(clip);
-    }
-
-    // Snap position to grid
-    Vector3 SnapToGrid(Vector3 position)
-    {
-        float x = Mathf.Round(position.x / gridSize) * gridSize;
-        float y = position.y; // Keep original Y position (ground height)
-        float z = Mathf.Round(position.z / gridSize) * gridSize;
-        return new Vector3(x, y, z);
     }
 
     // Method to handle cursor locked/unlocked when game is paused
