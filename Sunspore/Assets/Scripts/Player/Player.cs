@@ -12,6 +12,7 @@ public class Player : MonoBehaviour
     public GameObject[] inventory;
     public float gridSize = 1f; // Size of each grid cell
     [SerializeField] WeaponManager weaponManager;
+    [SerializeField] private SpriteRenderer _sr;
 
     [HideInInspector]
     public RaycastHit selectedObject;
@@ -49,6 +50,7 @@ public class Player : MonoBehaviour
         _collider = GetComponent<CapsuleCollider>();
         _rb = GetComponent<Rigidbody>();
         _audioSource = GetComponent<AudioSource>();
+        _sr = GetComponent<SpriteRenderer>();
         _mainCamera = Camera.main;
 
         // Find and setup Cinemachine Virtual Camera
@@ -99,24 +101,8 @@ public class Player : MonoBehaviour
         _vx = input.x;
         _vz = input.y;
 
-<<<<<<< Updated upstream
-        // Swap sprites based on the direction the player is moving
-        if (_vx > 0 && _vx > _vz)
-        {
-            _facingRight = true;
-            _anim.SetInteger("Direction", 3);
-            weaponManager.setDirection(1);
-        }
-        else if (_vx < 0)
-        {
-            _facingRight = false;
-            _anim.SetInteger("Direction", 2);
-            weaponManager.setDirection(3);
-        }
-=======
         bool isMoving = input.sqrMagnitude > 0.01f;
         _anim.SetBool("isMoving", isMoving);
->>>>>>> Stashed changes
 
         if (!isMoving)
             return;
@@ -124,31 +110,22 @@ public class Player : MonoBehaviour
         // Decide direction based on dominant axis
         if (Mathf.Abs(_vx) > Mathf.Abs(_vz))
         {
-<<<<<<< Updated upstream
-            _facingFront = true;
-            _anim.SetInteger("Direction", 1);
-            weaponManager.setDirection(0);
-=======
             // Horizontal wins
             if (_vx > 0)
             {
                 _facingRight = true;
+                _sr.flipX = true;
                 SetDirection(1); // Right
             }
             else
             {
+                _sr.flipX = false;
                 _facingRight = false;
                 SetDirection(2); // Left
             }
->>>>>>> Stashed changes
         }
         else
         {
-<<<<<<< Updated upstream
-            _facingFront = false;
-            _anim.SetInteger("Direction", 0);
-            weaponManager.setDirection(2);
-=======
             // Vertical wins
             if (_vz > 0)
             {
@@ -160,9 +137,10 @@ public class Player : MonoBehaviour
                 _facingFront = false;
                 SetDirection(3); // Back
             }
->>>>>>> Stashed changes
         }
     }
+
+
 
     public void SetDirection(int dir)
     {
