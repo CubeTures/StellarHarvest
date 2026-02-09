@@ -11,7 +11,7 @@ public class Player : MonoBehaviour
     public float speed = 8f;
     public GameObject[] inventory;
     public float gridSize = 1f; // Size of each grid cell
-    public WeaponManager weaponManager;
+    [SerializeField] WeaponManager weaponManager;
 
     [HideInInspector]
     public RaycastHit selectedObject;
@@ -49,7 +49,6 @@ public class Player : MonoBehaviour
         _rb = GetComponent<Rigidbody>();
         _audioSource = GetComponent<AudioSource>();
         _mainCamera = Camera.main;
-        weaponManager = GameObject.Find("Weapon Manager").GetComponent<WeaponManager>();
 
         // Find and setup Cinemachine Virtual Camera
         _cinemachineCamera = FindFirstObjectByType<CinemachineCamera>();

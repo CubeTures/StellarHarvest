@@ -35,25 +35,9 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
 
     void Start()
     {
+        AutoPopulateHeldItems();
         HotBarItemChanged();
         Cursor.lockState = CursorLockMode.Locked;
-        weaponManager = GameObject.Find("Weapon Manager").GetComponent<WeaponManager>();
-    }
-    void Awake()
-    {
-        // load inventory from some file
-        // inventory = new Inventory();
-        // hotbar.UpdateUI(inventory);
-
-        // if (Instance == null)
-        // {
-        //     Instance = this;
-        //     DontDestroyOnLoad(gameObject);
-        // }
-        // else
-        // {
-        //     Destroy(gameObject);
-        // }
     }
 
     void Update()
@@ -173,6 +157,57 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
             }
 
             slot.transform.localScale = scale;
+        }
+    }
+
+    private void AutoPopulateHeldItems()
+    {
+        if (itemPrefab == null) return;
+
+        // populate inventory slots
+        foreach (GameObject slotObj in slots)
+        {
+            if (slotObj == null) continue;
+
+            InventorySlot slot = slotObj.GetComponent<InventorySlot>();
+            if (slot == null) continue;
+
+            if (slot.item != null && slot.heldItem == null)
+            {
+                GameObject newItem = Instantiate(itemPrefab);
+                var invItem = newItem.GetComponent<InventoryItem>();
+                if (invItem != null)
+                {
+                    invItem.itemScriptableObject = slot.item;
+                    invItem.stackCurrent = slot.quantity > 0 ? slot.quantity : 1;
+                }
+                newItem.transform.SetParent(slotObj.transform.parent.parent.GetChild(2));
+                newItem.transform.localScale = new Vector3(1, 1, 1);
+                slot.SetHeldItem(newItem);
+            }
+        }
+
+        // populate hotbar slots
+        foreach (GameObject slotObj in hotbarSlots)
+        {
+            if (slotObj == null) continue;
+
+            InventorySlot slot = slotObj.GetComponent<InventorySlot>();
+            if (slot == null) continue;
+
+            if (slot.item != null && slot.heldItem == null)
+            {
+                GameObject newItem = Instantiate(itemPrefab);
+                var invItem = newItem.GetComponent<InventoryItem>();
+                if (invItem != null)
+                {
+                    invItem.itemScriptableObject = slot.item;
+                    invItem.stackCurrent = slot.quantity > 0 ? slot.quantity : 1;
+                }
+                newItem.transform.SetParent(slotObj.transform.parent.parent.GetChild(2));
+                newItem.transform.localScale = new Vector3(1, 1, 1);
+                slot.SetHeldItem(newItem);
+            }
         }
     }
 
