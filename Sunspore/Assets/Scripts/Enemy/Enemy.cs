@@ -9,6 +9,8 @@ namespace Sunspore
         [SerializeField] int health = 100;
         [SerializeField] int damage = 10;
         [SerializeField] Player player;
+        float eatDelay = 1f;
+        float eatCooldown = 0;
 
         NavMeshAgent agent;
         Pathfinding pathfinding;
@@ -36,13 +38,18 @@ namespace Sunspore
         {
             Transform targetPlant = pathfinding.GetNextTarget(transform, EnemyType.SIMPLE);
             agent.SetDestination(targetPlant.position);
+            eatCooldown = Mathf.Max(eatCooldown - Time.deltaTime, 0);
         }
 
-        void OnTriggerEnter(Collider other)
+        void OnTriggerStay(Collider other)
         {
             if (other.gameObject.GetComponent<Plant>() is Plant plant)
             {
-                Eat(plant);
+                if (eatCooldown == 0)
+                {
+                    Eat(plant);
+                    eatCooldown = eatDelay;
+                }
             }
         }
 
@@ -53,7 +60,7 @@ namespace Sunspore
 
             // may need to be a coroutine or some other loop
 
-            Destroy(plant.gameObject);
+            plant.TakeDamage(25);
         }
     }
 }

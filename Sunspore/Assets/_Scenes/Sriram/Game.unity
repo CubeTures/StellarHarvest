@@ -630,7 +630,7 @@ MonoBehaviour:
     CustomLookAtTarget: 0
   Lens:
     FieldOfView: 60.000004
-    OrthographicSize: 5
+    OrthographicSize: 7
     NearClipPlane: 0.3
     FarClipPlane: 1000
     Dutch: 0
@@ -2759,8 +2759,8 @@ Camera:
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 60.000004
-  orthographic: 0
-  orthographic size: 5
+  orthographic: 1
+  orthographic size: 7
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -2924,7 +2924,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: d3d6950584c2fc240b1af492c8afb77c, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 166bf9b6f3a9f0443b5db9c3d4544530, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -5492,7 +5492,7 @@ PrefabInstance:
     - target: {fileID: 827796884500757949, guid: 604f83d99ad6df74fbf8070044eae5a8, type: 3}
       propertyPath: 'inventory.Array.data[0]'
       value: 
-      objectReference: {fileID: 8633157585367683789, guid: 930e8118936ff2448a069367ff714d88, type: 3}
+      objectReference: {fileID: 6794809191556961585, guid: 9d6bc5b7f8a717a4faeefeecd24a9f44, type: 3}
     - target: {fileID: 3935185873287488858, guid: 604f83d99ad6df74fbf8070044eae5a8, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

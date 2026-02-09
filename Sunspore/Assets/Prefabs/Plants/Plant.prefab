@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 917183514394363391}
   - component: {fileID: 8633607651646711802}
   - component: {fileID: 3052089375433462107}
-  - component: {fileID: 5329586455504943000}
   - component: {fileID: 4579549557802943057}
   m_Layer: 0
   m_Name: Plant
@@ -138,27 +137,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &5329586455504943000
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5854925016969665656}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ce9d9f856859df44db7914a1542af85e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Sunspore::Sunspore.Plant
-  seedSprite: {fileID: 21300000, guid: d3d6950584c2fc240b1af492c8afb77c, type: 3}
-  growingSprite: {fileID: 21300000, guid: a100110531eb80b4b8bce1561004afe9, type: 3}
-  plantSprite: {fileID: 21300000, guid: 92923fac44802344eb8d8bcbb627f3b9, type: 3}
-  growthTime: 10
-  growthTimeVariance: 5
-  harvestSound: {fileID: 8300000, guid: 35cccfa738cfa6743ba1d2f761199e1d, type: 3}
-  growSound: {fileID: 8300000, guid: 35cccfa738cfa6743ba1d2f761199e1d, type: 3}
-  plantSound: {fileID: 8300000, guid: 35cccfa738cfa6743ba1d2f761199e1d, type: 3}
-  glowEffect: {fileID: 2446270667391804717, guid: f46e2420a80d0964e9afd78cde433563, type: 3}
 --- !u!82 &4579549557802943057
 AudioSource:
   m_ObjectHideFlags: 0
