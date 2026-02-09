@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Sunspore;
 using UnityEngine;
-using UnityEngine.InputSystem.LowLevel;
+using UnityEngine.EventSystems;
 
 [RequireComponent(typeof(InventoryManager))]
 public class PlacementManager : MonoBehaviour
@@ -35,7 +35,7 @@ public class PlacementManager : MonoBehaviour
         ColorPreviews();
 
         // placement
-        if (Input.GetMouseButtonDown(0))
+        if (!EventSystem.current.IsPointerOverGameObject() && Input.GetMouseButtonDown(0))
         {
             PlaceItem();
         }
@@ -43,7 +43,7 @@ public class PlacementManager : MonoBehaviour
 
     void ShowPreview()
     {
-        if (ScreenToWorld(Input.mousePosition, out Vector3 position))
+        if (!EventSystem.current.IsPointerOverGameObject() && ScreenToWorld(Input.mousePosition, out Vector3 position))
         {
             ItemSO item = inventoryManager.GetSelectedItem();
             if (item == null || !item.Equals(currentItem))
