@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using System;
 
 public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 {
@@ -20,6 +21,7 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
 
     [SerializeField] GameObject[] slots = new GameObject[12];
     [SerializeField] GameObject[] hotbarSlots = new GameObject[3];
+    [SerializeField] WeaponManager weaponManager;
 
     bool isCraftingOpened;
     bool isInventoryOpened;
@@ -35,6 +37,7 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
     {
         HotBarItemChanged();
         Cursor.lockState = CursorLockMode.Locked;
+        weaponManager = GameObject.Find("Weapon Manager").GetComponent<WeaponManager>();
     }
     void Awake()
     {
@@ -132,6 +135,11 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
             }
         }
 
+        if(GetSelectedItem() == null || !GetSelectedItem().weapon)
+        {
+            weaponManager.enabled = false;
+        }
+
         foreach (GameObject slot in hotbarSlots)
         {
             if (slot == null) continue;
@@ -143,8 +151,14 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
                 scale = new Vector3(1.1f, 1.1f, 1.1f);
 
                 InventorySlot invSlot = slot.GetComponent<InventorySlot>();
+                if (GetSelectedItem() && GetSelectedItem().weapon)
+                {
+                    weaponManager.SetWeaponStats();
+                    weaponManager.enabled = true;
+                }
                 if (invSlot != null && invSlot.heldItem != null && handParent != null)
                 {
+                    Debug.Log("we are in");
                     var heldInvItem = invSlot.heldItem.GetComponent<InventoryItem>();
                     if (heldInvItem != null)
                     {
@@ -288,6 +302,10 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
     
     public void OnPointerDown(PointerEventData eventData)
     {
+        //if(GetSelectedItem() && GetSelectedItem().weapon)
+        //{
+        //    weaponManager.enabled = false;
+        //}
         if (eventData.button == PointerEventData.InputButton.Left)
         {
             GameObject clickedObject = eventData.pointerCurrentRaycast.gameObject;

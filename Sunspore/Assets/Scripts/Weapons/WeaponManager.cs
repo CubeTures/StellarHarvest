@@ -12,23 +12,31 @@ namespace Sunspore
         [SerializeField] float range = 10f;
         [SerializeField] float radius = 100f;
         [SerializeField] float knockback = 0f;
+        [SerializeField] GameObject player;
         
-        public bool equipped = false;
+        public bool enabled = false;
         private float lastAttackTime = -Mathf.Infinity;
         private Vector3 hitArea;
+        private Vector3[] directions = new Vector3[4];
+        private Vector3 currDirection = Vector3.zero;
 
         private Weapon weapon;
 
         private void Start()
         {
             hitArea = new Vector3(0.5f, 0.5f, range);
+            directions[0] = new Vector3(0.0f, 0.0f, 1.0f);
+            directions[1] = new Vector3(1.0f, 0.0f, 0.0f);
+            directions[2] = new Vector3(0.0f, 0.0f, -1.0f);
+            directions[3] = new Vector3(-1.0f, 0.0f, 0.0f);
+
+            player = GameObject.FindGameObjectWithTag("Player");
         }
 
         private void Update()
         {
-            if (equipped && Input.GetKeyDown(KeyCode.Space) && Time.time >= lastAttackTime + attackSpeed)
+            if (enabled && Input.GetKeyDown(KeyCode.Space) && Time.time >= lastAttackTime + attackSpeed)
             {
-                SetWeaponStats();
                 Attack();
                 lastAttackTime = Time.time;
             }
@@ -36,11 +44,16 @@ namespace Sunspore
 
         private void Attack()
         {
+            Debug.Log(currDirection);
             // Find all enemies in range
+            Quaternion boxRotation = currDirection != Vector3.zero
+                ? Quaternion.LookRotation(currDirection)
+                : player.transform.rotation;
+
             Collider[] hitEnemies = Physics.OverlapBox(
-                transform.position,
+                player.transform.position,
                 hitArea * 0.5f,
-                transform.rotation
+                boxRotation
             );
 
             foreach (var enemyCollider in hitEnemies)
@@ -48,34 +61,31 @@ namespace Sunspore
                 var enemy = enemyCollider.GetComponent<Enemy>();
                 if (enemy != null)
                 {
-                    Vector3 direction = (enemy.transform.position - transform.position).normalized;
+                    Vector3 direction = (enemy.transform.position - player.transform.position).normalized;
                     enemy.TakeDamage(damage, direction, knockback);
                 }
             }
         }
 
-        private void OnDrawGizmosSelected()
+        private void OnDrawGizmos()
         {
+            Quaternion boxRotation = currDirection != Vector3.zero
+                ? Quaternion.LookRotation(currDirection)
+                : player.transform.rotation;
+
             Gizmos.color = Color.red;
-            Gizmos.matrix = Matrix4x4.TRS(transform.position, transform.rotation, Vector3.one);
+            Gizmos.matrix = Matrix4x4.TRS(player.transform.position, boxRotation, Vector3.one);
             Gizmos.DrawWireCube(Vector3.zero, hitArea);
         }
 
-        private void SetWeaponStats()
+        public void setDirection(int dir)
+        {
+            currDirection = directions[dir];
+        }
+
+        public void SetWeaponStats()
         {
 
         }
-    }
-
-    public abstract class Weapon
-    {
-        public string name;
-        public int damage;
-        public float attackSpeed;
-        public float attackDuration;
-        public float range;
-        public float radius;
-        public float knockback;
-        public Sprite weaponSprite;
     }
 }
