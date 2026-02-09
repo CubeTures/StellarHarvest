@@ -58,6 +58,10 @@ public class PlacementManager : MonoBehaviour
                 {
                     currentItem = item;
                     GetFootprints(item);
+                } else
+                {
+                    currentItem = null;
+                    footprints.Clear();
                 }
             }
 
