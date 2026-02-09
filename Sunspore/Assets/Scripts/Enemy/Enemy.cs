@@ -60,7 +60,7 @@ namespace Sunspore
 
             // may need to be a coroutine or some other loop
 
-            plant.TakeDamage(25);
+            plant.TakeDamage(damage);
         }
     }
 }
