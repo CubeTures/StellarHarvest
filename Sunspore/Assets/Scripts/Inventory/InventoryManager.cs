@@ -463,7 +463,13 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
         if (slot == null || slot.heldItem == null)
             return null;
 
-        return slot.heldItem.GetComponent<InventoryItem>().itemScriptableObject;
-    }
+        // Get the inventory item script to check stack count
+        InventoryItem itemScript = slot.heldItem.GetComponent<InventoryItem>();
 
+        // Return null if script is missing OR stack is 0 or less
+        if (itemScript == null || itemScript.stackCurrent <= 0)
+            return null;
+
+        return itemScript.itemScriptableObject;
+    }
 }
