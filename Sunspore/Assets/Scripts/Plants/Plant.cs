@@ -37,6 +37,7 @@ namespace Sunspore
         protected float _currentGrowthTime;
         protected float _initialSeedToJuvenileTime;
         protected float _initialJuvenileToFullyGrownTime;
+        protected float _health = 50f;
 
         // Components
         protected SpriteRenderer _spriteRenderer;
@@ -189,6 +190,17 @@ namespace Sunspore
         public bool CanUseFullAbilities()
         {
             return currentStage == GrowthStage.FullyGrown;
+        }
+
+        public bool TakeDamage(float amount)
+        {
+            _health -= amount;
+            bool dead = _health <= 0;
+            if (dead)
+            {
+                Destroy(gameObject);
+            }
+            return dead;
         }
 
         void OnDestroy()
