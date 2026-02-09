@@ -1825,7 +1825,7 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 1801173687}
         m_TargetAssemblyTypeName: Sunspore.DayNightManager, Sunspore
         m_MethodName: changeTime
         m_Mode: 1
