@@ -12,9 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b55df8fc0627f99cbf602cf22f90418, type: 3}
   m_Name: TowerBarrier
   m_EditorClassIdentifier: Sunspore::InventoryItem
-  id: 4
   displayName: Barrier
-  icon: {fileID: 21300000, guid: 5258e2c86a53ec0f89d437c8a168682c, type: 3}
+  icon: {fileID: 21300000, guid: c94189a68f320924486eef1a5280fdce, type: 3}
   stackable: 1
+  maxStackSize: 0
   placeable: 1
   prefab: {fileID: 55777360826986797, guid: 3bfb46af547823ed9ab33114259b0a53, type: 3}
+  weapon: 0
