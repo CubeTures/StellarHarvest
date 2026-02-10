@@ -1,6 +1,8 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System.Collections.Generic;
+using System.Collections;
 
 namespace Sunspore
 {
@@ -12,14 +14,39 @@ namespace Sunspore
         [SerializeField] GameObject plusIconPrefab;
         [SerializeField] GameObject equalIconPrefab;
 
-        private void Start()
+        private bool canCraft;
+
+        public void OnPointerEnter()
         {
-            UpdateRecipeUI(itemSO);
+            canCraft = CraftingManager.Instance.CanCraftRecipe(itemSO);
+        }
+
+        public void OnPointerExit()
+        {
+            
+        }
+
+        public void OnPointerClick()
+        {
+            if (CraftingManager.Instance.CanCraftRecipe(itemSO))
+            {
+                InventoryManager.Instance.CraftItem(new List<ItemTypeAndAmount>(itemSO.resultItem), new List<ItemTypeAndAmount>(itemSO.ingredients));
+                canCraft = CraftingManager.Instance.CanCraftRecipe(itemSO);
+                if (!canCraft)
+                {
+                }
+            }
         }
 
         public void UpdateRecipeUI(ItemRecipeSO newItemSO)
         {
             itemSO = newItemSO;
+
+            if (itemSO == null || itemSO.ingredients == null || itemSO.resultItem == null || itemIconPrefab == null || plusIconPrefab == null || equalIconPrefab == null)
+            {
+                Debug.LogError("ItemRecipe: Missing references in UpdateRecipeUI.");
+                return;
+            }
 
             foreach (Transform child in transform)
             {

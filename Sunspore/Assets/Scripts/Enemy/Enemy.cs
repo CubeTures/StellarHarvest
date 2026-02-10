@@ -36,8 +36,22 @@ namespace Sunspore
 
         void Update()
         {
-            Transform targetPlant = pathfinding.GetNextTarget(transform, EnemyType.SIMPLE);
-            agent.SetDestination(targetPlant.position);
+            if (pathfinding == null)
+            {
+                pathfinding = Pathfinding.Instance;
+            }
+
+            Transform targetPlant = null;
+            if (pathfinding != null)
+            {
+                targetPlant = pathfinding.GetNextTarget(transform, EnemyType.SIMPLE);
+            }
+
+            if (agent != null && agent.enabled && agent.isOnNavMesh && targetPlant != null)
+            {
+                agent.SetDestination(targetPlant.position);
+            }
+
             eatCooldown = Mathf.Max(eatCooldown - Time.deltaTime, 0);
         }
 
