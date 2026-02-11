@@ -74,11 +74,7 @@ namespace Sunspore
             {
                 Eat(plant);
             }
-        }
-
-        private void OnCollisionEnter(Collision collision)
-        {
-            if(collision.gameObject.GetComponent<Player>() is Player player)
+            if (other.gameObject.GetComponent<Player>() is Player player)
             {
                 if (Time.time - lastAttackTime >= attackCooldown && attackingPlayer)
                 {

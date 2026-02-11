@@ -30,7 +30,7 @@ namespace Sunspore
 
         private void Start()
         {
-            hitArea = new Vector3(0.5f, 0.5f, range);
+            hitArea = new Vector3(1.0f, 0.5f, range);
             directions[0] = new Vector3(0.0f, 0.0f, 1.0f);
             directions[1] = new Vector3(1.0f, 0.0f, 0.0f);
             directions[2] = new Vector3(0.0f, 0.0f, -1.0f);
@@ -81,7 +81,7 @@ namespace Sunspore
 
             Collider[] hitEnemies = Physics.OverlapBox(
                 player.transform.position,
-                hitArea * 0.5f,
+                hitArea,
                 boxRotation
             );
 
