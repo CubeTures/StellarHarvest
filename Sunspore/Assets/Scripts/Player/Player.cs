@@ -114,12 +114,10 @@ public class Player : MonoBehaviour
             if (_vx > 0)
             {
                 _facingRight = true;
-                _sr.flipX = true;
                 SetDirection(1); // Right
             }
             else
             {
-                _sr.flipX = false;
                 _facingRight = false;
                 SetDirection(2); // Left
             }
@@ -138,6 +136,15 @@ public class Player : MonoBehaviour
                 SetDirection(3); // Back
             }
         }
+    if (_facingRight)
+        {
+            _sr.flipX = true;   
+        }
+    else
+        {
+            _sr.flipX = false;
+        }
+
     }
 
 
