@@ -11,19 +11,57 @@ namespace Sunspore
         [SerializeField] Player player;
         float eatDelay = 1f;
         float eatCooldown = 0;
+        float speedX = 0f;
+        float speedY = 0f;
 
         NavMeshAgent agent;
         Pathfinding pathfinding;
+        Animator _anim;
+        SpriteRenderer _spr;
 
         void Awake()
         {
             agent = GetComponent<NavMeshAgent>();
+            _spr = GetComponent<SpriteRenderer>();
+            _anim = GetComponent<Animator>();
+
         }
 
         void Start()
         {
             pathfinding = Pathfinding.Instance;
+            //speedX = 
+            //speedY = 
         }
+
+        /*void setDirection()
+        {
+            int dir = 0;
+
+            if (horSpeed > 0) //left
+            {
+                dir = 1;
+                _spr.flipX(true);
+            }
+            
+            elif (horSpeed < 0); //right
+            {
+                dir = 2;
+                _spr.flipX(true);
+            }
+
+            elif (vertSpeed > 0); //front
+            {
+                dir = 3;
+            }
+
+            elif (vertSpeed < 0); //back
+            {
+                dir = 4;
+            }
+            _anim.SetInteger("Direction", dir);
+        }*/
+
 
         public void TakeDamage(int weaponDamage, Vector2 direction, float knockback)
         {
