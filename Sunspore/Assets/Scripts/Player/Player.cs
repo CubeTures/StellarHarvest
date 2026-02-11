@@ -13,6 +13,7 @@ public class Player : MonoBehaviour
     public float gridSize = 1f; // Size of each grid cell
     [SerializeField] WeaponManager weaponManager;
     [SerializeField] float health = 100;
+    [SerializeField] private SpriteRenderer _sr;
 
     [HideInInspector]
     public RaycastHit selectedObject;
@@ -43,6 +44,7 @@ public class Player : MonoBehaviour
 
     bool _facingRight = true;
     bool _facingFront = true;
+    int _currentDirection = -1;
 
     void Start()
     {
@@ -51,6 +53,7 @@ public class Player : MonoBehaviour
         _collider = GetComponent<CapsuleCollider>();
         _rb = GetComponent<Rigidbody>();
         _audioSource = GetComponent<AudioSource>();
+        _sr = GetComponent<SpriteRenderer>();
         _mainCamera = Camera.main;
         _spriteRenderer = GetComponent<SpriteRenderer>();
         if(_spriteRenderer != null)
@@ -112,34 +115,60 @@ public class Player : MonoBehaviour
         _vx = input.x;
         _vz = input.y;
 
-        // Swap sprites based on the direction the player is moving
-        if (_vx > 0 && _vx > _vz)
+        bool isMoving = input.sqrMagnitude > 0.01f;
+        _anim.SetBool("isMoving", isMoving);
+
+        if (!isMoving)
+            return;
+
+        // Decide direction based on dominant axis
+        if (Mathf.Abs(_vx) > Mathf.Abs(_vz))
         {
-            _facingRight = true;
-            _anim.SetInteger("Direction", 3);
-            weaponManager.setDirection(1);
+            // Horizontal wins
+            if (_vx > 0)
+            {
+                _facingRight = true;
+                SetDirection(1); // Right
+            }
+            else
+            {
+                _facingRight = false;
+                SetDirection(2); // Left
+            }
         }
-        else if (_vx < 0)
+        else
         {
-            _facingRight = false;
-            _anim.SetInteger("Direction", 2);
-            weaponManager.setDirection(3);
+            // Vertical wins
+            if (_vz > 0)
+            {
+                _facingFront = true;
+                SetDirection(4); // Forward
+            }
+            else
+            {
+                _facingFront = false;
+                SetDirection(3); // Back
+            }
+        }
+    if (_facingRight)
+        {
+            _sr.flipX = true;   
+        }
+    else
+        {
+            _sr.flipX = false;
         }
 
-        if (_vz > 0 && _vz > _vx)
-        {
-            _facingFront = true;
-            _anim.SetInteger("Direction", 1);
-            weaponManager.setDirection(0);
-        }
-        else if (_vz < 0)
-        {
-            _facingFront = false;
-            _anim.SetInteger("Direction", 0);
-            weaponManager.setDirection(2);
-        }
     }
 
+
+
+    public void SetDirection(int dir)
+    {
+        _currentDirection = dir;
+        _anim.SetInteger("Direction", dir);
+        _anim.SetBool("isMoving", true);
+    }
     public void Move()
     {
         Vector3 moveDirection = _transform.TransformDirection(new Vector3(_vx, 0, _vz));

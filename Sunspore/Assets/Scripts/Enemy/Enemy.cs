@@ -13,6 +13,8 @@ namespace Sunspore
         private float lastAttackTime = -Mathf.Infinity;
         private SpriteRenderer _spriteRenderer;
         private Color _originalColor;
+        float eatDelay = 1f;
+        float eatCooldown = 0;
 
         NavMeshAgent agent;
         Pathfinding pathfinding;
@@ -66,13 +68,18 @@ namespace Sunspore
                 //gameObject.layer = LayerMask.NameToLayer("NonPlayerCollide");
                 attackingPlayer = false;
             }
+            eatCooldown = Mathf.Max(eatCooldown - Time.deltaTime, 0);
         }
 
-        void OnTriggerEnter(Collider other)
+        void OnTriggerStay(Collider other)
         {
             if (other.gameObject.GetComponent<Plant>() is Plant plant)
             {
-                Eat(plant);
+                if (eatCooldown == 0)
+                {
+                    Eat(plant);
+                    eatCooldown = eatDelay;
+                }
             }
             if (other.gameObject.GetComponent<Player>() is Player player)
             {
@@ -91,7 +98,7 @@ namespace Sunspore
 
             // may need to be a coroutine or some other loop
 
-            Destroy(plant.gameObject);
+            plant.TakeDamage(damage);
         }
 
         void Attack(Player player)

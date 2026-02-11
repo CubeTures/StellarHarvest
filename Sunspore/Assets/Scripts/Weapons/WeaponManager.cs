@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 using static Codice.Client.BaseCommands.BranchExplorer.Layout.BrExLayout;
 
 namespace Sunspore
@@ -13,7 +14,7 @@ namespace Sunspore
         [SerializeField] float range = 2.5f;
         [SerializeField] float knockback = 0f;
         [SerializeField] GameObject player;
-        
+
         public bool enabled = false;
 
         private float lastAttackTime = -Mathf.Infinity;
@@ -47,7 +48,7 @@ namespace Sunspore
 
         private void Update()
         {
-            if (enabled && Input.GetKeyDown(KeyCode.Space) && Time.time >= lastAttackTime + attackCooldown)
+            if (enabled && !EventSystem.current.IsPointerOverGameObject() && Input.GetMouseButtonDown(0) && Time.time >= lastAttackTime + attackSpeed)
             {
                 Attack();
                 lastAttackTime = Time.time;
