@@ -67,4 +67,9 @@ public class Pathfinding
 
         return null;
     }
+
+    public Transform getPlayerTransform()
+    {
+        return player;
+    }
 }

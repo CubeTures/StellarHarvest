@@ -161,7 +161,7 @@ CapsuleCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
@@ -182,8 +182,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Sunspore::Sunspore.Enemy
   health: 100
-  damage: 15
-  player: {fileID: 0}
+  damage: 10
+  attackDuration: 1
+  attackCooldown: 1
 --- !u!82 &1463616092573366569
 AudioSource:
   m_ObjectHideFlags: 0
