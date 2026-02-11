@@ -48,7 +48,7 @@ namespace Sunspore
 
         private void Update()
         {
-            if (enabled && !EventSystem.current.IsPointerOverGameObject() && Input.GetMouseButtonDown(0) && Time.time >= lastAttackTime + attackSpeed)
+            if (enabled && !EventSystem.current.IsPointerOverGameObject() && Input.GetMouseButtonDown(0) && Time.time >= lastAttackTime + attackCooldown)
             {
                 Attack();
                 lastAttackTime = Time.time;
