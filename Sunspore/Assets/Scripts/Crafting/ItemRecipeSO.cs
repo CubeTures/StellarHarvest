@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Sunspore
 {
-    [CreateAssetMenu(fileName = "ItemRecipe", menuName = "Scriptable Objects/ItemRecipe")]
+    [CreateAssetMenu(fileName = "Item Recipe", menuName = "Scriptable Objects/Item Recipe")]
     public class ItemRecipeSO : ScriptableObject
     {
         public string recipeName;
@@ -19,10 +19,10 @@ namespace Sunspore
         public ItemSO item;
         public int amount;
 
-        public ItemTypeAndAmount(ItemSO item, int amount)
+        public ItemTypeAndAmount(ItemSO i, int a)
         {
-            this.item = item;
-            this.amount = amount;
+            item = i;
+            amount = a;
         }
     }
 }

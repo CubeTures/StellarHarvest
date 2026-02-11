@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: TowerProjectile
   m_EditorClassIdentifier: Sunspore::InventoryItem
   displayName: Projectile
-  icon: {fileID: 21300000, guid: 10e41c889b77e056f9aae57bc3e03274, type: 3}
+  icon: {fileID: 21300000, guid: 45c4e7ce16b3d864e8469c80d97ccb44, type: 3}
   stackable: 1
-  maxStackSize: 0
+  maxStackSize: 60
   placeable: 1
   prefab: {fileID: 6794809191556961585, guid: 9d6bc5b7f8a717a4faeefeecd24a9f44, type: 3}
   weapon: 0

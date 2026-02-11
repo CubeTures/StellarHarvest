@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 2903810267815346265}
   - component: {fileID: 3778102436699382831}
   - component: {fileID: -8725315617279628369}
+  - component: {fileID: 7990094382893040541}
   m_Layer: 5
   m_Name: Recipe
   m_TagString: Untagged
@@ -79,3 +80,64 @@ MonoBehaviour:
   itemIconPrefab: {fileID: 2820464247671337351, guid: cbfa5d275f7307c4db55922e83c6c479, type: 3}
   plusIconPrefab: {fileID: 7004507056764484332, guid: 080362745e84f7f44905d0a7edc17ccd, type: 3}
   equalIconPrefab: {fileID: 7371776429520943544, guid: 088350200f1c5e747842b66b5bbaf7a1, type: 3}
+--- !u!114 &7990094382893040541
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5055502027666326857}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.EventSystems.EventTrigger
+  m_Delegates:
+  - eventID: 0
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: -8725315617279628369}
+          m_TargetAssemblyTypeName: Sunspore.ItemRecipe, Sunspore
+          m_MethodName: OnPointerEnter
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - eventID: 1
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: -8725315617279628369}
+          m_TargetAssemblyTypeName: Sunspore.ItemRecipe, Sunspore
+          m_MethodName: OnPointerExit
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - eventID: 4
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: -8725315617279628369}
+          m_TargetAssemblyTypeName: Sunspore.ItemRecipe, Sunspore
+          m_MethodName: OnPointerClick
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2

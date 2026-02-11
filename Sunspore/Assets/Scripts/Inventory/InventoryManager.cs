@@ -8,8 +8,6 @@ using System;
 public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 {
     public static InventoryManager Instance { get; private set; }
-    public List<ItemTypeAndAmount> itemsToCraft = new List<ItemTypeAndAmount>();
-    // cached list of all items in inventory + hotbar
     private List<ItemTypeAndAmount> items = new List<ItemTypeAndAmount>();
     Inventory inventory;
     [SerializeField] Hotbar hotbar;
@@ -29,9 +27,18 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
     GameObject draggedObject;
     GameObject lastItemSlot;
     bool hasLoggedMissingHandParent = false;
-    bool hasLoggedMissingCraftingParent = false;
-    bool hasLoggedMissingInventoryParent = false;
-    bool hasLoggedMissingInventory = false;
+    void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
 
     void Start()
     {
@@ -51,6 +58,10 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
         //     hotbar.ChangeSelected(axis);
         //     hotbar.UpdateUI(inventory);
         // }
+        if (draggedObject != null)
+        {
+            draggedObject.transform.position = Input.mousePosition;
+        }
         if (Input.GetKeyDown(KeyCode.E))
         {
             if (isInventoryOpened)
@@ -62,11 +73,6 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
             {
                 isInventoryOpened = true;
             }
-        }
-
-        if (draggedObject != null)
-        {
-            draggedObject.transform.position = Input.mousePosition;
         }
     }
 
@@ -117,9 +123,13 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
             }
         }
 
-        if(GetSelectedItem() == null || !GetSelectedItem().weapon)
+        if (weaponManager != null)
         {
-            weaponManager.enabled = false;
+            var sel = GetSelectedItem();
+            if (sel == null || !sel.weapon)
+            {
+                weaponManager.enabled = false;
+            }
         }
 
         foreach (GameObject slot in hotbarSlots)
@@ -133,10 +143,14 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
                 scale = new Vector3(1.1f, 1.1f, 1.1f);
 
                 InventorySlot invSlot = slot.GetComponent<InventorySlot>();
-                if (GetSelectedItem() && GetSelectedItem().weapon)
+                var selected = GetSelectedItem();
+                if (selected != null && selected.weapon)
                 {
-                    weaponManager.SetWeaponStats();
-                    weaponManager.enabled = true;
+                    if (weaponManager != null)
+                    {
+                        weaponManager.SetWeaponStats();
+                        weaponManager.enabled = true;
+                    }
                 }
                 if (invSlot != null && invSlot.heldItem != null && handParent != null)
                 {
@@ -471,5 +485,58 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
             return null;
 
         return itemScript.itemScriptableObject;
+    }
+    public void CraftItem(List<ItemTypeAndAmount> itemsToCraft, List<ItemTypeAndAmount> itemsToDestroy)
+    {
+        foreach (ItemTypeAndAmount itemToCraft in itemsToCraft)
+        {
+            GameObject emptySlot = null;
+
+            for (int i = 0; i < slots.Length; i++)
+            {
+                InventorySlot slot = slots[i].GetComponent<InventorySlot>();
+
+                if (slot.heldItem == null)
+                {
+                    emptySlot = slots[i];
+                    break;
+                }
+            }
+
+            if (emptySlot != null)
+            {
+                GameObject newItem = Instantiate(itemPrefab);
+                newItem.GetComponent<InventoryItem>().itemScriptableObject = itemToCraft.item;
+                newItem.transform.SetParent(emptySlot.transform.parent.parent.GetChild(2));
+                newItem.GetComponent<InventoryItem>().stackCurrent = itemToCraft.amount;
+
+                emptySlot.GetComponent<InventorySlot>().SetHeldItem(newItem);
+                newItem.transform.localScale = new Vector3(1, 1, 1);
+            }   
+        }
+        for (int i = 0; i < slots.Length; i++)
+        {
+            if (slots[i].GetComponent<InventorySlot>().heldItem != null)
+            {
+                InventorySlot slotScript = slots[i].GetComponent<InventorySlot>();
+                InventoryItem itemScript = slotScript.heldItem.GetComponent<InventoryItem>();
+
+                foreach (ItemTypeAndAmount itemToDestroy in itemsToDestroy)
+                {
+                    if (itemToDestroy.item == itemScript.itemScriptableObject)
+                    {
+                        if (itemToDestroy.amount >= itemScript.stackCurrent)
+                        {
+                            slotScript.heldItem = null;
+                            Destroy(itemScript.gameObject);
+                        }
+                        else if (itemToDestroy.amount < itemScript.stackCurrent)
+                        {
+                            itemScript.stackCurrent -= itemToDestroy.amount;
+                        }
+                    }
+                }
+            }
+        }
     }
 }
