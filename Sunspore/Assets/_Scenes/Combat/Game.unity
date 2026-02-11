@@ -119,6 +119,118 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &13979521
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 13979525}
+  - component: {fileID: 13979524}
+  - component: {fileID: 13979523}
+  - component: {fileID: 13979522}
+  m_Layer: 0
+  m_Name: Cube
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!65 &13979522
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 13979521}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 0
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!23 &13979523
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 13979521}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_MaskInteraction: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &13979524
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 13979521}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!4 &13979525
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 13979521}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.1312, y: 2.18876, z: -0.48248}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &19540289
 GameObject:
   m_ObjectHideFlags: 0
@@ -1871,7 +1983,7 @@ MonoBehaviour:
   m_StreamingVersion: 20241001
   m_LegacyPriority: 0
   Target:
-    TrackingTarget: {fileID: 0}
+    TrackingTarget: {fileID: 1620184202}
     LookAtTarget: {fileID: 0}
     CustomLookAtTarget: 0
   Lens:
@@ -3175,7 +3287,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 91639831}
   m_HandleRect: {fileID: 91639830}
   m_Direction: 2
-  m_Value: 0
+  m_Value: 1
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -4539,6 +4651,10 @@ PrefabInstance:
       value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 827796884500757949, guid: 604f83d99ad6df74fbf8070044eae5a8, type: 3}
+      propertyPath: weaponManager
+      value: 
+      objectReference: {fileID: 2023095866}
+    - target: {fileID: 827796884500757949, guid: 604f83d99ad6df74fbf8070044eae5a8, type: 3}
       propertyPath: inventory.Array.size
       value: 1
       objectReference: {fileID: 0}
@@ -4593,6 +4709,10 @@ PrefabInstance:
     - target: {fileID: 7977193351103050734, guid: 604f83d99ad6df74fbf8070044eae5a8, type: 3}
       propertyPath: m_ActionEvents.Array.data[19].m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 8760029230240097853, guid: 604f83d99ad6df74fbf8070044eae5a8, type: 3}
+      propertyPath: m_IsTrigger
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -5462,6 +5582,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1426075980}
   - component: {fileID: 1426075979}
+  - component: {fileID: 1426075981}
   m_Layer: 0
   m_Name: Game Manager
   m_TagString: Untagged
@@ -5503,6 +5624,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1426075981
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1426075978}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc9d99f6f44fc4470bd028f054f71bf8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Sunspore::EnemyManager
 --- !u!1 &1434520930
 GameObject:
   m_ObjectHideFlags: 0
@@ -5807,7 +5940,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Sunspore::Sunspore.Enemy
   health: 100
   damage: 10
-  player: {fileID: 0}
+  attackDuration: 1
+  attackCooldown: 1
 --- !u!4 &1602920470 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3984406670015686076, guid: 43e08df00300bce419ad78cf36f6f32c, type: 3}
@@ -5977,11 +6111,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: Sunspore::Sunspore.WeaponHolder
   waponName: default
   damage: 25
-  attackSpeed: 0.5
+  attackBox: {fileID: 0}
+  attackCooldown: 0.5
   attackDuration: 1
   range: 10
-  radius: 100
   knockback: 0
+  player: {fileID: 0}
   enabled: 0
 --- !u!1 &1664249132
 GameObject:
@@ -7617,11 +7752,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: Sunspore::Sunspore.WeaponManager
   waponName: default
   damage: 25
-  attackSpeed: 0.5
-  attackDuration: 1
-  range: 10
-  radius: 100
+  attackBox: {fileID: 13979521}
+  attackCooldown: 0.5
+  attackDuration: 0.2
+  range: 2.5
   knockback: 0
+  player: {fileID: 1620184201}
   enabled: 0
 --- !u!114 &2023095867
 MonoBehaviour:
@@ -8759,3 +8895,4 @@ SceneRoots:
   - {fileID: 1439138749}
   - {fileID: 473507287}
   - {fileID: 1054071184}
+  - {fileID: 13979525}
