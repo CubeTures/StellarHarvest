@@ -8,16 +8,24 @@ namespace Sunspore
     {
         [SerializeField] int health = 100;
         [SerializeField] int damage = 10;
-        [SerializeField] Player player;
+        [SerializeField] int attackDuration = 1;
+        [SerializeField] float attackCooldown = 1.0f;
+        private float lastAttackTime = -Mathf.Infinity;
+        private SpriteRenderer _spriteRenderer;
+        private Color _originalColor;
         float eatDelay = 1f;
         float eatCooldown = 0;
 
         NavMeshAgent agent;
         Pathfinding pathfinding;
+        bool attackingPlayer = false;
 
         void Awake()
         {
             agent = GetComponent<NavMeshAgent>();
+            _spriteRenderer = GetComponent<SpriteRenderer>();
+            if (_spriteRenderer != null)
+                _originalColor = _spriteRenderer.color;
         }
 
         void Start()
@@ -28,16 +36,38 @@ namespace Sunspore
         public void TakeDamage(int weaponDamage, Vector2 direction, float knockback)
         {
             health -= weaponDamage;
+            if (_spriteRenderer != null)
+            {
+                _spriteRenderer.color = Color.red;
+                CancelInvoke(nameof(ResetColor));
+                Invoke(nameof(ResetColor), 0.2f); // 0.2 seconds, adjust as needed
+            }
             if (health <= 0)
             {
                 Destroy(this.gameObject);
             }
         }
 
+        private void ResetColor()
+        {
+            if (_spriteRenderer != null)
+                _spriteRenderer.color = _originalColor;
+        }
+
         void Update()
         {
             Transform targetPlant = pathfinding.GetNextTarget(transform, EnemyType.SIMPLE);
             agent.SetDestination(targetPlant.position);
+            if(targetPlant == pathfinding.getPlayerTransform())
+            {
+                //gameObject.layer = 0;
+                attackingPlayer = true;
+            }
+            else
+            {
+                //gameObject.layer = LayerMask.NameToLayer("NonPlayerCollide");
+                attackingPlayer = false;
+            }
             eatCooldown = Mathf.Max(eatCooldown - Time.deltaTime, 0);
         }
 
@@ -51,6 +81,14 @@ namespace Sunspore
                     eatCooldown = eatDelay;
                 }
             }
+            if (other.gameObject.GetComponent<Player>() is Player player)
+            {
+                if (Time.time - lastAttackTime >= attackCooldown && attackingPlayer)
+                {
+                    Attack(player);
+                    lastAttackTime = Time.time;
+                }
+            }
         }
 
         void Eat(Plant plant)
@@ -61,6 +99,11 @@ namespace Sunspore
             // may need to be a coroutine or some other loop
 
             plant.TakeDamage(damage);
+        }
+
+        void Attack(Player player)
+        {
+            player.TakeDamage(damage);
         }
     }
 }

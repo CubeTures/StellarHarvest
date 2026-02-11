@@ -12,6 +12,7 @@ public class Player : MonoBehaviour
     public GameObject[] inventory;
     public float gridSize = 1f; // Size of each grid cell
     [SerializeField] WeaponManager weaponManager;
+    [SerializeField] float health = 100;
     [SerializeField] private SpriteRenderer _sr;
 
     [HideInInspector]
@@ -30,6 +31,8 @@ public class Player : MonoBehaviour
     AudioSource _audioSource;
     Camera _mainCamera;
     CinemachineCamera _cinemachineCamera;
+    private SpriteRenderer _spriteRenderer;
+    private Color _originalColor;
 
     float _vx;
     float _vy;
@@ -52,6 +55,11 @@ public class Player : MonoBehaviour
         _audioSource = GetComponent<AudioSource>();
         _sr = GetComponent<SpriteRenderer>();
         _mainCamera = Camera.main;
+        _spriteRenderer = GetComponent<SpriteRenderer>();
+        if(_spriteRenderer != null)
+        {
+            _originalColor = _spriteRenderer.color;
+        }
 
         // Find and setup Cinemachine Virtual Camera
         _cinemachineCamera = FindFirstObjectByType<CinemachineCamera>();
@@ -91,6 +99,12 @@ public class Player : MonoBehaviour
         if (transform.position.y < -10f)
         {
             Respawn(GameManager.gm.transform.position + new Vector3(0, 1.5f, 0));
+        }
+
+        if (health == 10)
+        {
+            if (_spriteRenderer != null)
+                _spriteRenderer.color = Color.red;
         }
     }
 
@@ -213,5 +227,26 @@ public class Player : MonoBehaviour
             }
         }
         Cursor.visible = true;
+    }
+
+    public void TakeDamage(float damage)
+    {
+        health -= damage;
+        if (_spriteRenderer != null)
+        {
+            _spriteRenderer.color = Color.red;
+            CancelInvoke(nameof(ResetColor));
+            Invoke(nameof(ResetColor), 0.2f); // 0.2 seconds, adjust as needed
+        }
+        if (health <= 0)
+        {
+            //Destroy(this.gameObject);
+        }
+    }
+
+    private void ResetColor()
+    {
+        if (_spriteRenderer != null)
+            _spriteRenderer.color = _originalColor;
     }
 }

@@ -8,30 +8,42 @@ namespace Sunspore
     {
         [SerializeField] string waponName = "default";
         [SerializeField] int damage = 25;
-        [SerializeField] float attackSpeed = 0.5f;
-        [SerializeField] float attackDuration = 1;
-        [SerializeField] float range = 10f;
-        [SerializeField] float radius = 100f;
+        [SerializeField] GameObject attackBox;
+        [SerializeField] float attackCooldown = 0.5f;
+        [SerializeField] float attackDuration = 0.2f;
+        [SerializeField] float range = 2.5f;
         [SerializeField] float knockback = 0f;
         [SerializeField] GameObject player;
 
         public bool enabled = false;
+
         private float lastAttackTime = -Mathf.Infinity;
         private Vector3 hitArea;
+        private float offset;
+
         private Vector3[] directions = new Vector3[4];
         private Vector3 currDirection = Vector3.zero;
+
+        private Quaternion boxRotation;
+        private Vector3 boxCenter;
 
         private Weapon weapon;
 
         private void Start()
         {
-            hitArea = new Vector3(0.5f, 0.5f, range);
+            hitArea = new Vector3(1.0f, 0.5f, range);
             directions[0] = new Vector3(0.0f, 0.0f, 1.0f);
             directions[1] = new Vector3(1.0f, 0.0f, 0.0f);
             directions[2] = new Vector3(0.0f, 0.0f, -1.0f);
             directions[3] = new Vector3(-1.0f, 0.0f, 0.0f);
+            offset = range / 2;
 
             player = GameObject.FindGameObjectWithTag("Player");
+            if (attackBox != null)
+            {
+                attackBox.transform.localScale = hitArea;
+                attackBox.SetActive(false);
+            }
         }
 
         private void Update()
@@ -41,19 +53,36 @@ namespace Sunspore
                 Attack();
                 lastAttackTime = Time.time;
             }
+
+            attackBox.SetActive(enabled);
+
+            if (enabled)
+            {
+                updateDirection();
+            }
         }
 
         private void Attack()
         {
-            Debug.Log(currDirection);
+            //Debug.Log(currDirection);
+
             // Find all enemies in range
-            Quaternion boxRotation = currDirection != Vector3.zero
-                ? Quaternion.LookRotation(currDirection)
-                : player.transform.rotation;
+            updateDirection();
+
+            if (attackBox != null)
+            {
+                var renderer = attackBox.GetComponent<Renderer>();
+                if (renderer != null)
+                {
+                    renderer.material.color = Color.red;
+                }
+                
+                Invoke(nameof(StopAttacking), attackDuration);
+            }
 
             Collider[] hitEnemies = Physics.OverlapBox(
                 player.transform.position,
-                hitArea * 0.5f,
+                hitArea,
                 boxRotation
             );
 
@@ -79,9 +108,35 @@ namespace Sunspore
         //     Gizmos.DrawWireCube(Vector3.zero, hitArea);
         // }
 
+        private void StopAttacking()
+        {
+            var renderer = attackBox.GetComponent<Renderer>();
+            if (renderer != null)
+            {
+                renderer.material.color = Color.gray;
+            }
+        }
+
         public void setDirection(int dir)
         {
             currDirection = directions[dir];
+        }
+
+        private void updateDirection()
+        {
+            boxRotation = currDirection != Vector3.zero
+                ? Quaternion.LookRotation(currDirection)
+                : player.transform.rotation;
+
+            boxCenter = player.transform.position + currDirection.normalized * offset;
+
+            if (attackBox != null)
+            {
+                attackBox.transform.position = boxCenter;
+                attackBox.transform.rotation = boxRotation;
+                attackBox.transform.localScale = hitArea;
+                //Debug.Log("hi");
+            }
         }
 
         public void SetWeaponStats()
