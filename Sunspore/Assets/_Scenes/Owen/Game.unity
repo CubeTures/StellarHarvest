@@ -403,21 +403,21 @@ MonoBehaviour:
   craftingParent: {fileID: 1543987325}
   inventoryParent: {fileID: 774663841}
   handParent: {fileID: 0}
-  itemPrefab: {fileID: 0}
+  itemPrefab: {fileID: 239959495668463375, guid: 04a80e7e7d6269742bb28004fb297afb, type: 3}
   cam: {fileID: 1149369072}
   slots:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 793926684}
+  - {fileID: 2104790254}
+  - {fileID: 446108489}
+  - {fileID: 1070222437}
+  - {fileID: 954342674}
+  - {fileID: 1457233816}
+  - {fileID: 1262712955}
+  - {fileID: 1977873936}
+  - {fileID: 290800603}
+  - {fileID: 768494175}
+  - {fileID: 913311841}
+  - {fileID: 949166157}
   hotbarSlots:
   - {fileID: 819973214}
   - {fileID: 954675581}
@@ -2200,17 +2200,17 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 793926685}
+  - {fileID: 2104790255}
+  - {fileID: 446108490}
   - {fileID: 1070222438}
+  - {fileID: 954342675}
+  - {fileID: 1457233817}
   - {fileID: 1262712956}
+  - {fileID: 1977873937}
+  - {fileID: 290800604}
   - {fileID: 768494176}
   - {fileID: 913311842}
   - {fileID: 949166158}
-  - {fileID: 1977873937}
-  - {fileID: 290800604}
-  - {fileID: 954342675}
-  - {fileID: 1457233817}
-  - {fileID: 2104790255}
-  - {fileID: 446108490}
   m_Father: {fileID: 774663842}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -6683,6 +6683,14 @@ PrefabInstance:
       value: Item (3)
       objectReference: {fileID: 0}
     - target: {fileID: 3232229288138494322, guid: 04a80e7e7d6269742bb28004fb297afb, type: 3}
+      propertyPath: stackMax
+      value: 60
+      objectReference: {fileID: 0}
+    - target: {fileID: 3232229288138494322, guid: 04a80e7e7d6269742bb28004fb297afb, type: 3}
+      propertyPath: stackCurrent
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3232229288138494322, guid: 04a80e7e7d6269742bb28004fb297afb, type: 3}
       propertyPath: itemScriptableObject
       value: 
       objectReference: {fileID: 11400000, guid: f61f4a1f886a7c698b1b4292546866c6, type: 2}
@@ -6752,7 +6760,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7273559495729998951, guid: 04a80e7e7d6269742bb28004fb297afb, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -105.000015
+      value: -106
       objectReference: {fileID: 0}
     - target: {fileID: 7273559495729998951, guid: 04a80e7e7d6269742bb28004fb297afb, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -8420,9 +8428,17 @@ PrefabInstance:
       value: Item (2)
       objectReference: {fileID: 0}
     - target: {fileID: 3232229288138494322, guid: 04a80e7e7d6269742bb28004fb297afb, type: 3}
+      propertyPath: stackMax
+      value: 60
+      objectReference: {fileID: 0}
+    - target: {fileID: 3232229288138494322, guid: 04a80e7e7d6269742bb28004fb297afb, type: 3}
       propertyPath: iconImage
       value: 
       objectReference: {fileID: 1561416609}
+    - target: {fileID: 3232229288138494322, guid: 04a80e7e7d6269742bb28004fb297afb, type: 3}
+      propertyPath: stackCurrent
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 3232229288138494322, guid: 04a80e7e7d6269742bb28004fb297afb, type: 3}
       propertyPath: itemScriptableObject
       value: 
@@ -8489,7 +8505,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7273559495729998951, guid: 04a80e7e7d6269742bb28004fb297afb, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -642
+      value: -640
       objectReference: {fileID: 0}
     - target: {fileID: 7273559495729998951, guid: 04a80e7e7d6269742bb28004fb297afb, type: 3}
       propertyPath: m_AnchoredPosition.y
