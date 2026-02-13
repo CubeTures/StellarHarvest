@@ -6,6 +6,8 @@ namespace Sunspore
 {
     public class WeaponManager : MonoBehaviour
     {
+        public static WeaponManager Instance { get; private set; }
+
         [SerializeField] string waponName = "default";
         [SerializeField] int damage = 25;
         [SerializeField] GameObject attackBox;
@@ -29,13 +31,26 @@ namespace Sunspore
 
         private Weapon weapon;
 
+        private void Awake()
+        {
+            if (Instance == null)
+            {
+                Instance = this;
+            }
+            else
+            {
+                Destroy(gameObject);
+            }
+        }
+
+
         private void Start()
         {
-            hitArea = new Vector3(1.0f, 0.5f, range);
-            directions[0] = new Vector3(0.0f, 0.0f, 1.0f);
-            directions[1] = new Vector3(1.0f, 0.0f, 0.0f);
+            hitArea = new Vector3(1.0f, 1.0f, range);
+            directions[0] = new Vector3(1.0f, 0.0f, 0.0f);
+            directions[1] = new Vector3(-1.0f, 0.0f, 0.0f);
             directions[2] = new Vector3(0.0f, 0.0f, -1.0f);
-            directions[3] = new Vector3(-1.0f, 0.0f, 0.0f);
+            directions[3] = new Vector3(0.0f, 0.0f, 1.0f);
             offset = range / 2;
 
             player = GameObject.FindGameObjectWithTag("Player");
@@ -119,7 +134,7 @@ namespace Sunspore
 
         public void setDirection(int dir)
         {
-            currDirection = directions[dir];
+            currDirection = directions[dir-1];
         }
 
         private void updateDirection()

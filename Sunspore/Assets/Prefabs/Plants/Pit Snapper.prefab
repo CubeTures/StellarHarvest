@@ -91,6 +91,8 @@ MonoBehaviour:
   growSound: {fileID: 8300000, guid: 35cccfa738cfa6743ba1d2f761199e1d, type: 3}
   plantSound: {fileID: 8300000, guid: 35cccfa738cfa6743ba1d2f761199e1d, type: 3}
   glowEffect: {fileID: 2446270667391804717, guid: f46e2420a80d0964e9afd78cde433563, type: 3}
+  seedItem: {fileID: 11400000, guid: 329fb617b839408468b087117d35c852, type: 2}
+  plantItem: {fileID: 11400000, guid: fae4269e3aaface4ebda681ae4106731, type: 2}
   juvenileAbilityPower: 100
   fullyGrownAbilityPower: 200
   juvenileAbilityRange: 0.5

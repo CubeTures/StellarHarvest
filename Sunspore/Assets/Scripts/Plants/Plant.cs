@@ -29,6 +29,11 @@ namespace Sunspore
         [Header("Effects")]
         [SerializeField] protected GameObject glowEffect;
 
+        [Header("Items")]
+        [SerializeField] protected ItemSO seedItem;
+        [SerializeField] protected ItemSO plantItem;
+
+
         // Current growth stage
         protected GrowthStage currentStage = GrowthStage.Seed;
 
@@ -137,6 +142,7 @@ namespace Sunspore
         protected virtual void Harvest()
         {
             SetGrowthStage(GrowthStage.Seed);
+            InventoryManager.Instance.AddItem(plantItem, 1);
             GameManager.gm.UpdateCredits(10);
             Instantiate(glowEffect, transform.position, Quaternion.identity);
         }

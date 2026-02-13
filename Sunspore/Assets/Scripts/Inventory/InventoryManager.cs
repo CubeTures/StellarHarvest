@@ -10,6 +10,8 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
     public static InventoryManager Instance { get; private set; }
     private List<ItemTypeAndAmount> items = new List<ItemTypeAndAmount>();
     Inventory inventory;
+    [SerializeField] List<ItemSO> allItemScriptableObjects = new List<ItemSO>();
+
     [SerializeField] Hotbar hotbar;
     [SerializeField] GameObject craftingParent;
     [SerializeField] GameObject inventoryParent;
@@ -19,7 +21,6 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
 
     [SerializeField] GameObject[] slots = new GameObject[12];
     [SerializeField] GameObject[] hotbarSlots = new GameObject[3];
-    [SerializeField] WeaponManager weaponManager;
 
     bool isCraftingOpened;
     bool isInventoryOpened;
@@ -123,12 +124,12 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
             }
         }
 
-        if (weaponManager != null)
+        if (WeaponManager.Instance != null)
         {
             var sel = GetSelectedItem();
             if (sel == null || !sel.weapon)
             {
-                weaponManager.enabled = false;
+                WeaponManager.Instance.enabled = false;
             }
         }
 
@@ -146,10 +147,10 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
                 var selected = GetSelectedItem();
                 if (selected != null && selected.weapon)
                 {
-                    if (weaponManager != null)
+                    if (WeaponManager.Instance != null)
                     {
-                        weaponManager.SetWeaponStats();
-                        weaponManager.enabled = true;
+                        WeaponManager.Instance.SetWeaponStats();
+                        WeaponManager.Instance.enabled = true;
                     }
                 }
                 if (invSlot != null && invSlot.heldItem != null && handParent != null)
@@ -349,10 +350,6 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
     
     public void OnPointerDown(PointerEventData eventData)
     {
-        //if(GetSelectedItem() && GetSelectedItem().weapon)
-        //{
-        //    weaponManager.enabled = false;
-        //}
         if (eventData.button == PointerEventData.InputButton.Left)
         {
             GameObject clickedObject = eventData.pointerCurrentRaycast.gameObject;
@@ -537,6 +534,33 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
                     }
                 }
             }
+        }
+    }
+
+    public void AddItem(ItemSO itemToAdd, int amount)
+    {
+        GameObject emptySlot = null;
+
+        for (int i = 0; i < slots.Length; i++)
+        {
+            InventorySlot slot = slots[i].GetComponent<InventorySlot>();
+
+            if (slot.heldItem == null)
+            {
+                emptySlot = slots[i];
+                break;
+            }
+        }
+
+        if (emptySlot != null)
+        {
+            GameObject newItem = Instantiate(itemPrefab);
+            newItem.GetComponent<InventoryItem>().itemScriptableObject = itemToAdd;
+            newItem.transform.SetParent(emptySlot.transform.parent.parent.GetChild(2));
+            newItem.GetComponent<InventoryItem>().stackCurrent = amount;
+
+            emptySlot.GetComponent<InventorySlot>().SetHeldItem(newItem);
+            newItem.transform.localScale = new Vector3(1, 1, 1);
         }
     }
 }
