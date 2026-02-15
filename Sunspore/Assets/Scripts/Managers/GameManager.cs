@@ -2,6 +2,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
+using System;
 
 public class GameManager : MonoBehaviour
 {
@@ -10,14 +11,17 @@ public class GameManager : MonoBehaviour
     public static GameManager gm;
 
     public GameObject postProcessingVolume;
-    int credits = -300000000;
-    int highscore = -300000000;
+    int credits = 1000;
+    int highscore = 1000;
+
+    private int nextPayment = 100;
 
     // UI elements to control
     [Header("UI Elements")]
     public GameObject GUI;
     public TMP_Text UICredits;
     public GameObject pauseMenu;
+    public GameObject loseMenu;
     public GameObject _MainMenu;
     public TMP_Text menuTitleText;
     private string _mainTitle;
@@ -38,6 +42,8 @@ public class GameManager : MonoBehaviour
 
         // Turn post processing volume on/off based on settings
         postProcessingVolume.SetActive(PlayerPrefManager.GetPostProcessing());
+
+        RefreshGUI();
     }
 
     void SetUpDefaults()
@@ -69,7 +75,7 @@ public class GameManager : MonoBehaviour
 
     void RefreshGUI()
     {
-        UICredits.text = "Credits " + GetScore();
+        UICredits.text = "Credits: " + GetScore() + "\nNext Payment: " + GetNextPayment();
     }
 
     public void UpdateCredits(int amount)
@@ -83,10 +89,66 @@ public class GameManager : MonoBehaviour
         return credits;
     }
 
+    public void SetScore(int score)
+    {
+        credits = score;
+        RefreshGUI();
+    }
+
+    public int GetNextPayment()
+    {
+        return nextPayment;
+    }
+
+    public void CheckPayment(int weeks)
+    {
+        float growthRate = 1.5f;
+        nextPayment = (int)(100 * Math.Pow(growthRate, weeks));
+
+        if(credits < nextPayment)
+        {
+            GameLose();
+        }
+        else
+        {
+            credits -= nextPayment;
+            RefreshGUI();
+        }
+    }
+
+    private void GameLose()
+    {
+        if (Time.timeScale > 0f)
+        {
+            Gamepad.current?.ResetHaptics();
+            Time.timeScale = 0f; // this pauses the game action  
+            
+            TMP_Text menuTitleText = loseMenu.transform.Find("Menu Title")?.GetComponent<TMP_Text>();
+            menuTitleText.text = "You Are Broke!!! \nYou Finished With:\n" + credits + "Credits";
+
+            // Show pause menu  
+            loseMenu.SetActive(true);
+
+            // Disable camera movement  
+            if (_player != null)
+            {
+                Player playerScript = _player.GetComponent<Player>();
+                if (playerScript != null)
+                {
+                    playerScript.SetPauseState(true);
+                }
+            }
+
+            Cursor.lockState = CursorLockMode.None;
+        }
+        Cursor.visible = true;
+    }
+
     public void GoToHome()
     {
         // If home button pressed, go to home screen
         Time.timeScale = 1f;
+        loseMenu.SetActive(false);
         PlayerPrefManager.ResetPlayerState(false);
         LoadLevel("Home");
     }

@@ -22,6 +22,8 @@ public class Player : MonoBehaviour
     public bool playerCanMove = true;
     [HideInInspector]
     public bool isSelecting = false;
+    [HideInInspector]
+    public bool isDead = false;
 
     Transform _transform;
     Animator _anim;
@@ -32,6 +34,8 @@ public class Player : MonoBehaviour
     CinemachineCamera _cinemachineCamera;
     private SpriteRenderer _spriteRenderer;
     private Color _originalColor;
+
+    GameManager gm;
 
     float _vx;
     float _vy;
@@ -55,6 +59,7 @@ public class Player : MonoBehaviour
         _sr = GetComponent<SpriteRenderer>();
         _mainCamera = Camera.main;
         _spriteRenderer = GetComponent<SpriteRenderer>();
+        gm = GameManager.gm;
         if(_spriteRenderer != null)
         {
             _originalColor = _spriteRenderer.color;
@@ -117,7 +122,7 @@ public class Player : MonoBehaviour
         bool isMoving = input.sqrMagnitude > 0.01f;
         _anim.SetBool("isMoving", isMoving);
 
-        if (!isMoving)
+        if (!isMoving || isDead)
             return;
 
         // Decide direction based on dominant axis
@@ -234,6 +239,11 @@ public class Player : MonoBehaviour
 
     public void TakeDamage(float damage)
     {
+        if (isDead)
+        {
+            return;
+        }
+
         health -= damage;
         if (_spriteRenderer != null)
         {
@@ -243,8 +253,20 @@ public class Player : MonoBehaviour
         }
         if (health <= 0)
         {
-            //Destroy(this.gameObject);
+            StartCoroutine(RespawnWithDelay(5f));
         }
+    }
+
+    private IEnumerator RespawnWithDelay(float delay)
+    {
+        FreezeMotion();
+        isDead = true;
+        yield return new WaitForSeconds(delay);
+        isDead = false;
+        health = 100;
+        gm.SetScore(gm.GetScore() / 2);
+        UnFreezeMotion();
+        Respawn(GameManager.gm.transform.position + new Vector3(0, 1.5f, 0));
     }
 
     private void ResetColor()
