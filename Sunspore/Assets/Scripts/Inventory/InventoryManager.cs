@@ -288,6 +288,25 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
         return items;
     }
 
+    public bool HasItem(ItemSO item, int count)
+    {
+        if (item == null || count <= 0)
+            return false;
+
+        List<ItemTypeAndAmount> allItems = GetAllItems();
+
+        foreach (ItemTypeAndAmount entry in allItems)
+        {
+            if (entry.item == item)
+            {
+                return entry.amount >= count;
+            }
+        }
+
+        return false;
+    }
+
+
     // public void AddItem(ItemSO item)
     // {
     //     inventory.AddItem(item);

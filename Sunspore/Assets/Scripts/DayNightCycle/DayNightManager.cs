@@ -64,7 +64,7 @@ namespace Sunspore
                     Debug.Log("Weeks: " + weeks);
                     days = 0;
                     nights = 0;
-                    gm.CheckPayment(weeks);
+                    Bank.Instance.CheckPayment(weeks);
                 }
             }
 

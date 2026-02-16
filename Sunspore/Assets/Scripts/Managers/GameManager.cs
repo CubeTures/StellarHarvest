@@ -2,7 +2,6 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
-using System;
 
 public class GameManager : MonoBehaviour
 {
@@ -11,17 +10,11 @@ public class GameManager : MonoBehaviour
     public static GameManager gm;
 
     public GameObject postProcessingVolume;
-    int credits = 1000;
-    int highscore = 1000;
-
-    private int nextPayment = 100;
 
     // UI elements to control
     [Header("UI Elements")]
-    public GameObject GUI;
-    public TMP_Text UICredits;
     public GameObject pauseMenu;
-    public GameObject loseMenu;
+    [SerializeField] GameObject loseMenu;
     public GameObject _MainMenu;
     public TMP_Text menuTitleText;
     private string _mainTitle;
@@ -42,8 +35,6 @@ public class GameManager : MonoBehaviour
 
         // Turn post processing volume on/off based on settings
         postProcessingVolume.SetActive(PlayerPrefManager.GetPostProcessing());
-
-        RefreshGUI();
     }
 
     void SetUpDefaults()
@@ -58,73 +49,18 @@ public class GameManager : MonoBehaviour
 
         _audio = GetComponent<AudioSource>();
 
-        // get stored player prefs
-        RefreshPlayerState();
-
-        RefreshGUI();
-
         EnableUIActionMap();
     }
 
-    // get stored Player Prefs if they exist, otherwise go with defaults set on gameObject
-    void RefreshPlayerState()
-    {
-        credits = PlayerPrefManager.GetScore();
-        highscore = PlayerPrefManager.GetHighscore();
-    }
-
-    void RefreshGUI()
-    {
-        UICredits.text = "Credits: " + GetScore() + "\nNext Payment: " + GetNextPayment();
-    }
-
-    public void UpdateCredits(int amount)
-    {
-        credits += amount;
-        RefreshGUI();
-    }
-
-    public int GetScore()
-    {
-        return credits;
-    }
-
-    public void SetScore(int score)
-    {
-        credits = score;
-        RefreshGUI();
-    }
-
-    public int GetNextPayment()
-    {
-        return nextPayment;
-    }
-
-    public void CheckPayment(int weeks)
-    {
-        float growthRate = 1.5f;
-        nextPayment = (int)(100 * Math.Pow(growthRate, weeks));
-
-        if(credits < nextPayment)
-        {
-            GameLose();
-        }
-        else
-        {
-            credits -= nextPayment;
-            RefreshGUI();
-        }
-    }
-
-    private void GameLose()
+    public void GameLose(int amount)
     {
         if (Time.timeScale > 0f)
         {
             Gamepad.current?.ResetHaptics();
             Time.timeScale = 0f; // this pauses the game action  
-            
+
             TMP_Text menuTitleText = loseMenu.transform.Find("Menu Title")?.GetComponent<TMP_Text>();
-            menuTitleText.text = "You Are Broke!!! \nYou Finished With:\n" + credits + "Credits";
+            menuTitleText.text = "You Are Broke!!! \nYou Finished With:\n" + amount + "Credits";
 
             // Show pause menu  
             loseMenu.SetActive(true);

@@ -8,6 +8,7 @@ using Sunspore;
 
 public class Player : MonoBehaviour
 {
+    [SerializeField] Wallet wallet;
     public float speed = 8f;
     public GameObject[] inventory;
     public float gridSize = 1f; // Size of each grid cell
@@ -264,7 +265,7 @@ public class Player : MonoBehaviour
         yield return new WaitForSeconds(delay);
         isDead = false;
         health = 100;
-        gm.SetScore(gm.GetScore() / 2);
+        wallet.Subtract(wallet.GetAmount() / 2);
         UnFreezeMotion();
         Respawn(GameManager.gm.transform.position + new Vector3(0, 1.5f, 0));
     }
