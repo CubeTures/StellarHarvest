@@ -10,13 +10,9 @@ public class GameManager : MonoBehaviour
     public static GameManager gm;
 
     public GameObject postProcessingVolume;
-    int credits = -300000000;
-    int highscore = -300000000;
 
     // UI elements to control
     [Header("UI Elements")]
-    public GameObject GUI;
-    public TMP_Text UICredits;
     public GameObject pauseMenu;
     public GameObject _MainMenu;
     public TMP_Text menuTitleText;
@@ -52,35 +48,7 @@ public class GameManager : MonoBehaviour
 
         _audio = GetComponent<AudioSource>();
 
-        // get stored player prefs
-        RefreshPlayerState();
-
-        RefreshGUI();
-
         EnableUIActionMap();
-    }
-
-    // get stored Player Prefs if they exist, otherwise go with defaults set on gameObject
-    void RefreshPlayerState()
-    {
-        credits = PlayerPrefManager.GetScore();
-        highscore = PlayerPrefManager.GetHighscore();
-    }
-
-    void RefreshGUI()
-    {
-        UICredits.text = "Credits " + GetScore();
-    }
-
-    public void UpdateCredits(int amount)
-    {
-        credits += amount;
-        RefreshGUI();
-    }
-
-    public int GetScore()
-    {
-        return credits;
     }
 
     public void GoToHome()

@@ -142,8 +142,6 @@ namespace Sunspore
         protected virtual void Harvest()
         {
             SetGrowthStage(GrowthStage.Seed);
-            InventoryManager.Instance.AddItem(plantItem, 1);
-            GameManager.gm.UpdateCredits(10);
             Instantiate(glowEffect, transform.position, Quaternion.identity);
         }
 
