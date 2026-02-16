@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 using System.Collections.Generic;
 
 namespace Sunspore
@@ -13,6 +14,12 @@ namespace Sunspore
         [SerializeField] ItemRecipeSO[] recipes;
         [SerializeField] GameObject recipeUIPrefab;
         [SerializeField] Transform recipeUIParent;
+
+        [Header("Craft Button UI")]
+        [SerializeField] Button craftButton;
+        [SerializeField] Color craftButtonDefaultColor = Color.white;
+        [SerializeField] Color craftButtonSelectedColor = Color.yellow;
+        [SerializeField] Color craftButtonCraftableColor = Color.green;
 
         private List<ItemTypeAndAmount> items = new List<ItemTypeAndAmount>();
 
@@ -36,6 +43,7 @@ namespace Sunspore
             selectedRecipeUI = null;
             UpdateRecipeUI();
             OnSelectionChanged?.Invoke(false, false);
+            SetCraftButtonState(false, false);
         }
 
         public bool CanCraftRecipe(ItemRecipeSO recipeSO)
@@ -127,6 +135,7 @@ namespace Sunspore
             if (selectedRecipeUI != null) selectedRecipeUI.SetSelected(true);
             bool hasSelection = selectedRecipeSO != null;
             bool craftable = hasSelection && CanCraftRecipe(selectedRecipeSO);
+            SetCraftButtonState(hasSelection, craftable);
             OnSelectionChanged?.Invoke(hasSelection, craftable);
         }
 
@@ -141,11 +150,32 @@ namespace Sunspore
                 selectedRecipeUI = null;
                 selectedRecipeSO = null;
                 OnSelectionChanged?.Invoke(false, false);
+                SetCraftButtonState(false, false);
                 UpdateRecipeUI();
             }
             else
             {
                 Debug.Log("CraftingManager: selected recipe cannot be crafted right now.");
+                // keep selection but update button to show it's not craftable
+                SetCraftButtonState(true, false);
+            }
+        }
+
+        private void SetCraftButtonState(bool hasSelection, bool craftable)
+        {
+            if (craftButton == null) return;
+            var img = craftButton.image;
+            if (!hasSelection)
+            {
+                img.color = craftButtonDefaultColor;
+            }
+            else if (craftable)
+            {
+                img.color = craftButtonCraftableColor;
+            }
+            else
+            {
+                img.color = craftButtonSelectedColor;
             }
         }
 
