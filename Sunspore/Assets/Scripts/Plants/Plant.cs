@@ -29,6 +29,11 @@ namespace Sunspore
         [Header("Effects")]
         [SerializeField] protected GameObject glowEffect;
 
+        [Header("Items")]
+        [SerializeField] protected ItemSO seedItem;
+        [SerializeField] protected ItemSO plantItem;
+
+
         // Current growth stage
         protected GrowthStage currentStage = GrowthStage.Seed;
 

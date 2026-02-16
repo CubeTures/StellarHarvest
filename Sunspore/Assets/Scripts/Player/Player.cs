@@ -11,7 +11,6 @@ public class Player : MonoBehaviour
     public float speed = 8f;
     public GameObject[] inventory;
     public float gridSize = 1f; // Size of each grid cell
-    [SerializeField] WeaponManager weaponManager;
     [SerializeField] float health = 100;
     [SerializeField] private SpriteRenderer _sr;
 
@@ -129,11 +128,13 @@ public class Player : MonoBehaviour
             {
                 _facingRight = true;
                 SetDirection(1); // Right
+                WeaponManager.Instance.setDirection(1);
             }
             else
             {
                 _facingRight = false;
                 SetDirection(2); // Left
+                WeaponManager.Instance.setDirection(2);
             }
         }
         else
@@ -143,11 +144,13 @@ public class Player : MonoBehaviour
             {
                 _facingFront = true;
                 SetDirection(4); // Forward
+                WeaponManager.Instance.setDirection(4);
             }
             else
             {
                 _facingFront = false;
                 SetDirection(3); // Back
+                WeaponManager.Instance.setDirection(3);
             }
         }
     if (_facingRight)
