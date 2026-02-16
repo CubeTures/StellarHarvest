@@ -23,25 +23,25 @@ namespace Sunspore
         {
             base.Start();
             _animator = GetComponent<Animator>();
-            Debug.Log("Bloom Burst created!");
+            // Debug.Log("Bloom Burst created!");
         }
 
         protected override void OnSeedStage()
         {
             base.OnSeedStage();
-            Debug.Log("Plant is now a seed - no abilities");
+            // Debug.Log("Plant is now a seed - no abilities");
         }
 
         protected override void OnJuvenileStage()
         {
             base.OnJuvenileStage();
-            Debug.Log("Plant is now juvenile - limited abilities active");
+            // Debug.Log("Plant is now juvenile - limited abilities active");
         }
 
         protected override void OnFullyGrownStage()
         {
             base.OnFullyGrownStage();
-            Debug.Log("Plant is now fully grown - full abilities active");
+            // Debug.Log("Plant is now fully grown - full abilities active");
         }
 
         protected override void UpdateJuvenileAbilities()
@@ -70,7 +70,7 @@ namespace Sunspore
 
         private void UseJuvenileAbility()
         {
-            Debug.Log($"Juvenile ability activated with power: {juvenileAbilityPower}");
+            // Debug.Log($"Juvenile ability activated with power: {juvenileAbilityPower}");
 
             Collider[] nearbyObjects = Physics.OverlapSphere(transform.position, juvenileAbilityRange);
             Transform closestEnemy = null;
@@ -107,7 +107,7 @@ namespace Sunspore
 
         private void UseFullAbility()
         {
-            Debug.Log($"Full ability activated with power: {fullyGrownAbilityPower}");
+            // Debug.Log($"Full ability activated with power: {fullyGrownAbilityPower}");
 
             Collider[] nearbyObjects = Physics.OverlapSphere(transform.position, fullyGrownAbilityRange);
             Transform closestEnemy = null;
@@ -145,7 +145,7 @@ namespace Sunspore
         protected override void Harvest()
         {
             base.Harvest();
-            Debug.Log("Bloom Burst harvested!");
+            // Debug.Log("Bloom Burst harvested!");
         }
 
         private void OnDrawGizmosSelected()

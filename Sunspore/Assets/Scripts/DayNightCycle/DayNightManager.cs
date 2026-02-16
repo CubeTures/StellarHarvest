@@ -49,19 +49,19 @@ namespace Sunspore
                 if (prevTimeOfDay > timeOfDay)
                 {
                     days++;
-                    Debug.Log("Days: " + days);
+                    // Debug.Log("Days: " + days);
                 }
 
                 if (prevTimeOfDay < 0.5f && timeOfDay >= 0.5f)
                 {
                     nights++;
-                    Debug.Log("Nights: " + nights);
+                    // Debug.Log("Nights: " + nights);
                 }
 
                 if (days == 7  && nights == 7)
                 {
                     weeks++;
-                    Debug.Log("Weeks: " + weeks);
+                    // Debug.Log("Weeks: " + weeks);
                     days = 0;
                     nights = 0;
                     Bank.Instance.CheckPayment(weeks);
