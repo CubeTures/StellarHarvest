@@ -137,7 +137,6 @@ namespace Sunspore
         protected virtual void Harvest()
         {
             SetGrowthStage(GrowthStage.Seed);
-            GameManager.gm.UpdateCredits(10);
             Instantiate(glowEffect, transform.position, Quaternion.identity);
         }
 
