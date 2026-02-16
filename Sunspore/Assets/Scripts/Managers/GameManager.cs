@@ -14,6 +14,7 @@ public class GameManager : MonoBehaviour
     // UI elements to control
     [Header("UI Elements")]
     public GameObject pauseMenu;
+    [SerializeField] GameObject loseMenu;
     public GameObject _MainMenu;
     public TMP_Text menuTitleText;
     private string _mainTitle;
@@ -51,10 +52,39 @@ public class GameManager : MonoBehaviour
         EnableUIActionMap();
     }
 
+    public void GameLose(int amount)
+    {
+        if (Time.timeScale > 0f)
+        {
+            Gamepad.current?.ResetHaptics();
+            Time.timeScale = 0f; // this pauses the game action  
+
+            TMP_Text menuTitleText = loseMenu.transform.Find("Menu Title")?.GetComponent<TMP_Text>();
+            menuTitleText.text = "You Are Broke!!! \nYou Finished With:\n" + amount + "Credits";
+
+            // Show pause menu  
+            loseMenu.SetActive(true);
+
+            // Disable camera movement  
+            if (_player != null)
+            {
+                Player playerScript = _player.GetComponent<Player>();
+                if (playerScript != null)
+                {
+                    playerScript.SetPauseState(true);
+                }
+            }
+
+            Cursor.lockState = CursorLockMode.None;
+        }
+        Cursor.visible = true;
+    }
+
     public void GoToHome()
     {
         // If home button pressed, go to home screen
         Time.timeScale = 1f;
+        loseMenu.SetActive(false);
         PlayerPrefManager.ResetPlayerState(false);
         LoadLevel("Home");
     }

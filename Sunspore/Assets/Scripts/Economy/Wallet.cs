@@ -10,7 +10,7 @@ public class Wallet : MonoBehaviour
 
     void Update()
     {
-        creditsText.text = $"Credits: {amount}";
+        creditsText.text = $"Credits: {amount}; Next Payment: {Bank.Instance.GetNextPayment()}";
     }
 
     public void Add(int amount)
