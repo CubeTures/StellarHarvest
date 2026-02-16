@@ -16,7 +16,7 @@ namespace Sunspore
         [SerializeField] float knockback = 0f;
         [SerializeField] GameObject player;
 
-        public bool enabled = false;
+        public new bool enabled = false;
 
         private float lastAttackTime = -Mathf.Infinity;
         private Vector3 hitArea;

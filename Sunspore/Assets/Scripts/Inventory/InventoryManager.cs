@@ -155,7 +155,7 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
                 }
                 if (invSlot != null && invSlot.heldItem != null && handParent != null)
                 {
-                    Debug.Log("we are in");
+                    // Debug.Log("we are in");
                     var heldInvItem = invSlot.heldItem.GetComponent<InventoryItem>();
                     if (heldInvItem != null)
                     {
