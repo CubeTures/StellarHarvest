@@ -17,8 +17,8 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
     [SerializeField] GameObject itemPrefab;
     [SerializeField] Camera cam;
 
-    [SerializeField] GameObject[] slots = new GameObject[12];
-    [SerializeField] GameObject[] hotbarSlots = new GameObject[3];
+    [SerializeField] GameObject[] slots = new GameObject[28];
+    [SerializeField] GameObject[] hotbarSlots = new GameObject[7];
     [SerializeField] WeaponManager weaponManager;
 
     bool isCraftingOpened;
@@ -96,6 +96,21 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
         else if (Input.GetKeyDown(KeyCode.Alpha4))
         {
             selectedHotbarIndex = 3;
+            HotBarItemChanged();
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha5))
+        {
+            selectedHotbarIndex = 4;
+            HotBarItemChanged();
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha6))
+        {
+            selectedHotbarIndex = 5;
+            HotBarItemChanged();
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha7))
+        {
+            selectedHotbarIndex = 6;
             HotBarItemChanged();
         }
     }
