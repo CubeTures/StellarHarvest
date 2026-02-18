@@ -33,7 +33,7 @@ public class Bank : MonoBehaviour
 
         if (wallet.GetAmount() < nextPayment)
         {
-            GameManager.gm.GameLose(wallet.GetAmount());
+            GameManager.gm.GameLose((int)wallet.GetAmount());
         }
         else
         {

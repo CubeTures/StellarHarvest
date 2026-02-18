@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 using System.Collections.Generic;
 
 namespace Sunspore
@@ -21,7 +22,8 @@ namespace Sunspore
         [SerializeField] Color buttonSelectedColor = Color.yellow;
         [SerializeField] Color buttonProcessableColor = Color.green;
 
-        [SerializeField] Text wallet;
+        [SerializeField] TMP_Text wallet;
+        [SerializeField] Wallet walletComponent;
         private decimal walletBalance;
 
         private List<ItemTypeAndAmount> items = new List<ItemTypeAndAmount>();
@@ -29,6 +31,22 @@ namespace Sunspore
         private void Awake()
         {
             if (Instance == null) Instance = this; else Destroy(gameObject);
+
+            // Auto-find Wallet component if inspector field is empty
+            if (walletComponent == null)
+            {
+                walletComponent = FindObjectOfType<Wallet>();
+                if (walletComponent != null)
+                {
+                    Debug.Log("[StoreManager] Auto-found Wallet component in scene.");
+                }
+            }
+
+            // If a TMP text is assigned in the store UI and the Wallet exists, wire them so Wallet updates the text.
+            if (walletComponent != null && wallet != null)
+            {
+                walletComponent.SetTextTarget(wallet);
+            }
         }
 
         private void OnEnable()
@@ -38,9 +56,11 @@ namespace Sunspore
             // Initialize wallet balance from text if possible
             if (wallet != null)
             {
-                decimal.TryParse(wallet.text, out walletBalance);
-                walletBalance = -50000;
-                UpdateWalletText();
+                if (walletComponent == null)
+                {
+                    decimal.TryParse(wallet.text, out walletBalance);
+                    UpdateWalletText();
+                }
             }
             UpdateRecipeUI();
             OnSelectionChanged?.Invoke(false, false);
@@ -191,7 +211,17 @@ namespace Sunspore
 
         private void AddCredits(int amount)
         {
-            walletBalance += amount;
+            decimal beforeAmount = walletComponent != null ? walletComponent.GetAmount() : walletBalance;
+            if (walletComponent != null)
+            {
+                walletComponent.Add(amount);
+            }
+            else
+            {
+                walletBalance += amount;
+            }
+            decimal afterAmount = walletComponent != null ? walletComponent.GetAmount() : walletBalance;
+            Debug.Log($"[StoreManager] AddCredits called. method={(walletComponent != null ? "WalletComponent" : "Fallback")}, amountAdded={amount}, before={beforeAmount}, after={afterAmount}");
             UpdateWalletText();
         }
 
@@ -199,7 +229,11 @@ namespace Sunspore
         {
             if (wallet != null)
             {
-                wallet.text = walletBalance.ToString();
+                // If a Wallet component is assigned, it manages its own UI text.
+                if (walletComponent == null)
+                {
+                    wallet.text = walletBalance.ToString();
+                }
             }
         }
         public void SelectedRecipe(StoreRecipeSO recipeSO)
