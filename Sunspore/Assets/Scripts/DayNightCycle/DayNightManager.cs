@@ -11,62 +11,116 @@ namespace Sunspore
         [SerializeField] GameObject Light;
         [SerializeField] float dayLengthSeconds = 30f;
         [SerializeField] TMP_Dropdown timeSelector;
-        private float degPerSec = 0f;
-        private bool stopTime = false;
-        private bool setNightTime = false;
 
+        GameManager gm;
+
+        private float degPerSec = 0f;
+        private float timeOfDay = 0f;
+        private bool timeStopped = false;
+        private bool isNight = false;
+        private bool isDay = false;
+
+        private int days = 0;
+        private int nights = 0;
+        private int weeks = 0;
+        
         void Start()
         {
             degPerSec = 360f / dayLengthSeconds;
             spawner = GameObject.Find("EnemySpawner").GetComponent<EnemySpawner>();
             Light = GameObject.Find("Directional Light");
             timeSelector = GameObject.Find("Dropdown").GetComponent<TMP_Dropdown>();
+            gm = GameManager.gm;
         }
-        // Update is called once per frame
+        
         void Update()
         {
-            if (!stopTime)
+            if (!timeStopped)
             {
-                rotation.x = degPerSec * Time.deltaTime;
-                Light.transform.Rotate(rotation, Space.World);
+                // Calculate angle based off percentage of day passed.
+                float prevTimeOfDay = timeOfDay;
+                timeOfDay += Time.deltaTime / dayLengthSeconds;
+                timeOfDay = timeOfDay % 1;
+
+                float sunAngle = Mathf.Lerp(0f, 360f, timeOfDay);
+                Light.transform.rotation = Quaternion.Euler(sunAngle, 0, 0);
+
+                // Day counter: when timeOfDay wraps around to 0
+                if (prevTimeOfDay > timeOfDay)
+                {
+                    days++;
+                    // Debug.Log("Days: " + days);
+                }
+
+                if (prevTimeOfDay < 0.5f && timeOfDay >= 0.5f)
+                {
+                    nights++;
+                    // Debug.Log("Nights: " + nights);
+                }
+
+                if (days == 7  && nights == 7)
+                {
+                    weeks++;
+                    // Debug.Log("Weeks: " + weeks);
+                    days = 0;
+                    nights = 0;
+                    Bank.Instance.CheckPayment(weeks);
+                }
             }
-            if (!stopTime && Time.time % dayLengthSeconds >= dayLengthSeconds / 2 || setNightTime)
+
+            if (!timeStopped && timeOfDay >= 0.5f || isNight)
             {
-                //Debug.Log("Attempting Spawning Enemy");
                 spawner.SpawnEnemy();
+                isNight = true;
+                isDay = false;
+            }
+            else
+            {
+                isDay = true;
+                isNight = false;
             }
         }
 
         void startTime()
         {
-            stopTime = false;
-            setNightTime = false;
+            timeStopped = false;
+            isNight = false;
             //Debug.Log("Cycle");
+        }
+
+        void stopTime()
+        {
+            timeStopped = true;
+            isNight = false;
         }
 
         void setDay()
         {
-            stopTime = true;
-            setNightTime = false;
+            timeStopped = true;
+            isNight = false;
             Light.transform.rotation = Quaternion.Euler(90, 0, 0);
             //Debug.Log("Day");
         }
 
         void setNight()
         {
-            stopTime = true;
-            setNightTime = true;
+            timeStopped = true;
+            isNight = true;
             Light.transform.rotation = Quaternion.Euler(270, 0, 0);
             //Debug.Log("Night");
         }
 
         public void changeTime()
         {
-            if(timeSelector.value == 0)
+            if(timeStopped && timeSelector.value == 0)
             {
                 startTime();
             }
-            else if(timeSelector.value == 1)
+            else if(isDay && timeSelector.value == 1)
+            {
+                stopTime();
+            }
+            else if(timeSelector.value == 2)
             {
                 setDay();
             }

@@ -6,16 +6,17 @@ namespace Sunspore
 {
     public class WeaponManager : MonoBehaviour
     {
+        public static WeaponManager Instance { get; private set; }
+
         [SerializeField] string waponName = "default";
         [SerializeField] int damage = 25;
-        [SerializeField] GameObject attackBox;
         [SerializeField] float attackCooldown = 0.5f;
         [SerializeField] float attackDuration = 0.2f;
         [SerializeField] float range = 2.5f;
         [SerializeField] float knockback = 0f;
         [SerializeField] GameObject player;
 
-        public bool enabled = false;
+        public new bool enabled = false;
 
         private float lastAttackTime = -Mathf.Infinity;
         private Vector3 hitArea;
@@ -26,19 +27,40 @@ namespace Sunspore
 
         private Quaternion boxRotation;
         private Vector3 boxCenter;
+        private GameObject attackBox = null;
 
         private Weapon weapon;
 
+        private void Awake()
+        {
+            if (Instance == null)
+            {
+                Instance = this;
+            }
+            else
+            {
+                Destroy(gameObject);
+            }
+        }
+
+
         private void Start()
         {
-            hitArea = new Vector3(1.0f, 0.5f, range);
-            directions[0] = new Vector3(0.0f, 0.0f, 1.0f);
-            directions[1] = new Vector3(1.0f, 0.0f, 0.0f);
+            hitArea = new Vector3(1.0f, 1.0f, range);
+            directions[0] = new Vector3(1.0f, 0.0f, 0.0f);
+            directions[1] = new Vector3(-1.0f, 0.0f, 0.0f);
             directions[2] = new Vector3(0.0f, 0.0f, -1.0f);
-            directions[3] = new Vector3(-1.0f, 0.0f, 0.0f);
+            directions[3] = new Vector3(0.0f, 0.0f, 1.0f);
             offset = range / 2;
 
             player = GameObject.FindGameObjectWithTag("Player");
+
+            if (attackBox == null)
+            {
+                attackBox = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                Destroy(attackBox.GetComponent<Collider>());
+            }
+
             if (attackBox != null)
             {
                 attackBox.transform.localScale = hitArea;
@@ -81,7 +103,7 @@ namespace Sunspore
             }
 
             Collider[] hitEnemies = Physics.OverlapBox(
-                player.transform.position,
+                boxCenter,
                 hitArea,
                 boxRotation
             );
@@ -91,22 +113,22 @@ namespace Sunspore
                 var enemy = enemyCollider.GetComponent<Enemy>();
                 if (enemy != null)
                 {
-                    Vector3 direction = (enemy.transform.position - player.transform.position).normalized;
+                    Vector3 direction = (enemy.transform.position - boxCenter).normalized;
                     enemy.TakeDamage(damage, direction, knockback);
                 }
             }
         }
 
-        // private void OnDrawGizmos()
-        // {
-        //     Quaternion boxRotation = currDirection != Vector3.zero
-        //         ? Quaternion.LookRotation(currDirection)
-        //         : player.transform.rotation;
+        //private void OnDrawGizmos()
+        //{
+        //    Quaternion boxRotation = currDirection != Vector3.zero
+        //        ? Quaternion.LookRotation(currDirection)
+        //        : player.transform.rotation;
 
-        //     Gizmos.color = Color.red;
-        //     Gizmos.matrix = Matrix4x4.TRS(player.transform.position, boxRotation, Vector3.one);
-        //     Gizmos.DrawWireCube(Vector3.zero, hitArea);
-        // }
+        //    Gizmos.color = Color.red;
+        //    Gizmos.matrix = Matrix4x4.TRS(boxCenter, boxRotation, Vector3.one);
+        //    Gizmos.DrawWireCube(Vector3.zero, hitArea * 1.5f);
+        //}
 
         private void StopAttacking()
         {
@@ -119,7 +141,7 @@ namespace Sunspore
 
         public void setDirection(int dir)
         {
-            currDirection = directions[dir];
+            currDirection = directions[dir-1];
         }
 
         private void updateDirection()

@@ -10,14 +10,11 @@ public class GameManager : MonoBehaviour
     public static GameManager gm;
 
     public GameObject postProcessingVolume;
-    int credits = -300000000;
-    int highscore = -300000000;
 
     // UI elements to control
     [Header("UI Elements")]
-    public GameObject GUI;
-    public TMP_Text UICredits;
     public GameObject pauseMenu;
+    [SerializeField] GameObject loseMenu;
     public GameObject _MainMenu;
     public TMP_Text menuTitleText;
     private string _mainTitle;
@@ -52,41 +49,42 @@ public class GameManager : MonoBehaviour
 
         _audio = GetComponent<AudioSource>();
 
-        // get stored player prefs
-        RefreshPlayerState();
-
-        RefreshGUI();
-
         EnableUIActionMap();
     }
 
-    // get stored Player Prefs if they exist, otherwise go with defaults set on gameObject
-    void RefreshPlayerState()
+    public void GameLose(int amount)
     {
-        credits = PlayerPrefManager.GetScore();
-        highscore = PlayerPrefManager.GetHighscore();
-    }
+        if (Time.timeScale > 0f)
+        {
+            Gamepad.current?.ResetHaptics();
+            Time.timeScale = 0f; // this pauses the game action  
 
-    void RefreshGUI()
-    {
-        UICredits.text = "Credits " + GetScore();
-    }
+            TMP_Text menuTitleText = loseMenu.transform.Find("Menu Title")?.GetComponent<TMP_Text>();
+            menuTitleText.text = "You Are Broke!!! \nYou Finished With:\n" + amount + "Credits";
 
-    public void UpdateCredits(int amount)
-    {
-        credits += amount;
-        RefreshGUI();
-    }
+            // Show pause menu  
+            loseMenu.SetActive(true);
 
-    public int GetScore()
-    {
-        return credits;
+            // Disable camera movement  
+            if (_player != null)
+            {
+                Player playerScript = _player.GetComponent<Player>();
+                if (playerScript != null)
+                {
+                    playerScript.SetPauseState(true);
+                }
+            }
+
+            Cursor.lockState = CursorLockMode.None;
+        }
+        Cursor.visible = true;
     }
 
     public void GoToHome()
     {
         // If home button pressed, go to home screen
         Time.timeScale = 1f;
+        loseMenu.SetActive(false);
         PlayerPrefManager.ResetPlayerState(false);
         LoadLevel("Home");
     }
