@@ -8,10 +8,10 @@ using Sunspore;
 
 public class Player : MonoBehaviour
 {
+    [SerializeField] Wallet wallet;
     public float speed = 8f;
     public GameObject[] inventory;
     public float gridSize = 1f; // Size of each grid cell
-    [SerializeField] WeaponManager weaponManager;
     [SerializeField] float health = 100;
     [SerializeField] private SpriteRenderer _sr;
 
@@ -23,6 +23,8 @@ public class Player : MonoBehaviour
     public bool playerCanMove = true;
     [HideInInspector]
     public bool isSelecting = false;
+    [HideInInspector]
+    public bool isDead = false;
 
     Transform _transform;
     Animator _anim;
@@ -33,6 +35,8 @@ public class Player : MonoBehaviour
     CinemachineCamera _cinemachineCamera;
     private SpriteRenderer _spriteRenderer;
     private Color _originalColor;
+
+    GameManager gm;
 
     float _vx;
     float _vy;
@@ -56,6 +60,7 @@ public class Player : MonoBehaviour
         _sr = GetComponent<SpriteRenderer>();
         _mainCamera = Camera.main;
         _spriteRenderer = GetComponent<SpriteRenderer>();
+        gm = GameManager.gm;
         if(_spriteRenderer != null)
         {
             _originalColor = _spriteRenderer.color;
@@ -118,7 +123,7 @@ public class Player : MonoBehaviour
         bool isMoving = input.sqrMagnitude > 0.01f;
         _anim.SetBool("isMoving", isMoving);
 
-        if (!isMoving)
+        if (!isMoving || isDead)
             return;
 
         // Decide direction based on dominant axis
@@ -129,11 +134,13 @@ public class Player : MonoBehaviour
             {
                 _facingRight = true;
                 SetDirection(1); // Right
+                WeaponManager.Instance.setDirection(1);
             }
             else
             {
                 _facingRight = false;
                 SetDirection(2); // Left
+                WeaponManager.Instance.setDirection(2);
             }
         }
         else
@@ -143,11 +150,13 @@ public class Player : MonoBehaviour
             {
                 _facingFront = true;
                 SetDirection(4); // Forward
+                WeaponManager.Instance.setDirection(4);
             }
             else
             {
                 _facingFront = false;
                 SetDirection(3); // Back
+                WeaponManager.Instance.setDirection(3);
             }
         }
     if (_facingRight)
@@ -231,6 +240,11 @@ public class Player : MonoBehaviour
 
     public void TakeDamage(float damage)
     {
+        if (isDead)
+        {
+            return;
+        }
+
         health -= damage;
         if (_spriteRenderer != null)
         {
@@ -240,8 +254,20 @@ public class Player : MonoBehaviour
         }
         if (health <= 0)
         {
-            //Destroy(this.gameObject);
+            StartCoroutine(RespawnWithDelay(5f));
         }
+    }
+
+    private IEnumerator RespawnWithDelay(float delay)
+    {
+        FreezeMotion();
+        isDead = true;
+        yield return new WaitForSeconds(delay);
+        isDead = false;
+        health = 100;
+        wallet.Subtract(wallet.GetAmount() / 2);
+        UnFreezeMotion();
+        Respawn(GameManager.gm.transform.position + new Vector3(0, 1.5f, 0));
     }
 
     private void ResetColor()

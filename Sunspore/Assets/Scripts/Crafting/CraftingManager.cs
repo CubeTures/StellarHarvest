@@ -28,7 +28,6 @@ namespace Sunspore
             if (Instance == null)
             {
                 Instance = this;
-                DontDestroyOnLoad(gameObject);
             }
             else
             {
