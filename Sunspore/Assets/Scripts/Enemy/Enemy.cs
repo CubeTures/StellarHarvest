@@ -101,7 +101,6 @@ namespace Sunspore
                 {
                     Attack(player);
                     lastAttackTime = Time.time;
-                }
             }
         }
 
