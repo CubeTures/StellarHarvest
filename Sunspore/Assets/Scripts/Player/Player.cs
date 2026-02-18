@@ -133,14 +133,14 @@ public class Player : MonoBehaviour
             if (_vx > 0)
             {
                 _facingRight = true;
-                SetDirection(1); // Right
-                WeaponManager.Instance.setDirection(1);
+                SetDirection(2); // Right
+                WeaponManager.Instance.setDirection(2);
             }
             else
             {
                 _facingRight = false;
-                SetDirection(2); // Left
-                WeaponManager.Instance.setDirection(2);
+                SetDirection(4); // Left
+                WeaponManager.Instance.setDirection(4);
             }
         }
         else
@@ -149,23 +149,15 @@ public class Player : MonoBehaviour
             if (_vz > 0)
             {
                 _facingFront = true;
-                SetDirection(4); // Forward
-                WeaponManager.Instance.setDirection(4);
+                SetDirection(3); // Forward
+                WeaponManager.Instance.setDirection(3);
             }
             else
             {
                 _facingFront = false;
-                SetDirection(3); // Back
-                WeaponManager.Instance.setDirection(3);
+                SetDirection(1); // Back
+                WeaponManager.Instance.setDirection(1);
             }
-        }
-    if (_facingRight)
-        {
-            _sr.flipX = true;   
-        }
-    else
-        {
-            _sr.flipX = false;
         }
 
     }
@@ -177,6 +169,14 @@ public class Player : MonoBehaviour
         _currentDirection = dir;
         _anim.SetInteger("Direction", dir);
         _anim.SetBool("isMoving", true);
+        if (_vx > 0)
+        {
+            _spriteRenderer.flipX = true;
+        }
+        else if (_vx < 0)
+        {
+            _spriteRenderer.flipX = false;
+        }
     }
     public void Move()
     {
