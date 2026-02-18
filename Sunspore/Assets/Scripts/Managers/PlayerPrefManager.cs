@@ -15,7 +15,7 @@ public static class PlayerPrefManager
         }
         else
         {
-            return -300000000; // default score
+            return 1000; // default score
         }
     }
     public static void SetHighscore(int highscore)
@@ -251,7 +251,7 @@ public static class PlayerPrefManager
     // Reset stored player state and variables back to defaults
     public static void ResetPlayerState(bool resetHighscore = false)
     {
-        PlayerPrefs.SetInt("Score", -300000000);
+        PlayerPrefs.SetInt("Score", 1000);
 
         if (resetHighscore)
             PlayerPrefs.SetInt("Highscore", 0);

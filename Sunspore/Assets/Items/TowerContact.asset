@@ -19,3 +19,4 @@ MonoBehaviour:
   placeable: 1
   prefab: {fileID: 6794809191556961585, guid: 6af75cdf3a414eb4ba6ac88e558f7973, type: 3}
   weapon: 0
+  sellPrice: 75
