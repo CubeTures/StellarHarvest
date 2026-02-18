@@ -13,6 +13,7 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
     [SerializeField] Hotbar hotbar;
     [SerializeField] GameObject craftingParent;
     [SerializeField] GameObject inventoryParent;
+    [SerializeField] GameObject storeParent;
     [SerializeField] Transform handParent;
     [SerializeField] GameObject itemPrefab;
     [SerializeField] Camera cam;
@@ -23,6 +24,7 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
 
     bool isCraftingOpened;
     bool isInventoryOpened;
+    bool isStoreOpened;
     int selectedHotbarIndex = 0;
     GameObject draggedObject;
     GameObject lastItemSlot;
@@ -52,6 +54,10 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
         CheckForHotbarInput();
         craftingParent.SetActive(isCraftingOpened);
         inventoryParent.SetActive(isInventoryOpened);
+        if (storeParent != null)
+        {
+            storeParent.SetActive(isStoreOpened);
+        }
         // // navigate inventory
         // if (Input.GetAxis("Mouse ScrollWheel") is float axis)
         // {
@@ -68,6 +74,7 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
             {
                 isInventoryOpened = false;
                 isCraftingOpened = false;
+                isStoreOpened = false;
             }
             else
             {
@@ -312,6 +319,81 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
     //     return inventory.ContainsItem(item);
     // }
 
+    // Compatibility methods used by other systems
+    public bool HasItem(ItemSO item, int requiredAmount)
+    {
+        var all = GetAllItems();
+        foreach (var it in all)
+        {
+            if (it.item == item)
+            {
+                if (requiredAmount <= 0)
+                {
+                    return it.amount > 0;
+                }
+                return it.amount >= requiredAmount;
+            }
+        }
+        return false;
+    }
+
+    public void AddItem(ItemSO item, int amount)
+    {
+        if (item == null || amount <= 0) return;
+
+        int remaining = amount;
+
+        // First try to top up existing stacks
+        for (int i = 0; i < slots.Length && remaining > 0; i++)
+        {
+            var slotObj = slots[i];
+            if (slotObj == null) continue;
+
+            var slot = slotObj.GetComponent<InventorySlot>();
+            if (slot == null) continue;
+
+            if (slot.heldItem != null)
+            {
+                var invItem = slot.heldItem.GetComponent<InventoryItem>();
+                if (invItem != null && invItem.itemScriptableObject == item && invItem.stackCurrent < invItem.stackMax)
+                {
+                    int space = invItem.stackMax - invItem.stackCurrent;
+                    int toMove = Mathf.Min(space, remaining);
+                    invItem.stackCurrent += toMove;
+                    remaining -= toMove;
+                }
+            }
+        }
+
+        // Then create new stacks in empty slots
+        for (int i = 0; i < slots.Length && remaining > 0; i++)
+        {
+            var slotObj = slots[i];
+            if (slotObj == null) continue;
+
+            var slot = slotObj.GetComponent<InventorySlot>();
+            if (slot == null) continue;
+
+            if (slot.heldItem == null)
+            {
+                if (itemPrefab == null) break;
+
+                GameObject newItem = Instantiate(itemPrefab);
+                var invItem = newItem.GetComponent<InventoryItem>();
+                if (invItem == null) continue;
+                invItem.itemScriptableObject = item;
+                int put = Mathf.Min(remaining, item.maxStackSize);
+                invItem.stackCurrent = put;
+                newItem.transform.SetParent(slotObj.transform.parent.parent.GetChild(2));
+                newItem.transform.localScale = new Vector3(1, 1, 1);
+                slot.SetHeldItem(newItem);
+                remaining -= put;
+            }
+        }
+
+        HotBarItemChanged();
+    }
+
     // public void RemoveItem(ItemSO item)
     // {
     //     inventory.RemoveItem(item);
@@ -359,6 +441,20 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
         else
         {
             isCraftingOpened = true;
+            isStoreOpened = false;
+        }
+    }
+
+    public void OpenAndCloseStore()
+    {
+        if (isStoreOpened)
+        {
+            isStoreOpened = false;
+        }
+        else
+        {
+            isStoreOpened = true;
+            isCraftingOpened = false;
         }
     }
     
@@ -548,6 +644,37 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
                         else if (itemToDestroy.amount < itemScript.stackCurrent)
                         {
                             itemScript.stackCurrent -= itemToDestroy.amount;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    // Sell specified items from main inventory slots only (do not touch hotbar).
+    public void SellItems(List<ItemTypeAndAmount> itemsToSell)
+    {
+        if (itemsToSell == null || itemsToSell.Count == 0) return;
+
+        for (int i = 0; i < slots.Length; i++)
+        {
+            if (slots[i].GetComponent<InventorySlot>().heldItem != null)
+            {
+                InventorySlot slotScript = slots[i].GetComponent<InventorySlot>();
+                InventoryItem itemScript = slotScript.heldItem.GetComponent<InventoryItem>();
+
+                foreach (ItemTypeAndAmount itemToSell in itemsToSell)
+                {
+                    if (itemToSell.item == itemScript.itemScriptableObject)
+                    {
+                        if (itemToSell.amount >= itemScript.stackCurrent)
+                        {
+                            slotScript.heldItem = null;
+                            Destroy(itemScript.gameObject);
+                        }
+                        else if (itemToSell.amount < itemScript.stackCurrent)
+                        {
+                            itemScript.stackCurrent -= itemToSell.amount;
                         }
                     }
                 }
