@@ -13,7 +13,11 @@ MonoBehaviour:
   m_Name: Test
   m_EditorClassIdentifier: Sunspore::Sunspore.StoreRecipeSO
   recipeName: bank
+  recipeType: 1
   ingredients:
   - item: {fileID: 11400000, guid: d2005c8e1d84fefd0910a32a2aaa1198, type: 2}
     amount: 1
+  resultItem: []
+  description: omgg so much money
+  creditCost: 0
   creditReward: 50000

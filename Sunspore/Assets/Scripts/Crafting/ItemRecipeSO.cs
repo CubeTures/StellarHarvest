@@ -6,6 +6,8 @@ namespace Sunspore
     public class ItemRecipeSO : ScriptableObject
     {
         public string recipeName;
+        [TextArea]
+        public string description;
         public RecipeType recipeType;
         public ItemTypeAndAmount[] ingredients;
         public ItemTypeAndAmount[] resultItem;

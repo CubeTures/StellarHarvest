@@ -21,6 +21,12 @@ namespace Sunspore
         [SerializeField] Color craftButtonSelectedColor = Color.yellow;
         [SerializeField] Color craftButtonCraftableColor = Color.green;
 
+        [Header("Selected Recipe Preview")]
+        [SerializeField] UnityEngine.UI.Image previewIcon;
+        [SerializeField] TMPro.TMP_Text previewName;
+        [SerializeField] TMPro.TMP_Text previewDescription;
+        [SerializeField] GameObject previewContainer;
+
         private List<ItemTypeAndAmount> items = new List<ItemTypeAndAmount>();
 
         private void Awake()
@@ -33,6 +39,10 @@ namespace Sunspore
             {
                 Destroy(gameObject);
             }
+            // Ensure the preview image and texts are cleared on startup so the panel appears empty.
+            if (previewIcon != null) previewIcon.gameObject.SetActive(false);
+            if (previewName != null) previewName.text = "";
+            if (previewDescription != null) previewDescription.text = "";
         }
 
         private void OnEnable()
@@ -136,6 +146,55 @@ namespace Sunspore
             bool craftable = hasSelection && CanCraftRecipe(selectedRecipeSO);
             SetCraftButtonState(hasSelection, craftable);
             OnSelectionChanged?.Invoke(hasSelection, craftable);
+
+            UpdateSelectedPreview(selectedRecipeSO);
+        }
+
+        private void UpdateSelectedPreview(ItemRecipeSO recipeSO)
+        {
+            // Only update the preview contents; do not toggle the container visibility.
+            if (recipeSO == null)
+            {
+                if (previewIcon != null)
+                {
+                    previewIcon.sprite = null;
+                    previewIcon.gameObject.SetActive(false);
+                }
+                if (previewName != null) previewName.text = "";
+                if (previewDescription != null) previewDescription.text = "";
+                return;
+            }
+
+            ItemSO itemToShow = null;
+            if (recipeSO.resultItem != null && recipeSO.resultItem.Length > 0)
+            {
+                itemToShow = recipeSO.resultItem[0].item;
+            }
+            else if (recipeSO.ingredients != null && recipeSO.ingredients.Length > 0)
+            {
+                itemToShow = recipeSO.ingredients[0].item;
+            }
+
+            if (itemToShow != null)
+            {
+                if (previewIcon != null)
+                {
+                    previewIcon.sprite = itemToShow.icon;
+                    previewIcon.gameObject.SetActive(true);
+                }
+                if (previewName != null) previewName.text = recipeSO.recipeName ?? itemToShow.displayName;
+                if (previewDescription != null) previewDescription.text = !string.IsNullOrEmpty(recipeSO.description) ? recipeSO.description : (itemToShow.description ?? "");
+            }
+            else
+            {
+                if (previewIcon != null)
+                {
+                    previewIcon.sprite = null;
+                    previewIcon.gameObject.SetActive(false);
+                }
+                if (previewName != null) previewName.text = "";
+                if (previewDescription != null) previewDescription.text = "";
+            }
         }
 
         public void CraftSelectedRecipe()
@@ -148,6 +207,7 @@ namespace Sunspore
                 // After crafting, refresh UI and clear selection if recipe no longer craftable
                 selectedRecipeUI = null;
                 selectedRecipeSO = null;
+                UpdateSelectedPreview(null);
                 OnSelectionChanged?.Invoke(false, false);
                 SetCraftButtonState(false, false);
                 UpdateRecipeUI();

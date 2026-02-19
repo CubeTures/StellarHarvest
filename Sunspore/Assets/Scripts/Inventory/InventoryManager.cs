@@ -549,29 +549,59 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
 
     public void ItemPicked(GameObject pickedItem)
     {
-        GameObject emptySlot = null;
+        if (pickedItem == null) return;
 
-        for (int i = 0; i < slots.Length; i++)
+        var pickable = pickedItem.GetComponent<itemPickable>();
+        if (pickable == null || pickable.itemScriptableObject == null) return;
+
+        ItemSO pickedSO = pickable.itemScriptableObject;
+        int remaining = 1;
+
+        // First try to top up existing stacks in main inventory
+        for (int i = 0; i < slots.Length && remaining > 0; i++)
         {
             InventorySlot slot = slots[i].GetComponent<InventorySlot>();
+            if (slot == null) continue;
 
-            if (slot.heldItem == null)
+            if (slot.heldItem != null)
             {
-                emptySlot = slots[i];
-                break;
+                var invItem = slot.heldItem.GetComponent<InventoryItem>();
+                if (invItem != null && invItem.itemScriptableObject == pickedSO && invItem.stackCurrent < invItem.stackMax)
+                {
+                    int space = invItem.stackMax - invItem.stackCurrent;
+                    int toMove = Mathf.Min(space, remaining);
+                    invItem.stackCurrent += toMove;
+                    remaining -= toMove;
+                }
             }
         }
 
-        if (emptySlot != null)
+        // Then create new stack(s) in empty slots if needed
+        for (int i = 0; i < slots.Length && remaining > 0; i++)
         {
-            GameObject newItem = Instantiate(itemPrefab);
-            newItem.GetComponent<InventoryItem>().itemScriptableObject = pickedItem.GetComponent<itemPickable>().itemScriptableObject;
-            newItem.transform.SetParent(emptySlot.transform.parent.parent.GetChild(2));
-            newItem.GetComponent<InventoryItem>().stackCurrent = 1;
+            InventorySlot slot = slots[i].GetComponent<InventorySlot>();
+            if (slot == null) continue;
 
-            emptySlot.GetComponent<InventorySlot>().SetHeldItem(newItem);
-            newItem.transform.localScale = new Vector3(1, 1, 1);
+            if (slot.heldItem == null)
+            {
+                if (itemPrefab == null) break;
 
+                GameObject newItem = Instantiate(itemPrefab);
+                var invItem = newItem.GetComponent<InventoryItem>();
+                if (invItem == null) continue;
+                invItem.itemScriptableObject = pickedSO;
+                int put = Mathf.Min(remaining, pickedSO.maxStackSize);
+                invItem.stackCurrent = put;
+                newItem.transform.SetParent(slot.transform.parent.parent.GetChild(2));
+                newItem.transform.localScale = new Vector3(1, 1, 1);
+                slot.SetHeldItem(newItem);
+                remaining -= put;
+            }
+        }
+
+        // If we were able to collect the item, destroy the world object
+        if (remaining == 0)
+        {
             Destroy(pickedItem);
         }
     }
@@ -601,29 +631,7 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
     {
         foreach (ItemTypeAndAmount itemToCraft in itemsToCraft)
         {
-            GameObject emptySlot = null;
-
-            for (int i = 0; i < slots.Length; i++)
-            {
-                InventorySlot slot = slots[i].GetComponent<InventorySlot>();
-
-                if (slot.heldItem == null)
-                {
-                    emptySlot = slots[i];
-                    break;
-                }
-            }
-
-            if (emptySlot != null)
-            {
-                GameObject newItem = Instantiate(itemPrefab);
-                newItem.GetComponent<InventoryItem>().itemScriptableObject = itemToCraft.item;
-                newItem.transform.SetParent(emptySlot.transform.parent.parent.GetChild(2));
-                newItem.GetComponent<InventoryItem>().stackCurrent = itemToCraft.amount;
-
-                emptySlot.GetComponent<InventorySlot>().SetHeldItem(newItem);
-                newItem.transform.localScale = new Vector3(1, 1, 1);
-            }   
+            AddItem(itemToCraft.item, itemToCraft.amount);
         }
         for (int i = 0; i < slots.Length; i++)
         {

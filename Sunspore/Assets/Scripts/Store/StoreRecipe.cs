@@ -12,6 +12,7 @@ namespace Sunspore
         [SerializeField] GameObject itemIconPrefab;
         [SerializeField] GameObject equalIconPrefab;
         [SerializeField] float iconSpacing;
+        [SerializeField] Sprite coinSprite;
 
         private bool canProcess;
         [SerializeField] UnityEngine.UI.Image backgroundImage;
@@ -75,20 +76,86 @@ namespace Sunspore
             hLayout.childControlHeight = false;
             hLayout.childAlignment = TextAnchor.MiddleCenter;
 
-            for (int i = 0; i < storeSO.ingredients.Length; i++)
+            // If this is a buy recipe, show credits (cost) and/or ingredients -> equal -> results (like crafting)
+            if (storeSO.recipeType == StoreRecipeType.buy && storeSO.resultItem != null && storeSO.resultItem.Length > 0 && equalIconPrefab != null)
             {
-                GameObject newItemIcon = Instantiate(itemIconPrefab, transform);
-                newItemIcon.transform.GetChild(0).GetComponent<Image>().sprite = storeSO.ingredients[i].item.icon;
-                newItemIcon.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = storeSO.ingredients[i].amount.ToString();
-            }
+                // If a creditCost is specified, show it as a coin icon + value (falls back to text if no coin sprite)
+                if (storeSO.creditCost > 0)
+                {
+                    if (itemIconPrefab != null && coinSprite != null)
+                    {
+                        GameObject costIcon = Instantiate(itemIconPrefab, transform);
+                        var img = costIcon.transform.GetChild(0).GetComponent<Image>();
+                        var amt = costIcon.transform.GetChild(1).GetComponent<TextMeshProUGUI>();
+                        if (img != null) img.sprite = coinSprite;
+                        if (amt != null) amt.text = storeSO.creditCost.ToString();
+                    }
+                    else
+                    {
+                        GameObject costTextObj = new GameObject("CostText", typeof(RectTransform));
+                        costTextObj.transform.SetParent(transform);
+                        var costTxt = costTextObj.AddComponent<TextMeshProUGUI>();
+                        costTxt.text = $"Cost: {storeSO.creditCost}";
+                        costTxt.fontSize = 18;
+                        costTxt.alignment = TextAlignmentOptions.Center;
+                    }
+                }
 
-            // show credit reward as text instead of result icons
-            GameObject rewardTextObj = new GameObject("RewardText", typeof(RectTransform));
-            rewardTextObj.transform.SetParent(transform);
-            var txt = rewardTextObj.AddComponent<TextMeshProUGUI>();
-            txt.text = $"Credits: {storeSO.creditReward}";
-            txt.fontSize = 20;
-            txt.alignment = TextAlignmentOptions.Center;
+                // show any item ingredients (optional)
+                for (int i = 0; i < storeSO.ingredients.Length; i++)
+                {
+                    GameObject newItemIcon = Instantiate(itemIconPrefab, transform);
+                    newItemIcon.transform.GetChild(0).GetComponent<Image>().sprite = storeSO.ingredients[i].item.icon;
+                    newItemIcon.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = storeSO.ingredients[i].amount.ToString();
+                }
+
+                Instantiate(equalIconPrefab, transform);
+
+                for (int i = 0; i < storeSO.resultItem.Length; i++)
+                {
+                    GameObject newItemIcon = Instantiate(itemIconPrefab, transform);
+                    newItemIcon.transform.GetChild(0).GetComponent<Image>().sprite = storeSO.resultItem[i].item.icon;
+                    newItemIcon.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = storeSO.resultItem[i].amount.ToString();
+                }
+            }
+            else
+            {
+                // default / sell behavior: show ingredients and credit reward text
+                for (int i = 0; i < storeSO.ingredients.Length; i++)
+                {
+                    GameObject newItemIcon = Instantiate(itemIconPrefab, transform);
+                    newItemIcon.transform.GetChild(0).GetComponent<Image>().sprite = storeSO.ingredients[i].item.icon;
+                    newItemIcon.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = storeSO.ingredients[i].amount.ToString();
+                }
+
+                // insert equal icon before the reward (if available)
+                if (equalIconPrefab != null)
+                {
+                    Instantiate(equalIconPrefab, transform);
+                }
+
+                // show credit reward as a coin icon + value (falls back to text if no coin sprite)
+                if (storeSO.creditReward > 0)
+                {
+                    if (itemIconPrefab != null && coinSprite != null)
+                    {
+                        GameObject rewardIcon = Instantiate(itemIconPrefab, transform);
+                        var img = rewardIcon.transform.GetChild(0).GetComponent<Image>();
+                        var amt = rewardIcon.transform.GetChild(1).GetComponent<TextMeshProUGUI>();
+                        if (img != null) img.sprite = coinSprite;
+                        if (amt != null) amt.text = storeSO.creditReward.ToString();
+                    }
+                    else
+                    {
+                        GameObject rewardTextObj = new GameObject("RewardText", typeof(RectTransform));
+                        rewardTextObj.transform.SetParent(transform);
+                        var txt = rewardTextObj.AddComponent<TextMeshProUGUI>();
+                        txt.text = $"Credits: {storeSO.creditReward}";
+                        txt.fontSize = 20;
+                        txt.alignment = TextAlignmentOptions.Center;
+                    }
+                }
+            }
         }
     }
 }

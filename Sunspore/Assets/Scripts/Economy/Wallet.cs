@@ -29,7 +29,7 @@ public class Wallet : MonoBehaviour
                     Debug.LogWarning($"[Wallet] Failed to get next payment from Bank: {ex.Message}");
                 }
             }
-            creditsText.text = $"Credits: {amount}; Next Payment: {nextPayment}";
+            creditsText.text = $"{amount}";
         }
     }
 

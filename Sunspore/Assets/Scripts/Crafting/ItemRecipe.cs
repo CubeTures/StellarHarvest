@@ -55,9 +55,9 @@ namespace Sunspore
         {
             itemSO = newItemSO;
 
-            if (itemSO == null || itemSO.ingredients == null || itemSO.resultItem == null || itemIconPrefab == null || equalIconPrefab == null)
+            if (itemSO == null || itemSO.ingredients == null || itemSO.resultItem == null || itemIconPrefab == null)
             {
-                Debug.LogError("ItemRecipe: Missing references in UpdateRecipeUI.");
+                Debug.LogError("ItemRecipe: Missing references in UpdateRecipeUI. Ensure itemSO, ingredients, resultItem and itemIconPrefab are assigned.");
                 return;
             }
 
@@ -79,16 +79,51 @@ namespace Sunspore
 
             for (int i = 0; i < itemSO.ingredients.Length; i++)
             {
+                var ingredient = itemSO.ingredients[i];
+                if (ingredient == null || ingredient.item == null)
+                {
+                    Debug.LogWarning($"ItemRecipe: missing ingredient or item at index {i} in recipe '{itemSO.recipeName}'.");
+                    continue;
+                }
+
                 GameObject newItemIcon = Instantiate(itemIconPrefab, transform);
-                newItemIcon.transform.GetChild(0).GetComponent<Image>().sprite = itemSO.ingredients[i].item.icon;
-                newItemIcon.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = itemSO.ingredients[i].amount.ToString();
+                if (newItemIcon.transform.childCount > 0)
+                {
+                    var img = newItemIcon.transform.GetChild(0).GetComponent<Image>();
+                    if (img != null) img.sprite = ingredient.item.icon;
+                }
+                if (newItemIcon.transform.childCount > 1)
+                {
+                    var txt = newItemIcon.transform.GetChild(1).GetComponent<TextMeshProUGUI>();
+                    if (txt != null) txt.text = ingredient.amount.ToString();
+                }
             }
-            Instantiate(equalIconPrefab, transform);
+
+            if (equalIconPrefab != null)
+            {
+                Instantiate(equalIconPrefab, transform);
+            }
+
             for (int i = 0; i < itemSO.resultItem.Length; i++)
             {
+                var result = itemSO.resultItem[i];
+                if (result == null || result.item == null)
+                {
+                    Debug.LogWarning($"ItemRecipe: missing result or item at index {i} in recipe '{itemSO.recipeName}'.");
+                    continue;
+                }
+
                 GameObject newItemIcon = Instantiate(itemIconPrefab, transform);
-                newItemIcon.transform.GetChild(0).GetComponent<Image>().sprite = itemSO.resultItem[i].item.icon;
-                newItemIcon.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = itemSO.resultItem[i].amount.ToString();
+                if (newItemIcon.transform.childCount > 0)
+                {
+                    var img = newItemIcon.transform.GetChild(0).GetComponent<Image>();
+                    if (img != null) img.sprite = result.item.icon;
+                }
+                if (newItemIcon.transform.childCount > 1)
+                {
+                    var txt = newItemIcon.transform.GetChild(1).GetComponent<TextMeshProUGUI>();
+                    if (txt != null) txt.text = result.amount.ToString();
+                }
             }
         }
     }

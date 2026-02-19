@@ -12,10 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 82d9a8255bc232c44bfb5fe3e371f133, type: 3}
   m_Name: CraftingTest
   m_EditorClassIdentifier: Sunspore::Sunspore.ItemRecipeSO
-  recipeName: Boulder
+  recipeName: Preview Test
+  description: This is a current test to see how the preview looks
   recipeType: 0
   ingredients:
-  - item: {fileID: 11400000, guid: 3f643afe5712ec598b6263ea751800ec, type: 2}
+  - item: {fileID: 11400000, guid: d2005c8e1d84fefd0910a32a2aaa1198, type: 2}
     amount: 2
   resultItem:
   - item: {fileID: 11400000, guid: f61f4a1f886a7c698b1b4292546866c6, type: 2}
