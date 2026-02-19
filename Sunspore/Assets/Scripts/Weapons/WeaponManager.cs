@@ -16,7 +16,7 @@ namespace Sunspore
         [SerializeField] float knockback = 0f;
         [SerializeField] GameObject player;
 
-        public bool enabled = false;
+        public new bool enabled = false;
 
         private float lastAttackTime = -Mathf.Infinity;
         private Vector3 hitArea;
@@ -82,32 +82,13 @@ namespace Sunspore
             {
                 updateDirection();
             }
-
-            Collider[] hitEnemies = Physics.OverlapBox(
-                boxCenter,
-                hitArea,
-                boxRotation
-            );
-
-            foreach (var enemyCollider in hitEnemies)
-            {
-                var enemy = enemyCollider.GetComponent<Enemy>();
-                if (enemy != null)
-                {
-                    Debug.Log("enemy");
-                    Vector3 direction = (enemy.transform.position - boxCenter).normalized;
-                    Vector2 dir = new Vector2(direction.x, direction.z);
-                    //enemy.TakeDamage(damage, dir, knockback);
-                }
-            }
         }
 
         private void Attack()
         {
-            //Debug.Log(currDirection);
-
             // Find all enemies in range
             updateDirection();
+            Physics.SyncTransforms();
 
             if (attackBox != null)
             {
@@ -126,11 +107,8 @@ namespace Sunspore
                 boxRotation
             );
 
-            Debug.Log($"playerPosition: {player.transform.position}, boxCenter: {boxCenter}, currDirection: {currDirection}, enemies hit: {hitEnemies.Length}");
-
             foreach (var enemyCollider in hitEnemies)
             {
-                Debug.Log(enemyCollider.gameObject.name);
                 var enemy = enemyCollider.GetComponent<Enemy>();
                 if (enemy != null)
                 {

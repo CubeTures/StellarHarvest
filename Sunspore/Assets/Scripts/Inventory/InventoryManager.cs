@@ -73,6 +73,7 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
             else
             {
                 isInventoryOpened = true;
+                PlayerPrefManager.SetInventoryOpenCount(PlayerPrefManager.GetInventoryOpenCount() + 1);
             }
         }
     }
@@ -155,7 +156,7 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
                 }
                 if (invSlot != null && invSlot.heldItem != null && handParent != null)
                 {
-                    Debug.Log("we are in");
+                    // Debug.Log("we are in");
                     var heldInvItem = invSlot.heldItem.GetComponent<InventoryItem>();
                     if (heldInvItem != null)
                     {
@@ -366,7 +367,7 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
             isCraftingOpened = true;
         }
     }
-    
+
     public void OnPointerDown(PointerEventData eventData)
     {
         if (eventData.button == PointerEventData.InputButton.Left)
@@ -528,7 +529,7 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
 
                 emptySlot.GetComponent<InventorySlot>().SetHeldItem(newItem);
                 newItem.transform.localScale = new Vector3(1, 1, 1);
-            }   
+            }
         }
         for (int i = 0; i < slots.Length; i++)
         {

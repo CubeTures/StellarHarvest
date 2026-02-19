@@ -22,25 +22,25 @@ namespace Sunspore
         {
             base.Start();
             _animator = GetComponent<Animator>();
-            Debug.Log("Pit Snapper created!");
+            // Debug.Log("Pit Snapper created!");
         }
 
         protected override void OnSeedStage()
         {
             base.OnSeedStage();
-            Debug.Log("Plant is now a seed - no abilities");
+            // Debug.Log("Plant is now a seed - no abilities");
         }
 
         protected override void OnJuvenileStage()
         {
             base.OnJuvenileStage();
-            Debug.Log("Plant is now juvenile - limited abilities active");
+            // Debug.Log("Plant is now juvenile - limited abilities active");
         }
 
         protected override void OnFullyGrownStage()
         {
             base.OnFullyGrownStage();
-            Debug.Log("Plant is now fully grown - full abilities active");
+            // Debug.Log("Plant is now fully grown - full abilities active");
         }
 
         protected override void UpdateJuvenileAbilities()
@@ -69,7 +69,7 @@ namespace Sunspore
 
         private void UseJuvenileAbility()
         {
-            Debug.Log($"Juvenile ability activated with power: {juvenileAbilityPower}");
+            // Debug.Log($"Juvenile ability activated with power: {juvenileAbilityPower}");
 
             Collider[] nearbyObjects = Physics.OverlapSphere(transform.position, juvenileAbilityRange);
             foreach (Collider col in nearbyObjects)
@@ -85,7 +85,7 @@ namespace Sunspore
 
         private void UseFullAbility()
         {
-            Debug.Log($"Full ability activated with power: {fullyGrownAbilityPower}");
+            // Debug.Log($"Full ability activated with power: {fullyGrownAbilityPower}");
 
             Collider[] nearbyObjects = Physics.OverlapSphere(transform.position, fullyGrownAbilityRange);
             foreach (Collider col in nearbyObjects)
@@ -102,7 +102,7 @@ namespace Sunspore
         protected override void Harvest()
         {
             base.Harvest();
-            Debug.Log("Pit Snapper harvested!");
+            // Debug.Log("Pit Snapper harvested!");
         }
 
         private void OnDrawGizmosSelected()
