@@ -1,4 +1,5 @@
 using UnityEngine;
+using TMPro;
 using UnityEngine.UI;
 
 namespace Sunspore
@@ -7,7 +8,7 @@ namespace Sunspore
     {
         public ItemSO itemScriptableObject;
         [SerializeField] Image iconImage;
-        [SerializeField] Text stackText;
+        [SerializeField] TMP_Text stackText;
 
         public int stackCurrent = 1;
         public int stackMax;

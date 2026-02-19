@@ -4,6 +4,8 @@ using UnityEngine;
  public class ItemSO : ScriptableObject
 {
     public string displayName;
+    [TextArea]
+    public string description;
     public Sprite icon;
     public bool stackable;
     public int maxStackSize;

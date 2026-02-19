@@ -10,20 +10,21 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
     public static InventoryManager Instance { get; private set; }
     private List<ItemTypeAndAmount> items = new List<ItemTypeAndAmount>();
     Inventory inventory;
-    [SerializeField] List<ItemSO> allItemScriptableObjects = new List<ItemSO>();
-
     [SerializeField] Hotbar hotbar;
     [SerializeField] GameObject craftingParent;
     [SerializeField] GameObject inventoryParent;
+    [SerializeField] GameObject storeParent;
     [SerializeField] Transform handParent;
     [SerializeField] GameObject itemPrefab;
     [SerializeField] Camera cam;
 
-    [SerializeField] GameObject[] slots = new GameObject[12];
-    [SerializeField] GameObject[] hotbarSlots = new GameObject[3];
+    [SerializeField] GameObject[] slots = new GameObject[28];
+    [SerializeField] GameObject[] hotbarSlots = new GameObject[7];
+    [SerializeField] WeaponManager weaponManager;
 
     bool isCraftingOpened;
     bool isInventoryOpened;
+    bool isStoreOpened;
     int selectedHotbarIndex = 0;
     GameObject draggedObject;
     GameObject lastItemSlot;
@@ -53,6 +54,10 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
         CheckForHotbarInput();
         craftingParent.SetActive(isCraftingOpened);
         inventoryParent.SetActive(isInventoryOpened);
+        if (storeParent != null)
+        {
+            storeParent.SetActive(isStoreOpened);
+        }
         // // navigate inventory
         // if (Input.GetAxis("Mouse ScrollWheel") is float axis)
         // {
@@ -69,6 +74,7 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
             {
                 isInventoryOpened = false;
                 isCraftingOpened = false;
+                isStoreOpened = false;
             }
             else
             {
@@ -100,6 +106,21 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
             selectedHotbarIndex = 3;
             HotBarItemChanged();
         }
+        else if (Input.GetKeyDown(KeyCode.Alpha5))
+        {
+            selectedHotbarIndex = 4;
+            HotBarItemChanged();
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha6))
+        {
+            selectedHotbarIndex = 5;
+            HotBarItemChanged();
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha7))
+        {
+            selectedHotbarIndex = 6;
+            HotBarItemChanged();
+        }
     }
 
     private void HotBarItemChanged()
@@ -125,12 +146,12 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
             }
         }
 
-        if (WeaponManager.Instance != null)
+        if (weaponManager != null)
         {
             var sel = GetSelectedItem();
             if (sel == null || !sel.weapon)
             {
-                WeaponManager.Instance.enabled = false;
+                weaponManager.enabled = false;
             }
         }
 
@@ -148,15 +169,15 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
                 var selected = GetSelectedItem();
                 if (selected != null && selected.weapon)
                 {
-                    if (WeaponManager.Instance != null)
+                    if (weaponManager != null)
                     {
-                        WeaponManager.Instance.SetWeaponStats();
-                        WeaponManager.Instance.enabled = true;
+                        weaponManager.SetWeaponStats();
+                        weaponManager.enabled = true;
                     }
                 }
                 if (invSlot != null && invSlot.heldItem != null && handParent != null)
                 {
-                    // Debug.Log("we are in");
+                    Debug.Log("we are in");
                     var heldInvItem = invSlot.heldItem.GetComponent<InventoryItem>();
                     if (heldInvItem != null)
                     {
@@ -289,25 +310,6 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
         return items;
     }
 
-    public bool HasItem(ItemSO item, int count)
-    {
-        if (item == null || count <= 0)
-            return false;
-
-        List<ItemTypeAndAmount> allItems = GetAllItems();
-
-        foreach (ItemTypeAndAmount entry in allItems)
-        {
-            if (entry.item == item)
-            {
-                return entry.amount >= count;
-            }
-        }
-
-        return false;
-    }
-
-
     // public void AddItem(ItemSO item)
     // {
     //     inventory.AddItem(item);
@@ -317,6 +319,81 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
     // {
     //     return inventory.ContainsItem(item);
     // }
+
+    // Compatibility methods used by other systems
+    public bool HasItem(ItemSO item, int requiredAmount)
+    {
+        var all = GetAllItems();
+        foreach (var it in all)
+        {
+            if (it.item == item)
+            {
+                if (requiredAmount <= 0)
+                {
+                    return it.amount > 0;
+                }
+                return it.amount >= requiredAmount;
+            }
+        }
+        return false;
+    }
+
+    public void AddItem(ItemSO item, int amount)
+    {
+        if (item == null || amount <= 0) return;
+
+        int remaining = amount;
+
+        // First try to top up existing stacks
+        for (int i = 0; i < slots.Length && remaining > 0; i++)
+        {
+            var slotObj = slots[i];
+            if (slotObj == null) continue;
+
+            var slot = slotObj.GetComponent<InventorySlot>();
+            if (slot == null) continue;
+
+            if (slot.heldItem != null)
+            {
+                var invItem = slot.heldItem.GetComponent<InventoryItem>();
+                if (invItem != null && invItem.itemScriptableObject == item && invItem.stackCurrent < invItem.stackMax)
+                {
+                    int space = invItem.stackMax - invItem.stackCurrent;
+                    int toMove = Mathf.Min(space, remaining);
+                    invItem.stackCurrent += toMove;
+                    remaining -= toMove;
+                }
+            }
+        }
+
+        // Then create new stacks in empty slots
+        for (int i = 0; i < slots.Length && remaining > 0; i++)
+        {
+            var slotObj = slots[i];
+            if (slotObj == null) continue;
+
+            var slot = slotObj.GetComponent<InventorySlot>();
+            if (slot == null) continue;
+
+            if (slot.heldItem == null)
+            {
+                if (itemPrefab == null) break;
+
+                GameObject newItem = Instantiate(itemPrefab);
+                var invItem = newItem.GetComponent<InventoryItem>();
+                if (invItem == null) continue;
+                invItem.itemScriptableObject = item;
+                int put = Mathf.Min(remaining, item.maxStackSize);
+                invItem.stackCurrent = put;
+                newItem.transform.SetParent(slotObj.transform.parent.parent.GetChild(2));
+                newItem.transform.localScale = new Vector3(1, 1, 1);
+                slot.SetHeldItem(newItem);
+                remaining -= put;
+            }
+        }
+
+        HotBarItemChanged();
+    }
 
     // public void RemoveItem(ItemSO item)
     // {
@@ -365,11 +442,29 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
         else
         {
             isCraftingOpened = true;
+            isStoreOpened = false;
+        }
+    }
+
+    public void OpenAndCloseStore()
+    {
+        if (isStoreOpened)
+        {
+            isStoreOpened = false;
+        }
+        else
+        {
+            isStoreOpened = true;
+            isCraftingOpened = false;
         }
     }
 
     public void OnPointerDown(PointerEventData eventData)
     {
+        //if(GetSelectedItem() && GetSelectedItem().weapon)
+        //{
+        //    weaponManager.enabled = false;
+        //}
         if (eventData.button == PointerEventData.InputButton.Left)
         {
             GameObject clickedObject = eventData.pointerCurrentRaycast.gameObject;
@@ -455,29 +550,59 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
 
     public void ItemPicked(GameObject pickedItem)
     {
-        GameObject emptySlot = null;
+        if (pickedItem == null) return;
 
-        for (int i = 0; i < slots.Length; i++)
+        var pickable = pickedItem.GetComponent<itemPickable>();
+        if (pickable == null || pickable.itemScriptableObject == null) return;
+
+        ItemSO pickedSO = pickable.itemScriptableObject;
+        int remaining = 1;
+
+        // First try to top up existing stacks in main inventory
+        for (int i = 0; i < slots.Length && remaining > 0; i++)
         {
             InventorySlot slot = slots[i].GetComponent<InventorySlot>();
+            if (slot == null) continue;
 
-            if (slot.heldItem == null)
+            if (slot.heldItem != null)
             {
-                emptySlot = slots[i];
-                break;
+                var invItem = slot.heldItem.GetComponent<InventoryItem>();
+                if (invItem != null && invItem.itemScriptableObject == pickedSO && invItem.stackCurrent < invItem.stackMax)
+                {
+                    int space = invItem.stackMax - invItem.stackCurrent;
+                    int toMove = Mathf.Min(space, remaining);
+                    invItem.stackCurrent += toMove;
+                    remaining -= toMove;
+                }
             }
         }
 
-        if (emptySlot != null)
+        // Then create new stack(s) in empty slots if needed
+        for (int i = 0; i < slots.Length && remaining > 0; i++)
         {
-            GameObject newItem = Instantiate(itemPrefab);
-            newItem.GetComponent<InventoryItem>().itemScriptableObject = pickedItem.GetComponent<itemPickable>().itemScriptableObject;
-            newItem.transform.SetParent(emptySlot.transform.parent.parent.GetChild(2));
-            newItem.GetComponent<InventoryItem>().stackCurrent = 1;
+            InventorySlot slot = slots[i].GetComponent<InventorySlot>();
+            if (slot == null) continue;
 
-            emptySlot.GetComponent<InventorySlot>().SetHeldItem(newItem);
-            newItem.transform.localScale = new Vector3(1, 1, 1);
+            if (slot.heldItem == null)
+            {
+                if (itemPrefab == null) break;
 
+                GameObject newItem = Instantiate(itemPrefab);
+                var invItem = newItem.GetComponent<InventoryItem>();
+                if (invItem == null) continue;
+                invItem.itemScriptableObject = pickedSO;
+                int put = Mathf.Min(remaining, pickedSO.maxStackSize);
+                invItem.stackCurrent = put;
+                newItem.transform.SetParent(slot.transform.parent.parent.GetChild(2));
+                newItem.transform.localScale = new Vector3(1, 1, 1);
+                slot.SetHeldItem(newItem);
+                remaining -= put;
+            }
+        }
+
+        // If we were able to collect the item, destroy the world object
+        if (remaining == 0)
+        {
             Destroy(pickedItem);
         }
     }
@@ -507,29 +632,7 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
     {
         foreach (ItemTypeAndAmount itemToCraft in itemsToCraft)
         {
-            GameObject emptySlot = null;
-
-            for (int i = 0; i < slots.Length; i++)
-            {
-                InventorySlot slot = slots[i].GetComponent<InventorySlot>();
-
-                if (slot.heldItem == null)
-                {
-                    emptySlot = slots[i];
-                    break;
-                }
-            }
-
-            if (emptySlot != null)
-            {
-                GameObject newItem = Instantiate(itemPrefab);
-                newItem.GetComponent<InventoryItem>().itemScriptableObject = itemToCraft.item;
-                newItem.transform.SetParent(emptySlot.transform.parent.parent.GetChild(2));
-                newItem.GetComponent<InventoryItem>().stackCurrent = itemToCraft.amount;
-
-                emptySlot.GetComponent<InventorySlot>().SetHeldItem(newItem);
-                newItem.transform.localScale = new Vector3(1, 1, 1);
-            }
+            AddItem(itemToCraft.item, itemToCraft.amount);
         }
         for (int i = 0; i < slots.Length; i++)
         {
@@ -556,31 +659,35 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
             }
         }
     }
-
-    public void AddItem(ItemSO itemToAdd, int amount)
+    
+    // Sell specified items from main inventory slots only (do not touch hotbar).
+    public void SellItems(List<ItemTypeAndAmount> itemsToSell)
     {
-        GameObject emptySlot = null;
+        if (itemsToSell == null || itemsToSell.Count == 0) return;
 
         for (int i = 0; i < slots.Length; i++)
         {
-            InventorySlot slot = slots[i].GetComponent<InventorySlot>();
-
-            if (slot.heldItem == null)
+            if (slots[i].GetComponent<InventorySlot>().heldItem != null)
             {
-                emptySlot = slots[i];
-                break;
+                InventorySlot slotScript = slots[i].GetComponent<InventorySlot>();
+                InventoryItem itemScript = slotScript.heldItem.GetComponent<InventoryItem>();
+
+                foreach (ItemTypeAndAmount itemToSell in itemsToSell)
+                {
+                    if (itemToSell.item == itemScript.itemScriptableObject)
+                    {
+                        if (itemToSell.amount >= itemScript.stackCurrent)
+                        {
+                            slotScript.heldItem = null;
+                            Destroy(itemScript.gameObject);
+                        }
+                        else if (itemToSell.amount < itemScript.stackCurrent)
+                        {
+                            itemScript.stackCurrent -= itemToSell.amount;
+                        }
+                    }
+                }
             }
-        }
-
-        if (emptySlot != null)
-        {
-            GameObject newItem = Instantiate(itemPrefab);
-            newItem.GetComponent<InventoryItem>().itemScriptableObject = itemToAdd;
-            newItem.transform.SetParent(emptySlot.transform.parent.parent.GetChild(2));
-            newItem.GetComponent<InventoryItem>().stackCurrent = amount;
-
-            emptySlot.GetComponent<InventorySlot>().SetHeldItem(newItem);
-            newItem.transform.localScale = new Vector3(1, 1, 1);
         }
     }
 }
