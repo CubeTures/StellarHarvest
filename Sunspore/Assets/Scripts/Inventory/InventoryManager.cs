@@ -79,6 +79,7 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
             else
             {
                 isInventoryOpened = true;
+                PlayerPrefManager.SetInventoryOpenCount(PlayerPrefManager.GetInventoryOpenCount() + 1);
             }
         }
     }
@@ -457,7 +458,7 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
             isCraftingOpened = false;
         }
     }
-    
+
     public void OnPointerDown(PointerEventData eventData)
     {
         //if(GetSelectedItem() && GetSelectedItem().weapon)

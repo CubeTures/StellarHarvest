@@ -72,7 +72,7 @@ namespace Sunspore
                 agent.SetDestination(targetPlant.position);
             }
 
-            if(targetPlant == pathfinding.getPlayerTransform())
+            if (targetPlant == pathfinding.getPlayerTransform())
             {
                 //gameObject.layer = 0;
                 attackingPlayer = true;
@@ -103,21 +103,21 @@ namespace Sunspore
                     lastAttackTime = Time.time;
                 }
             }
-        }
 
-        void Eat(Plant plant)
-        {
-            // TODO different things depending on health and type etc
-            // maybe take damage as well
+            void Eat(Plant plant)
+            {
+                // TODO different things depending on health and type etc
+                // maybe take damage as well
 
-            // may need to be a coroutine or some other loop
+                // may need to be a coroutine or some other loop
 
-            plant.TakeDamage(damage);
-        }
+                plant.TakeDamage(damage);
+            }
 
-        void Attack(Player player)
-        {
-            player.TakeDamage(damage);
+            void Attack(Player player)
+            {
+                player.TakeDamage(damage);
+            }
         }
     }
 }
