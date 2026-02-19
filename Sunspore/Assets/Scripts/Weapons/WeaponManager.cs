@@ -86,10 +86,9 @@ namespace Sunspore
 
         private void Attack()
         {
-            //Debug.Log(currDirection);
-
             // Find all enemies in range
             updateDirection();
+            Physics.SyncTransforms();
 
             if (attackBox != null)
             {
@@ -114,7 +113,8 @@ namespace Sunspore
                 if (enemy != null)
                 {
                     Vector3 direction = (enemy.transform.position - boxCenter).normalized;
-                    enemy.TakeDamage(damage, direction, knockback);
+                    Vector2 dir = new Vector2 (direction.x, direction.z);
+                    enemy.TakeDamage(damage, dir, knockback);
                 }
             }
         }
