@@ -12,7 +12,7 @@ namespace Sunspore
         [SerializeField] int damage = 25;
         [SerializeField] float attackCooldown = 0.5f;
         [SerializeField] float attackDuration = 0.2f;
-        [SerializeField] float range = 2.5f;
+        [SerializeField] float range = 2f;
         [SerializeField] float knockback = 0f;
         [SerializeField] GameObject player;
 
@@ -27,7 +27,8 @@ namespace Sunspore
 
         private Quaternion boxRotation;
         private Vector3 boxCenter;
-        private GameObject attackBox = null;
+        [SerializeField] private GameObject attackBoxPrefab;
+        private GameObject attackBox;
 
         private Weapon weapon;
 
@@ -47,25 +48,17 @@ namespace Sunspore
         private void Start()
         {
             hitArea = new Vector3(1.0f, 1.0f, range);
-            directions[0] = new Vector3(1.0f, 0.0f, 0.0f);
-            directions[1] = new Vector3(-1.0f, 0.0f, 0.0f);
-            directions[2] = new Vector3(0.0f, 0.0f, -1.0f);
-            directions[3] = new Vector3(0.0f, 0.0f, 1.0f);
+            directions[0] = new Vector3(0.0f, 0.0f, -1.0f);
+            directions[1] = new Vector3(1.0f, 0.0f, 0.0f);
+            directions[2] = new Vector3(0.0f, 0.0f, 1.0f);
+            directions[3] = new Vector3(-1.0f, 0.0f, 0.0f);
             offset = range / 2;
 
             player = GameObject.FindGameObjectWithTag("Player");
 
-            if (attackBox == null)
-            {
-                attackBox = GameObject.CreatePrimitive(PrimitiveType.Cube);
-                Destroy(attackBox.GetComponent<Collider>());
-            }
-
-            if (attackBox != null)
-            {
-                attackBox.transform.localScale = hitArea;
-                attackBox.SetActive(false);
-            }
+            attackBox = Instantiate(attackBoxPrefab, transform);
+            attackBox.transform.localScale = hitArea * 0.5f;
+            attackBox.SetActive(false);
         }
 
         private void Update()
@@ -95,7 +88,7 @@ namespace Sunspore
                 var renderer = attackBox.GetComponent<Renderer>();
                 if (renderer != null)
                 {
-                    renderer.material.color = Color.red;
+                    renderer.material.color = PreserveAlpha(renderer.material.color, Color.red);
                 }
                 
                 Invoke(nameof(StopAttacking), attackDuration);
@@ -135,7 +128,7 @@ namespace Sunspore
             var renderer = attackBox.GetComponent<Renderer>();
             if (renderer != null)
             {
-                renderer.material.color = Color.gray;
+                renderer.material.color = PreserveAlpha(renderer.material.color, Color.gray);
             }
         }
 
@@ -164,6 +157,11 @@ namespace Sunspore
         public void SetWeaponStats()
         {
 
+        }
+
+        private Color PreserveAlpha(Color original, Color next)
+        {
+            return new Color(next.r, next.g, next.b, original.a);
         }
     }
 }

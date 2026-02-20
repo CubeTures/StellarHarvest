@@ -27,7 +27,7 @@ namespace Sunspore
         void Start()
         {
             degPerSec = 360f / dayLengthSeconds;
-            spawner = GameObject.Find("EnemySpawner").GetComponent<EnemySpawner>();
+            spawner = GameObject.Find("Enemy Spawner").GetComponent<EnemySpawner>();
             Light = GameObject.Find("Directional Light");
             timeSelector = GameObject.Find("Dropdown").GetComponent<TMP_Dropdown>();
             gm = GameManager.gm;

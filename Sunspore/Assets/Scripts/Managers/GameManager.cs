@@ -98,6 +98,7 @@ public class GameManager : MonoBehaviour
 
             // Show pause menu
             pauseMenu.SetActive(true);
+            Debug.Log("show pause menu");
 
             // Disable camera movement
             if (_player != null)
