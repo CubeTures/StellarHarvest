@@ -1233,6 +1233,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 99a83b659b5cfdf57b90e01c6218bc2d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Sunspore::Wallet
+--- !u!114 &663981459 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4278114211204980513, guid: 906065912e6b61a45858656fdfb13bd3, type: 3}
+  m_PrefabInstance: {fileID: 663981457}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7086f03c4ba0e264a84157c45d241f4b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Sunspore.Managers::GameManager
 --- !u!1 &776884074
 GameObject:
   m_ObjectHideFlags: 0
@@ -2195,8 +2206,16 @@ PrefabInstance:
       value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 7977193351103050734, guid: 604f83d99ad6df74fbf8070044eae5a8, type: 3}
+      propertyPath: m_ActionEvents.Array.data[19].m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7977193351103050734, guid: 604f83d99ad6df74fbf8070044eae5a8, type: 3}
       propertyPath: m_ActionEvents.Array.data[19].m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
+      objectReference: {fileID: 663981459}
+    - target: {fileID: 7977193351103050734, guid: 604f83d99ad6df74fbf8070044eae5a8, type: 3}
+      propertyPath: m_ActionEvents.Array.data[19].m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: TogglePause
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
