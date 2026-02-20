@@ -459,19 +459,6 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
         }
     }
 
-    public void OpenAndCloseStore()
-    {
-        if (isStoreOpened)
-        {
-            isStoreOpened = false;
-        }
-        else
-        {
-            isStoreOpened = true;
-            isCraftingOpened = false;
-        }
-    }
-
     public void OnPointerDown(PointerEventData eventData)
     {
         //if(GetSelectedItem() && GetSelectedItem().weapon)
