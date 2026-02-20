@@ -3562,8 +3562,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Sunspore.Managers::GameManager
   postProcessingVolume: {fileID: 473507285}
-  GUI: {fileID: 31841851}
-  UICredits: {fileID: 1483331937}
   pauseMenu: {fileID: 1893452483}
   _MainMenu: {fileID: 1210224750}
   menuTitleText: {fileID: 549039775}
@@ -5608,7 +5606,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 54655185379349257, guid: f15834458f6d1ae4fb764563e5e7f48b, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 0.04
       objectReference: {fileID: 0}
     - target: {fileID: 54655185379349257, guid: f15834458f6d1ae4fb764563e5e7f48b, type: 3}
       propertyPath: m_LocalPosition.z
