@@ -909,6 +909,11 @@ Transform:
   - {fileID: 527113169}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &469599732 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5651167634825025194, guid: 604f83d99ad6df74fbf8070044eae5a8, type: 3}
+  m_PrefabInstance: {fileID: 2061701908664636940}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &473507285
 GameObject:
   m_ObjectHideFlags: 0
@@ -1089,6 +1094,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Canvas
       objectReference: {fileID: 0}
+    - target: {fileID: 1740413732223974986, guid: 906065912e6b61a45858656fdfb13bd3, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3262748218315666209, guid: 906065912e6b61a45858656fdfb13bd3, type: 3}
       propertyPath: stackMax
       value: 1
@@ -1205,6 +1214,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7067304971246511516, guid: 906065912e6b61a45858656fdfb13bd3, type: 3}
+      propertyPath: dayLengthSeconds
+      value: 15
+      objectReference: {fileID: 0}
     - target: {fileID: 7210376080770922345, guid: 906065912e6b61a45858656fdfb13bd3, type: 3}
       propertyPath: range
       value: 2
@@ -1221,6 +1234,10 @@ PrefabInstance:
       propertyPath: startingAmount
       value: 50000
       objectReference: {fileID: 0}
+    - target: {fileID: 9154883875026680414, guid: 906065912e6b61a45858656fdfb13bd3, type: 3}
+      propertyPath: player
+      value: 
+      objectReference: {fileID: 469599732}
     - target: {fileID: 9154883875026680414, guid: 906065912e6b61a45858656fdfb13bd3, type: 3}
       propertyPath: dayNightManager
       value: 
