@@ -17,6 +17,7 @@ namespace Sunspore
 
         private void Start()
         {
+            player = GameObject.FindGameObjectWithTag("Player");
             enemiesPerSecond = baseWaveAmount / (dayNightManager.dayLengthSeconds / 2);
             waveAmount = baseWaveAmount;
         }
