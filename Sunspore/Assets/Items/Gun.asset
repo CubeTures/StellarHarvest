@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b55df8fc0627f99cbf602cf22f90418, type: 3}
+  m_Name: Gun
+  m_EditorClassIdentifier: Sunspore::InventoryItem
+  displayName: Gun
+  description: 
+  icon: {fileID: 21300000, guid: 4cb82e7813253df4785eb33cffcb4ff0, type: 3}
+  stackable: 0
+  maxStackSize: 1
+  placeable: 0
+  prefab: {fileID: 1868505393542001856, guid: bf6139e97e40f204680b706db42d1433, type: 3}
+  weapon: 1
+  sellPrice: 100

@@ -47,7 +47,7 @@ namespace Sunspore
                 if (prevTimeOfDay > timeOfDay)
                 {
                     days++;
-                    Debug.Log("day");
+                    //Debug.Log("day");
                     spawner.spawning = false;
                     // Debug.Log("Days: " + days);
                 }
@@ -55,7 +55,7 @@ namespace Sunspore
                 if (prevTimeOfDay < 0.5f && timeOfDay >= 0.5f)
                 {
                     nights++;
-                    Debug.Log("night");
+                    //Debug.Log("night");
                     spawner.SetEnemiesPerWave();
                     spawner.spawning = true;
                     // Debug.Log("Nights: " + nights);

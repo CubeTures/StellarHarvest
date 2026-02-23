@@ -171,7 +171,7 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
                 {
                     if (weaponManager != null)
                     {
-                        weaponManager.SetWeaponStats();
+                        weaponManager.SetWeaponStats(selected.prefab);
                         weaponManager.enabled = true;
                     }
                 }

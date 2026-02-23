@@ -1227,6 +1227,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 5205316236799757187, guid: c174272be9b777643925865b0a8962de, type: 3}
     - target: {fileID: 7210376080770922345, guid: 906065912e6b61a45858656fdfb13bd3, type: 3}
+      propertyPath: bulletPrefab
+      value: 
+      objectReference: {fileID: 7437182469646719332, guid: 6765f237a9f3f7341bf8f7b003107c0f, type: 3}
+    - target: {fileID: 7210376080770922345, guid: 906065912e6b61a45858656fdfb13bd3, type: 3}
       propertyPath: attackBoxPrefab
       value: 
       objectReference: {fileID: 5205316236799757187, guid: c174272be9b777643925865b0a8962de, type: 3}
