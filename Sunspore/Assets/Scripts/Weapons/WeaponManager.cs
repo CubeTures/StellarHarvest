@@ -8,25 +8,29 @@ namespace Sunspore
     {
         public static WeaponManager Instance { get; private set; }
 
-        [SerializeField] string waponName = "default";
+        [SerializeField] string weaponName = "default";
         [SerializeField] int damage = 25;
         [SerializeField] float attackCooldown = 0.5f;
         [SerializeField] float attackDuration = 0.2f;
         [SerializeField] float range = 2f;
         [SerializeField] float knockback = 0f;
         [SerializeField] GameObject player;
+        [SerializeField] public Sprite weaponSprite;
+        [SerializeField] public Animation attackAnimation;
+        [SerializeField] public bool melee = false;
+        [SerializeField] public bool ranged = false;
 
         public new bool enabled = false;
 
         private float lastAttackTime = -Mathf.Infinity;
         private Vector3 hitArea;
+        private Quaternion boxRotation;
+        private Vector3 boxCenter;
         private float offset;
 
         private Vector3[] directions = new Vector3[4];
         private Vector3 currDirection = Vector3.zero;
-
-        private Quaternion boxRotation;
-        private Vector3 boxCenter;
+        
         [SerializeField] private GameObject attackBoxPrefab;
         private GameObject attackBox;
 
@@ -65,7 +69,8 @@ namespace Sunspore
         {
             if (enabled && !EventSystem.current.IsPointerOverGameObject() && Input.GetMouseButtonDown(0) && Time.time >= lastAttackTime + attackCooldown)
             {
-                Attack();
+                Vector3 mouseWorldPos = GetMouseWorldPosition();
+                Attack(mouseWorldPos);
                 lastAttackTime = Time.time;
             }
 
@@ -77,7 +82,22 @@ namespace Sunspore
             }
         }
 
-        private void Attack()
+        private Vector3 GetMouseWorldPosition()
+        {
+            Vector3 mouseScreenPos = Input.mousePosition;
+            Ray ray = Camera.main.ScreenPointToRay(mouseScreenPos);
+            if (Physics.Raycast(ray, out RaycastHit hit, 100f, LayerMask.GetMask("Ground")))
+            {
+                return hit.point;
+            }
+            else
+            {
+                float t = -ray.origin.y / ray.direction.y;
+                return ray.origin + ray.direction * t;
+            }
+        }
+
+        private void Attack(Vector3 mouseWorldPos)
         {
             // Find all enemies in range
             updateDirection();
@@ -94,22 +114,10 @@ namespace Sunspore
                 Invoke(nameof(StopAttacking), attackDuration);
             }
 
-            Collider[] hitEnemies = Physics.OverlapBox(
-                boxCenter,
-                hitArea,
-                boxRotation
-            );
-
-            foreach (var enemyCollider in hitEnemies)
-            {
-                var enemy = enemyCollider.GetComponent<Enemy>();
-                if (enemy != null)
-                {
-                    Vector3 direction = (enemy.transform.position - boxCenter).normalized;
-                    Vector2 dir = new Vector2 (direction.x, direction.z);
-                    enemy.TakeDamage(damage, dir, knockback);
-                }
-            }
+            Vector3 playerPos = player.transform.position;
+            mouseWorldPos.y = 1.5f;
+            Vector3 mouseDir = (mouseWorldPos - playerPos).normalized;
+            weapon.Attack(boxCenter, hitArea, boxRotation, mouseDir, playerPos);
         }
 
         //private void OnDrawGizmos()
@@ -154,9 +162,28 @@ namespace Sunspore
             }
         }
 
-        public void SetWeaponStats()
+        public void SetWeaponStats(GameObject weaponPrefab)
         {
+            weapon = weaponPrefab.GetComponent<Weapon>();
+            weaponName = weapon.weaponName;
+            damage = weapon.damage;
+            attackCooldown = weapon.attackCooldown;
+            attackDuration = weapon.attackDuration;
+            range = weapon.range;
+            knockback = weapon.knockback;
+            weaponSprite = weapon.weaponSprite;
+            attackAnimation = weapon.attackAnimation;
+            melee = weapon.melee;
+            ranged = weapon.ranged;
 
+            //if (!melee)
+            //{
+            //    attackBox.SetActive(false);
+            //}
+            //else
+            //{
+            //    attackBox.SetActive(true);
+            //}
         }
 
         private Color PreserveAlpha(Color original, Color next)
