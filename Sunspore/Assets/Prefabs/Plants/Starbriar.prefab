@@ -1,0 +1,146 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &1084485416998504777
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 909548397648102177, guid: 04fad9b53f5c6004ea1d478f93f95fd0, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 909548397648102177, guid: 04fad9b53f5c6004ea1d478f93f95fd0, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 909548397648102177, guid: 04fad9b53f5c6004ea1d478f93f95fd0, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 909548397648102177, guid: 04fad9b53f5c6004ea1d478f93f95fd0, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 909548397648102177, guid: 04fad9b53f5c6004ea1d478f93f95fd0, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 909548397648102177, guid: 04fad9b53f5c6004ea1d478f93f95fd0, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 909548397648102177, guid: 04fad9b53f5c6004ea1d478f93f95fd0, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 909548397648102177, guid: 04fad9b53f5c6004ea1d478f93f95fd0, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 909548397648102177, guid: 04fad9b53f5c6004ea1d478f93f95fd0, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 909548397648102177, guid: 04fad9b53f5c6004ea1d478f93f95fd0, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 909548397648102177, guid: 04fad9b53f5c6004ea1d478f93f95fd0, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 909548397648102177, guid: 04fad9b53f5c6004ea1d478f93f95fd0, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 909548397648102177, guid: 04fad9b53f5c6004ea1d478f93f95fd0, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3052089375433462107, guid: 04fad9b53f5c6004ea1d478f93f95fd0, type: 3}
+      propertyPath: m_Size.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3052089375433462107, guid: 04fad9b53f5c6004ea1d478f93f95fd0, type: 3}
+      propertyPath: m_Size.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3052089375433462107, guid: 04fad9b53f5c6004ea1d478f93f95fd0, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5854925016969665656, guid: 04fad9b53f5c6004ea1d478f93f95fd0, type: 3}
+      propertyPath: m_Name
+      value: Starbriar
+      objectReference: {fileID: 0}
+    - target: {fileID: 8633607651646711802, guid: 04fad9b53f5c6004ea1d478f93f95fd0, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 5258e2c86a53ec0f89d437c8a168682c, type: 3}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 5854925016969665656, guid: 04fad9b53f5c6004ea1d478f93f95fd0, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -6818443432358529746}
+    - targetCorrespondingSourceObject: {fileID: 5854925016969665656, guid: 04fad9b53f5c6004ea1d478f93f95fd0, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4962690883108175935}
+  m_SourcePrefab: {fileID: 100100000, guid: 04fad9b53f5c6004ea1d478f93f95fd0, type: 3}
+--- !u!1 &6794809191556961585 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5854925016969665656, guid: 04fad9b53f5c6004ea1d478f93f95fd0, type: 3}
+  m_PrefabInstance: {fileID: 1084485416998504777}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &-6818443432358529746
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6794809191556961585}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6cccbb7d5723b434a866ab67202972af, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Sunspore::Sunspore.Starbriar
+  plantType: 2
+  seedSprite: {fileID: 21300000, guid: 5258e2c86a53ec0f89d437c8a168682c, type: 3}
+  juvenileSprite: {fileID: 21300000, guid: 1e0e438f59883b14f98359c52dd0cbc1, type: 3}
+  fullyGrownSprite: {fileID: 21300000, guid: 16acc7eb8cdb9b843920aa181dd6ee3c, type: 3}
+  seedToJuvenileTime: 15
+  juvenileToFullyGrownTime: 15
+  growthTimeVariance: 5
+  harvestSound: {fileID: 8300000, guid: 35cccfa738cfa6743ba1d2f761199e1d, type: 3}
+  growSound: {fileID: 8300000, guid: 35cccfa738cfa6743ba1d2f761199e1d, type: 3}
+  plantSound: {fileID: 8300000, guid: 35cccfa738cfa6743ba1d2f761199e1d, type: 3}
+  glowEffect: {fileID: 2446270667391804717, guid: f46e2420a80d0964e9afd78cde433563, type: 3}
+  seedItem: {fileID: 11400000, guid: 3712edf31b8c2ce4aba4ec39cc6479b6, type: 2}
+  plantItem: {fileID: 11400000, guid: a89e7c544f4de504fa512891b47a9e01, type: 2}
+  currentStage: 0
+  juvenileAbilityPower: 0
+  fullyGrownAbilityPower: 5
+  juvenileAbilityRange: 0
+  fullyGrownAbilityRange: 1
+  _juvenileAbilityCooldown: 0
+  _fullyGrownAbilityCooldown: 2
+--- !u!208 &4962690883108175935
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6794809191556961585}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.5, y: 0.5, z: 0.5}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 0, z: 0}
+  m_TimeToStationary: 0.5
