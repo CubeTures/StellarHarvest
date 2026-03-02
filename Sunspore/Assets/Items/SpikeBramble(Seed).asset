@@ -13,9 +13,11 @@ MonoBehaviour:
   m_Name: SpikeBramble(Seed)
   m_EditorClassIdentifier: Sunspore::ItemSO
   displayName: Spike Bramble(Seed)
+  description: 
   icon: {fileID: 21300000, guid: 2350b5047fd45ec45ab87d3a9cf2abb8, type: 3}
   stackable: 1
   maxStackSize: 16
-  placeable: 0
-  prefab: {fileID: 0}
+  placeable: 1
+  prefab: {fileID: 6794809191556961585, guid: ccb0ff220d228d24eb18daa4c85aba62, type: 3}
   weapon: 0
+  sellPrice: 0

@@ -13,9 +13,11 @@ MonoBehaviour:
   m_Name: PitSnapper(Seed)
   m_EditorClassIdentifier: Sunspore::ItemSO
   displayName: Pit Snapper(Seed)
+  description: 
   icon: {fileID: 21300000, guid: 7b3ff4fd95f535577b225419bbc85560, type: 3}
   stackable: 1
   maxStackSize: 16
-  placeable: 0
-  prefab: {fileID: 0}
+  placeable: 1
+  prefab: {fileID: 6794809191556961585, guid: 6af75cdf3a414eb4ba6ac88e558f7973, type: 3}
   weapon: 0
+  sellPrice: 0

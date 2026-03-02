@@ -9,12 +9,11 @@ namespace Sunspore
         private Vector3 rotation = Vector3.zero;
         [SerializeField] EnemySpawner spawner;
         [SerializeField] GameObject Light;
-        [SerializeField] float dayLengthSeconds = 30f;
+        [SerializeField] public float dayLengthSeconds = 30f;
         [SerializeField] TMP_Dropdown timeSelector;
 
         GameManager gm;
 
-        private float degPerSec = 0f;
         private float timeOfDay = 0f;
         private bool timeStopped = false;
         private bool isNight = false;
@@ -22,11 +21,10 @@ namespace Sunspore
 
         private int days = 0;
         private int nights = 0;
-        private int weeks = 0;
+        public int weeks = 0;
         
         void Start()
         {
-            degPerSec = 360f / dayLengthSeconds;
             spawner = GameObject.Find("Enemy Spawner").GetComponent<EnemySpawner>();
             Light = GameObject.Find("Directional Light");
             timeSelector = GameObject.Find("Dropdown").GetComponent<TMP_Dropdown>();
@@ -49,12 +47,17 @@ namespace Sunspore
                 if (prevTimeOfDay > timeOfDay)
                 {
                     days++;
+                    //Debug.Log("day");
+                    spawner.spawning = false;
                     // Debug.Log("Days: " + days);
                 }
 
                 if (prevTimeOfDay < 0.5f && timeOfDay >= 0.5f)
                 {
                     nights++;
+                    //Debug.Log("night");
+                    spawner.SetEnemiesPerWave();
+                    spawner.spawning = true;
                     // Debug.Log("Nights: " + nights);
                 }
 
@@ -68,16 +71,10 @@ namespace Sunspore
                 }
             }
 
-            if (!timeStopped && timeOfDay >= 0.5f || isNight)
+            if (isNight)
             {
-                spawner.SpawnEnemy();
-                isNight = true;
-                isDay = false;
-            }
-            else
-            {
-                isDay = true;
-                isNight = false;
+                spawner.SetEnemiesPerWave();
+                spawner.spawning = true;
             }
         }
 

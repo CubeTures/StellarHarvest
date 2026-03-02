@@ -8,7 +8,8 @@ namespace Sunspore
     {
         [SerializeField] int health = 100;
         [SerializeField] int damage = 10;
-        [SerializeField] int attackDuration = 1;
+        [SerializeField] public int cost = 1;
+        [SerializeField] float attackDuration = 0.25f;
         [SerializeField] float attackCooldown = 1.0f;
         private float lastAttackTime = -Mathf.Infinity;
         private SpriteRenderer _spriteRenderer;
