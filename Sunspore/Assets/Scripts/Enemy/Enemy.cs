@@ -6,7 +6,9 @@ namespace Sunspore
     [RequireComponent(typeof(NavMeshAgent))]
     public class Enemy : MonoBehaviour
     {
-        [SerializeField] int health = 100;
+        [SerializeField] public int health = 100;
+        [SerializeField] public int maxHealth = 100;
+        [SerializeField] public EnemyType enemyType = EnemyType.SWARM;
         [SerializeField] int damage = 10;
         [SerializeField] public int cost = 1;
         [SerializeField] float attackDuration = 0.25f;
@@ -17,7 +19,7 @@ namespace Sunspore
         float eatDelay = 1f;
         float eatCooldown = 0;
 
-        NavMeshAgent agent;
+        public NavMeshAgent agent;
         Pathfinding pathfinding;
         bool attackingPlayer = false;
 
@@ -65,7 +67,7 @@ namespace Sunspore
             Transform targetPlant = null;
             if (pathfinding != null)
             {
-                targetPlant = pathfinding.GetNextTarget(transform, EnemyType.SIMPLE);
+                targetPlant = pathfinding.GetNextTarget(this);
             }
 
             if (agent != null && agent.enabled && agent.isOnNavMesh && targetPlant != null)
@@ -73,7 +75,7 @@ namespace Sunspore
                 agent.SetDestination(targetPlant.position);
             }
 
-            if (targetPlant == pathfinding.getPlayerTransform())
+            if (targetPlant == pathfinding.GetPlayerTransform())
             {
                 //gameObject.layer = 0;
                 attackingPlayer = true;

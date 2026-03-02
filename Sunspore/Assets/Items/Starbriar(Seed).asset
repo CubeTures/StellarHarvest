@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b55df8fc0627f99cbf602cf22f90418, type: 3}
+  m_Name: Starbriar(Seed)
+  m_EditorClassIdentifier: Sunspore::ItemSO
+  displayName: 
+  description: 
+  icon: {fileID: 21300000, guid: 5258e2c86a53ec0f89d437c8a168682c, type: 3}
+  stackable: 1
+  maxStackSize: 16
+  placeable: 1
+  prefab: {fileID: 6794809191556961585, guid: a04df716ccf5ac34ca462fc44cab7823, type: 3}
+  weapon: 0
+  sellPrice: 0
