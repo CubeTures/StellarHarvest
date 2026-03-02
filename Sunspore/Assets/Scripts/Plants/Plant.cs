@@ -11,6 +11,9 @@ namespace Sunspore
 
     public abstract class Plant : MonoBehaviour
     {
+        [Header("Meta")]
+        [SerializeField] public PlantTypes plantType = PlantTypes.VALUE;
+
         [Header("Growth Stages")]
         [SerializeField] protected Sprite seedSprite;
         [SerializeField] protected Sprite juvenileSprite;
@@ -35,7 +38,7 @@ namespace Sunspore
 
 
         // Current growth stage
-        protected GrowthStage currentStage = GrowthStage.Seed;
+        public GrowthStage currentStage = GrowthStage.Seed;
 
         // Growth tracking
         protected float _growthTimer = 0f;
@@ -50,7 +53,7 @@ namespace Sunspore
 
         protected virtual void Start()
         {
-            Pathfinding.Instance.AddPlant(transform, PlantTypes.VALUE);
+            Pathfinding.Instance.AddPlant(this);
 
             _audioSource = GetComponent<AudioSource>();
             _spriteRenderer = GetComponent<SpriteRenderer>();
@@ -210,7 +213,7 @@ namespace Sunspore
 
         void OnDestroy()
         {
-            Pathfinding.Instance.RemovePlant(transform);
+            Pathfinding.Instance.RemovePlant(this);
         }
     }
 }
