@@ -8105,13 +8105,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5ceebfa8314f44b4c97df6f28325f126, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Sunspore::Sunspore.WeaponManager
-  waponName: default
+  weaponName: default
   damage: 50
   attackCooldown: 0.5
   attackDuration: 1
   range: 10
   knockback: 0
   player: {fileID: 0}
+  weaponSprite: {fileID: 0}
+  attackAnimation: {fileID: 0}
+  melee: 0
+  ranged: 0
   enabled: 0
   attackBoxPrefab: {fileID: 0}
 --- !u!1 &1434520930
@@ -9561,6 +9565,7 @@ MonoBehaviour:
   Light: {fileID: 0}
   dayLengthSeconds: 60
   timeSelector: {fileID: 0}
+  weeks: 0
 --- !u!114 &1801173688
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9575,7 +9580,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Sunspore::Sunspore.EnemySpawner
   enemy:
   - {fileID: 1588823627670416362, guid: 4393b48af626182408c439887b60415a, type: 3}
-  cooldown: 5
+  dayNightManager: {fileID: 0}
+  player: {fileID: 0}
+  enemiesPerSecond: 0.5
+  waveAmount: 0
+  spawning: 0
 --- !u!4 &1801173689
 Transform:
   m_ObjectHideFlags: 0

@@ -54,6 +54,15 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Plants
+    uniqueID: 3064581215
+    locked: 0
+  - name: Enemies
+    uniqueID: 2329442787
+    locked: 0
+  - name: Player
+    uniqueID: 2044665145
+    locked: 0
   - name: Foreground
     uniqueID: 3620172583
     locked: 0

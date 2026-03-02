@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -16,7 +17,10 @@ namespace Sunspore
         private Color _originalColor;
         float eatDelay = 1f;
         float eatCooldown = 0;
-
+        int _currentDirection = -1;
+        float _vx;
+        float _vz;
+        Animator _anim;
         NavMeshAgent agent;
         Pathfinding pathfinding;
         bool attackingPlayer = false;
@@ -25,6 +29,7 @@ namespace Sunspore
         {
             agent = GetComponent<NavMeshAgent>();
             _spriteRenderer = GetComponent<SpriteRenderer>();
+            _anim = GetComponent<Animator>();
             if (_spriteRenderer != null)
                 _originalColor = _spriteRenderer.color;
         }
@@ -71,6 +76,9 @@ namespace Sunspore
             if (agent != null && agent.enabled && agent.isOnNavMesh && targetPlant != null)
             {
                 agent.SetDestination(targetPlant.position);
+                _vx = targetPlant.position.x - transform.position.x;
+                _vz = targetPlant.position.z - transform.position.z;
+                SetDirection(_currentDirection);
             }
 
             if (targetPlant == pathfinding.getPlayerTransform())
@@ -84,6 +92,21 @@ namespace Sunspore
                 attackingPlayer = false;
             }
             eatCooldown = Mathf.Max(eatCooldown - Time.deltaTime, 0);
+        }
+
+        public void SetDirection(int dir)
+        {
+            _currentDirection = dir;
+            _anim.SetInteger("Direction", dir);
+            _anim.SetBool("isMoving", true);
+            if (_vx > 0)
+            {
+                _spriteRenderer.flipX = true;
+            }
+            else if (_vx < 0)
+            {
+                _spriteRenderer.flipX = false;
+            }
         }
 
         void OnTriggerStay(Collider other)
@@ -111,14 +134,23 @@ namespace Sunspore
                 // maybe take damage as well
 
                 // may need to be a coroutine or some other loop
-
+                StartCoroutine(AttackCoroutine());
                 plant.TakeDamage(damage);
             }
 
             void Attack(Player player)
             {
+                StartCoroutine(AttackCoroutine());
                 player.TakeDamage(damage);
             }
+        }
+
+        // Attack coroutine
+        IEnumerator AttackCoroutine()
+        {
+            _anim.SetBool("isAttacking", true);
+            yield return new WaitForSeconds(attackDuration);
+            _anim.SetBool("isAttacking", false);
         }
     }
 }
