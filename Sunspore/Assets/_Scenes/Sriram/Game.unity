@@ -402,10 +402,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1b5869ce06d9f432a370691d4192798, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Sunspore::InventoryManager
-  allItemScriptableObjects: []
   hotbar: {fileID: 362954816}
   craftingParent: {fileID: 1543987325}
   inventoryParent: {fileID: 774663841}
+  storeParent: {fileID: 0}
   handParent: {fileID: 0}
   itemPrefab: {fileID: 0}
   cam: {fileID: 1149369072}
@@ -426,6 +426,7 @@ MonoBehaviour:
   - {fileID: 819973214}
   - {fileID: 954675581}
   - {fileID: 2076622045}
+  weaponManager: {fileID: 0}
 --- !u!4 &63801108 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 54655185379349257, guid: f15834458f6d1ae4fb764563e5e7f48b, type: 3}
@@ -2293,6 +2294,7 @@ GameObject:
   - component: {fileID: 347739848}
   - component: {fileID: 347739851}
   - component: {fileID: 347739850}
+  - component: {fileID: 347739852}
   m_Layer: 0
   m_Name: CinemachineCamera
   m_TagString: Untagged
@@ -2357,7 +2359,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 30, y: 1, z: 0}
 --- !u!114 &347739850
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2423,6 +2425,30 @@ MonoBehaviour:
     Time: 0
     Smoothing: 0
     IgnoreY: 0
+--- !u!320 &347739852
+PlayableDirector:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 347739847}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_PlayableAsset: {fileID: 11400000, guid: b9102b31f92f68c489589778ba17017d, type: 2}
+  m_InitialState: 1
+  m_WrapMode: 2
+  m_DirectorUpdateMode: 1
+  m_InitialTime: 0
+  m_SceneBindings:
+  - key: {fileID: -4381215194189805433, guid: b9102b31f92f68c489589778ba17017d, type: 2}
+    value: {fileID: 1149369075}
+  - key: {fileID: 0}
+    value: {fileID: 1149369075}
+  m_ExposedReferences:
+    m_References:
+    - 2d1290ff1ced92041a843d6f04b25a82: {fileID: 347739848}
+    - 8a2119b804f6c694486ff35686512e58: {fileID: 347739848}
+    - e56a4c87ac411c64d907e1835ea1e811: {fileID: 347739848}
 --- !u!1 &362954811
 GameObject:
   m_ObjectHideFlags: 0
@@ -6210,7 +6236,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: -934453893474680432, guid: 2a775af2addda5f45b46ce5bf5d99e21, type: 2}
   m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 8300000, guid: c160b9a95f126b643bc692b3b87327ce, type: 3}
+  m_Resource: {fileID: 8300000, guid: 7ac702b218cacf14da6fc4b1ed13c3e4, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
@@ -8079,14 +8105,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5ceebfa8314f44b4c97df6f28325f126, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Sunspore::Sunspore.WeaponManager
-  waponName: default
+  weaponName: default
   damage: 50
   attackCooldown: 0.5
   attackDuration: 1
   range: 10
   knockback: 0
   player: {fileID: 0}
+  weaponSprite: {fileID: 0}
+  attackAnimation: {fileID: 0}
+  melee: 0
+  ranged: 0
   enabled: 0
+  attackBoxPrefab: {fileID: 0}
 --- !u!1 &1434520930
 GameObject:
   m_ObjectHideFlags: 0
@@ -8484,6 +8515,14 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 48ba4ec9f7695f549bd2dda09495a56b, type: 2}
   recipeUIPrefab: {fileID: 5055502027666326857, guid: 0f90f2ef352bb85488cb4d51f2578b01, type: 3}
   recipeUIParent: {fileID: 867515708}
+  craftButton: {fileID: 0}
+  craftButtonDefaultColor: {r: 1, g: 1, b: 1, a: 1}
+  craftButtonSelectedColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  craftButtonCraftableColor: {r: 0, g: 1, b: 0, a: 1}
+  previewIcon: {fileID: 0}
+  previewName: {fileID: 0}
+  previewDescription: {fileID: 0}
+  previewContainer: {fileID: 0}
 --- !u!1001 &1552660788
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8882,6 +8921,37 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 04a80e7e7d6269742bb28004fb297afb, type: 3}
+--- !u!1 &1615791705
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1615791706}
+  m_Layer: 0
+  m_Name: Cameras
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1615791706
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1615791705}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1619912483 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 239959495668463375, guid: 04a80e7e7d6269742bb28004fb297afb, type: 3}
@@ -9495,6 +9565,7 @@ MonoBehaviour:
   Light: {fileID: 0}
   dayLengthSeconds: 60
   timeSelector: {fileID: 0}
+  weeks: 0
 --- !u!114 &1801173688
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9509,7 +9580,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Sunspore::Sunspore.EnemySpawner
   enemy:
   - {fileID: 1588823627670416362, guid: 4393b48af626182408c439887b60415a, type: 3}
-  cooldown: 5
+  dayNightManager: {fileID: 0}
+  player: {fileID: 0}
+  enemiesPerSecond: 0.5
+  waveAmount: 0
+  spawning: 0
 --- !u!4 &1801173689
 Transform:
   m_ObjectHideFlags: 0
@@ -11404,6 +11479,7 @@ SceneRoots:
   - {fileID: 259773382}
   - {fileID: 1972562600}
   - {fileID: 1115440461}
+  - {fileID: 1615791706}
   - {fileID: 1149369073}
   - {fileID: 347739849}
   - {fileID: 923063278}
