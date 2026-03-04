@@ -23,6 +23,7 @@ namespace Sunspore
         [SerializeField] protected float seedToJuvenileTime = 15f;
         [SerializeField] protected float juvenileToFullyGrownTime = 15f;
         [SerializeField] protected float growthTimeVariance = 5f;
+        [SerializeField] protected bool watered = false;
 
         [Header("Audio")]
         [SerializeField] protected AudioClip harvestSound;
@@ -31,6 +32,8 @@ namespace Sunspore
 
         [Header("Effects")]
         [SerializeField] protected GameObject glowEffect;
+        [SerializeField] protected GameObject waterDropPrefab;
+        private GameObject waterDropInstance;
 
         [Header("Items")]
         [SerializeField] protected ItemSO seedItem;
@@ -67,6 +70,13 @@ namespace Sunspore
             _initialSeedToJuvenileTime = seedToJuvenileTime;
             _initialJuvenileToFullyGrownTime = juvenileToFullyGrownTime;
 
+            // Instantiate waterDrop as a child and hide it
+            if (waterDropPrefab != null)
+            {
+                waterDropInstance = Instantiate(waterDropPrefab, transform);
+                waterDropInstance.SetActive(true);
+            }
+
             // Start as seed
             SetGrowthStage(GrowthStage.Seed);
         }
@@ -79,7 +89,10 @@ namespace Sunspore
                 _growthTimer += Time.deltaTime;
                 if (_growthTimer >= _currentGrowthTime)
                 {
-                    GrowToJuvenile();
+                    if (watered)
+                    {
+                        GrowToJuvenile();
+                    }
                 }
             }
             else if (currentStage == GrowthStage.Juvenile)
@@ -87,7 +100,10 @@ namespace Sunspore
                 _growthTimer += Time.deltaTime;
                 if (_growthTimer >= _currentGrowthTime)
                 {
-                    GrowToFullyGrown();
+                    if (watered)
+                    {
+                        GrowToFullyGrown();
+                    }
                 }
 
                 // Juvenile abilities update
@@ -111,12 +127,14 @@ namespace Sunspore
                     _spriteRenderer.sprite = seedSprite;
                     _currentGrowthTime = _initialSeedToJuvenileTime + Random.Range(0f, growthTimeVariance);
                     OnSeedStage();
+                    waterDropInstance.SetActive(true);
                     break;
 
                 case GrowthStage.Juvenile:
                     _spriteRenderer.sprite = juvenileSprite;
                     _currentGrowthTime = _initialJuvenileToFullyGrownTime + Random.Range(0f, growthTimeVariance);
                     OnJuvenileStage();
+                    waterDropInstance.SetActive(true);
                     break;
 
                 case GrowthStage.FullyGrown:
@@ -130,7 +148,7 @@ namespace Sunspore
         {
             _anim.SetTrigger("Start");
             StartCoroutine(TransitionTimer(GrowthStage.Juvenile));
-            
+            watered = false;
         }
 
         protected virtual void GrowToFullyGrown()
@@ -215,6 +233,12 @@ namespace Sunspore
                 Destroy(gameObject);
             }
             return dead;
+        }
+
+        public void WaterPlant()
+        {
+            watered = true;
+            waterDropInstance.SetActive(false);
         }
 
         void OnDestroy()

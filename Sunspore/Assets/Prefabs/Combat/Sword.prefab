@@ -44,15 +44,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80a5dfd1c4fd69c4ca9c648f6ae9d3ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Sunspore::Sunspore.Sword
-  weaponName: Sword
+  handHeldName: 
   damage: 50
   attackCooldown: 0.5
   attackDuration: 0.2
-  range: 2
+  abilityDuration: 0
+  attackRange: 2.5
+  abilityRange: 0
   knockback: 0
-  weaponSprite: {fileID: 21300000, guid: 4cb82e7813253df4785eb33cffcb4ff0, type: 3}
+  handHeldSprite: {fileID: 0}
   attackAnimation: {fileID: 0}
   melee: 1
   ranged: 0
+<<<<<<< HEAD
   head: 1
   handle: 1
+=======
+  tool: 0
+  cancelable: 0
+>>>>>>> 2b74cbe (revamped weapons to handhelds for tools and added watering can)

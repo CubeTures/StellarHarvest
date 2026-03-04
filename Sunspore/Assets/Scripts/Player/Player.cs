@@ -164,7 +164,7 @@ public class Player : MonoBehaviour
     public void SetDirection(int dir)
     {
         currentDirection = dir;
-        WeaponManager.Instance.setDirection(dir);
+        HandHeldManager.Instance.setDirection(dir);
         weaponHead.SetSwingTransform(dir, _spriteRenderer.flipX);
         weaponBase.SetWeaponBaseTransform(dir, _spriteRenderer.flipX);
         anim.SetInteger("Direction", dir);
