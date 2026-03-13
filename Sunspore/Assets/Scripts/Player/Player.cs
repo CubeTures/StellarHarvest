@@ -25,7 +25,7 @@ public class Player : MonoBehaviour
     public bool isSelecting = false;
     [HideInInspector]
     public bool isDead = false;
-
+    public bool animFinished = false;
     Transform _transform;
     Animator _anim;
     CapsuleCollider _collider;
@@ -122,6 +122,8 @@ public class Player : MonoBehaviour
 
         bool isMoving = input.sqrMagnitude > 0.01f;
         _anim.SetBool("isMoving", isMoving);
+        _anim.SetInteger("Direction", _currentDirection);
+        _anim.ResetTrigger("Plant");
 
         if (!isMoving || isDead)
             return;
@@ -274,5 +276,9 @@ public class Player : MonoBehaviour
     {
         if (_spriteRenderer != null)
             _spriteRenderer.color = _originalColor;
+    }
+    public void Planting()
+    {
+        _anim.SetTrigger("Plant");
     }
 }
