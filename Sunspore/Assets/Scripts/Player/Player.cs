@@ -9,6 +9,7 @@ using Sunspore;
 public class Player : MonoBehaviour
 {
     [SerializeField] Wallet wallet;
+    [SerializeField] SwingDirection swingEffect;
     public float speed = 8f;
     public GameObject[] inventory;
     public float gridSize = 1f; // Size of each grid cell
@@ -27,7 +28,7 @@ public class Player : MonoBehaviour
     public bool isDead = false;
     public bool animFinished = false;
     Transform _transform;
-    Animator _anim;
+    public Animator anim;
     CapsuleCollider _collider;
     Rigidbody _rb;
     AudioSource _audioSource;
@@ -48,12 +49,12 @@ public class Player : MonoBehaviour
 
     bool _facingRight = true;
     bool _facingFront = true;
-    int _currentDirection = -1;
+    public int currentDirection = -1;
 
     void Start()
     {
         _transform = GetComponent<Transform>();
-        _anim = GetComponent<Animator>();
+        anim = GetComponent<Animator>();
         _collider = GetComponent<CapsuleCollider>();
         _rb = GetComponent<Rigidbody>();
         _audioSource = GetComponent<AudioSource>();
@@ -91,7 +92,6 @@ public class Player : MonoBehaviour
             Cursor.lockState = CursorLockMode.Confined;
         }
     }
-
     void FixedUpdate()
     {
         // Exit update if game is paused
@@ -111,6 +111,7 @@ public class Player : MonoBehaviour
             if (_spriteRenderer != null)
                 _spriteRenderer.color = Color.red;
         }
+
     }
 
     public void SetMove(InputAction.CallbackContext context)
@@ -121,9 +122,9 @@ public class Player : MonoBehaviour
         _vz = input.y;
 
         bool isMoving = input.sqrMagnitude > 0.01f;
-        _anim.SetBool("isMoving", isMoving);
-        _anim.SetInteger("Direction", _currentDirection);
-        _anim.ResetTrigger("Plant");
+        anim.SetBool("isMoving", isMoving);
+        anim.SetInteger("Direction", currentDirection);
+        anim.ResetTrigger("Plant");
 
         if (!isMoving || isDead)
             return;
@@ -164,13 +165,13 @@ public class Player : MonoBehaviour
 
     }
 
-
-
     public void SetDirection(int dir)
     {
-        _currentDirection = dir;
-        _anim.SetInteger("Direction", dir);
-        _anim.SetBool("isMoving", true);
+        currentDirection = dir;
+        swingEffect.SetSwingTransform(dir, _spriteRenderer.flipX);
+        anim.SetInteger("Direction", dir);
+        anim.SetBool("isMoving", true);
+        
         if (_vx > 0)
         {
             _spriteRenderer.flipX = true;
@@ -279,6 +280,24 @@ public class Player : MonoBehaviour
     }
     public void Planting()
     {
-        _anim.SetTrigger("Plant");
+        anim.SetTrigger("Plant");
+    }
+
+    public void Swing(SwingDirection.WeaponType type)
+    {
+        anim.SetTrigger("Swing");
+        swingEffect.Swing(type);
+        StartCoroutine(AnimationCoroutine());
+    }
+
+    private IEnumerator AnimationCoroutine()
+    {
+        animFinished = false;
+
+        yield return new WaitUntil(() => animFinished);
+
+        animFinished = true;
+        anim.SetInteger("Direction", currentDirection);
+        
     }
 }
