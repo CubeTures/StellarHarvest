@@ -1,3 +1,4 @@
+using System.Runtime.InteropServices;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using static Codice.Client.BaseCommands.BranchExplorer.Layout.BrExLayout;
@@ -17,6 +18,8 @@ namespace Sunspore
         [SerializeField] public Animation attackAnimation;
         [SerializeField] public bool melee = false;
         [SerializeField] public bool ranged = false;
+        public Weapon.WeaponHead head = Weapon.WeaponHead.METAL;
+        public Weapon.WeaponHandle handle = Weapon.WeaponHandle.WOOD;
         public new bool enabled = false;
         private float lastAttackTime = -Mathf.Infinity;
         private Vector3 hitArea;
@@ -103,7 +106,7 @@ namespace Sunspore
             mouseWorldPos.y = 1.5f;
             Vector3 mouseDir = (mouseWorldPos - playerPos).normalized;
             weapon.Attack(boxCenter, hitArea, boxRotation, mouseDir, playerPos);
-            playerScript.Swing(SwingDirection.WeaponType.METAL);
+            playerScript.Swing();
         }
         //private void OnDrawGizmos()
         //{
@@ -154,6 +157,11 @@ namespace Sunspore
             attackAnimation = weapon.attackAnimation;
             melee = weapon.melee;
             ranged = weapon.ranged;
+            head = weapon.head;
+            handle = weapon.handle;
+            
+            playerScript.weaponHead.TypeUpdate(head);
+            playerScript.weaponBase.TypeUpdate(handle);
             //if (!melee)
             //{
             //    attackBox.SetActive(false);

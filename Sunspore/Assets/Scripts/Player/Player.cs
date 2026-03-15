@@ -9,7 +9,8 @@ using Sunspore;
 public class Player : MonoBehaviour
 {
     [SerializeField] Wallet wallet;
-    [SerializeField] SwingDirection swingEffect;
+    public WeaponHead weaponHead;
+    public WeaponHandle weaponBase;
     public float speed = 8f;
     public GameObject[] inventory;
     public float gridSize = 1f; // Size of each grid cell
@@ -168,7 +169,8 @@ public class Player : MonoBehaviour
     public void SetDirection(int dir)
     {
         currentDirection = dir;
-        swingEffect.SetSwingTransform(dir, _spriteRenderer.flipX);
+        weaponHead.SetSwingTransform(dir, _spriteRenderer.flipX);
+        weaponBase.SetWeaponBaseTransform(dir, _spriteRenderer.flipX);
         anim.SetInteger("Direction", dir);
         anim.SetBool("isMoving", true);
         
@@ -283,10 +285,11 @@ public class Player : MonoBehaviour
         anim.SetTrigger("Plant");
     }
 
-    public void Swing(SwingDirection.WeaponType type)
+    public void Swing()
     {
         anim.SetTrigger("Swing");
-        swingEffect.Swing(type);
+        weaponHead.Swing();
+        weaponBase.Swing();
         StartCoroutine(AnimationCoroutine());
     }
 
