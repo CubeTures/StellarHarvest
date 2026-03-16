@@ -6,10 +6,10 @@ namespace Sunspore
     {
         public override void Ability(Player player, Ray ray)
         {
-            Debug.Log(ray);
+            //Debug.Log(ray);
             if (Physics.Raycast(ray, out RaycastHit hit))
             {
-                Debug.Log("hit");
+                //Debug.Log("hit");
                 Plant plant = hit.collider.GetComponent<Plant>();
                 if (plant != null)
                 {
@@ -17,7 +17,7 @@ namespace Sunspore
                     if (distance <= abilityRange)
                     {
                         plant.WaterPlant();
-                        Debug.Log("Plant Watered");
+                        //Debug.Log("Plant Watered");
                     }
                     //else
                     //{
