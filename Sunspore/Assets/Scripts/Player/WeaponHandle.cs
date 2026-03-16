@@ -27,23 +27,6 @@ using UnityEngine;
             public void SetWeaponBaseTransform(int dir, bool flipped)
             {
                 _sr.flipX = flipped;
-                switch(dir)
-                {
-                    case 1: //front
-                    _anim.SetInteger("Direction", dir);
-                    break;
-
-                    case 2: //right
-                    _anim.SetInteger("Direction", dir);
-                    break;
-
-                    case 3: //back
-                    _anim.SetInteger("Direction", dir);
-                    break;
-
-                    case 4: //left
-                    _anim.SetInteger("Direction", dir);
-                    break;
-                }
+                _anim.SetInteger("Direction", dir);
             }
         }

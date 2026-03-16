@@ -15,7 +15,6 @@ public class Player : MonoBehaviour
     public GameObject[] inventory;
     public float gridSize = 1f; // Size of each grid cell
     [SerializeField] float health = 100;
-    [SerializeField] private SpriteRenderer _sr;
 
     [HideInInspector]
     public RaycastHit selectedObject;
@@ -59,7 +58,6 @@ public class Player : MonoBehaviour
         _collider = GetComponent<CapsuleCollider>();
         _rb = GetComponent<Rigidbody>();
         _audioSource = GetComponent<AudioSource>();
-        _sr = GetComponent<SpriteRenderer>();
         _mainCamera = Camera.main;
         _spriteRenderer = GetComponent<SpriteRenderer>();
         gm = GameManager.gm;
@@ -125,6 +123,7 @@ public class Player : MonoBehaviour
         bool isMoving = input.sqrMagnitude > 0.01f;
         anim.SetBool("isMoving", isMoving);
         anim.SetInteger("Direction", currentDirection);
+        
         anim.ResetTrigger("Plant");
 
         if (!isMoving || isDead)
@@ -138,13 +137,11 @@ public class Player : MonoBehaviour
             {
                 _facingRight = true;
                 SetDirection(2); // Right
-                WeaponManager.Instance.setDirection(2);
             }
             else
             {
                 _facingRight = false;
                 SetDirection(4); // Left
-                WeaponManager.Instance.setDirection(4);
             }
         }
         else
@@ -154,13 +151,11 @@ public class Player : MonoBehaviour
             {
                 _facingFront = true;
                 SetDirection(3); // Forward
-                WeaponManager.Instance.setDirection(3);
             }
             else
             {
                 _facingFront = false;
-                SetDirection(1); // Back
-                WeaponManager.Instance.setDirection(1);
+                SetDirection(1); // Back            
             }
         }
 
@@ -169,6 +164,7 @@ public class Player : MonoBehaviour
     public void SetDirection(int dir)
     {
         currentDirection = dir;
+        WeaponManager.Instance.setDirection(dir);
         weaponHead.SetSwingTransform(dir, _spriteRenderer.flipX);
         weaponBase.SetWeaponBaseTransform(dir, _spriteRenderer.flipX);
         anim.SetInteger("Direction", dir);
@@ -215,6 +211,7 @@ public class Player : MonoBehaviour
     {
         playerCanMove = true;
         _rb.isKinematic = false;
+        Debug.Log("Player unfrozen");
     }
 
     public void PlaySound(AudioClip clip)
@@ -290,17 +287,13 @@ public class Player : MonoBehaviour
         anim.SetTrigger("Swing");
         weaponHead.Swing();
         weaponBase.Swing();
-        StartCoroutine(AnimationCoroutine());
+        StartCoroutine(AnimationFinished());
     }
 
-    private IEnumerator AnimationCoroutine()
+    private IEnumerator AnimationFinished()
     {
         animFinished = false;
-
         yield return new WaitUntil(() => animFinished);
-
-        animFinished = true;
         anim.SetInteger("Direction", currentDirection);
-        
     }
 }
