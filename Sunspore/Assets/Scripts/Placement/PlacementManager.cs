@@ -3,11 +3,13 @@ using System.Linq;
 using Sunspore;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using System.Collections;
 
 [RequireComponent(typeof(InventoryManager))]
 public class PlacementManager : MonoBehaviour
 {
     [SerializeField] LayerMask groundLayer;
+    [SerializeField]  Player player;
 
     Camera cam;
     InventoryManager inventoryManager;
@@ -25,6 +27,11 @@ public class PlacementManager : MonoBehaviour
 
     void Awake()
     {
+        if(player == null)
+        {
+            player = FindFirstObjectByType<Player>();
+        }
+
         cam = Camera.main;
         inventoryManager = GetComponent<InventoryManager>();
     }
@@ -140,12 +147,22 @@ public class PlacementManager : MonoBehaviour
     {
         if (allowPlacement && currentPreviews.Count > 0)
         {
-            GameObject prefab = currentItem.prefab;
-            Instantiate(prefab, currentPreviews[0].transform.position, Quaternion.identity);
-            inventoryManager.UseSelectedItem();
+            StartCoroutine(PlaceAfterAnimation());
         }
     }
 
+    IEnumerator PlaceAfterAnimation()
+    {
+        player.Planting();
+
+        yield return new WaitUntil(() => player.animFinished);
+
+        GameObject prefab = currentItem.prefab;
+        Instantiate(prefab, currentPreviews[0].transform.position, Quaternion.identity);
+
+        inventoryManager.UseSelectedItem();
+        player.animFinished = false;
+    }
     public bool ScreenToWorld(Vector2 screenPosition, out Vector3 worldPosition)
     {
         Ray ray = cam.ScreenPointToRay(screenPosition);

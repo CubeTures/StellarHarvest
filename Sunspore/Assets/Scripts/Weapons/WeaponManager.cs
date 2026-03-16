@@ -1,13 +1,12 @@
+using System.Runtime.InteropServices;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using static Codice.Client.BaseCommands.BranchExplorer.Layout.BrExLayout;
-
 namespace Sunspore
 {
     public class WeaponManager : MonoBehaviour
     {
         public static WeaponManager Instance { get; private set; }
-
         [SerializeField] string weaponName = "default";
         [SerializeField] int damage = 25;
         [SerializeField] float attackCooldown = 0.5f;
@@ -19,23 +18,21 @@ namespace Sunspore
         [SerializeField] public Animation attackAnimation;
         [SerializeField] public bool melee = false;
         [SerializeField] public bool ranged = false;
-
+        public Weapon.WeaponHead head = Weapon.WeaponHead.METAL;
+        public Weapon.WeaponHandle handle = Weapon.WeaponHandle.WOOD;
         public new bool enabled = false;
-
         private float lastAttackTime = -Mathf.Infinity;
         private Vector3 hitArea;
         private Quaternion boxRotation;
         private Vector3 boxCenter;
         private float offset;
-
         private Vector3[] directions = new Vector3[4];
         private Vector3 currDirection = Vector3.zero;
         
         [SerializeField] private GameObject attackBoxPrefab;
         private GameObject attackBox;
-
         private Weapon weapon;
-
+        private Player playerScript;
         private void Awake()
         {
             if (Instance == null)
@@ -48,7 +45,6 @@ namespace Sunspore
             }
         }
 
-
         private void Start()
         {
             hitArea = new Vector3(1.0f, 1.0f, range);
@@ -57,14 +53,12 @@ namespace Sunspore
             directions[2] = new Vector3(0.0f, 0.0f, 1.0f);
             directions[3] = new Vector3(-1.0f, 0.0f, 0.0f);
             offset = range / 2;
-
             player = GameObject.FindGameObjectWithTag("Player");
-
+            playerScript = player.GetComponent<Player>();
             attackBox = Instantiate(attackBoxPrefab, transform);
             attackBox.transform.localScale = hitArea * 0.5f;
             attackBox.SetActive(false);
         }
-
         private void Update()
         {
             if (enabled && !EventSystem.current.IsPointerOverGameObject() && Input.GetMouseButtonDown(0) && Time.time >= lastAttackTime + attackCooldown)
@@ -73,15 +67,12 @@ namespace Sunspore
                 Attack(mouseWorldPos);
                 lastAttackTime = Time.time;
             }
-
             attackBox.SetActive(enabled);
-
             if (enabled)
             {
                 updateDirection();
             }
         }
-
         private Vector3 GetMouseWorldPosition()
         {
             Vector3 mouseScreenPos = Input.mousePosition;
@@ -96,13 +87,11 @@ namespace Sunspore
                 return ray.origin + ray.direction * t;
             }
         }
-
         private void Attack(Vector3 mouseWorldPos)
         {
             // Find all enemies in range
             updateDirection();
             Physics.SyncTransforms();
-
             if (attackBox != null)
             {
                 var renderer = attackBox.GetComponent<Renderer>();
@@ -113,24 +102,21 @@ namespace Sunspore
                 
                 Invoke(nameof(StopAttacking), attackDuration);
             }
-
             Vector3 playerPos = player.transform.position;
             mouseWorldPos.y = 1.5f;
             Vector3 mouseDir = (mouseWorldPos - playerPos).normalized;
             weapon.Attack(boxCenter, hitArea, boxRotation, mouseDir, playerPos);
+            playerScript.Swing();
         }
-
         //private void OnDrawGizmos()
         //{
         //    Quaternion boxRotation = currDirection != Vector3.zero
         //        ? Quaternion.LookRotation(currDirection)
         //        : player.transform.rotation;
-
         //    Gizmos.color = Color.red;
         //    Gizmos.matrix = Matrix4x4.TRS(boxCenter, boxRotation, Vector3.one);
         //    Gizmos.DrawWireCube(Vector3.zero, hitArea * 1.5f);
         //}
-
         private void StopAttacking()
         {
             var renderer = attackBox.GetComponent<Renderer>();
@@ -138,21 +124,18 @@ namespace Sunspore
             {
                 renderer.material.color = PreserveAlpha(renderer.material.color, Color.gray);
             }
+            
         }
-
         public void setDirection(int dir)
         {
             currDirection = directions[dir-1];
         }
-
         private void updateDirection()
         {
             boxRotation = currDirection != Vector3.zero
                 ? Quaternion.LookRotation(currDirection)
                 : player.transform.rotation;
-
             boxCenter = player.transform.position + currDirection.normalized * offset;
-
             if (attackBox != null)
             {
                 attackBox.transform.position = boxCenter;
@@ -161,7 +144,6 @@ namespace Sunspore
                 //Debug.Log("hi");
             }
         }
-
         public void SetWeaponStats(GameObject weaponPrefab)
         {
             weapon = weaponPrefab.GetComponent<Weapon>();
@@ -175,7 +157,11 @@ namespace Sunspore
             attackAnimation = weapon.attackAnimation;
             melee = weapon.melee;
             ranged = weapon.ranged;
-
+            head = weapon.head;
+            handle = weapon.handle;
+            
+            playerScript.weaponHead.TypeUpdate(head);
+            playerScript.weaponBase.TypeUpdate(handle);
             //if (!melee)
             //{
             //    attackBox.SetActive(false);
@@ -185,7 +171,6 @@ namespace Sunspore
             //    attackBox.SetActive(true);
             //}
         }
-
         private Color PreserveAlpha(Color original, Color next)
         {
             return new Color(next.r, next.g, next.b, original.a);

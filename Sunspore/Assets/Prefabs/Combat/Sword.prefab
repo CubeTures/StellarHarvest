@@ -54,3 +54,5 @@ MonoBehaviour:
   attackAnimation: {fileID: 0}
   melee: 1
   ranged: 0
+  head: 1
+  handle: 1

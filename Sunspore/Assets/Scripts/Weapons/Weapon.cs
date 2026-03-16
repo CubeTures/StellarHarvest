@@ -14,6 +14,11 @@ namespace Sunspore
         public Animation attackAnimation;
         public bool melee;
         public bool ranged;
+        public enum WeaponHead {METAL = 1};
+        public enum WeaponHandle {WOOD = 1, METAL = 2};
+
+        public WeaponHead head;
+        public WeaponHandle handle;
 
         public virtual void Attack(Vector3 boxCenter, Vector3 hitArea, Quaternion boxRotation, Vector3 mouseDir, Vector3 Playerpos)
         {
