@@ -1,0 +1,125 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &3198573965701213867
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 79943118663833847, guid: 4393b48af626182408c439887b60415a, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 50787247ed1318743ad49464fccb35e7, type: 3}
+    - target: {fileID: 79943118663833847, guid: 4393b48af626182408c439887b60415a, type: 3}
+      propertyPath: m_SpriteSortPoint
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1463616092573366569, guid: 4393b48af626182408c439887b60415a, type: 3}
+      propertyPath: Priority
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 1583885426664768335, guid: 4393b48af626182408c439887b60415a, type: 3}
+      propertyPath: m_Height
+      value: 1.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1583885426664768335, guid: 4393b48af626182408c439887b60415a, type: 3}
+      propertyPath: m_Radius
+      value: 0.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1583885426664768335, guid: 4393b48af626182408c439887b60415a, type: 3}
+      propertyPath: m_Center.y
+      value: 0.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1583885426664768335, guid: 4393b48af626182408c439887b60415a, type: 3}
+      propertyPath: m_IsTrigger
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1588823627670416362, guid: 4393b48af626182408c439887b60415a, type: 3}
+      propertyPath: m_Name
+      value: Flying
+      objectReference: {fileID: 0}
+    - target: {fileID: 5034763247155655074, guid: 4393b48af626182408c439887b60415a, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5034763247155655074, guid: 4393b48af626182408c439887b60415a, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5034763247155655074, guid: 4393b48af626182408c439887b60415a, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5034763247155655074, guid: 4393b48af626182408c439887b60415a, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5034763247155655074, guid: 4393b48af626182408c439887b60415a, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5034763247155655074, guid: 4393b48af626182408c439887b60415a, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5034763247155655074, guid: 4393b48af626182408c439887b60415a, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5034763247155655074, guid: 4393b48af626182408c439887b60415a, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5034763247155655074, guid: 4393b48af626182408c439887b60415a, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5034763247155655074, guid: 4393b48af626182408c439887b60415a, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6822131166460621233, guid: 4393b48af626182408c439887b60415a, type: 3}
+      propertyPath: m_Height
+      value: 1.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6822131166460621233, guid: 4393b48af626182408c439887b60415a, type: 3}
+      propertyPath: m_Radius
+      value: 0.6
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 7561344218795518820, guid: 4393b48af626182408c439887b60415a, type: 3}
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 1588823627670416362, guid: 4393b48af626182408c439887b60415a, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -2898530858341007501}
+  m_SourcePrefab: {fileID: 100100000, guid: 4393b48af626182408c439887b60415a, type: 3}
+--- !u!1 &4210650941200008513 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1588823627670416362, guid: 4393b48af626182408c439887b60415a, type: 3}
+  m_PrefabInstance: {fileID: 3198573965701213867}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &-2898530858341007501
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4210650941200008513}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ca11e0470bb42734cb3e992c6b170f4c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Sunspore::FlyingEnemy
+  health: 100
+  maxHealth: 100
+  enemyType: 1
+  damage: 10
+  cost: 1
+  attackDuration: 0.25
+  attackCooldown: 1
+  agent: {fileID: 0}
+  flyingState: 0

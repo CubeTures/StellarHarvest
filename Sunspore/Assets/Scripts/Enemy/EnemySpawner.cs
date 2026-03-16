@@ -53,9 +53,10 @@ namespace Sunspore
             Vector3 randomSpawnPoint = new Vector3(x, 0, z);
 
             //int randomEnemy = Random.Range(0, enemy.Length);
-            Instantiate(enemy[0], randomSpawnPoint, Quaternion.identity);
+            var prefab = enemy[Random.Range(0, enemy.Length)];
+            Instantiate(prefab, randomSpawnPoint, Quaternion.identity);
             lastSpawnTime = Time.time;
-            waveAmount -= enemy[0].GetComponent<Enemy>().cost;
+            waveAmount -= prefab.GetComponent<Enemy>().cost;
         }
 
         public void SetEnemiesPerWave()

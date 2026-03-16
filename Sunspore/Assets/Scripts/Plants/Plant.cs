@@ -46,6 +46,7 @@ namespace Sunspore
         protected float _initialSeedToJuvenileTime;
         protected float _initialJuvenileToFullyGrownTime;
         protected float _health = 50f;
+        protected Pathfinding pathfinding;
 
         // Components
         protected SpriteRenderer _spriteRenderer;
@@ -53,7 +54,8 @@ namespace Sunspore
 
         protected virtual void Start()
         {
-            Pathfinding.Instance.AddPlant(this);
+            pathfinding = Pathfinding.Instance;
+            pathfinding.AddPlant(this);
 
             _audioSource = GetComponent<AudioSource>();
             _spriteRenderer = GetComponent<SpriteRenderer>();

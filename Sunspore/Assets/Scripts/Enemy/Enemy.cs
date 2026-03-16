@@ -10,10 +10,14 @@ namespace Sunspore
         [SerializeField] public int health = 100;
         [SerializeField] public int maxHealth = 100;
         [SerializeField] public EnemyType enemyType = EnemyType.SWARM;
+        public FlyingState flyingState = FlyingState.AIRBORNE;
         [SerializeField] int damage = 10;
         [SerializeField] public int cost = 1;
         [SerializeField] float attackDuration = 0.25f;
         [SerializeField] float attackCooldown = 1.0f;
+        [SerializeField] float flyHeight = 3f;
+        [SerializeField] float perchRadius = 2f;
+        [SerializeField] float descentSpeed = 3f;
         private float lastAttackTime = -Mathf.Infinity;
         private SpriteRenderer _spriteRenderer;
         private Color _originalColor;
@@ -39,6 +43,7 @@ namespace Sunspore
         void Start()
         {
             pathfinding = Pathfinding.Instance;
+            pathfinding.RegisterEnemy(this);
         }
 
         public void TakeDamage(int weaponDamage, Vector2 direction, float knockback)
@@ -65,15 +70,11 @@ namespace Sunspore
         void Update()
         {
             if (pathfinding == null)
-            {
                 pathfinding = Pathfinding.Instance;
-            }
 
             Transform targetPlant = null;
             if (pathfinding != null)
-            {
                 targetPlant = pathfinding.GetNextTarget(this);
-            }
 
             if (agent != null && agent.enabled && agent.isOnNavMesh && targetPlant != null)
             {
@@ -81,19 +82,34 @@ namespace Sunspore
                 _vx = targetPlant.position.x - transform.position.x;
                 _vz = targetPlant.position.z - transform.position.z;
                 SetDirection(_currentDirection);
+
+                if (enemyType == EnemyType.FLYING)
+                    UpdateFlyingState(targetPlant);
             }
 
-            if (targetPlant == pathfinding.GetPlayerTransform())
-            {
-                //gameObject.layer = 0;
-                attackingPlayer = true;
-            }
-            else
-            {
-                //gameObject.layer = LayerMask.NameToLayer("NonPlayerCollide");
-                attackingPlayer = false;
-            }
+            attackingPlayer = targetPlant == pathfinding.GetPlayerTransform();
             eatCooldown = Mathf.Max(eatCooldown - Time.deltaTime, 0);
+        }
+
+        void UpdateFlyingState(Transform target)
+        {
+            bool inPerchRange = agent.remainingDistance <= perchRadius && !agent.pathPending;
+
+            if (inPerchRange && flyingState == FlyingState.AIRBORNE)
+                flyingState = FlyingState.LANDED;
+
+            if (!inPerchRange && flyingState != FlyingState.AIRBORNE)
+            {
+                flyingState = FlyingState.AIRBORNE;
+                // TODO: restore wall-ignoring area mask here
+            }
+
+            // float targetY = flyingState == FlyingState.AIRBORNE ? flyHeight : 0f;
+            // float newY = Mathf.MoveTowards(transform.position.y, targetY, descentSpeed * Time.deltaTime);
+            // transform.position = new Vector3(transform.position.x, newY, transform.position.z);
+
+            // if (flyingState == FlyingState.LANDING && Mathf.Approximately(transform.position.y, 0f))
+            //     flyingState = FlyingState.LANDED;
         }
 
         public void SetDirection(int dir)
@@ -153,6 +169,11 @@ namespace Sunspore
             _anim.SetBool("isAttacking", true);
             yield return new WaitForSeconds(attackDuration);
             _anim.SetBool("isAttacking", false);
+        }
+
+        void OnDestroy()
+        {
+            pathfinding.UnregisterEnemy(this);
         }
     }
 }
