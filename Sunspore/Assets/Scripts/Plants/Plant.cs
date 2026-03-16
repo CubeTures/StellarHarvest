@@ -1,5 +1,5 @@
 using UnityEngine;
-
+using System.Collections;
 namespace Sunspore
 {
     public enum GrowthStage
@@ -35,7 +35,7 @@ namespace Sunspore
         [Header("Items")]
         [SerializeField] protected ItemSO seedItem;
         [SerializeField] protected ItemSO plantItem;
-
+        [SerializeField] protected float _transitionTimer = 0f;
 
         // Current growth stage
         public GrowthStage currentStage = GrowthStage.Seed;
@@ -45,8 +45,10 @@ namespace Sunspore
         protected float _currentGrowthTime;
         protected float _initialSeedToJuvenileTime;
         protected float _initialJuvenileToFullyGrownTime;
+        protected Animator _anim;
         protected float _health = 50f;
         protected Pathfinding pathfinding;
+        public bool transitionFinish;
 
         // Components
         protected SpriteRenderer _spriteRenderer;
@@ -59,6 +61,7 @@ namespace Sunspore
 
             _audioSource = GetComponent<AudioSource>();
             _spriteRenderer = GetComponent<SpriteRenderer>();
+            _anim = GetComponent<Animator>();
 
             // Initialize growth times
             _initialSeedToJuvenileTime = seedToJuvenileTime;
@@ -125,14 +128,15 @@ namespace Sunspore
 
         protected virtual void GrowToJuvenile()
         {
-            PlaySound(growSound);
-            SetGrowthStage(GrowthStage.Juvenile);
+            _anim.SetTrigger("Start");
+            StartCoroutine(TransitionTimer(GrowthStage.Juvenile));
+            
         }
 
         protected virtual void GrowToFullyGrown()
         {
-            PlaySound(growSound);
-            SetGrowthStage(GrowthStage.FullyGrown);
+            _anim.SetTrigger("Start");
+            StartCoroutine(TransitionTimer(GrowthStage.FullyGrown));
         }
 
         protected virtual void OnTriggerEnter(Collider other)
@@ -216,6 +220,14 @@ namespace Sunspore
         void OnDestroy()
         {
             Pathfinding.Instance.RemovePlant(this);
+        }
+
+        private IEnumerator TransitionTimer(GrowthStage growthStage)
+        {
+            yield return new WaitForSeconds(_transitionTimer);
+            _anim.SetTrigger("End");
+            PlaySound(growSound);
+            SetGrowthStage(growthStage);
         }
     }
 }

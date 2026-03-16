@@ -24,6 +24,11 @@ namespace Sunspore
             base.Start();
             _animator = GetComponent<Animator>();
             // Debug.Log("Bloom Burst created!");
+        }   
+
+        void Update()
+        {
+            Debug.Log(transitionFinish);
         }
 
         protected override void OnSeedStage()
