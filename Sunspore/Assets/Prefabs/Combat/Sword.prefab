@@ -57,9 +57,13 @@ MonoBehaviour:
   melee: 1
   ranged: 0
 <<<<<<< HEAD
+<<<<<<< HEAD
   head: 1
   handle: 1
 =======
+=======
+  weapon: 1
+>>>>>>> 9096d9e (Implemented tool ability cancel)
   tool: 0
   cancelable: 0
 >>>>>>> 2b74cbe (revamped weapons to handhelds for tools and added watering can)

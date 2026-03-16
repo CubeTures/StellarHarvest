@@ -1,32 +1,16 @@
 using System.Runtime.InteropServices;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using System.Collections;
 using static Codice.Client.BaseCommands.BranchExplorer.Layout.BrExLayout;
 namespace Sunspore
 {
     public class HandHeldManager : MonoBehaviour
     {
-<<<<<<< HEAD:Sunspore/Assets/Scripts/Weapons/WeaponManager.cs
-        public static WeaponManager Instance { get; private set; }
-        [SerializeField] string weaponName = "default";
-        [SerializeField] int damage = 25;
-        [SerializeField] float attackCooldown = 0.5f;
-        [SerializeField] float attackDuration = 0.2f;
-        [SerializeField] float range = 2f;
-        [SerializeField] float knockback = 0f;
-        [SerializeField] GameObject player;
-        [SerializeField] public Sprite weaponSprite;
-        [SerializeField] public Animation attackAnimation;
-        [SerializeField] public bool melee = false;
-        [SerializeField] public bool ranged = false;
-        public Weapon.WeaponHead head = Weapon.WeaponHead.METAL;
-        public Weapon.WeaponHandle handle = Weapon.WeaponHandle.WOOD;
-=======
         public static HandHeldManager Instance { get; private set; }
 
         [SerializeField] GameObject player;
 
->>>>>>> 2b74cbe (revamped weapons to handhelds for tools and added watering can):Sunspore/Assets/Scripts/Handhelds/HandHeldManager.cs
         public new bool enabled = false;
         private float lastAttackTime = -Mathf.Infinity;
         private Vector3 hitArea;
@@ -38,14 +22,11 @@ namespace Sunspore
         
         [SerializeField] private GameObject attackBoxPrefab;
         private GameObject attackBox;
-<<<<<<< HEAD:Sunspore/Assets/Scripts/Weapons/WeaponManager.cs
-        private Weapon weapon;
         private Player playerScript;
-=======
 
         private HandHeld handHeld;
+        private Coroutine abilityCoroutine;
 
->>>>>>> 2b74cbe (revamped weapons to handhelds for tools and added watering can):Sunspore/Assets/Scripts/Handhelds/HandHeldManager.cs
         private void Awake()
         {
             if (Instance == null)
@@ -67,12 +48,7 @@ namespace Sunspore
             directions[1] = new Vector3(1.0f, 0.0f, 0.0f);
             directions[2] = new Vector3(0.0f, 0.0f, 1.0f);
             directions[3] = new Vector3(-1.0f, 0.0f, 0.0f);
-<<<<<<< HEAD:Sunspore/Assets/Scripts/Weapons/WeaponManager.cs
-            offset = range / 2;
-=======
-            offset = 1 / 2;
-
->>>>>>> 2b74cbe (revamped weapons to handhelds for tools and added watering can):Sunspore/Assets/Scripts/Handhelds/HandHeldManager.cs
+            offset = 0;
             player = GameObject.FindGameObjectWithTag("Player");
             playerScript = player.GetComponent<Player>();
             attackBox = Instantiate(attackBoxPrefab, transform);
@@ -85,30 +61,31 @@ namespace Sunspore
 
             if (enabled && !EventSystem.current.IsPointerOverGameObject() && Input.GetMouseButtonDown(0) && Time.time >= lastAttackTime + handHeld.attackCooldown)
             {
+                if(handHeld.weapon && handHeld.tool)
+                {
+                    Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                    handHeld.Ability(player.GetComponent<Player>(), ray);
+                }
                 Vector3 mouseWorldPos = GetMouseWorldPosition();
                 Attack(mouseWorldPos);
                 lastAttackTime = Time.time;
             }
-<<<<<<< HEAD:Sunspore/Assets/Scripts/Weapons/WeaponManager.cs
-            attackBox.SetActive(enabled);
-=======
 
             // If right click cast ability
 
             if (enabled && handHeld.tool && !EventSystem.current.IsPointerOverGameObject() && Input.GetMouseButtonDown(1) && Time.time >= lastAttackTime + handHeld.attackCooldown)
             {
-                handHeld.Ability(player.transform.position);
+                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                if (abilityCoroutine != null)
+                {
+                    StopCoroutine(abilityCoroutine);
+                }
+                abilityCoroutine = StartCoroutine(AbilityDelayCoroutine(player.GetComponent<Player>(), ray, handHeld.abilityDuration));
                 lastAttackTime = Time.time;
             }
-
-            // Show box if handHeld manager is active
-
-            attackBox.SetActive(enabled);
-
-
+            
             // Update direction based off player movement
 
->>>>>>> 2b74cbe (revamped weapons to handhelds for tools and added watering can):Sunspore/Assets/Scripts/Handhelds/HandHeldManager.cs
             if (enabled)
             {
                 updateDirection();
@@ -146,8 +123,7 @@ namespace Sunspore
             Vector3 playerPos = player.transform.position;
             mouseWorldPos.y = 1.5f;
             Vector3 mouseDir = (mouseWorldPos - playerPos).normalized;
-<<<<<<< HEAD:Sunspore/Assets/Scripts/Weapons/WeaponManager.cs
-            weapon.Attack(boxCenter, hitArea, boxRotation, mouseDir, playerPos);
+            handHeld.Attack(boxCenter, hitArea, boxRotation, mouseDir, playerPos);
             playerScript.Swing();
         }
         //private void OnDrawGizmos()
@@ -159,46 +135,36 @@ namespace Sunspore
         //    Gizmos.matrix = Matrix4x4.TRS(boxCenter, boxRotation, Vector3.one);
         //    Gizmos.DrawWireCube(Vector3.zero, hitArea * 1.5f);
         //}
-=======
-            handHeld.Attack(boxCenter, hitArea, boxRotation, mouseDir, playerPos);
+
+        private IEnumerator AbilityDelayCoroutine(Player player, Ray ray, float delay)
+        {
+            yield return new WaitForSeconds(delay);
+            handHeld.Ability(player, ray);
+            abilityCoroutine = null;
         }
 
-        private void OnDrawGizmos()
+        public void CancelAbility()
         {
-            Quaternion boxRotation = currDirection != Vector3.zero
-                ? Quaternion.LookRotation(currDirection)
-                : player.transform.rotation;
-
-            Gizmos.color = Color.red;
-            Gizmos.matrix = Matrix4x4.TRS(boxCenter, boxRotation, Vector3.one);
-            Gizmos.DrawWireCube(Vector3.zero, hitArea);
-        }
-
-        // End of Attack
->>>>>>> 2b74cbe (revamped weapons to handhelds for tools and added watering can):Sunspore/Assets/Scripts/Handhelds/HandHeldManager.cs
-        private void StopAttacking()
-        {
-            var renderer = attackBox.GetComponent<Renderer>();
-            if (renderer != null)
+            if (abilityCoroutine == null)
             {
-                renderer.material.color = PreserveAlpha(renderer.material.color, Color.gray);
+                return;
             }
-            
+            StopCoroutine(abilityCoroutine);
+            abilityCoroutine = null;
+            // Optionally, call a cancel method on the current handHeld if needed
+            if (handHeld != null && handHeld.cancelable)
+                handHeld.CancelAbility();
+            Debug.Log("Ability cancelled!");
         }
-<<<<<<< HEAD:Sunspore/Assets/Scripts/Weapons/WeaponManager.cs
-=======
 
         // Updates currDirection
->>>>>>> 2b74cbe (revamped weapons to handhelds for tools and added watering can):Sunspore/Assets/Scripts/Handhelds/HandHeldManager.cs
         public void setDirection(int dir)
         {
+            CancelAbility();
             currDirection = directions[dir-1];
         }
-<<<<<<< HEAD:Sunspore/Assets/Scripts/Weapons/WeaponManager.cs
-=======
 
         // Sets attackBox direction to currDirection
->>>>>>> 2b74cbe (revamped weapons to handhelds for tools and added watering can):Sunspore/Assets/Scripts/Handhelds/HandHeldManager.cs
         private void updateDirection()
         {
             boxRotation = currDirection != Vector3.zero
@@ -213,26 +179,6 @@ namespace Sunspore
                 //Debug.Log("hi");
             }
         }
-<<<<<<< HEAD:Sunspore/Assets/Scripts/Weapons/WeaponManager.cs
-        public void SetWeaponStats(GameObject weaponPrefab)
-        {
-            weapon = weaponPrefab.GetComponent<Weapon>();
-            weaponName = weapon.weaponName;
-            damage = weapon.damage;
-            attackCooldown = weapon.attackCooldown;
-            attackDuration = weapon.attackDuration;
-            range = weapon.range;
-            knockback = weapon.knockback;
-            weaponSprite = weapon.weaponSprite;
-            attackAnimation = weapon.attackAnimation;
-            melee = weapon.melee;
-            ranged = weapon.ranged;
-            head = weapon.head;
-            handle = weapon.handle;
-            
-            playerScript.weaponHead.TypeUpdate(head);
-            playerScript.weaponBase.TypeUpdate(handle);
-=======
 
         // Assign Stats 
         public void SetHandHeldStats(GameObject handHeldPrefab)
@@ -241,7 +187,6 @@ namespace Sunspore
             offset = handHeld.attackRange / 2;
             hitArea.z = handHeld.attackRange;
 
->>>>>>> 2b74cbe (revamped weapons to handhelds for tools and added watering can):Sunspore/Assets/Scripts/Handhelds/HandHeldManager.cs
             //if (!melee)
             //{
             //    attackBox.SetActive(false);
@@ -250,10 +195,6 @@ namespace Sunspore
             //{
             //    attackBox.SetActive(true);
             //}
-        }
-        private Color PreserveAlpha(Color original, Color next)
-        {
-            return new Color(next.r, next.g, next.b, original.a);
         }
     }
 }

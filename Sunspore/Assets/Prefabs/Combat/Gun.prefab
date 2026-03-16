@@ -56,6 +56,7 @@ MonoBehaviour:
   attackAnimation: {fileID: 0}
   melee: 0
   ranged: 1
+  weapon: 1
   tool: 0
   cancelable: 0
   speed: 15

@@ -150,6 +150,7 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
 
         if (handHeldManager != null)
         {
+            handHeldManager.CancelAbility();
             if (sel == null || (!sel.weapon && !sel.tool))
             {
                 handHeldManager.enabled = false;

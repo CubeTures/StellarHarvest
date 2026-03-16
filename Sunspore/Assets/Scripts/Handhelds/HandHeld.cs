@@ -16,6 +16,7 @@ namespace Sunspore
         public Animation attackAnimation;
         public bool melee;
         public bool ranged;
+        public bool weapon;
         public bool tool;
         public bool cancelable;
 
@@ -39,7 +40,12 @@ namespace Sunspore
             }
         }
 
-        public virtual void Ability(Vector3 Playerpos)
+        public virtual void Ability(Player player, Ray ray)
+        {
+
+        }
+
+        public virtual void CancelAbility()
         {
 
         }

@@ -4,21 +4,20 @@ namespace Sunspore
 {
     public class WateringCan : HandHeld
     {
-        public override void Ability(Vector3 playerPos)
+        public override void Ability(Player player, Ray ray)
         {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            //Debug.Log(ray);
+            Debug.Log(ray);
             if (Physics.Raycast(ray, out RaycastHit hit))
             {
-                //Debug.Log("hit");
+                Debug.Log("hit");
                 Plant plant = hit.collider.GetComponent<Plant>();
                 if (plant != null)
                 {
-                    float distance = Vector3.Distance(playerPos, plant.transform.position);
+                    float distance = Vector3.Distance(player.transform.position, plant.transform.position);
                     if (distance <= abilityRange)
                     {
                         plant.WaterPlant();
-                        //Debug.Log("Plant Watered");
+                        Debug.Log("Plant Watered");
                     }
                     //else
                     //{

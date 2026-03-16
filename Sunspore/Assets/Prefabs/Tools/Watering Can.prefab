@@ -48,7 +48,7 @@ MonoBehaviour:
   damage: 5
   attackCooldown: 1
   attackDuration: 0.25
-  abilityDuration: 0
+  abilityDuration: 1
   attackRange: 1
   abilityRange: 5
   knockback: 0
@@ -56,5 +56,6 @@ MonoBehaviour:
   attackAnimation: {fileID: 0}
   melee: 1
   ranged: 0
+  weapon: 0
   tool: 1
   cancelable: 1
