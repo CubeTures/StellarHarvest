@@ -345,6 +345,15 @@ namespace Sunspore
                 {
                     InventoryManager.Instance.CraftItem(new List<ItemTypeAndAmount>(selectedRecipeSO.resultItem), new List<ItemTypeAndAmount>());
                 }
+                // After buying, keep the selection so the player can buy repeatedly until funds run out.
+                UpdateWalletText();
+                // Refresh UI to reflect inventory changes and keep the same selection if still present.
+                UpdateRecipeUI();
+                bool stillProcessable = CanProcessRecipe(selectedRecipeSO);
+                SetButtonState(true, stillProcessable);
+                OnSelectionChanged?.Invoke(true, stillProcessable);
+                UpdateSelectedPreview(selectedRecipeSO);
+                return;
             }
             else // sell/process
             {
@@ -353,7 +362,7 @@ namespace Sunspore
                 AddCredits(selectedRecipeSO.creditReward);
             }
 
-            // After processing, refresh UI and clear selection
+            // After processing (sell), refresh UI and clear selection
             selectedRecipeUI = null;
             selectedRecipeSO = null;
             UpdateSelectedPreview(null);
