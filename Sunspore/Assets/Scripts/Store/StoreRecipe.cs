@@ -85,8 +85,10 @@ namespace Sunspore
                     if (itemIconPrefab != null && coinSprite != null)
                     {
                         GameObject costIcon = Instantiate(itemIconPrefab, transform);
-                        var img = costIcon.transform.GetChild(0).GetComponent<Image>();
-                        var amt = costIcon.transform.GetChild(1).GetComponent<TextMeshProUGUI>();
+                        var c0 = costIcon.transform.childCount > 0 ? costIcon.transform.GetChild(0) : null;
+                        var c1 = costIcon.transform.childCount > 1 ? costIcon.transform.GetChild(1) : null;
+                        Image img = c0 != null ? c0.GetComponent<Image>() : null;
+                        TextMeshProUGUI amt = c1 != null ? c1.GetComponent<TextMeshProUGUI>() : null;
                         if (img != null) img.sprite = coinSprite;
                         if (amt != null) amt.text = storeSO.creditCost.ToString();
                     }
@@ -105,8 +107,18 @@ namespace Sunspore
                 for (int i = 0; i < storeSO.ingredients.Length; i++)
                 {
                     GameObject newItemIcon = Instantiate(itemIconPrefab, transform);
-                    newItemIcon.transform.GetChild(0).GetComponent<Image>().sprite = storeSO.ingredients[i].item.icon;
-                    newItemIcon.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = storeSO.ingredients[i].amount.ToString();
+                    var child0 = newItemIcon.transform.childCount > 0 ? newItemIcon.transform.GetChild(0) : null;
+                    var child1 = newItemIcon.transform.childCount > 1 ? newItemIcon.transform.GetChild(1) : null;
+                    Image img = child0 != null ? child0.GetComponent<Image>() : null;
+                    TextMeshProUGUI amtTxt = child1 != null ? child1.GetComponent<TextMeshProUGUI>() : null;
+                    if (img != null && storeSO.ingredients[i].item != null)
+                    {
+                        img.sprite = storeSO.ingredients[i].item.icon;
+                    }
+                    if (amtTxt != null)
+                    {
+                        amtTxt.text = storeSO.ingredients[i].amount.ToString();
+                    }
                 }
 
                 Instantiate(equalIconPrefab, transform);
@@ -114,8 +126,18 @@ namespace Sunspore
                 for (int i = 0; i < storeSO.resultItem.Length; i++)
                 {
                     GameObject newItemIcon = Instantiate(itemIconPrefab, transform);
-                    newItemIcon.transform.GetChild(0).GetComponent<Image>().sprite = storeSO.resultItem[i].item.icon;
-                    newItemIcon.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = storeSO.resultItem[i].amount.ToString();
+                    var child0 = newItemIcon.transform.childCount > 0 ? newItemIcon.transform.GetChild(0) : null;
+                    var child1 = newItemIcon.transform.childCount > 1 ? newItemIcon.transform.GetChild(1) : null;
+                    Image img = child0 != null ? child0.GetComponent<Image>() : null;
+                    TextMeshProUGUI amtTxt = child1 != null ? child1.GetComponent<TextMeshProUGUI>() : null;
+                    if (img != null && storeSO.resultItem[i].item != null)
+                    {
+                        img.sprite = storeSO.resultItem[i].item.icon;
+                    }
+                    if (amtTxt != null)
+                    {
+                        amtTxt.text = storeSO.resultItem[i].amount.ToString();
+                    }
                 }
             }
             else
@@ -124,8 +146,18 @@ namespace Sunspore
                 for (int i = 0; i < storeSO.ingredients.Length; i++)
                 {
                     GameObject newItemIcon = Instantiate(itemIconPrefab, transform);
-                    newItemIcon.transform.GetChild(0).GetComponent<Image>().sprite = storeSO.ingredients[i].item.icon;
-                    newItemIcon.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = storeSO.ingredients[i].amount.ToString();
+                    var child0 = newItemIcon.transform.childCount > 0 ? newItemIcon.transform.GetChild(0) : null;
+                    var child1 = newItemIcon.transform.childCount > 1 ? newItemIcon.transform.GetChild(1) : null;
+                    Image img = child0 != null ? child0.GetComponent<Image>() : null;
+                    TextMeshProUGUI amtTxt = child1 != null ? child1.GetComponent<TextMeshProUGUI>() : null;
+                    if (img != null && storeSO.ingredients[i].item != null)
+                    {
+                        img.sprite = storeSO.ingredients[i].item.icon;
+                    }
+                    if (amtTxt != null)
+                    {
+                        amtTxt.text = storeSO.ingredients[i].amount.ToString();
+                    }
                 }
 
                 // insert equal icon before the reward (if available)
@@ -140,8 +172,10 @@ namespace Sunspore
                     if (itemIconPrefab != null && coinSprite != null)
                     {
                         GameObject rewardIcon = Instantiate(itemIconPrefab, transform);
-                        var img = rewardIcon.transform.GetChild(0).GetComponent<Image>();
-                        var amt = rewardIcon.transform.GetChild(1).GetComponent<TextMeshProUGUI>();
+                        var r0 = rewardIcon.transform.childCount > 0 ? rewardIcon.transform.GetChild(0) : null;
+                        var r1 = rewardIcon.transform.childCount > 1 ? rewardIcon.transform.GetChild(1) : null;
+                        Image img = r0 != null ? r0.GetComponent<Image>() : null;
+                        TextMeshProUGUI amt = r1 != null ? r1.GetComponent<TextMeshProUGUI>() : null;
                         if (img != null) img.sprite = coinSprite;
                         if (amt != null) amt.text = storeSO.creditReward.ToString();
                     }

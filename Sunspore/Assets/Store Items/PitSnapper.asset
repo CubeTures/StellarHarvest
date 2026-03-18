@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Sunspore::Sunspore.StoreRecipeSO
   recipeName: Pit Snapper
   recipeType: 0
+  category: 1
   ingredients: []
   resultItem:
   - item: {fileID: 11400000, guid: 329fb617b839408468b087117d35c852, type: 2}

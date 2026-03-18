@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Sunspore::Sunspore.StoreRecipeSO
   recipeName: Bloomburst Adult
   recipeType: 1
+  category: 1
   ingredients:
   - item: {fileID: 11400000, guid: b216deef74420864cba9d71bb224dd60, type: 2}
     amount: 1

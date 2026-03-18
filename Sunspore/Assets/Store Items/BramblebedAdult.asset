@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Sunspore::Sunspore.StoreRecipeSO
   recipeName: Bramblebed Adult
   recipeType: 1
+  category: 1
   ingredients:
   - item: {fileID: 0}
     amount: 1
