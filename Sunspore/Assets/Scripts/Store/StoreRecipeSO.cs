@@ -8,6 +8,8 @@ namespace Sunspore
     {
         public string recipeName;
         public StoreRecipeType recipeType;
+        // Category used to filter recipes in the store UI (plants, weapons, tools, etc.)
+        public StoreRecipeCategory category = StoreRecipeCategory.All;
         public ItemTypeAndAmount[] ingredients;
         public ItemTypeAndAmount[] resultItem;
         [TextArea]
@@ -18,4 +20,6 @@ namespace Sunspore
     }
 
     public enum StoreRecipeType { buy, sell }
+
+    public enum StoreRecipeCategory { All, Plants, Weapons, Tools }
 }

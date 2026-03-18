@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System.Linq;
 using System.Collections.Generic;
 
 namespace Sunspore
@@ -13,6 +14,7 @@ namespace Sunspore
         private StoreRecipeSO selectedRecipeSO;
         private StoreRecipe selectedRecipeUI;
         private StoreRecipeType selectedRecipeType;
+        private StoreRecipeCategory selectedCategory;
         [SerializeField] StoreRecipeSO[] recipes;
         [SerializeField] GameObject recipeUIPrefab;
         [SerializeField] Transform recipeUIParent;
@@ -64,6 +66,7 @@ namespace Sunspore
             selectedRecipeSO = null;
             selectedRecipeUI = null;
             selectedRecipeType = StoreRecipeType.buy;
+            selectedCategory = StoreRecipeCategory.All;
             // Initialize wallet balance from text if possible
             if (wallet != null)
             {
@@ -119,19 +122,37 @@ namespace Sunspore
                 Destroy(child.gameObject);
             }
 
+            // Collect matching recipes so we can sort them before creating UI elements.
+            var matched = new List<StoreRecipeSO>();
             for (int i = 0; i < recipes.Length; i++)
             {
-                // Only create UI entries for the currently selected store tab (buy/sell)
-                if (recipes[i].recipeType == selectedRecipeType)
+                bool typeMatch = recipes[i].recipeType == selectedRecipeType;
+                bool categoryMatch = selectedCategory == StoreRecipeCategory.All || recipes[i].category == selectedCategory;
+                if (typeMatch && categoryMatch)
                 {
-                    GameObject newRecipeUI = Instantiate(recipeUIPrefab, recipeUIParent);
-                    newRecipeUI.name = recipes[i].recipeName;
-                    // If the prefab has a StoreRecipe component, assign and initialize it immediately
-                    var sr = newRecipeUI.GetComponent<StoreRecipe>();
-                    if (sr != null)
-                    {
-                        sr.UpdateRecipeUI(recipes[i]);
-                    }
+                    matched.Add(recipes[i]);
+                }
+            }
+
+            // Sort matched recipes: buy -> by creditCost ascending, sell -> by creditReward ascending
+            if (selectedRecipeType == StoreRecipeType.buy)
+            {
+                matched = matched.OrderBy(r => r.creditCost).ToList();
+            }
+            else
+            {
+                matched = matched.OrderBy(r => r.creditReward).ToList();
+            }
+
+            // Instantiate UI entries in sorted order
+            foreach (var recipeSO in matched)
+            {
+                GameObject newRecipeUI = Instantiate(recipeUIPrefab, recipeUIParent);
+                newRecipeUI.name = recipeSO.recipeName;
+                var sr = newRecipeUI.GetComponent<StoreRecipe>();
+                if (sr != null)
+                {
+                    sr.UpdateRecipeUI(recipeSO);
                 }
             }
 
@@ -209,6 +230,9 @@ namespace Sunspore
                 }
             }
 
+            // reset category to All when switching between buy/sell tabs so user can re-select
+            selectedCategory = StoreRecipeCategory.All;
+
             // clear selection when switching tabs
             selectedRecipeSO = null;
             if (selectedRecipeUI != null)
@@ -222,6 +246,49 @@ namespace Sunspore
             UpdateProcessButtonLabel();
             UpdateSelectedPreview(null);
         }
+
+        public void SelectedCategory(string type)
+        {
+            if (string.IsNullOrEmpty(type))
+            {
+                selectedCategory = StoreRecipeCategory.All;
+            }
+            else
+            {
+                switch (type.ToLowerInvariant())
+                {
+                    case "plants":
+                        selectedCategory = StoreRecipeCategory.Plants;
+                        break;
+                    case "weapons":
+                        selectedCategory = StoreRecipeCategory.Weapons;
+                        break;
+                    case "tools":
+                        selectedCategory = StoreRecipeCategory.Tools;
+                        break;
+                    default:
+                        selectedCategory = StoreRecipeCategory.All;
+                        break;
+                }
+            }
+
+            // clear selection when switching category
+            selectedRecipeSO = null;
+            if (selectedRecipeUI != null)
+            {
+                selectedRecipeUI.SetSelected(false);
+                selectedRecipeUI = null;
+            }
+            OnSelectionChanged?.Invoke(false, false);
+            SetButtonState(false, false);
+            UpdateRecipeUI();
+            UpdateSelectedPreview(null);
+        }
+
+        public void SelectedCategory_Plants() { SelectedCategory("plants"); }
+        public void SelectedCategory_Weapons() { SelectedCategory("weapons"); }
+        public void SelectedCategory_Tools() { SelectedCategory("tools"); }
+        public void SelectedCategory_All() { SelectedCategory(""); }
 
         // Parameterless helpers for easy Button wiring in the Inspector
         public void SelectedRecipeType_Buy()
@@ -278,6 +345,15 @@ namespace Sunspore
                 {
                     InventoryManager.Instance.CraftItem(new List<ItemTypeAndAmount>(selectedRecipeSO.resultItem), new List<ItemTypeAndAmount>());
                 }
+                // After buying, keep the selection so the player can buy repeatedly until funds run out.
+                UpdateWalletText();
+                // Refresh UI to reflect inventory changes and keep the same selection if still present.
+                UpdateRecipeUI();
+                bool stillProcessable = CanProcessRecipe(selectedRecipeSO);
+                SetButtonState(true, stillProcessable);
+                OnSelectionChanged?.Invoke(true, stillProcessable);
+                UpdateSelectedPreview(selectedRecipeSO);
+                return;
             }
             else // sell/process
             {
@@ -286,7 +362,7 @@ namespace Sunspore
                 AddCredits(selectedRecipeSO.creditReward);
             }
 
-            // After processing, refresh UI and clear selection
+            // After processing (sell), refresh UI and clear selection
             selectedRecipeUI = null;
             selectedRecipeSO = null;
             UpdateSelectedPreview(null);
@@ -316,11 +392,22 @@ namespace Sunspore
         private void UpdateProcessButtonLabel()
         {
             if (processButton == null) return;
-            // If sprites are provided, use them for the button image; otherwise update label text
-            if (buyButtonSprite != null && sellButtonSprite != null)
+            // Prefer switching the button sprite when either sprite is assigned.
+            // If both sprites are assigned, use the matching one. If only one is assigned,
+            // use it for its mode and leave the other mode falling back to text (or existing sprite).
+            if (buyButtonSprite != null || sellButtonSprite != null)
             {
-                processButton.image.sprite = selectedRecipeType == StoreRecipeType.buy ? buyButtonSprite : sellButtonSprite;
-                return;
+                if (selectedRecipeType == StoreRecipeType.buy && buyButtonSprite != null)
+                {
+                    processButton.image.sprite = buyButtonSprite;
+                    return;
+                }
+                if (selectedRecipeType == StoreRecipeType.sell && sellButtonSprite != null)
+                {
+                    processButton.image.sprite = sellButtonSprite;
+                    return;
+                }
+                // If the selected mode doesn't have a sprite assigned, fall through to update text below.
             }
 
             var tmp = processButton.GetComponentInChildren<TMPro.TextMeshProUGUI>();
