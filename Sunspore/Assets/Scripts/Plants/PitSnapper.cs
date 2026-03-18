@@ -71,15 +71,10 @@ namespace Sunspore
         {
             // Debug.Log($"Juvenile ability activated with power: {juvenileAbilityPower}");
 
-            Collider[] nearbyObjects = Physics.OverlapSphere(transform.position, juvenileAbilityRange);
-            foreach (Collider col in nearbyObjects)
+            if (pathfinding.GetEnemyTarget(this, juvenileAbilityRange) is Enemy enemy)
             {
-                if (col.CompareTag("Enemy"))
-                {
-                    _animator.SetTrigger("JuvenileAttack");
-
-                    col.GetComponent<Enemy>()?.TakeDamage((int)juvenileAbilityPower, Vector2.zero, 0f);
-                }
+                _animator.SetTrigger("FullyGrownAttack");
+                enemy.TakeDamage((int)fullyGrownAbilityPower, Vector2.zero, 0f);
             }
         }
 
@@ -87,15 +82,10 @@ namespace Sunspore
         {
             // Debug.Log($"Full ability activated with power: {fullyGrownAbilityPower}");
 
-            Collider[] nearbyObjects = Physics.OverlapSphere(transform.position, fullyGrownAbilityRange);
-            foreach (Collider col in nearbyObjects)
+            if (pathfinding.GetEnemyTarget(this, fullyGrownAbilityRange) is Enemy enemy)
             {
-                if (col.CompareTag("Enemy"))
-                {
-                    _animator.SetTrigger("FullyGrownAttack");
-
-                    col.GetComponent<Enemy>()?.TakeDamage((int)fullyGrownAbilityPower, Vector2.zero, 0f);
-                }
+                _animator.SetTrigger("FullyGrownAttack");
+                enemy.TakeDamage((int)fullyGrownAbilityPower, Vector2.zero, 0f);
             }
         }
 

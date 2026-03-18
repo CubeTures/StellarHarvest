@@ -9,11 +9,12 @@ using Sunspore;
 public class Player : MonoBehaviour
 {
     [SerializeField] Wallet wallet;
+    public WeaponHead weaponHead;
+    public WeaponHandle weaponBase;
     public float speed = 8f;
     public GameObject[] inventory;
     public float gridSize = 1f; // Size of each grid cell
     [SerializeField] float health = 100;
-    [SerializeField] private SpriteRenderer _sr;
 
     [HideInInspector]
     public RaycastHit selectedObject;
@@ -25,9 +26,9 @@ public class Player : MonoBehaviour
     public bool isSelecting = false;
     [HideInInspector]
     public bool isDead = false;
-
+    public bool animFinished = false;
     Transform _transform;
-    Animator _anim;
+    public Animator anim;
     CapsuleCollider _collider;
     Rigidbody _rb;
     AudioSource _audioSource;
@@ -48,16 +49,15 @@ public class Player : MonoBehaviour
 
     bool _facingRight = true;
     bool _facingFront = true;
-    int _currentDirection = -1;
+    public int currentDirection = -1;
 
     void Start()
     {
         _transform = GetComponent<Transform>();
-        _anim = GetComponent<Animator>();
+        anim = GetComponent<Animator>();
         _collider = GetComponent<CapsuleCollider>();
         _rb = GetComponent<Rigidbody>();
         _audioSource = GetComponent<AudioSource>();
-        _sr = GetComponent<SpriteRenderer>();
         _mainCamera = Camera.main;
         _spriteRenderer = GetComponent<SpriteRenderer>();
         gm = GameManager.gm;
@@ -91,7 +91,6 @@ public class Player : MonoBehaviour
             Cursor.lockState = CursorLockMode.Confined;
         }
     }
-
     void FixedUpdate()
     {
         // Exit update if game is paused
@@ -111,6 +110,7 @@ public class Player : MonoBehaviour
             if (_spriteRenderer != null)
                 _spriteRenderer.color = Color.red;
         }
+
     }
 
     public void SetMove(InputAction.CallbackContext context)
@@ -121,7 +121,10 @@ public class Player : MonoBehaviour
         _vz = input.y;
 
         bool isMoving = input.sqrMagnitude > 0.01f;
-        _anim.SetBool("isMoving", isMoving);
+        anim.SetBool("isMoving", isMoving);
+        anim.SetInteger("Direction", currentDirection);
+        
+        anim.ResetTrigger("Plant");
 
         if (!isMoving || isDead)
             return;
@@ -134,13 +137,11 @@ public class Player : MonoBehaviour
             {
                 _facingRight = true;
                 SetDirection(2); // Right
-                WeaponManager.Instance.setDirection(2);
             }
             else
             {
                 _facingRight = false;
                 SetDirection(4); // Left
-                WeaponManager.Instance.setDirection(4);
             }
         }
         else
@@ -150,25 +151,25 @@ public class Player : MonoBehaviour
             {
                 _facingFront = true;
                 SetDirection(3); // Forward
-                WeaponManager.Instance.setDirection(3);
             }
             else
             {
                 _facingFront = false;
-                SetDirection(1); // Back
-                WeaponManager.Instance.setDirection(1);
+                SetDirection(1); // Back            
             }
         }
 
     }
 
-
-
     public void SetDirection(int dir)
     {
-        _currentDirection = dir;
-        _anim.SetInteger("Direction", dir);
-        _anim.SetBool("isMoving", true);
+        currentDirection = dir;
+        WeaponManager.Instance.setDirection(dir);
+        weaponHead.SetSwingTransform(dir, _spriteRenderer.flipX);
+        weaponBase.SetWeaponBaseTransform(dir, _spriteRenderer.flipX);
+        anim.SetInteger("Direction", dir);
+        anim.SetBool("isMoving", true);
+        
         if (_vx > 0)
         {
             _spriteRenderer.flipX = true;
@@ -210,6 +211,7 @@ public class Player : MonoBehaviour
     {
         playerCanMove = true;
         _rb.isKinematic = false;
+        Debug.Log("Player unfrozen");
     }
 
     public void PlaySound(AudioClip clip)
@@ -274,5 +276,24 @@ public class Player : MonoBehaviour
     {
         if (_spriteRenderer != null)
             _spriteRenderer.color = _originalColor;
+    }
+    public void Planting()
+    {
+        anim.SetTrigger("Plant");
+    }
+
+    public void Swing()
+    {
+        anim.SetTrigger("Swing");
+        weaponHead.Swing();
+        weaponBase.Swing();
+        StartCoroutine(AnimationFinished());
+    }
+
+    private IEnumerator AnimationFinished()
+    {
+        animFinished = false;
+        yield return new WaitUntil(() => animFinished);
+        anim.SetInteger("Direction", currentDirection);
     }
 }
