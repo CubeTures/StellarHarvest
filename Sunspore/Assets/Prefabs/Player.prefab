@@ -467,7 +467,6 @@ MonoBehaviour:
   inventory: []
   gridSize: 1
   health: 100
-  _sr: {fileID: 0}
   playerCanMove: 1
   isSelecting: 0
   isDead: 0
