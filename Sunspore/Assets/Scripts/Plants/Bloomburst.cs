@@ -26,11 +26,6 @@ namespace Sunspore
             // Debug.Log("Bloom Burst created!");
         }   
 
-        void Update()
-        {
-            Debug.Log(transitionFinish);
-        }
-
         protected override void OnSeedStage()
         {
             base.OnSeedStage();
