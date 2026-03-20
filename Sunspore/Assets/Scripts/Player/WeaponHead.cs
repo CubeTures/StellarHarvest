@@ -12,6 +12,7 @@ using UnityEngine;
             {
                 _anim = GetComponent<Animator>();
                 _sr = GetComponent<SpriteRenderer>();
+                SetSwingTransform(1, false);
             }
             public void TypeUpdate(Weapon.WeaponHead newHead)
             {
