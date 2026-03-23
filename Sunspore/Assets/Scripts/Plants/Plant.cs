@@ -166,11 +166,14 @@ namespace Sunspore
             }
         }
 
-        protected virtual void Harvest()
+        public virtual void Harvest()
         {
-            SetGrowthStage(GrowthStage.Seed);
-            InventoryManager.Instance.AddItem(plantItem, 1);
-            Instantiate(glowEffect, transform.position, Quaternion.identity);
+            if (currentStage == GrowthStage.FullyGrown)
+            {
+                SetGrowthStage(GrowthStage.Seed);
+                InventoryManager.Instance.AddItem(plantItem, 1);
+                Instantiate(glowEffect, transform.position, Quaternion.identity);
+            }
         }
 
         protected void PlaySound(AudioClip sound)

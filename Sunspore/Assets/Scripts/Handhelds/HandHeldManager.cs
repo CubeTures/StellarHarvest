@@ -43,7 +43,7 @@ namespace Sunspore
         {
             // Setting up direction and attackBox
 
-            hitArea = new Vector3(1.0f, 1.0f, 1.0f);
+            hitArea = new Vector3(1.0f, 2.5f, 1.0f);
             directions[0] = new Vector3(0.0f, 0.0f, -1.0f);
             directions[1] = new Vector3(1.0f, 0.0f, 0.0f);
             directions[2] = new Vector3(0.0f, 0.0f, 1.0f);
@@ -61,13 +61,8 @@ namespace Sunspore
 
             if (enabled && !EventSystem.current.IsPointerOverGameObject() && Input.GetMouseButtonDown(0) && Time.time >= lastAttackTime + handHeld.attackCooldown)
             {
-                if(handHeld.weapon && handHeld.tool)
-                {
-                    Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-                    handHeld.Ability(player.GetComponent<Player>(), ray);
-                }
                 Vector3 mouseWorldPos = GetMouseWorldPosition();
-                Attack(mouseWorldPos);
+                Attack(mouseWorldPos, false);
                 lastAttackTime = Time.time;
             }
 
@@ -75,13 +70,21 @@ namespace Sunspore
 
             if (enabled && handHeld.tool && !EventSystem.current.IsPointerOverGameObject() && Input.GetMouseButtonDown(1) && Time.time >= lastAttackTime + handHeld.attackCooldown)
             {
-                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-                if (abilityCoroutine != null)
+                if (handHeld.weapon)
                 {
-                    StopCoroutine(abilityCoroutine);
+                    Vector3 mouseWorldPos = GetMouseWorldPosition();
+                    Attack(mouseWorldPos, true);
                 }
-                abilityCoroutine = StartCoroutine(AbilityDelayCoroutine(player.GetComponent<Player>(), ray, handHeld.abilityDuration));
-                lastAttackTime = Time.time;
+                else
+                {
+                    Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                    if (abilityCoroutine != null)
+                    {
+                        StopCoroutine(abilityCoroutine);
+                    }
+                    abilityCoroutine = StartCoroutine(AbilityDelayCoroutine(player.GetComponent<Player>(), ray, handHeld.abilityDuration));
+                    lastAttackTime = Time.time;
+                }
             }
             
             // Update direction based off player movement
@@ -105,7 +108,8 @@ namespace Sunspore
                 return ray.origin + ray.direction * t;
             }
         }
-        private void Attack(Vector3 mouseWorldPos)
+
+        private void Attack(Vector3 mouseWorldPos, bool ability)
         {
             // Find all enemies in range
             updateDirection();
@@ -123,7 +127,14 @@ namespace Sunspore
             Vector3 playerPos = player.transform.position;
             mouseWorldPos.y = 1.5f;
             Vector3 mouseDir = (mouseWorldPos - playerPos).normalized;
-            handHeld.Attack(boxCenter, hitArea, boxRotation, mouseDir, playerPos);
+            if (ability)
+            {
+                handHeld.AttackWithAbility(boxCenter, hitArea, boxRotation, mouseDir, playerPos);
+            }
+            else
+            {
+                handHeld.Attack(boxCenter, hitArea, boxRotation, mouseDir, playerPos);
+            }
             playerScript.Swing();
         }
         //private void OnDrawGizmos()
@@ -160,7 +171,10 @@ namespace Sunspore
         // Updates currDirection
         public void setDirection(int dir)
         {
-            CancelAbility();
+            if (handHeld != null && handHeld.cancelable)
+            {
+                CancelAbility();
+            }
             currDirection = directions[dir-1];
         }
 
@@ -186,6 +200,7 @@ namespace Sunspore
             handHeld = handHeldPrefab.GetComponent<HandHeld>();
             offset = handHeld.attackRange / 2;
             hitArea.z = handHeld.attackRange;
+            //hitArea.x = handHeld.abilityRange;
 
             //if (!melee)
             //{

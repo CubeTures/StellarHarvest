@@ -20,13 +20,13 @@ namespace Sunspore
         public bool tool;
         public bool cancelable;
 
-        public virtual void Attack(Vector3 boxCenter, Vector3 hitArea, Quaternion boxRotation, Vector3 mouseDir, Vector3 Playerpos)
+        public virtual void Attack(Vector3 boxCenter, Vector3 hitArea, Quaternion boxRotation, Vector3 mousePos, Vector3 Playerpos)
         {
             Collider[] hitEnemies = Physics.OverlapBox(
                boxCenter,
                hitArea / 2f,
                boxRotation
-           );
+            );
 
             foreach (var enemyCollider in hitEnemies)
             {
@@ -41,6 +41,11 @@ namespace Sunspore
         }
 
         public virtual void Ability(Player player, Ray ray)
+        {
+
+        }
+
+        public virtual void AttackWithAbility(Vector3 boxCenter, Vector3 hitArea, Quaternion boxRotation, Vector3 mousePos, Vector3 Playerpos)
         {
 
         }
