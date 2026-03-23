@@ -56,6 +56,10 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: 2350b5047fd45ec45ab87d3a9cf2abb8, type: 3}
+    - target: {fileID: 8633607651646711802, guid: 04fad9b53f5c6004ea1d478f93f95fd0, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 7c09187c3232f4d40a599b690faf0cfd, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -81,6 +85,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b28abab9e979e444bbe7f4d9fbde26f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Sunspore::Sunspore.SpikeBramble
+  plantType: 0
   seedSprite: {fileID: 21300000, guid: 2350b5047fd45ec45ab87d3a9cf2abb8, type: 3}
   juvenileSprite: {fileID: 21300000, guid: d2fe2761928172040a07ce6cd98aa77d, type: 3}
   fullyGrownSprite: {fileID: 21300000, guid: 0c45ad8cb1cd0244cbb79a37867c1e0e, type: 3}
@@ -93,6 +98,7 @@ MonoBehaviour:
   glowEffect: {fileID: 2446270667391804717, guid: f46e2420a80d0964e9afd78cde433563, type: 3}
   seedItem: {fileID: 11400000, guid: 343fbddfa5e4a2c4b9809a43af48d23b, type: 2}
   plantItem: {fileID: 11400000, guid: eaac53e7d7630d34b879ec9dc62325d0, type: 2}
+  currentStage: 0
   juvenileAbilityPower: 5
   fullyGrownAbilityPower: 15
   juvenileAbilityRange: 1
