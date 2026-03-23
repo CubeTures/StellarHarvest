@@ -338,33 +338,48 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
         return false;
     }
 
+    private int TopUpExistingStacksInSlots(GameObject[] slotArray, ItemSO item, int remaining)
+    {
+        if (slotArray == null || item == null || remaining <= 0) return remaining;
+
+        for (int i = 0; i < slotArray.Length && remaining > 0; i++)
+        {
+            var slotObj = slotArray[i];
+            if (slotObj == null) continue;
+
+            var slot = slotObj.GetComponent<InventorySlot>();
+            if (slot == null || slot.heldItem == null) continue;
+
+            var invItem = slot.heldItem.GetComponent<InventoryItem>();
+            if (invItem == null || invItem.itemScriptableObject != item) continue;
+
+            int maxStack = item.maxStackSize > 0 ? item.maxStackSize : invItem.stackMax;
+            if (maxStack <= 1 || invItem.stackCurrent >= maxStack) continue;
+
+            int space = maxStack - invItem.stackCurrent;
+            int toMove = Mathf.Min(space, remaining);
+            invItem.stackCurrent += toMove;
+            remaining -= toMove;
+        }
+
+        return remaining;
+    }
+
+    private int TopUpExistingStacks(ItemSO item, int remaining)
+    {
+        remaining = TopUpExistingStacksInSlots(slots, item, remaining);
+        remaining = TopUpExistingStacksInSlots(hotbarSlots, item, remaining);
+        return remaining;
+    }
+
     public void AddItem(ItemSO item, int amount)
     {
         if (item == null || amount <= 0) return;
 
         int remaining = amount;
 
-        // First try to top up existing stacks
-        for (int i = 0; i < slots.Length && remaining > 0; i++)
-        {
-            var slotObj = slots[i];
-            if (slotObj == null) continue;
-
-            var slot = slotObj.GetComponent<InventorySlot>();
-            if (slot == null) continue;
-
-            if (slot.heldItem != null)
-            {
-                var invItem = slot.heldItem.GetComponent<InventoryItem>();
-                if (invItem != null && invItem.itemScriptableObject == item && invItem.stackCurrent < invItem.stackMax)
-                {
-                    int space = invItem.stackMax - invItem.stackCurrent;
-                    int toMove = Mathf.Min(space, remaining);
-                    invItem.stackCurrent += toMove;
-                    remaining -= toMove;
-                }
-            }
-        }
+        // Top up existing stacks first (main inventory + hotbar).
+        remaining = TopUpExistingStacks(item, remaining);
 
         // Then create new stacks in empty slots
         for (int i = 0; i < slots.Length && remaining > 0; i++)
@@ -558,24 +573,8 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
         ItemSO pickedSO = pickable.itemScriptableObject;
         int remaining = 1;
 
-        // First try to top up existing stacks in main inventory
-        for (int i = 0; i < slots.Length && remaining > 0; i++)
-        {
-            InventorySlot slot = slots[i].GetComponent<InventorySlot>();
-            if (slot == null) continue;
-
-            if (slot.heldItem != null)
-            {
-                var invItem = slot.heldItem.GetComponent<InventoryItem>();
-                if (invItem != null && invItem.itemScriptableObject == pickedSO && invItem.stackCurrent < invItem.stackMax)
-                {
-                    int space = invItem.stackMax - invItem.stackCurrent;
-                    int toMove = Mathf.Min(space, remaining);
-                    invItem.stackCurrent += toMove;
-                    remaining -= toMove;
-                }
-            }
-        }
+        // First try to top up existing stacks (main inventory + hotbar).
+        remaining = TopUpExistingStacks(pickedSO, remaining);
 
         // Then create new stack(s) in empty slots if needed
         for (int i = 0; i < slots.Length && remaining > 0; i++)
