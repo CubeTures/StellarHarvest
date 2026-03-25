@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Sunspore
 {
-    public class Gun : Weapon
+    public class Gun : HandHeld
     {
         [SerializeField] float speed = 25f;
         [SerializeField] private GameObject bulletPrefab;

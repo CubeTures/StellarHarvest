@@ -12,5 +12,6 @@ using UnityEngine;
     public bool placeable;
     public GameObject prefab;
     public bool weapon;
+    public bool tool;
     public int sellPrice;
 }

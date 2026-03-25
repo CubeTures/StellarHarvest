@@ -142,7 +142,7 @@ namespace Sunspore
             }
         }
 
-        protected override void Harvest()
+        public override void Harvest()
         {
             base.Harvest();
             // Debug.Log("Bloom Burst harvested!");

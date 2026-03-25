@@ -20,10 +20,10 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
 
     [SerializeField] GameObject[] slots = new GameObject[28];
     [SerializeField] GameObject[] hotbarSlots = new GameObject[7];
-    [SerializeField] WeaponManager weaponManager;
+    [SerializeField] HandHeldManager handHeldManager;
 
     bool isCraftingOpened;
-    bool isInventoryOpened;
+    public bool isInventoryOpened;
     bool isStoreOpened;
     int selectedHotbarIndex = 0;
     GameObject draggedObject;
@@ -146,12 +146,14 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
             }
         }
 
-        if (weaponManager != null)
+        var sel = GetSelectedItem();
+
+        if (handHeldManager != null)
         {
-            var sel = GetSelectedItem();
-            if (sel == null || !sel.weapon)
+            handHeldManager.CancelAbility();
+            if (sel == null || (!sel.weapon && !sel.tool))
             {
-                weaponManager.enabled = false;
+                handHeldManager.enabled = false;
             }
         }
 
@@ -167,14 +169,15 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
 
                 InventorySlot invSlot = slot.GetComponent<InventorySlot>();
                 var selected = GetSelectedItem();
-                if (selected != null && selected.weapon)
+                if (selected != null && (selected.weapon || selected.tool))
                 {
-                    if (weaponManager != null)
+                    if (handHeldManager != null)
                     {
-                        weaponManager.SetWeaponStats(selected.prefab);
-                        weaponManager.enabled = true;
+                        handHeldManager.SetHandHeldStats(selected.prefab);
+                        handHeldManager.enabled = true;
                     }
                 }
+
                 if (invSlot != null && invSlot.heldItem != null && handParent != null)
                 {
                     Debug.Log("we are in");
@@ -478,7 +481,7 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
     {
         //if(GetSelectedItem() && GetSelectedItem().weapon)
         //{
-        //    weaponManager.enabled = false;
+        //    handHeldManager.enabled = false;
         //}
         if (eventData.button == PointerEventData.InputButton.Left)
         {
