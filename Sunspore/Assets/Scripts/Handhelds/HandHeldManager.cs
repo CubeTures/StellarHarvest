@@ -26,6 +26,8 @@ namespace Sunspore
         private Player playerScript;
 
         private HandHeld handHeld;
+        public HandHeld.WeaponHead head = HandHeld.WeaponHead.METAL;
+        public HandHeld.WeaponHandle handle = HandHeld.WeaponHandle.WOOD;
         private Coroutine abilityCoroutine;
 
         private void Awake()
@@ -203,6 +205,8 @@ namespace Sunspore
             handHeld = handHeldPrefab.GetComponent<HandHeld>();
             offset = handHeld.attackRange / 2;
             hitArea.z = handHeld.attackRange;
+            playerScript.weaponHead.TypeUpdate(head);
+            playerScript.weaponBase.TypeUpdate(handle);
             //hitArea.x = handHeld.abilityRange;
 
             //if (!melee)

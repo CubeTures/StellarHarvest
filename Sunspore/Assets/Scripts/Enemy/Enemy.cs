@@ -90,8 +90,8 @@ namespace Sunspore
 
             attackingPlayer = targetPlant == pathfinding.GetPlayerTransform();
             eatCooldown = Mathf.Max(eatCooldown - Time.deltaTime, 0);
-            
-            _spriteRenderer.sortingOrder = Mathf.RoundToInt(-transform.position.z * 100);
+            _spriteRenderer.sortingOrder = (int)(-transform.position.z * 100);
+
             updateDirection();
         }
 

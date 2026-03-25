@@ -18,7 +18,7 @@ PrefabInstance:
       objectReference: {fileID: 21300000, guid: 8652f3fb46716b446a476ec78f296b76, type: 3}
     - target: {fileID: 79943118663833847, guid: 4393b48af626182408c439887b60415a, type: 3}
       propertyPath: m_SpriteSortPoint
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 652280528261456607, guid: 4393b48af626182408c439887b60415a, type: 3}
       propertyPath: m_Controller
@@ -50,15 +50,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5034763247155655074, guid: 4393b48af626182408c439887b60415a, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 1.5882246
       objectReference: {fileID: 0}
     - target: {fileID: 5034763247155655074, guid: 4393b48af626182408c439887b60415a, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -0.000002616567
       objectReference: {fileID: 0}
     - target: {fileID: 5034763247155655074, guid: 4393b48af626182408c439887b60415a, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 1.2220069
       objectReference: {fileID: 0}
     - target: {fileID: 5034763247155655074, guid: 4393b48af626182408c439887b60415a, type: 3}
       propertyPath: m_LocalRotation.w
