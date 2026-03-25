@@ -6,7 +6,7 @@ using UnityEngine;
 
         public class WeaponHandle : MonoBehaviour
         {
-            Weapon.WeaponHandle handle;
+            HandHeld.WeaponHandle handle;
             Animator _anim;
             SpriteRenderer _sr;
             void Awake()
@@ -15,7 +15,7 @@ using UnityEngine;
                 _sr = GetComponent<SpriteRenderer>();
             }
 
-            public void TypeUpdate(Weapon.WeaponHandle newHandle)
+            public void TypeUpdate(HandHeld.WeaponHandle newHandle)
             {
                 handle = newHandle;
                 _anim.SetInteger("Type", (int)handle);

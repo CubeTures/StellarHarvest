@@ -19,6 +19,11 @@ namespace Sunspore
         public bool weapon;
         public bool tool;
         public bool cancelable;
+        public enum WeaponHead { METAL = 1 };
+        public enum WeaponHandle { WOOD = 1, METAL = 2 };
+
+        public WeaponHead head;
+        public WeaponHandle handle;
 
         public virtual void Attack(Vector3 boxCenter, Vector3 hitArea, Quaternion boxRotation, Vector3 mousePos, Vector3 Playerpos)
         {
@@ -53,6 +58,24 @@ namespace Sunspore
         public virtual void CancelAbility()
         {
 
+        }
+
+        public virtual bool CheckRange(Player player, Ray ray)
+        {
+            if (Physics.Raycast(ray, out RaycastHit hit))
+            {
+                //Debug.Log("hit");
+                Plant plant = hit.collider.GetComponent<Plant>();
+                if (plant != null)
+                {
+                    float distance = Vector3.Distance(player.transform.position, plant.transform.position);
+                    if (distance <= abilityRange)
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
         }
     }
 }

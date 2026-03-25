@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using System.Collections;
 using static Codice.Client.BaseCommands.BranchExplorer.Layout.BrExLayout;
+using UnityEngine.Tilemaps;
 namespace Sunspore
 {
     public class HandHeldManager : MonoBehaviour
@@ -82,8 +83,15 @@ namespace Sunspore
                     {
                         StopCoroutine(abilityCoroutine);
                     }
-                    abilityCoroutine = StartCoroutine(AbilityDelayCoroutine(player.GetComponent<Player>(), ray, handHeld.abilityDuration));
-                    lastAttackTime = Time.time;
+                    if(handHeld.CheckRange(player.GetComponent<Player>(), ray))
+                    {
+                        abilityCoroutine = StartCoroutine(AbilityDelayCoroutine(player.GetComponent<Player>(), ray, handHeld.abilityDuration));
+                        lastAttackTime = Time.time;
+                    }
+                    else
+                    {
+                        OutOfRange();
+                    }
                 }
             }
             
@@ -114,16 +122,6 @@ namespace Sunspore
             // Find all enemies in range
             updateDirection();
             Physics.SyncTransforms();
-            if (attackBox != null)
-            {
-                var renderer = attackBox.GetComponent<Renderer>();
-                if (renderer != null)
-                {
-                    renderer.material.color = PreserveAlpha(renderer.material.color, Color.red);
-                }
-                
-                Invoke(nameof(StopAttacking), handHeld.attackDuration);
-            }
             Vector3 playerPos = player.transform.position;
             mouseWorldPos.y = 1.5f;
             Vector3 mouseDir = (mouseWorldPos - playerPos).normalized;
@@ -166,6 +164,11 @@ namespace Sunspore
             if (handHeld != null && handHeld.cancelable)
                 handHeld.CancelAbility();
             Debug.Log("Ability cancelled!");
+        }
+
+        public void OutOfRange()
+        {
+            Debug.Log("out of range");
         }
 
         // Updates currDirection

@@ -7,14 +7,14 @@ using UnityEngine;
         {
             Animator _anim;
             SpriteRenderer _sr;
-            Weapon.WeaponHead head;
+            HandHeld.WeaponHead head;
             void Awake()
             {
                 _anim = GetComponent<Animator>();
                 _sr = GetComponent<SpriteRenderer>();
                 SetSwingTransform(1, false);
             }
-            public void TypeUpdate(Weapon.WeaponHead newHead)
+            public void TypeUpdate(HandHeld.WeaponHead newHead)
             {
                 head = newHead;
                 _anim.SetInteger("Type", (int)head);

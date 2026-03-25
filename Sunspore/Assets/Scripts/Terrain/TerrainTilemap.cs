@@ -1,3 +1,4 @@
+using Sunspore;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
@@ -78,19 +79,16 @@ public sealed class TerrainTilemap : MonoBehaviour
         new(-1,  1, 0), // NW
     };
 
-	private void Awake()
+    public static TerrainTilemap Instance { get; private set; }
+
+    private void Awake()
 	{
 		_tilemap = GetComponent<Tilemap>();
 		FillWithEmpty();
-	}
-
-	private void Update()
-	{
-		if (!Input.GetMouseButtonDown(0)) return;
-
-		var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-		if (Physics.Raycast(ray, out var hit))
-			TillAtWorldPosition(hit.point);
+		if (Instance == null)
+            Instance = this;
+        else
+            Destroy(gameObject);
 	}
 
 	private void FillWithEmpty()
@@ -102,11 +100,30 @@ public sealed class TerrainTilemap : MonoBehaviour
 		}
 	}
 
-	public void TillAtWorldPosition(Vector3 worldPosition)
+	public void TillAtWorldPosition(Vector3 worldPosition, float abilityRange, Vector3 playerPos)
 	{
 		var cell = _tilemap.WorldToCell(worldPosition);
 		if (!initialBounds.Contains(cell)) return;
-		if (!_tilledCells.Add(cell)) return;
+
+        // 1. Get the cell's world bounds
+        Vector3 cellSize = _tilemap.cellSize;
+        Bounds cellBounds = new Bounds(cell, cellSize);
+
+        // 2. Find the closest point on the cell's bounds to the player
+        Vector3 closestPoint = cellBounds.ClosestPoint(playerPos);
+		closestPoint.z = closestPoint.y;
+		closestPoint.y = 1.5f;
+
+        // 3. Calculate the distance
+        float distance = Vector3.Distance(playerPos, closestPoint);
+
+		Debug.Log(distance + " " + abilityRange);
+
+		if (distance > abilityRange) return;
+
+        Debug.Log("Tilled" + cell);
+
+        if (!_tilledCells.Add(cell)) return;
 
 		foreach (var offset in AllNeighbourOffsets)
 		{
@@ -117,8 +134,36 @@ public sealed class TerrainTilemap : MonoBehaviour
 		RefreshCell(cell);
 	}
 
+	public bool CheckRange(Vector3 worldPosition, float abilityRange, Vector3 playerPos)
+    {
+        var cell = _tilemap.WorldToCell(worldPosition);
+        if (!initialBounds.Contains(cell)) return false;
+
+        // 1. Get the cell's world bounds
+        Vector3 cellSize = _tilemap.cellSize;
+        Bounds cellBounds = new Bounds(cell, cellSize);
+
+        // 2. Find the closest point on the cell's bounds to the player
+        Vector3 closestPoint = cellBounds.ClosestPoint(playerPos) + new Vector3(0, 1.5f, 0);
+        closestPoint.z = closestPoint.y;
+        closestPoint.y = 1.5f;
+
+        // 3. Calculate the distance
+        float distance = Vector3.Distance(playerPos, closestPoint);
+
+        Debug.Log("Player Position: " + playerPos + " Cell: " + cell + " Closest Cell Edge: " + closestPoint + " Distance: " + distance);
+
+        if (distance <= abilityRange)
+		{
+			return true;
+		}
+
+		return false;
+    }
+
 	private void RefreshCell(Vector3Int cell)
 	{
+		Debug.Log("refresheed");
 		if (!_tilledCells.Contains(cell)) return;
 		var canonical = CanonicalMask(RawMask(cell));
 		_tilemap.SetTile(cell, tilledTiles[CanonicalToIndex[canonical]]);
