@@ -34,6 +34,7 @@ namespace Sunspore
         void Awake()
         {
             agent = GetComponent<NavMeshAgent>();
+            agent.updateRotation = false;
             _spriteRenderer = GetComponent<SpriteRenderer>();
             _anim = GetComponent<Animator>();
             if (_spriteRenderer != null)
@@ -89,6 +90,8 @@ namespace Sunspore
 
             attackingPlayer = targetPlant == pathfinding.GetPlayerTransform();
             eatCooldown = Mathf.Max(eatCooldown - Time.deltaTime, 0);
+
+            updateDirection();
         }
 
         void UpdateFlyingState(Transform target)
@@ -111,12 +114,39 @@ namespace Sunspore
             // if (flyingState == FlyingState.LANDING && Mathf.Approximately(transform.position.y, 0f))
             //     flyingState = FlyingState.LANDED;
         }
-
+        void updateDirection()
+        {
+            if (Mathf.Abs(_vx) > Mathf.Abs(_vz))
+            {
+                // Horizontal wins
+                if (_vx > 0)
+                {
+                    SetDirection(2); // Right
+                }
+                else
+                {
+                    SetDirection(4); // Left
+                }
+            }
+            else
+            {
+                // Vertical wins
+                if (_vz > 0)
+                {
+                    SetDirection(3); // Forward
+                }
+                else
+                {
+                    SetDirection(1); // Back            
+                }
+            }
+        }
         public void SetDirection(int dir)
         {
             _currentDirection = dir;
             _anim.SetInteger("Direction", dir);
             _anim.SetBool("isMoving", true);
+
             if (_vx > 0)
             {
                 _spriteRenderer.flipX = true;
