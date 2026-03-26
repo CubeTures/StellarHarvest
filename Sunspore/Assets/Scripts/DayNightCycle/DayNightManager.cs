@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System;
 
 namespace Sunspore
 {
@@ -10,6 +11,7 @@ namespace Sunspore
         [SerializeField] EnemySpawner spawner;
         [SerializeField] GameObject Light;
         [SerializeField] public float dayLengthSeconds = 30f;
+        [SerializeField, Range(0f, 1f)] float initialTimeOfDay = 0f;
         [SerializeField] TMP_Dropdown timeSelector;
 
         GameManager gm;
@@ -22,6 +24,9 @@ namespace Sunspore
         private int days = 0;
         private int nights = 0;
         public int weeks = 0;
+
+        public float NormalizedTimeOfDay => timeOfDay;
+        public event Action<float> TimeOfDayChanged;
         
         void Start()
         {
@@ -29,6 +34,11 @@ namespace Sunspore
             Light = GameObject.Find("Directional Light");
             timeSelector = GameObject.Find("Dropdown").GetComponent<TMP_Dropdown>();
             gm = GameManager.gm;
+
+            // Ensure a deterministic start position for the day/night cycle and clock UI.
+            timeOfDay = Mathf.Repeat(initialTimeOfDay, 1f);
+            float sunAngle = Mathf.Lerp(0f, 360f, timeOfDay);
+            Light.transform.rotation = Quaternion.Euler(sunAngle, 0, 0);
         }
         
         void Update()
@@ -70,6 +80,8 @@ namespace Sunspore
                     Bank.Instance.CheckPayment(weeks);
                 }
             }
+
+            TimeOfDayChanged?.Invoke(timeOfDay);
 
             if (isNight)
             {

@@ -46,7 +46,7 @@ namespace Sunspore
             // Auto-find Wallet component if inspector field is empty
             if (walletComponent == null)
             {
-                walletComponent = FindObjectOfType<Wallet>();
+                walletComponent = FindFirstObjectByType<Wallet>();
             }
 
             // If a TMP text is assigned in the store UI and the Wallet exists, wire them so Wallet updates the text.
