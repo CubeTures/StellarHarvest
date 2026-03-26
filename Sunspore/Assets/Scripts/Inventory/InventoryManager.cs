@@ -25,6 +25,8 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
     bool isCraftingOpened;
     public bool isInventoryOpened;
     bool isStoreOpened;
+    // Inventory filtering
+    private ItemCategory selectedInventoryCategory = ItemCategory.All;
     int selectedHotbarIndex = 0;
     GameObject draggedObject;
     GameObject lastItemSlot;
@@ -54,6 +56,10 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
         CheckForHotbarInput();
         craftingParent.SetActive(isCraftingOpened);
         inventoryParent.SetActive(isInventoryOpened);
+        if (isInventoryOpened)
+        {
+            UpdateInventoryFilter();
+        }
         if (storeParent != null)
         {
             storeParent.SetActive(isStoreOpened);
@@ -83,6 +89,63 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
             }
         }
     }
+
+    private void UpdateInventoryFilter()
+    {
+        if (slots == null) return;
+
+        for (int i = 0; i < slots.Length; i++)
+        {
+            var slotObj = slots[i];
+            if (slotObj == null) continue;
+
+            var slot = slotObj.GetComponent<InventorySlot>();
+            if (slot == null || slot.heldItem == null) continue;
+
+            var invItem = slot.heldItem.GetComponent<InventoryItem>();
+            if (invItem == null || invItem.itemScriptableObject == null) continue;
+
+            bool show = selectedInventoryCategory == ItemCategory.All || invItem.itemScriptableObject.category == selectedInventoryCategory;
+            slot.heldItem.SetActive(show);
+        }
+    }
+
+    public void SelectedInventoryCategory(string type)
+    {
+        if (string.IsNullOrEmpty(type))
+        {
+            selectedInventoryCategory = ItemCategory.All;
+        }
+        else
+        {
+            switch (type.ToLowerInvariant())
+            {
+                case "weapons":
+                    selectedInventoryCategory = ItemCategory.Weapons;
+                    break;
+                case "seeds":
+                    selectedInventoryCategory = ItemCategory.Seeds;
+                    break;
+                case "plants":
+                    selectedInventoryCategory = ItemCategory.Plants;
+                    break;
+                case "tools":
+                    selectedInventoryCategory = ItemCategory.Tools;
+                    break;
+                default:
+                    selectedInventoryCategory = ItemCategory.All;
+                    break;
+            }
+        }
+        // Apply filter immediately
+        UpdateInventoryFilter();
+    }
+
+    public void SelectedInventoryCategory_Weapons() { SelectedInventoryCategory("weapons"); }
+    public void SelectedInventoryCategory_Seeds() { SelectedInventoryCategory("seeds"); }
+    public void SelectedInventoryCategory_Plants() { SelectedInventoryCategory("plants"); }
+    public void SelectedInventoryCategory_Tools() { SelectedInventoryCategory("tools"); }
+    public void SelectedInventoryCategory_All() { SelectedInventoryCategory(""); }
 
     private void CheckForHotbarInput()
     {
@@ -148,14 +211,14 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
 
         var sel = GetSelectedItem();
 
-        if (handHeldManager != null)
-        {
-            handHeldManager.CancelAbility();
-            if (sel == null || (!sel.weapon && !sel.tool))
+            if (handHeldManager != null)
             {
-                handHeldManager.enabled = false;
+                handHeldManager.CancelAbility();
+                if (sel == null || (sel.category != ItemCategory.Weapons && sel.category != ItemCategory.Tools))
+                {
+                    handHeldManager.enabled = false;
+                }
             }
-        }
 
         foreach (GameObject slot in hotbarSlots)
         {
@@ -169,7 +232,7 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
 
                 InventorySlot invSlot = slot.GetComponent<InventorySlot>();
                 var selected = GetSelectedItem();
-                if (selected != null && (selected.weapon || selected.tool))
+                if (selected != null && (selected.category == ItemCategory.Weapons || selected.category == ItemCategory.Tools))
                 {
                     if (handHeldManager != null)
                     {
@@ -195,7 +258,7 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
                     }
                 }
             }
-
+            // Only scale normally; enable hand visuals when the selected item is a weapon or tool
             slot.transform.localScale = scale;
         }
     }
@@ -479,7 +542,7 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
 
     public void OnPointerDown(PointerEventData eventData)
     {
-        //if(GetSelectedItem() && GetSelectedItem().weapon)
+        //if(GetSelectedItem() && (GetSelectedItem().category == ItemCategory.Weapons))
         //{
         //    handHeldManager.enabled = false;
         //}
@@ -514,11 +577,25 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
             else if (slot != null && slot.heldItem != null && slot.heldItem.GetComponent<InventoryItem>().stackCurrent == slot.heldItem.GetComponent<InventoryItem>().stackMax
                 || slot != null && slot.heldItem != null && slot.heldItem.GetComponent<InventoryItem>().itemScriptableObject != draggedObject.GetComponent<InventoryItem>().itemScriptableObject)
             {
-                lastItemSlot.GetComponent<InventorySlot>().SetHeldItem(slot.heldItem);
-                slot.heldItem.transform.SetParent(slot.transform.parent.parent.GetChild(2));
+                // Place the clicked slot's item into the original slot (lastItemSlot)
+                var lastSlotComp = lastItemSlot != null ? lastItemSlot.GetComponent<InventorySlot>() : null;
+                if (lastSlotComp != null)
+                {
+                    lastSlotComp.SetHeldItem(slot.heldItem);
+                    // parent the moved object under the original slot's container so it hides/shows with that UI
+                    if (lastItemSlot != null)
+                    {
+                        draggedObject = draggedObject; // preserve for clarity
+                        slot.heldItem.transform.SetParent(lastItemSlot.transform.parent.parent.GetChild(2));
+                    }
+                }
 
+                // Put the dragged object into the clicked slot and parent it to that slot's container
                 slot.SetHeldItem(draggedObject);
-                draggedObject.transform.SetParent(slot.transform.parent.parent.GetChild(2));
+                if (slot != null)
+                {
+                    draggedObject.transform.SetParent(slot.transform.parent.parent.GetChild(2));
+                }
             }
 
             //Fill stack
@@ -539,14 +616,28 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
                 {
                     slotHeldItem.stackCurrent += itemsToFillStack;
                     draggedItem.stackCurrent -= itemsToFillStack;
-                    lastItemSlot.GetComponent<InventorySlot>().SetHeldItem(draggedObject);
+                    if (lastItemSlot != null)
+                    {
+                        lastItemSlot.GetComponent<InventorySlot>().SetHeldItem(draggedObject);
+                        draggedObject.transform.SetParent(lastItemSlot.transform.parent.parent.GetChild(2));
+                    }
                 }
             }
             //Return item to last slot
             else if (clickedObject.name != "DropItem")
             {
-                lastItemSlot.GetComponent<InventorySlot>().SetHeldItem(draggedObject);
-                draggedObject.transform.SetParent(slot.transform.parent.parent.GetChild(2));
+                if (lastItemSlot != null)
+                {
+                    lastItemSlot.GetComponent<InventorySlot>().SetHeldItem(draggedObject);
+                    // parent it under the original slot's container so it hides with that UI
+                    draggedObject.transform.SetParent(lastItemSlot.transform.parent.parent.GetChild(2));
+                }
+                else if (slot != null)
+                {
+                    // fallback to clicked slot's container
+                    slot.SetHeldItem(draggedObject);
+                    draggedObject.transform.SetParent(slot.transform.parent.parent.GetChild(2));
+                }
             }
             //Drop item
             else
