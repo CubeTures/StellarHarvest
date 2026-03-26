@@ -13,9 +13,11 @@ MonoBehaviour:
   m_Name: SpikeBramble(FullyGrown)
   m_EditorClassIdentifier: Sunspore::ItemSO
   displayName: Spike Bramble(Fully Grown)
+  description: 
   icon: {fileID: 21300000, guid: c0494158fb45e78c0988aa1ff06090be, type: 3}
   stackable: 1
   maxStackSize: 16
   placeable: 0
   prefab: {fileID: 0}
-  weapon: 0
+  sellPrice: 0
+  category: 3

@@ -19,6 +19,5 @@ MonoBehaviour:
   maxStackSize: 1
   placeable: 0
   prefab: {fileID: 1868505393542001856, guid: 60a25ffa701eaa44cb015024012f4eaf, type: 3}
-  weapon: 1
-  tool: 0
   sellPrice: 100
+  category: 1
