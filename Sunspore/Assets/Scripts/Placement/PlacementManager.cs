@@ -24,6 +24,10 @@ public class PlacementManager : MonoBehaviour
     Color canPlace = new Color(103f / 255f, 245f / 255f, 105f / 255f);
     bool allowPlacement = false;
 
+    private Coroutine placingCoroutine = null;
+    private bool isPlacing = false;
+    private float animTime = 0.75f;
+
 
     void Awake()
     {
@@ -45,6 +49,13 @@ public class PlacementManager : MonoBehaviour
         if (!EventSystem.current.IsPointerOverGameObject() && Input.GetMouseButtonDown(0))
         {
             PlaceItem();
+        }
+
+        if (player.anim.GetBool("isMoving") && placingCoroutine != null)
+        {
+            StopCoroutine(placingCoroutine);
+            placingCoroutine = null;
+            isPlacing = false;
         }
     }
 
@@ -145,23 +156,30 @@ public class PlacementManager : MonoBehaviour
 
     void PlaceItem()
     {
-        if (allowPlacement && currentPreviews.Count > 0)
+        if (allowPlacement && currentPreviews.Count > 0 && !isPlacing)
         {
-            StartCoroutine(PlaceAfterAnimation());
+            Vector3 currPlace = currentPreviews[0].transform.position;
+            placingCoroutine = StartCoroutine(PlaceAfterAnimation(currPlace));
+            isPlacing = true;
         }
     }
 
-    IEnumerator PlaceAfterAnimation()
+    IEnumerator PlaceAfterAnimation(Vector3 currPlace)
     {
         player.Planting();
 
         yield return new WaitUntil(() => player.animFinished);
 
+        //Debug.Log(player.animFinished);
+
         GameObject prefab = currentItem.prefab;
-        Instantiate(prefab, currentPreviews[0].transform.position, Quaternion.identity);
+        Instantiate(prefab, currPlace, Quaternion.identity);
 
         inventoryManager.UseSelectedItem();
         player.animFinished = false;
+        placingCoroutine = null;
+        isPlacing = false;
+        //Debug.Log("done placing");
     }
     public bool ScreenToWorld(Vector2 screenPosition, out Vector3 worldPosition)
     {

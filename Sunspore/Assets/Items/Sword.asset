@@ -18,6 +18,7 @@ MonoBehaviour:
   stackable: 0
   maxStackSize: 1
   placeable: 0
-  prefab: {fileID: 933734840360499931, guid: d1a263f426963524fb538a29d473f35c, type: 3}
+  prefab: {fileID: 3490523070058649211, guid: d1a263f426963524fb538a29d473f35c, type: 3}
   weapon: 1
+  tool: 0
   sellPrice: 100
