@@ -79,8 +79,8 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: 2044665145
-  m_SortingLayer: 3
+  m_SortingLayerID: -1965524509
+  m_SortingLayer: 2
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: 21300000, guid: 0c32c94ca7a8edf4286fbb8a2f0b08e0, type: 3}
@@ -127,6 +127,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 393f8ae53d1fc874f8a0da4f2b345f5e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
+  player: {fileID: 827796884500757949}
 --- !u!1 &5651167634825025194
 GameObject:
   m_ObjectHideFlags: 0
@@ -143,7 +144,7 @@ GameObject:
   - component: {fileID: 7977193351103050734}
   - component: {fileID: 827796884500757949}
   - component: {fileID: 2688758304045228457}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -234,8 +235,8 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: 2044665145
-  m_SortingLayer: 3
+  m_SortingLayerID: -1965524509
+  m_SortingLayer: 2
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: 21300000, guid: 36d67ae0e9ffb264ba5ba71713baa975, type: 3}
@@ -415,8 +416,8 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: GameManager, Sunspore
-        m_MethodName: Pause
-        m_Mode: 0
+        m_MethodName: TogglePause
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -463,8 +464,9 @@ MonoBehaviour:
   wallet: {fileID: 0}
   weaponHead: {fileID: 1784778231114211467}
   weaponBase: {fileID: 9221276070111740150}
-  speed: 7.5
-  inventory: []
+  speed: 8
+  inventory:
+  - {fileID: 8633157585367683789, guid: 930e8118936ff2448a069367ff714d88, type: 3}
   gridSize: 1
   health: 100
   playerCanMove: 1
@@ -472,6 +474,7 @@ MonoBehaviour:
   isDead: 0
   animFinished: 0
   anim: {fileID: 0}
+  spriteRenderer: {fileID: 0}
   currentDirection: -1
 --- !u!82 &2688758304045228457
 AudioSource:
@@ -649,8 +652,8 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: 2044665145
-  m_SortingLayer: 3
+  m_SortingLayerID: -674794713
+  m_SortingLayer: 4
   m_SortingOrder: 1
   m_MaskInteraction: 0
   m_Sprite: {fileID: 21300000, guid: ccd05535803e1634cb3d9e776a16b5e5, type: 3}

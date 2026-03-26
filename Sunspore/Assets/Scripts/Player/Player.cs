@@ -34,7 +34,7 @@ public class Player : MonoBehaviour
     AudioSource _audioSource;
     Camera _mainCamera;
     CinemachineCamera _cinemachineCamera;
-    private SpriteRenderer _spriteRenderer;
+    public SpriteRenderer spriteRenderer;
     private Color _originalColor;
 
     GameManager gm;
@@ -59,11 +59,11 @@ public class Player : MonoBehaviour
         _rb = GetComponent<Rigidbody>();
         _audioSource = GetComponent<AudioSource>();
         _mainCamera = Camera.main;
-        _spriteRenderer = GetComponent<SpriteRenderer>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
         gm = GameManager.gm;
-        if(_spriteRenderer != null)
+        if(spriteRenderer != null)
         {
-            _originalColor = _spriteRenderer.color;
+            _originalColor = spriteRenderer.color;
         }
 
         // Find and setup Cinemachine Virtual Camera
@@ -107,9 +107,11 @@ public class Player : MonoBehaviour
 
         if (health == 10)
         {
-            if (_spriteRenderer != null)
-                _spriteRenderer.color = Color.red;
+            if (spriteRenderer != null)
+                spriteRenderer.color = Color.red;
         }
+
+        spriteRenderer.sortingOrder = (int)(-transform.position.z * 100);
 
     }
 
@@ -164,19 +166,19 @@ public class Player : MonoBehaviour
     public void SetDirection(int dir)
     {
         currentDirection = dir;
-        WeaponManager.Instance.setDirection(dir);
-        weaponHead.SetSwingTransform(dir, _spriteRenderer.flipX);
-        weaponBase.SetWeaponBaseTransform(dir, _spriteRenderer.flipX);
+        HandHeldManager.Instance.setDirection(dir);
+        weaponHead.SetSwingTransform(dir, spriteRenderer.flipX);
+        weaponBase.SetWeaponBaseTransform(dir, spriteRenderer.flipX);
         anim.SetInteger("Direction", dir);
         anim.SetBool("isMoving", true);
         
         if (_vx > 0)
         {
-            _spriteRenderer.flipX = true;
+            spriteRenderer.flipX = true;
         }
         else if (_vx < 0)
         {
-            _spriteRenderer.flipX = false;
+            spriteRenderer.flipX = false;
         }
     }
     public void Move()
@@ -248,9 +250,9 @@ public class Player : MonoBehaviour
         }
 
         health -= damage;
-        if (_spriteRenderer != null)
+        if (spriteRenderer != null)
         {
-            _spriteRenderer.color = Color.red;
+            spriteRenderer.color = Color.red;
             CancelInvoke(nameof(ResetColor));
             Invoke(nameof(ResetColor), 0.2f); // 0.2 seconds, adjust as needed
         }
@@ -274,8 +276,8 @@ public class Player : MonoBehaviour
 
     private void ResetColor()
     {
-        if (_spriteRenderer != null)
-            _spriteRenderer.color = _originalColor;
+        if (spriteRenderer != null)
+            spriteRenderer.color = _originalColor;
     }
     public void Planting()
     {
@@ -294,6 +296,6 @@ public class Player : MonoBehaviour
     {
         animFinished = false;
         yield return new WaitUntil(() => animFinished);
-        anim.SetInteger("Direction", currentDirection);
+        //anim.SetInteger("Direction", currentDirection);
     }
 }

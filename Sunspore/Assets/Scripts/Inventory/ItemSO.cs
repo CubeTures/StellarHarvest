@@ -11,6 +11,10 @@ using UnityEngine;
     public int maxStackSize;
     public bool placeable;
     public GameObject prefab;
-    public bool weapon;
+    
     public int sellPrice;
+
+    public ItemCategory category = ItemCategory.All;
 }
+
+public enum ItemCategory { All, Weapons, Seeds, Plants, Tools }

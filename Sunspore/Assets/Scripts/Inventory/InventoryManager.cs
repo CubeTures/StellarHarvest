@@ -23,11 +23,13 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
 
     [SerializeField] GameObject[] slots = new GameObject[28];
     [SerializeField] GameObject[] hotbarSlots = new GameObject[7];
-    [SerializeField] WeaponManager weaponManager;
+    [SerializeField] HandHeldManager handHeldManager;
 
     bool isCraftingOpened;
-    bool isInventoryOpened;
+    public bool isInventoryOpened;
     bool isStoreOpened;
+    // Inventory filtering
+    private ItemCategory selectedInventoryCategory = ItemCategory.All;
     int selectedHotbarIndex = 0;
     GameObject draggedObject;
     GameObject lastItemSlot;
@@ -57,6 +59,10 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
         CheckForHotbarInput();
         craftingParent.SetActive(isCraftingOpened);
         inventoryParent.SetActive(isInventoryOpened);
+        if (isInventoryOpened)
+        {
+            UpdateInventoryFilter();
+        }
         if (storeParent != null)
         {
             storeParent.SetActive(isStoreOpened);
@@ -87,6 +93,63 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
         }
         itemsContainer.anchoredPosition = scrollRect.content.anchoredPosition;
     }
+
+    private void UpdateInventoryFilter()
+    {
+        if (slots == null) return;
+
+        for (int i = 0; i < slots.Length; i++)
+        {
+            var slotObj = slots[i];
+            if (slotObj == null) continue;
+
+            var slot = slotObj.GetComponent<InventorySlot>();
+            if (slot == null || slot.heldItem == null) continue;
+
+            var invItem = slot.heldItem.GetComponent<InventoryItem>();
+            if (invItem == null || invItem.itemScriptableObject == null) continue;
+
+            bool show = selectedInventoryCategory == ItemCategory.All || invItem.itemScriptableObject.category == selectedInventoryCategory;
+            slot.heldItem.SetActive(show);
+        }
+    }
+
+    public void SelectedInventoryCategory(string type)
+    {
+        if (string.IsNullOrEmpty(type))
+        {
+            selectedInventoryCategory = ItemCategory.All;
+        }
+        else
+        {
+            switch (type.ToLowerInvariant())
+            {
+                case "weapons":
+                    selectedInventoryCategory = ItemCategory.Weapons;
+                    break;
+                case "seeds":
+                    selectedInventoryCategory = ItemCategory.Seeds;
+                    break;
+                case "plants":
+                    selectedInventoryCategory = ItemCategory.Plants;
+                    break;
+                case "tools":
+                    selectedInventoryCategory = ItemCategory.Tools;
+                    break;
+                default:
+                    selectedInventoryCategory = ItemCategory.All;
+                    break;
+            }
+        }
+        // Apply filter immediately
+        UpdateInventoryFilter();
+    }
+
+    public void SelectedInventoryCategory_Weapons() { SelectedInventoryCategory("weapons"); }
+    public void SelectedInventoryCategory_Seeds() { SelectedInventoryCategory("seeds"); }
+    public void SelectedInventoryCategory_Plants() { SelectedInventoryCategory("plants"); }
+    public void SelectedInventoryCategory_Tools() { SelectedInventoryCategory("tools"); }
+    public void SelectedInventoryCategory_All() { SelectedInventoryCategory(""); }
 
     private void CheckForHotbarInput()
     {
@@ -150,14 +213,16 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
             }
         }
 
-        if (weaponManager != null)
-        {
-            var sel = GetSelectedItem();
-            if (sel == null || !sel.weapon)
+        var sel = GetSelectedItem();
+
+            if (handHeldManager != null)
             {
-                weaponManager.enabled = false;
+                handHeldManager.CancelAbility();
+                if (sel == null || (sel.category != ItemCategory.Weapons && sel.category != ItemCategory.Tools))
+                {
+                    handHeldManager.enabled = false;
+                }
             }
-        }
 
         foreach (GameObject slot in hotbarSlots)
         {
@@ -171,14 +236,15 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
 
                 InventorySlot invSlot = slot.GetComponent<InventorySlot>();
                 var selected = GetSelectedItem();
-                if (selected != null && selected.weapon)
+                if (selected != null && (selected.category == ItemCategory.Weapons || selected.category == ItemCategory.Tools))
                 {
-                    if (weaponManager != null)
+                    if (handHeldManager != null)
                     {
-                        weaponManager.SetWeaponStats(selected.prefab);
-                        weaponManager.enabled = true;
+                        handHeldManager.SetHandHeldStats(selected.prefab);
+                        handHeldManager.enabled = true;
                     }
                 }
+
                 if (invSlot != null && invSlot.heldItem != null && handParent != null)
                 {
                     Debug.Log("we are in");
@@ -342,33 +408,48 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
         return false;
     }
 
+    private int TopUpExistingStacksInSlots(GameObject[] slotArray, ItemSO item, int remaining)
+    {
+        if (slotArray == null || item == null || remaining <= 0) return remaining;
+
+        for (int i = 0; i < slotArray.Length && remaining > 0; i++)
+        {
+            var slotObj = slotArray[i];
+            if (slotObj == null) continue;
+
+            var slot = slotObj.GetComponent<InventorySlot>();
+            if (slot == null || slot.heldItem == null) continue;
+
+            var invItem = slot.heldItem.GetComponent<InventoryItem>();
+            if (invItem == null || invItem.itemScriptableObject != item) continue;
+
+            int maxStack = item.maxStackSize > 0 ? item.maxStackSize : invItem.stackMax;
+            if (maxStack <= 1 || invItem.stackCurrent >= maxStack) continue;
+
+            int space = maxStack - invItem.stackCurrent;
+            int toMove = Mathf.Min(space, remaining);
+            invItem.stackCurrent += toMove;
+            remaining -= toMove;
+        }
+
+        return remaining;
+    }
+
+    private int TopUpExistingStacks(ItemSO item, int remaining)
+    {
+        remaining = TopUpExistingStacksInSlots(slots, item, remaining);
+        remaining = TopUpExistingStacksInSlots(hotbarSlots, item, remaining);
+        return remaining;
+    }
+
     public void AddItem(ItemSO item, int amount)
     {
         if (item == null || amount <= 0) return;
 
         int remaining = amount;
 
-        // First try to top up existing stacks
-        for (int i = 0; i < slots.Length && remaining > 0; i++)
-        {
-            var slotObj = slots[i];
-            if (slotObj == null) continue;
-
-            var slot = slotObj.GetComponent<InventorySlot>();
-            if (slot == null) continue;
-
-            if (slot.heldItem != null)
-            {
-                var invItem = slot.heldItem.GetComponent<InventoryItem>();
-                if (invItem != null && invItem.itemScriptableObject == item && invItem.stackCurrent < invItem.stackMax)
-                {
-                    int space = invItem.stackMax - invItem.stackCurrent;
-                    int toMove = Mathf.Min(space, remaining);
-                    invItem.stackCurrent += toMove;
-                    remaining -= toMove;
-                }
-            }
-        }
+        // Top up existing stacks first (main inventory + hotbar).
+        remaining = TopUpExistingStacks(item, remaining);
 
         // Then create new stacks in empty slots
         for (int i = 0; i < slots.Length && remaining > 0; i++)
@@ -477,9 +558,9 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
 
     public void OnPointerDown(PointerEventData eventData)
     {
-        //if(GetSelectedItem() && GetSelectedItem().weapon)
+        //if(GetSelectedItem() && (GetSelectedItem().category == ItemCategory.Weapons))
         //{
-        //    weaponManager.enabled = false;
+        //    handHeldManager.enabled = false;
         //}
         if (eventData.button == PointerEventData.InputButton.Left)
         {
@@ -514,11 +595,25 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
             else if (slot != null && slot.heldItem != null && slot.heldItem.GetComponent<InventoryItem>().stackCurrent == slot.heldItem.GetComponent<InventoryItem>().stackMax
                 || slot != null && slot.heldItem != null && slot.heldItem.GetComponent<InventoryItem>().itemScriptableObject != draggedObject.GetComponent<InventoryItem>().itemScriptableObject)
             {
-                lastItemSlot.GetComponent<InventorySlot>().SetHeldItem(slot.heldItem);
-                slot.heldItem.transform.SetParent(slot.transform.parent.parent.GetChild(1));
+                // Place the clicked slot's item into the original slot (lastItemSlot)
+                var lastSlotComp = lastItemSlot != null ? lastItemSlot.GetComponent<InventorySlot>() : null;
+                if (lastSlotComp != null)
+                {
+                    lastSlotComp.SetHeldItem(slot.heldItem);
+                    // parent the moved object under the original slot's container so it hides/shows with that UI
+                    if (lastItemSlot != null)
+                    {
+                        draggedObject = draggedObject; // preserve for clarity
+                        slot.heldItem.transform.SetParent(lastItemSlot.transform.parent.parent.GetChild(1));
+                    }
+                }
 
+                // Put the dragged object into the clicked slot and parent it to that slot's container
                 slot.SetHeldItem(draggedObject);
-                draggedObject.transform.SetParent(slot.transform.parent.parent.GetChild(1));
+                if (slot != null)
+                {
+                    draggedObject.transform.SetParent(slot.transform.parent.parent.GetChild(1));
+                }
             }
 
             //Fill stack
@@ -539,14 +634,28 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
                 {
                     slotHeldItem.stackCurrent += itemsToFillStack;
                     draggedItem.stackCurrent -= itemsToFillStack;
-                    lastItemSlot.GetComponent<InventorySlot>().SetHeldItem(draggedObject);
+                    if (lastItemSlot != null)
+                    {
+                        lastItemSlot.GetComponent<InventorySlot>().SetHeldItem(draggedObject);
+                        draggedObject.transform.SetParent(lastItemSlot.transform.parent.parent.GetChild(2));
+                    }
                 }
             }
             //Return item to last slot
             else if (clickedObject.name != "DropItem")
             {
-                lastItemSlot.GetComponent<InventorySlot>().SetHeldItem(draggedObject);
-                draggedObject.transform.SetParent(lastItemSlot.transform.parent.parent.GetChild(1));
+                if (lastItemSlot != null)
+                {
+                    lastItemSlot.GetComponent<InventorySlot>().SetHeldItem(draggedObject);
+                    // parent it under the original slot's container so it hides with that UI
+                    draggedObject.transform.SetParent(lastItemSlot.transform.parent.parent.GetChild(1));
+                }
+                else if (slot != null)
+                {
+                    // fallback to clicked slot's container
+                    slot.SetHeldItem(draggedObject);
+                    draggedObject.transform.SetParent(slot.transform.parent.parent.GetChild(1));
+                }
             }
             //Drop item
             else
@@ -586,24 +695,8 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
         ItemSO pickedSO = pickable.itemScriptableObject;
         int remaining = 1;
 
-        // First try to top up existing stacks in main inventory
-        for (int i = 0; i < slots.Length && remaining > 0; i++)
-        {
-            InventorySlot slot = slots[i].GetComponent<InventorySlot>();
-            if (slot == null) continue;
-
-            if (slot.heldItem != null)
-            {
-                var invItem = slot.heldItem.GetComponent<InventoryItem>();
-                if (invItem != null && invItem.itemScriptableObject == pickedSO && invItem.stackCurrent < invItem.stackMax)
-                {
-                    int space = invItem.stackMax - invItem.stackCurrent;
-                    int toMove = Mathf.Min(space, remaining);
-                    invItem.stackCurrent += toMove;
-                    remaining -= toMove;
-                }
-            }
-        }
+        // First try to top up existing stacks (main inventory + hotbar).
+        remaining = TopUpExistingStacks(pickedSO, remaining);
 
         // Then create new stack(s) in empty slots if needed
         for (int i = 0; i < slots.Length && remaining > 0; i++)
