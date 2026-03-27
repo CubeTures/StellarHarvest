@@ -52,6 +52,17 @@ class ToggleButtonGroup : MonoBehaviour
 		}
 		t.selected = selected;
 	}
+
+	public void Reset()
+	{
+		int defaultSelected = 0;
+		for (int i = 0; i < toggles.Length; i++)
+		{
+			defaultSelected = toggles[i].defaultSelected ? i : defaultSelected;
+			SetStyles(i, false);
+		}
+		SetStyles(defaultSelected, true);
+	}
 }
 
 [Serializable]

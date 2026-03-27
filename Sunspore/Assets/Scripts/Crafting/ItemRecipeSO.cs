@@ -13,7 +13,7 @@ namespace Sunspore
         public ItemTypeAndAmount[] resultItem;
     } 
 
-    public enum RecipeType {tools, weapons};
+    public enum RecipeType {all, tools, weapons};
 
     [System.Serializable]
     public class ItemTypeAndAmount

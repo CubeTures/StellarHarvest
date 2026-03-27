@@ -24,6 +24,7 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
     [SerializeField] GameObject[] slots = new GameObject[28];
     [SerializeField] GameObject[] hotbarSlots = new GameObject[7];
     [SerializeField] HandHeldManager handHeldManager;
+    [SerializeField] ToggleButtonGroup inventoryTabs;
 
     bool isCraftingOpened;
     public bool isInventoryOpened;
@@ -84,6 +85,7 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
                 isInventoryOpened = false;
                 isCraftingOpened = false;
                 isStoreOpened = false;
+                inventoryTabs.Reset();
             }
             else
             {
@@ -595,25 +597,10 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
             else if (slot != null && slot.heldItem != null && slot.heldItem.GetComponent<InventoryItem>().stackCurrent == slot.heldItem.GetComponent<InventoryItem>().stackMax
                 || slot != null && slot.heldItem != null && slot.heldItem.GetComponent<InventoryItem>().itemScriptableObject != draggedObject.GetComponent<InventoryItem>().itemScriptableObject)
             {
-                // Place the clicked slot's item into the original slot (lastItemSlot)
-                var lastSlotComp = lastItemSlot != null ? lastItemSlot.GetComponent<InventorySlot>() : null;
-                if (lastSlotComp != null)
-                {
-                    lastSlotComp.SetHeldItem(slot.heldItem);
-                    // parent the moved object under the original slot's container so it hides/shows with that UI
-                    if (lastItemSlot != null)
-                    {
-                        draggedObject = draggedObject; // preserve for clarity
-                        slot.heldItem.transform.SetParent(lastItemSlot.transform.parent.parent.GetChild(1));
-                    }
-                }
-
-                // Put the dragged object into the clicked slot and parent it to that slot's container
+                lastItemSlot.GetComponent<InventorySlot>().SetHeldItem(slot.heldItem);
+                slot.heldItem.transform.SetParent(slot.transform.parent.parent.GetChild(1));
                 slot.SetHeldItem(draggedObject);
-                if (slot != null)
-                {
-                    draggedObject.transform.SetParent(slot.transform.parent.parent.GetChild(1));
-                }
+                draggedObject.transform.SetParent(slot.transform.parent.parent.GetChild(1));
             }
 
             //Fill stack
@@ -637,7 +624,7 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
                     if (lastItemSlot != null)
                     {
                         lastItemSlot.GetComponent<InventorySlot>().SetHeldItem(draggedObject);
-                        draggedObject.transform.SetParent(lastItemSlot.transform.parent.parent.GetChild(2));
+                        draggedObject.transform.SetParent(lastItemSlot.transform.parent.parent.GetChild(1));
                     }
                 }
             }

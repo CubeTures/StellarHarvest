@@ -24,12 +24,14 @@ namespace Sunspore
         [SerializeField] Color buttonDefaultColor = Color.white;
         [SerializeField] Color buttonSelectedColor = Color.yellow;
         [SerializeField] Color buttonProcessableColor = Color.green;
-        [SerializeField] Sprite buyButtonSprite;
-        [SerializeField] Sprite sellButtonSprite;
+        [SerializeField] TMP_Text transactButtonText;
 
         [SerializeField] TMP_Text wallet;
         [SerializeField] Wallet walletComponent;
         private decimal walletBalance;
+
+        [SerializeField] ToggleButtonGroup storeTabs;
+        [SerializeField] ToggleButtonGroup storeFilters;
 
         private List<ItemTypeAndAmount> items = new List<ItemTypeAndAmount>();
 
@@ -67,6 +69,8 @@ namespace Sunspore
             selectedRecipeUI = null;
             selectedRecipeType = StoreRecipeType.buy;
             selectedCategory = StoreRecipeCategory.All;
+            storeTabs.Reset();
+            storeFilters.Reset();
             // Initialize wallet balance from text if possible
             if (wallet != null)
             {
@@ -294,11 +298,13 @@ namespace Sunspore
         public void SelectedRecipeType_Buy()
         {
             SelectedRecipeType("buy");
+            storeFilters.Reset();
         }
 
         public void SelectedRecipeType_Sell()
         {
             SelectedRecipeType("sell");
+            storeFilters.Reset();
         }
 
         public void SelectRecipe(StoreRecipeSO recipeSO, StoreRecipe recipeUI)
@@ -395,16 +401,16 @@ namespace Sunspore
             // Prefer switching the button sprite when either sprite is assigned.
             // If both sprites are assigned, use the matching one. If only one is assigned,
             // use it for its mode and leave the other mode falling back to text (or existing sprite).
-            if (buyButtonSprite != null || sellButtonSprite != null)
+            if (transactButtonText != null)
             {
-                if (selectedRecipeType == StoreRecipeType.buy && buyButtonSprite != null)
+                if (selectedRecipeType == StoreRecipeType.buy)
                 {
-                    processButton.image.sprite = buyButtonSprite;
+                    transactButtonText.text = "Buy";
                     return;
                 }
-                if (selectedRecipeType == StoreRecipeType.sell && sellButtonSprite != null)
+                if (selectedRecipeType == StoreRecipeType.sell)
                 {
-                    processButton.image.sprite = sellButtonSprite;
+                    transactButtonText.text = "Sell";
                     return;
                 }
                 // If the selected mode doesn't have a sprite assigned, fall through to update text below.
