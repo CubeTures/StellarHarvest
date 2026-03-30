@@ -94,7 +94,7 @@ namespace Sunspore
                 }
                 if (newItemIcon.transform.childCount > 1)
                 {
-                    var txt = newItemIcon.transform.GetChild(1).GetComponent<TextMeshProUGUI>();
+                    var txt = newItemIcon.transform.GetChild(1).GetComponentInChildren<TextMeshProUGUI>();
                     if (txt != null) txt.text = ingredient.amount.ToString();
                 }
             }

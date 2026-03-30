@@ -47,7 +47,7 @@ namespace Sunspore
 
         private void OnEnable()
         {
-            selectedRecipeType = RecipeType.tools;
+            selectedRecipeType = RecipeType.all;
             selectedRecipeSO = null;
             selectedRecipeUI = null;
             UpdateRecipeUI();
@@ -58,7 +58,7 @@ namespace Sunspore
         public bool CanCraftRecipe(ItemRecipeSO recipeSO)
         {
             items = InventoryManager.Instance.GetAllItems();
-            
+
             int matchingIngredients = 0;
 
             foreach (ItemTypeAndAmount ingredient in recipeSO.ingredients)
@@ -84,7 +84,7 @@ namespace Sunspore
 
             for (int i = 0; i < recipes.Length; i++)
             {
-                if (recipes[i].recipeType == selectedRecipeType)
+                if (recipes[i].recipeType == selectedRecipeType || selectedRecipeType == RecipeType.all)
                 {
                     GameObject newRecipeUI = Instantiate(recipeUIPrefab, recipeUIParent);
                     // use the scriptable object's recipeName so later lookup matches
@@ -249,6 +249,9 @@ namespace Sunspore
         {
             switch (type)
             {
+                case "all":
+                    selectedRecipeType = RecipeType.all;
+                    break;
                 case "tools":
                     selectedRecipeType = RecipeType.tools;
                     break;

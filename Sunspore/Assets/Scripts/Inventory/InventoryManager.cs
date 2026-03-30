@@ -17,10 +17,14 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
     [SerializeField] Transform handParent;
     [SerializeField] GameObject itemPrefab;
     [SerializeField] Camera cam;
+    [SerializeField] ScrollRect scrollRect;
+    [SerializeField] RectTransform itemsContainer;
+    [SerializeField] Sprite hotbarSlotUnselected, hotbarSlotSelected;
 
     [SerializeField] GameObject[] slots = new GameObject[28];
     [SerializeField] GameObject[] hotbarSlots = new GameObject[7];
     [SerializeField] HandHeldManager handHeldManager;
+    [SerializeField] ToggleButtonGroup inventoryTabs;
 
     bool isCraftingOpened;
     public bool isInventoryOpened;
@@ -81,6 +85,7 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
                 isInventoryOpened = false;
                 isCraftingOpened = false;
                 isStoreOpened = false;
+                inventoryTabs.Reset();
             }
             else
             {
@@ -88,6 +93,7 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
                 PlayerPrefManager.SetInventoryOpenCount(PlayerPrefManager.GetInventoryOpenCount() + 1);
             }
         }
+        itemsContainer.anchoredPosition = scrollRect.content.anchoredPosition;
     }
 
     private void UpdateInventoryFilter()
@@ -224,11 +230,11 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
         {
             if (slot == null) continue;
 
-            Vector3 scale = new Vector3(0.9f, 0.9f, 0.9f);
+            Sprite spr = hotbarSlotUnselected;
 
             if (slot == hotbarSlots[selectedHotbarIndex])
             {
-                scale = new Vector3(1.1f, 1.1f, 1.1f);
+                spr = hotbarSlotSelected;
 
                 InventorySlot invSlot = slot.GetComponent<InventorySlot>();
                 var selected = GetSelectedItem();
@@ -258,8 +264,8 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
                     }
                 }
             }
-            // Only scale normally; enable hand visuals when the selected item is a weapon or tool
-            slot.transform.localScale = scale;
+
+            slot.GetComponent<Image>().sprite = spr;
         }
     }
 
@@ -284,7 +290,7 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
                     invItem.itemScriptableObject = slot.item;
                     invItem.stackCurrent = slot.quantity > 0 ? slot.quantity : 1;
                 }
-                newItem.transform.SetParent(slotObj.transform.parent.parent.GetChild(2));
+                newItem.transform.SetParent(slotObj.transform.parent.parent.GetChild(1));
                 newItem.transform.localScale = new Vector3(1, 1, 1);
                 slot.SetHeldItem(newItem);
             }
@@ -307,7 +313,7 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
                     invItem.itemScriptableObject = slot.item;
                     invItem.stackCurrent = slot.quantity > 0 ? slot.quantity : 1;
                 }
-                newItem.transform.SetParent(slotObj.transform.parent.parent.GetChild(2));
+                newItem.transform.SetParent(slotObj.transform.parent.parent.GetChild(1));
                 newItem.transform.localScale = new Vector3(1, 1, 1);
                 slot.SetHeldItem(newItem);
             }
@@ -466,7 +472,7 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
                 invItem.itemScriptableObject = item;
                 int put = Mathf.Min(remaining, item.maxStackSize);
                 invItem.stackCurrent = put;
-                newItem.transform.SetParent(slotObj.transform.parent.parent.GetChild(2));
+                newItem.transform.SetParent(slotObj.transform.parent.parent.GetChild(1));
                 newItem.transform.localScale = new Vector3(1, 1, 1);
                 slot.SetHeldItem(newItem);
                 remaining -= put;
@@ -540,6 +546,18 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
         }
     }
 
+    public void CloseSidebar()
+    {
+        if (isCraftingOpened)
+        {
+            isCraftingOpened = false;
+        }
+        if (isStoreOpened)
+        {
+            isStoreOpened = false;
+        }
+    }
+
     public void OnPointerDown(PointerEventData eventData)
     {
         //if(GetSelectedItem() && (GetSelectedItem().category == ItemCategory.Weapons))
@@ -556,6 +574,8 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
                 draggedObject = slot.heldItem;
                 slot.heldItem = null;
                 lastItemSlot = clickedObject;
+                scrollRect.enabled = false;
+                draggedObject.transform.SetParent(transform);
             }
         }
     }
@@ -571,31 +591,16 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
             if (slot != null && slot.heldItem == null)
             {
                 slot.SetHeldItem(draggedObject);
-                draggedObject.transform.SetParent(slot.transform.parent.parent.GetChild(2));
+                draggedObject.transform.SetParent(slot.transform.parent.parent.GetChild(1));
             }
             //There is item in the slot - switch items
             else if (slot != null && slot.heldItem != null && slot.heldItem.GetComponent<InventoryItem>().stackCurrent == slot.heldItem.GetComponent<InventoryItem>().stackMax
                 || slot != null && slot.heldItem != null && slot.heldItem.GetComponent<InventoryItem>().itemScriptableObject != draggedObject.GetComponent<InventoryItem>().itemScriptableObject)
             {
-                // Place the clicked slot's item into the original slot (lastItemSlot)
-                var lastSlotComp = lastItemSlot != null ? lastItemSlot.GetComponent<InventorySlot>() : null;
-                if (lastSlotComp != null)
-                {
-                    lastSlotComp.SetHeldItem(slot.heldItem);
-                    // parent the moved object under the original slot's container so it hides/shows with that UI
-                    if (lastItemSlot != null)
-                    {
-                        draggedObject = draggedObject; // preserve for clarity
-                        slot.heldItem.transform.SetParent(lastItemSlot.transform.parent.parent.GetChild(2));
-                    }
-                }
-
-                // Put the dragged object into the clicked slot and parent it to that slot's container
+                lastItemSlot.GetComponent<InventorySlot>().SetHeldItem(slot.heldItem);
+                slot.heldItem.transform.SetParent(slot.transform.parent.parent.GetChild(1));
                 slot.SetHeldItem(draggedObject);
-                if (slot != null)
-                {
-                    draggedObject.transform.SetParent(slot.transform.parent.parent.GetChild(2));
-                }
+                draggedObject.transform.SetParent(slot.transform.parent.parent.GetChild(1));
             }
 
             //Fill stack
@@ -619,7 +624,7 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
                     if (lastItemSlot != null)
                     {
                         lastItemSlot.GetComponent<InventorySlot>().SetHeldItem(draggedObject);
-                        draggedObject.transform.SetParent(lastItemSlot.transform.parent.parent.GetChild(2));
+                        draggedObject.transform.SetParent(lastItemSlot.transform.parent.parent.GetChild(1));
                     }
                 }
             }
@@ -630,13 +635,13 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
                 {
                     lastItemSlot.GetComponent<InventorySlot>().SetHeldItem(draggedObject);
                     // parent it under the original slot's container so it hides with that UI
-                    draggedObject.transform.SetParent(lastItemSlot.transform.parent.parent.GetChild(2));
+                    draggedObject.transform.SetParent(lastItemSlot.transform.parent.parent.GetChild(1));
                 }
                 else if (slot != null)
                 {
                     // fallback to clicked slot's container
                     slot.SetHeldItem(draggedObject);
-                    draggedObject.transform.SetParent(slot.transform.parent.parent.GetChild(2));
+                    draggedObject.transform.SetParent(slot.transform.parent.parent.GetChild(1));
                 }
             }
             //Drop item
@@ -654,6 +659,16 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
 
             HotBarItemChanged();
             draggedObject = null;
+            scrollRect.enabled = true;
+        }
+        else if (draggedObject != null && eventData.button == PointerEventData.InputButton.Left)
+        {
+            lastItemSlot.GetComponent<InventorySlot>().SetHeldItem(draggedObject);
+            draggedObject.transform.SetParent(lastItemSlot.transform.parent.parent.GetChild(1));
+
+            HotBarItemChanged();
+            draggedObject = null;
+            scrollRect.enabled = true;
         }
     }
 
@@ -686,7 +701,7 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
                 invItem.itemScriptableObject = pickedSO;
                 int put = Mathf.Min(remaining, pickedSO.maxStackSize);
                 invItem.stackCurrent = put;
-                newItem.transform.SetParent(slot.transform.parent.parent.GetChild(2));
+                newItem.transform.SetParent(slot.transform.parent.parent.GetChild(1));
                 newItem.transform.localScale = new Vector3(1, 1, 1);
                 slot.SetHeldItem(newItem);
                 remaining -= put;
@@ -752,7 +767,7 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
             }
         }
     }
-    
+
     // Sell specified items from main inventory slots only (do not touch hotbar).
     public void SellItems(List<ItemTypeAndAmount> itemsToSell)
     {

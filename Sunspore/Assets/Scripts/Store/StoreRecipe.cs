@@ -16,8 +16,8 @@ namespace Sunspore
 
         private bool canProcess;
         [SerializeField] UnityEngine.UI.Image backgroundImage;
-        [SerializeField] Color normalColor = new Color(1f,1f,1f,1f);
-        [SerializeField] Color selectedColor = new Color(0.8f,0.9f,1f,1f);
+        [SerializeField] Color normalColor = new Color(0.5f, 0.5f, 0.5f, 1f);
+        [SerializeField] Color selectedColor = new Color(1f, 1f, 1f, 1f);
 
         public void OnPointerEnter(PointerEventData eventData)
         {
@@ -88,7 +88,7 @@ namespace Sunspore
                         var c0 = costIcon.transform.childCount > 0 ? costIcon.transform.GetChild(0) : null;
                         var c1 = costIcon.transform.childCount > 1 ? costIcon.transform.GetChild(1) : null;
                         Image img = c0 != null ? c0.GetComponent<Image>() : null;
-                        TextMeshProUGUI amt = c1 != null ? c1.GetComponent<TextMeshProUGUI>() : null;
+                        TextMeshProUGUI amt = c1 != null ? c1.GetComponentInChildren<TextMeshProUGUI>() : null;
                         if (img != null) img.sprite = coinSprite;
                         if (amt != null) amt.text = storeSO.creditCost.ToString();
                     }
@@ -110,7 +110,7 @@ namespace Sunspore
                     var child0 = newItemIcon.transform.childCount > 0 ? newItemIcon.transform.GetChild(0) : null;
                     var child1 = newItemIcon.transform.childCount > 1 ? newItemIcon.transform.GetChild(1) : null;
                     Image img = child0 != null ? child0.GetComponent<Image>() : null;
-                    TextMeshProUGUI amtTxt = child1 != null ? child1.GetComponent<TextMeshProUGUI>() : null;
+                    TextMeshProUGUI amtTxt = child1 != null ? child1.GetComponentInChildren<TextMeshProUGUI>() : null;
                     if (img != null && storeSO.ingredients[i].item != null)
                     {
                         img.sprite = storeSO.ingredients[i].item.icon;
@@ -129,7 +129,7 @@ namespace Sunspore
                     var child0 = newItemIcon.transform.childCount > 0 ? newItemIcon.transform.GetChild(0) : null;
                     var child1 = newItemIcon.transform.childCount > 1 ? newItemIcon.transform.GetChild(1) : null;
                     Image img = child0 != null ? child0.GetComponent<Image>() : null;
-                    TextMeshProUGUI amtTxt = child1 != null ? child1.GetComponent<TextMeshProUGUI>() : null;
+                    TextMeshProUGUI amtTxt = child1 != null ? child1.GetComponentInChildren<TextMeshProUGUI>() : null;
                     if (img != null && storeSO.resultItem[i].item != null)
                     {
                         img.sprite = storeSO.resultItem[i].item.icon;
@@ -149,7 +149,7 @@ namespace Sunspore
                     var child0 = newItemIcon.transform.childCount > 0 ? newItemIcon.transform.GetChild(0) : null;
                     var child1 = newItemIcon.transform.childCount > 1 ? newItemIcon.transform.GetChild(1) : null;
                     Image img = child0 != null ? child0.GetComponent<Image>() : null;
-                    TextMeshProUGUI amtTxt = child1 != null ? child1.GetComponent<TextMeshProUGUI>() : null;
+                    TextMeshProUGUI amtTxt = child1 != null ? child1.GetComponentInChildren<TextMeshProUGUI>() : null;
                     if (img != null && storeSO.ingredients[i].item != null)
                     {
                         img.sprite = storeSO.ingredients[i].item.icon;
@@ -175,7 +175,7 @@ namespace Sunspore
                         var r0 = rewardIcon.transform.childCount > 0 ? rewardIcon.transform.GetChild(0) : null;
                         var r1 = rewardIcon.transform.childCount > 1 ? rewardIcon.transform.GetChild(1) : null;
                         Image img = r0 != null ? r0.GetComponent<Image>() : null;
-                        TextMeshProUGUI amt = r1 != null ? r1.GetComponent<TextMeshProUGUI>() : null;
+                        TextMeshProUGUI amt = r1 != null ? r1.GetComponentInChildren<TextMeshProUGUI>() : null;
                         if (img != null) img.sprite = coinSprite;
                         if (amt != null) amt.text = storeSO.creditReward.ToString();
                     }

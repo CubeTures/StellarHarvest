@@ -77,14 +77,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Sunspore::Sunspore.ItemRecipe
   itemSO: {fileID: 0}
-  itemIconPrefab: {fileID: 2820464247671337351, guid: cbfa5d275f7307c4db55922e83c6c479, type: 3}
+  itemIconPrefab: {fileID: 2820464247671337351, guid: 4ac36a50d544d6a42a2766bc645b3ade, type: 3}
   equalIconPrefab: {fileID: 7371776429520943544, guid: 088350200f1c5e747842b66b5bbaf7a1, type: 3}
   iconSpacing: 9
   backgroundImage: {fileID: 0}
   normalColor: {r: 1, g: 1, b: 1, a: 1}
   selectedColor: {r: 1, g: 1, b: 1, a: 1}
-  normalSprite: {fileID: 0}
-  selectedSprite: {fileID: 0}
 --- !u!114 &7990094382893040541
 MonoBehaviour:
   m_ObjectHideFlags: 0

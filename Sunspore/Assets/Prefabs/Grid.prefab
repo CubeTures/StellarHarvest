@@ -27,7 +27,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1, y: 1.5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8379712381450250849}
@@ -164,7 +164,7 @@ TilemapRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: -20
   m_MaskInteraction: 0
   m_ChunkSize: {x: 32, y: 32, z: 32}
   m_ChunkCullingBounds: {x: 0, y: 0, z: 0}
@@ -254,5 +254,5 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 1dd035789dbb40c48bca2138e45b9e94, type: 2}
   - {fileID: 11400000, guid: a97dc2df3cfcde746b49b6bf747b3cfc, type: 2}
   initialBounds:
-    m_Position: {x: 0, y: 0, z: 0}
-    m_Size: {x: 20, y: 20, z: 1}
+    m_Position: {x: -50, y: -50, z: 0}
+    m_Size: {x: 100, y: 100, z: 1}
