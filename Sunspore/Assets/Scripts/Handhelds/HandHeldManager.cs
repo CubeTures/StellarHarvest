@@ -135,17 +135,24 @@ namespace Sunspore
             {
                 handHeld.Attack(boxCenter, hitArea, boxRotation, mouseDir, playerPos);
             }
-            playerScript.Swing();
+            if (handHeld.ranged)
+            {
+
+            }
+            else
+            {
+                playerScript.Swing();
+            }
         }
-        //private void OnDrawGizmos()
-        //{
-        //    Quaternion boxRotation = currDirection != Vector3.zero
-        //        ? Quaternion.LookRotation(currDirection)
-        //        : player.transform.rotation;
-        //    Gizmos.color = Color.red;
-        //    Gizmos.matrix = Matrix4x4.TRS(boxCenter, boxRotation, Vector3.one);
-        //    Gizmos.DrawWireCube(Vector3.zero, hitArea * 1.5f);
-        //}
+        private void OnDrawGizmos()
+        {
+            Quaternion boxRotation = currDirection != Vector3.zero
+                ? Quaternion.LookRotation(currDirection)
+                : player.transform.rotation;
+            Gizmos.color = Color.red;
+            Gizmos.matrix = Matrix4x4.TRS(boxCenter, boxRotation, Vector3.one);
+            Gizmos.DrawWireCube(Vector3.zero, hitArea * 1.5f);
+        }
 
         private IEnumerator AbilityDelayCoroutine(Player player, Ray ray, float delay)
         {

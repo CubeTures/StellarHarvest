@@ -282,6 +282,7 @@ public class Player : MonoBehaviour
     public void Planting()
     {
         anim.SetTrigger("Plant");
+        StartCoroutine(AnimationFinished());
     }
 
     public void Swing()
@@ -296,6 +297,8 @@ public class Player : MonoBehaviour
     {
         animFinished = false;
         yield return new WaitUntil(() => animFinished);
-        //anim.SetInteger("Direction", currentDirection);
+        anim.SetInteger("Direction", currentDirection);
+        anim.SetTrigger("Finished");
+        //Debug.Log("finished animation");
     }
 }
