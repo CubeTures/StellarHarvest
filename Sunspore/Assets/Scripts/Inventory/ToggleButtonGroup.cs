@@ -11,7 +11,7 @@ class ToggleButtonGroup : MonoBehaviour
 	void Awake()
 	{
 		int selected = 0;
-		Button[] buttons = GetComponentsInChildren<Button>();
+		Button[] buttons = GetComponentsInChildren<Button>(true);
 		for (int i = 0; i < toggles.Length; i++)
 		{
 			int capture = i;
@@ -44,8 +44,10 @@ class ToggleButtonGroup : MonoBehaviour
 	void SetStyles(int i, bool selected)
 	{
 		ToggleButton t = toggles[i];
+		if (t == null) return;
+		
 		t.img.sprite = selected ? t.selectedSprite : t.unselectedSprite;
-		if (t.selectedContent != null && t.unselectedSprite != null)
+		if (t.selectedContent != null && t.unselectedContent != null)
 		{
 			t.selectedContent.SetActive(selected);
 			t.unselectedContent.SetActive(!selected);
