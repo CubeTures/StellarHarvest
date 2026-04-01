@@ -11,11 +11,15 @@ PrefabInstance:
     - target: {fileID: 79943118663833847, guid: 4393b48af626182408c439887b60415a, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: faf0c483e814c7e4a85171e90257f111, type: 3}
+      objectReference: {fileID: 21300000, guid: 7ad74ed305c74324fba414a51cb93bf2, type: 3}
     - target: {fileID: 79943118663833847, guid: 4393b48af626182408c439887b60415a, type: 3}
       propertyPath: m_SpriteSortPoint
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 652280528261456607, guid: 4393b48af626182408c439887b60415a, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 27f613649a58d0141a38ba56b6353cf1, type: 2}
     - target: {fileID: 1463616092573366569, guid: 4393b48af626182408c439887b60415a, type: 3}
       propertyPath: Priority
       value: 4
@@ -117,8 +121,12 @@ MonoBehaviour:
   health: 100
   maxHealth: 100
   enemyType: 3
+  flyingState: 0
   damage: 10
   cost: 1
   attackDuration: 0.25
   attackCooldown: 1
+  flyHeight: 3
+  perchRadius: 2
+  descentSpeed: 3
   agent: {fileID: 0}
