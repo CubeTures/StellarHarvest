@@ -161,6 +161,20 @@ public sealed class TerrainTilemap : MonoBehaviour
 		return false;
     }
 
+	public bool CheckTilled(Vector3 worldPos)
+	{
+		Debug.Log(worldPos);
+
+		Vector3Int cell = new Vector3Int((int)worldPos.x, (int)worldPos.z, 0);
+
+		Debug.Log(cell);
+
+		if (!_tilledCells.Contains(cell)) return true;
+
+		Debug.Log("tilled");
+        return false;
+	}
+
 	private void RefreshCell(Vector3Int cell)
 	{
 		Debug.Log("refresheed");
