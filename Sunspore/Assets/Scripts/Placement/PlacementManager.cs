@@ -27,7 +27,10 @@ public class PlacementManager : MonoBehaviour
     private Coroutine placingCoroutine = null;
     private bool isPlacing = false;
     private float animTime = 0.75f;
-    private float zScale = 1f;
+
+    // SET TO SAME NUMBERS AS TERRAINTILEMAP SCALES
+    private float zScale = 2.25f;
+    private float xScale = 1.5f;
 
 
     void Awake()
@@ -89,7 +92,7 @@ public class PlacementManager : MonoBehaviour
                 foreach (var footprint in footprints)
                 {
                     GameObject inst = Instantiate(preview, position, Quaternion.Euler(90f, 0, 0));
-                    inst.transform.localScale = new Vector3(1.0f, 1.0f, 1.5f);
+                    inst.transform.localScale = new Vector3(1.0f * xScale, 1.0f * zScale, 1.0f * zScale);
                     currentPreviews.Add(inst);
                 }
             }
@@ -97,6 +100,7 @@ public class PlacementManager : MonoBehaviour
             {
                 float sizeX = preview.transform.localScale.x;
                 float sizeZ = preview.transform.localScale.z;
+                Debug.Log(sizeX + " " + sizeZ);
                 preview.transform.position = SnapPosition(position, sizeX, sizeZ);
                 preview.SetActive(true);
             }
@@ -116,12 +120,11 @@ public class PlacementManager : MonoBehaviour
         foreach (var preview in currentPreviews)
         {
             var sr = preview.GetComponent<SpriteRenderer>();
-            sr.transform.localScale = new Vector3(1.0f, 1.5f, 1.5f);
 
             Vector3 box = new((preview.transform.localScale.x - epsilon) / 2, 0.5f, (preview.transform.localScale.z - epsilon) / 2);
             var colliders = Physics.OverlapBox(preview.transform.position, box, Quaternion.identity, ~groundLayer);
-
-            if (colliders.Count() > 0)
+            
+            if (colliders.Count() > 0 || !TerrainTilemap.Instance.CheckTilled(preview.transform.position))
             {
                 sr.color = cannotPlace;
                 allowPlacement = false;
@@ -170,14 +173,14 @@ public class PlacementManager : MonoBehaviour
 
     IEnumerator PlaceAfterAnimation(Vector3 currPlace)
     {
-        player.Planting();
         GameObject prefab = currentItem.prefab;
-        if (prefab.GetComponent<Plant>() != null && !TerrainTilemap.Instance.CheckTilled(currPlace))
+        if (prefab.GetComponent<Plant>() == null || !TerrainTilemap.Instance.CheckTilled(currPlace))
         {
             placingCoroutine = null;
             isPlacing = false;
             yield return null;
         }
+        player.Planting();
 
         yield return new WaitUntil(() => player.animFinished);
 
