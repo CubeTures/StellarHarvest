@@ -79,18 +79,29 @@ public sealed class TerrainTilemap : MonoBehaviour
         new(-1,  1, 0), // NW
     };
 
+
+	// SET TO SAME NUMBERS AS PLACEMENTMANAGER SCALES
+	private float zScale = 2.25f;
+	private float xScale = 1.5f;
+
     public static TerrainTilemap Instance { get; private set; }
 
     private void Awake()
-	{
-		_tilemap = GetComponent<Tilemap>();
-		FillWithEmpty();
-		if (Instance == null)
+    {
+        _tilemap = GetComponent<Tilemap>();
+        FillWithEmpty();
+        GameObject parentObject = this.transform.parent.gameObject;
+		parentObject.transform.localScale = new Vector3(parentObject.transform.localScale.x * xScale, parentObject.transform.localScale.y * zScale, parentObject.transform.localScale.z);
+
+        parentObject.transform.position = new Vector3((xScale / 2), parentObject.transform.position.y, (zScale / 2));
+
+        if (Instance == null)
             Instance = this;
         else
             Destroy(gameObject);
-	}
+    }
 
+ 
 	private void FillWithEmpty()
 	{
 		if (emptyTiles == null || emptyTiles.Length == 0) return;
@@ -160,6 +171,20 @@ public sealed class TerrainTilemap : MonoBehaviour
 
 		return false;
     }
+
+	public bool CheckTilled(Vector3 worldPos)
+	{
+		Debug.Log("Checking Till For Position: " + worldPos);
+
+		Vector3Int cell = new Vector3Int((int)(worldPos.x / xScale) - 1, (int)(worldPos.z / zScale) - 1, 0);
+
+		Debug.Log("Checking Till FOr Cell: " + cell);
+
+		if (_tilledCells.Contains(cell)) return true;
+
+		Debug.Log("tilled");
+        return false;
+	}
 
 	private void RefreshCell(Vector3Int cell)
 	{

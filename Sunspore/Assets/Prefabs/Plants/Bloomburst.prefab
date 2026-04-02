@@ -9,6 +9,18 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 909548397648102177, guid: 04fad9b53f5c6004ea1d478f93f95fd0, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 909548397648102177, guid: 04fad9b53f5c6004ea1d478f93f95fd0, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 909548397648102177, guid: 04fad9b53f5c6004ea1d478f93f95fd0, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 909548397648102177, guid: 04fad9b53f5c6004ea1d478f93f95fd0, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
@@ -52,6 +64,22 @@ PrefabInstance:
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 9100000, guid: 48fb1fbcbac4ae544b1daafff06a9118, type: 2}
+    - target: {fileID: 3052089375433462107, guid: 04fad9b53f5c6004ea1d478f93f95fd0, type: 3}
+      propertyPath: m_Size.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3052089375433462107, guid: 04fad9b53f5c6004ea1d478f93f95fd0, type: 3}
+      propertyPath: m_Size.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3052089375433462107, guid: 04fad9b53f5c6004ea1d478f93f95fd0, type: 3}
+      propertyPath: m_Size.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3052089375433462107, guid: 04fad9b53f5c6004ea1d478f93f95fd0, type: 3}
+      propertyPath: m_Center.y
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 5854925016969665656, guid: 04fad9b53f5c6004ea1d478f93f95fd0, type: 3}
       propertyPath: m_Name
       value: Bloomburst
@@ -60,6 +88,10 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: 166bf9b6f3a9f0443b5db9c3d4544530, type: 3}
+    - target: {fileID: 8633607651646711802, guid: 04fad9b53f5c6004ea1d478f93f95fd0, type: 3}
+      propertyPath: m_SpriteSortPoint
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8633607651646711802, guid: 04fad9b53f5c6004ea1d478f93f95fd0, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
@@ -104,7 +136,9 @@ MonoBehaviour:
   waterDropPrefab: {fileID: 4431333523166555220, guid: 3217ed6309e93434d8f7671159028d59, type: 3}
   seedItem: {fileID: 11400000, guid: 1d325e65992f7924eabffbd694fd446b, type: 2}
   plantItem: {fileID: 11400000, guid: b216deef74420864cba9d71bb224dd60, type: 2}
+  _transitionTimer: 0
   currentStage: 0
+  transitionFinish: 0
   juvenileAbilityPower: 5
   fullyGrownAbilityPower: 15
   juvenileAbilityRange: 10
