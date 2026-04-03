@@ -293,6 +293,12 @@ public class Player : MonoBehaviour
         StartCoroutine(AnimationFinished());
     }
 
+    public void Shoot()
+    {
+        anim.SetTrigger("Shoot");
+        StartCoroutine(AnimationFinished());
+    }
+
     private IEnumerator AnimationFinished()
     {
         animFinished = false;
