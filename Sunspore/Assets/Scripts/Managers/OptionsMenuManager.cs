@@ -53,7 +53,6 @@ public class OptionsMenuManager : MonoBehaviour
         SetVibration(PlayerPrefManager.GetVibration());
         SetScreenShake(PlayerPrefManager.GetScreenShake());
         SetMouseWindowLock(PlayerPrefManager.GetMouseWindowLock());
-        SetPostProcessing(PlayerPrefManager.GetPostProcessing());
     }
 
     public void SetResolution(int resolutionIndex)
@@ -115,15 +114,5 @@ public class OptionsMenuManager : MonoBehaviour
         mouseWindowLockToggle.isOn = isMouseWindowLock;
         Cursor.lockState = isMouseWindowLock ? CursorLockMode.Confined : CursorLockMode.None;
         PlayerPrefManager.SetMouseWindowLock(isMouseWindowLock);
-    }
-
-    public void SetPostProcessing(bool isPostProcessing)
-    {
-        postProcessingToggle.isOn = isPostProcessing;
-        PlayerPrefManager.SetPostProcessing(isPostProcessing);
-        if (GameManager.gm != null)
-        {
-            GameManager.gm.postProcessingVolume.SetActive(isPostProcessing);
-        }
     }
 }

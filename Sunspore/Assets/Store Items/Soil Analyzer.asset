@@ -22,3 +22,4 @@ MonoBehaviour:
   description: Reveals hidden soil buffs and optimal planting windows.
   creditCost: 3500
   creditReward: 0
+  disabled: 1

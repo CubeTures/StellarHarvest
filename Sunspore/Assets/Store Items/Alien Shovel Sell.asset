@@ -16,10 +16,11 @@ MonoBehaviour:
   recipeType: 1
   category: 3
   ingredients:
-  - item: {fileID: 0}
+  - item: {fileID: 11400000, guid: 1fb5ff3296b429b408fa388d7a6e3dab, type: 2}
     amount: 1
   resultItem: []
   description: 2nd Shovel Upgrade; digs up plants nearly instantly; harvests root
     plants with better yield
   creditCost: 0
   creditReward: 6000
+  disabled: 0

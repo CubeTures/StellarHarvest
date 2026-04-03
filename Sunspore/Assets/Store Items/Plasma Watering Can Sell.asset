@@ -16,9 +16,10 @@ MonoBehaviour:
   recipeType: 1
   category: 3
   ingredients:
-  - item: {fileID: 0}
+  - item: {fileID: 11400000, guid: 9fbee52fd6db748458396dc28aa61753, type: 2}
     amount: 1
   resultItem: []
   description: Upgraded watering can; lets you target specific squares from far away
   creditCost: 0
   creditReward: 3500
+  disabled: 0

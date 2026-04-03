@@ -22,3 +22,4 @@ MonoBehaviour:
   description: Crafted from Acidburst (Stage 4). Leaves acid pool on impact.
   creditCost: 0
   creditReward: 2600
+  disabled: 1

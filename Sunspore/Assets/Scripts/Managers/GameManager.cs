@@ -9,8 +9,6 @@ public class GameManager : MonoBehaviour
     // static reference to game manager so can be called from other scripts directly (not just through gameobject component)
     public static GameManager gm;
 
-    public GameObject postProcessingVolume;
-
     // UI elements to control
     [Header("UI Elements")]
     public GameObject pauseMenu;
@@ -32,9 +30,6 @@ public class GameManager : MonoBehaviour
             gm = GetComponent<GameManager>();
 
         SetUpDefaults();
-
-        // Turn post processing volume on/off based on settings
-        postProcessingVolume.SetActive(PlayerPrefManager.GetPostProcessing());
     }
 
     void SetUpDefaults()
@@ -54,6 +49,9 @@ public class GameManager : MonoBehaviour
 
     public void GameLose(int amount)
     {
+        SceneManager.LoadScene(3);
+        return;
+
         if (Time.timeScale > 0f)
         {
             Gamepad.current?.ResetHaptics();
@@ -78,6 +76,11 @@ public class GameManager : MonoBehaviour
             Cursor.lockState = CursorLockMode.None;
         }
         Cursor.visible = true;
+    }
+
+    public void GameWin()
+    {
+        SceneManager.LoadScene(2);
     }
 
     public void GoToHome()

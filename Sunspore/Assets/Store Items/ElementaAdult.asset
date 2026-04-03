@@ -22,3 +22,4 @@ MonoBehaviour:
   description: 1 HP, applies effect when eaten.
   creditCost: 0
   creditReward: 1800
+  disabled: 1

@@ -16,9 +16,10 @@ MonoBehaviour:
   recipeType: 1
   category: 3
   ingredients:
-  - item: {fileID: 0}
+  - item: {fileID: 11400000, guid: f23fae871ff16164d97d0f962d062da0, type: 2}
     amount: 1
   resultItem: []
   description: Upgraded scythe; harvests more efficiently and does more melee damage
   creditCost: 0
   creditReward: 2000
+  disabled: 0
