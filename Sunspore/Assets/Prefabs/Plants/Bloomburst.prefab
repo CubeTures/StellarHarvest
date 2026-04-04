@@ -104,7 +104,9 @@ MonoBehaviour:
   waterDropPrefab: {fileID: 4431333523166555220, guid: 3217ed6309e93434d8f7671159028d59, type: 3}
   seedItem: {fileID: 11400000, guid: 1d325e65992f7924eabffbd694fd446b, type: 2}
   plantItem: {fileID: 11400000, guid: b216deef74420864cba9d71bb224dd60, type: 2}
-  currentStage: 0
+  _transitionTimer: 0
+  currentStage: 2
+  transitionFinish: 0
   juvenileAbilityPower: 5
   fullyGrownAbilityPower: 15
   juvenileAbilityRange: 10

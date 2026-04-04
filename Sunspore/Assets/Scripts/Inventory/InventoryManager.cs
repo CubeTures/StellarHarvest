@@ -474,14 +474,15 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
             {
                 if (itemPrefab == null) break;
 
-                GameObject newItem = Instantiate(itemPrefab);
+                Transform container = slotObj.transform.parent.parent.GetChild(1);
+                GameObject newItem = Instantiate(itemPrefab, container);
                 var invItem = newItem.GetComponent<InventoryItem>();
                 if (invItem == null) continue;
                 invItem.itemScriptableObject = item;
-                int put = Mathf.Min(remaining, item.maxStackSize);
+                int maxStack = item.maxStackSize > 0 ? item.maxStackSize : invItem.stackMax;
+                int put = Mathf.Min(remaining, maxStack);
                 invItem.stackCurrent = put;
-                newItem.transform.SetParent(slotObj.transform.parent.parent.GetChild(1));
-                newItem.transform.localScale = new Vector3(1, 1, 1);
+                newItem.transform.localScale = Vector3.one;
                 slot.SetHeldItem(newItem);
                 remaining -= put;
             }

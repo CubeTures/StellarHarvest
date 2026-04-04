@@ -22872,9 +22872,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: edc84b550e00dfe47a8e69814d9b78e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Sunspore::Sunspore.CraftingManager
-  recipes:
-  - {fileID: 11400000, guid: 4ca1d2063448ea5489898f5c88115c48, type: 2}
-  - {fileID: 11400000, guid: 48ba4ec9f7695f549bd2dda09495a56b, type: 2}
+  recipes: []
   recipeUIPrefab: {fileID: 5055502027666326857, guid: 0f90f2ef352bb85488cb4d51f2578b01, type: 3}
   recipeUIParent: {fileID: 4341995612651810710}
   craftButton: {fileID: 1762467198853844448}
@@ -23005,7 +23003,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Sunspore::Wallet
   creditsText: {fileID: 7485264393855637959}
-  startingAmount: 2000
+  startingAmount: 0
 --- !u!1 &8716846452116049476
 GameObject:
   m_ObjectHideFlags: 0

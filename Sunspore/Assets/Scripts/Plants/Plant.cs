@@ -74,11 +74,11 @@ namespace Sunspore
             if (waterDropPrefab != null)
             {
                 waterDropInstance = Instantiate(waterDropPrefab, transform);
-                waterDropInstance.SetActive(true);
+                waterDropInstance.SetActive(!watered);
             }
 
             // Start as seed
-            SetGrowthStage(GrowthStage.Seed);
+            SetGrowthStage(currentStage);
         }
 
         protected virtual void LateUpdate()
@@ -159,11 +159,11 @@ namespace Sunspore
 
         protected virtual void OnTriggerEnter(Collider other)
         {
-            if (other.gameObject.CompareTag("Player") && currentStage == GrowthStage.FullyGrown)
-            {
-                PlaySound(harvestSound);
-                Harvest();
-            }
+            // if (other.gameObject.CompareTag("Player") && currentStage == GrowthStage.FullyGrown)
+            // {
+            //     PlaySound(harvestSound);
+            //     Harvest();
+            // }
         }
 
         public virtual void Harvest()
