@@ -482,6 +482,7 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
                 int maxStack = item.maxStackSize > 0 ? item.maxStackSize : invItem.stackMax;
                 int put = Mathf.Min(remaining, maxStack);
                 invItem.stackCurrent = put;
+                newItem.transform.position = slot.transform.position;
                 newItem.transform.localScale = Vector3.one;
                 slot.SetHeldItem(newItem);
                 remaining -= put;
