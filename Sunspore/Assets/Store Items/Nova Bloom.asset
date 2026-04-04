@@ -22,3 +22,4 @@ MonoBehaviour:
   description: Rare luminescent flower; high market demand.
   creditCost: 3000
   creditReward: 0
+  disabled: 1

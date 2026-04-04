@@ -12,7 +12,6 @@ namespace Sunspore
         [SerializeField] GameObject Light;
         [SerializeField] public float dayLengthSeconds = 30f;
         [SerializeField, Range(0f, 1f)] float initialTimeOfDay = 0f;
-        [SerializeField] TMP_Dropdown timeSelector;
 
         GameManager gm;
 
@@ -32,7 +31,7 @@ namespace Sunspore
         {
             spawner = GameObject.Find("Enemy Spawner").GetComponent<EnemySpawner>();
             Light = GameObject.Find("Directional Light");
-            timeSelector = GameObject.Find("Dropdown").GetComponent<TMP_Dropdown>();
+            // timeSelector = GameObject.Find("Dropdown").GetComponent<TMP_Dropdown>();
             gm = GameManager.gm;
 
             // Ensure a deterministic start position for the day/night cycle and clock UI.
@@ -77,7 +76,7 @@ namespace Sunspore
                     // Debug.Log("Weeks: " + weeks);
                     days = 0;
                     nights = 0;
-                    Bank.Instance.CheckPayment(weeks);
+                    // Bank.Instance.CheckPayment(weeks);
                 }
             }
 
@@ -87,55 +86,6 @@ namespace Sunspore
             {
                 spawner.SetEnemiesPerWave();
                 spawner.spawning = true;
-            }
-        }
-
-        void startTime()
-        {
-            timeStopped = false;
-            isNight = false;
-            //Debug.Log("Cycle");
-        }
-
-        void stopTime()
-        {
-            timeStopped = true;
-            isNight = false;
-        }
-
-        void setDay()
-        {
-            timeStopped = true;
-            isNight = false;
-            Light.transform.rotation = Quaternion.Euler(90, 0, 0);
-            //Debug.Log("Day");
-        }
-
-        void setNight()
-        {
-            timeStopped = true;
-            isNight = true;
-            Light.transform.rotation = Quaternion.Euler(270, 0, 0);
-            //Debug.Log("Night");
-        }
-
-        public void changeTime()
-        {
-            if(timeStopped && timeSelector.value == 0)
-            {
-                startTime();
-            }
-            else if(isDay && timeSelector.value == 1)
-            {
-                stopTime();
-            }
-            else if(timeSelector.value == 2)
-            {
-                setDay();
-            }
-            else
-            {
-                setNight();
             }
         }
     }

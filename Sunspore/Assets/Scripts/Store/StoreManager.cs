@@ -151,6 +151,7 @@ namespace Sunspore
             // Instantiate UI entries in sorted order
             foreach (var recipeSO in matched)
             {
+                if (recipeSO.disabled) continue;
                 GameObject newRecipeUI = Instantiate(recipeUIPrefab, recipeUIParent);
                 newRecipeUI.name = recipeSO.recipeName;
                 var sr = newRecipeUI.GetComponent<StoreRecipe>();

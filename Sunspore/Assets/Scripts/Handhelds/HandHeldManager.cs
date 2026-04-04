@@ -76,7 +76,7 @@ namespace Sunspore
                 if (handHeld.weapon)
                 {
                     Vector3 mouseWorldPos = GetMouseWorldPosition();
-                    Attack(mouseWorldPos, true);
+                     Attack(mouseWorldPos, true);
                 }
                 else
                 {

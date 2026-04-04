@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1bca075d7798bd4c821b96710b40382, type: 3}
+  m_Name: Iron Watering Can Sell
+  m_EditorClassIdentifier: Sunspore::Sunspore.StoreRecipeSO
+  recipeName: Iron Watering Can Sell
+  recipeType: 1
+  category: 3
+  ingredients:
+  - item: {fileID: 11400000, guid: ebae8a59fd2d4f54c9edb3f4f28a231c, type: 2}
+    amount: 1
+  resultItem: []
+  description: 1st Watering Can Upgrade; waters plants
+  creditCost: 0
+  creditReward: 200
+  disabled: 0

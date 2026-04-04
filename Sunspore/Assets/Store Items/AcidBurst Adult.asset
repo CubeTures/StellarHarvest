@@ -22,3 +22,4 @@ MonoBehaviour:
   description: Acid projectile + floor acid on impact.
   creditCost: 0
   creditReward: 3500
+  disabled: 1

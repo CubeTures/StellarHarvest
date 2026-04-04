@@ -22,3 +22,4 @@ MonoBehaviour:
   description: Damages enemies that walk over it
   creditCost: 0
   creditReward: 2100
+  disabled: 1

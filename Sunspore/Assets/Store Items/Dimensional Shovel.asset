@@ -17,9 +17,10 @@ MonoBehaviour:
   category: 3
   ingredients: []
   resultItem:
-  - item: {fileID: 0}
+  - item: {fileID: 11400000, guid: 144902168df611542b0af2d78b0bfe45, type: 2}
     amount: 1
   description: Final shovel upgrade; digs up istantly and has a dimensional pocket
     that lets you move a plant rather than just destroy it
   creditCost: 9000
   creditReward: 0
+  disabled: 0

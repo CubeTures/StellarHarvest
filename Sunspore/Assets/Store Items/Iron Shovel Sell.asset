@@ -16,9 +16,10 @@ MonoBehaviour:
   recipeType: 1
   category: 3
   ingredients:
-  - item: {fileID: 0}
+  - item: {fileID: 11400000, guid: 23286756f1070154f8b1ed82058694ca, type: 2}
     amount: 1
   resultItem: []
   description: 1st Shovel Upgrade; digs up plants faster
   creditCost: 0
   creditReward: 300
+  disabled: 0

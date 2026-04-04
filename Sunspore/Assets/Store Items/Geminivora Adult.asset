@@ -22,3 +22,4 @@ MonoBehaviour:
   description: Splits into 2 on death.
   creditCost: 0
   creditReward: 4200
+  disabled: 1
