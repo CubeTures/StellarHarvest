@@ -127,6 +127,7 @@ namespace Sunspore
                     _spriteRenderer.sprite = seedSprite;
                     _currentGrowthTime = _initialSeedToJuvenileTime + Random.Range(0f, growthTimeVariance);
                     OnSeedStage();
+                    watered = false;
                     waterDropInstance.SetActive(true);
                     break;
 
@@ -134,6 +135,7 @@ namespace Sunspore
                     _spriteRenderer.sprite = juvenileSprite;
                     _currentGrowthTime = _initialJuvenileToFullyGrownTime + Random.Range(0f, growthTimeVariance);
                     OnJuvenileStage();
+                    watered = false;
                     waterDropInstance.SetActive(true);
                     break;
 
@@ -148,7 +150,6 @@ namespace Sunspore
         {
             _anim.SetTrigger("Start");
             StartCoroutine(TransitionTimer(GrowthStage.Juvenile));
-            watered = false;
         }
 
         protected virtual void GrowToFullyGrown()

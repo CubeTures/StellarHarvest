@@ -4,6 +4,7 @@ using UnityEngine.EventSystems;
 using System.Collections;
 using static Codice.Client.BaseCommands.BranchExplorer.Layout.BrExLayout;
 using UnityEngine.Tilemaps;
+using UnityEngine.Events;
 namespace Sunspore
 {
     public class HandHeldManager : MonoBehaviour
@@ -22,13 +23,17 @@ namespace Sunspore
         private Vector3 currDirection = Vector3.zero;
         
         [SerializeField] private GameObject attackBoxPrefab;
-        private GameObject attackBox;
         private Player playerScript;
 
         private HandHeld handHeld;
         public HandHeld.WeaponHead head = HandHeld.WeaponHead.METAL;
         public HandHeld.WeaponHandle handle = HandHeld.WeaponHandle.WOOD;
         private Coroutine abilityCoroutine;
+        [SerializeField] LineRenderer abilityRangeRing;
+        [SerializeField] private int ringSegments = 64;
+
+        private float castTime = 0;
+        public UnityEvent<float> OnAbility;
 
         private void Awake()
         {
@@ -54,9 +59,17 @@ namespace Sunspore
             offset = 0;
             player = GameObject.FindGameObjectWithTag("Player");
             playerScript = player.GetComponent<Player>();
-            attackBox = Instantiate(attackBoxPrefab, transform);
-            //attackBox.transform.localScale = hitArea;
-            attackBox.SetActive(false);
+
+            // Create the LineRenderer for the ability range ring
+            abilityRangeRing = GetComponent<LineRenderer>();
+            abilityRangeRing.transform.SetParent(transform);
+            abilityRangeRing.widthMultiplier = 0.05f;
+            abilityRangeRing.loop = true;
+            abilityRangeRing.positionCount = ringSegments + 1;
+            abilityRangeRing.enabled = false;
+            abilityRangeRing.useWorldSpace = true;
+
+            OnAbility?.Invoke(0);
         }
         private void Update()
         {
@@ -81,11 +94,7 @@ namespace Sunspore
                 else
                 {
                     Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-                    if (abilityCoroutine != null)
-                    {
-                        StopCoroutine(abilityCoroutine);
-                    }
-                    if(handHeld.CheckRange(player.GetComponent<Player>(), ray))
+                    if(abilityCoroutine == null && handHeld.CheckRange(player.GetComponent<Player>(), ray))
                     {
                         abilityCoroutine = StartCoroutine(AbilityDelayCoroutine(player.GetComponent<Player>(), ray, handHeld.abilityDuration));
                         lastAttackTime = Time.time;
@@ -102,6 +111,22 @@ namespace Sunspore
             if (enabled)
             {
                 updateDirection();
+            }
+
+            if (enabled && handHeld != null && handHeld.tool && !handHeld.weapon)
+            {
+                // Show the ring at the player's position with the ability range
+                DrawAbilityRangeRing(player.transform.position, handHeld.abilityRange);
+            }
+            else
+            {
+                abilityRangeRing.enabled = false;
+            }
+
+            // Show ability cooldown ring if ability is active
+            if(abilityCoroutine != null)
+            {
+                OnAbility?.Invoke((Time.time - castTime) / handHeld.abilityDuration);
             }
         }
         private Vector3 GetMouseWorldPosition()
@@ -156,9 +181,15 @@ namespace Sunspore
 
         private IEnumerator AbilityDelayCoroutine(Player player, Ray ray, float delay)
         {
+            player.anim.SetTrigger("Plant");
+            castTime = Time.time;
             yield return new WaitForSeconds(delay);
+            Debug.Log("ability cast");
             handHeld.Ability(player, ray);
             abilityCoroutine = null;
+            OnAbility?.Invoke(0);
+            player.anim.SetInteger("Direction", player.currentDirection);
+            player.anim.SetTrigger("Finished");
         }
 
         public void CancelAbility()
@@ -180,6 +211,21 @@ namespace Sunspore
             Debug.Log("out of range");
         }
 
+        private void DrawAbilityRangeRing(Vector3 center, float radius)
+        {
+            if (abilityRangeRing == null) return;
+            abilityRangeRing.enabled = true;
+            float zScale = 1.5f; // Adjust this factor as needed for your camera
+
+            for (int i = 0; i <= ringSegments; i++)
+            {
+                float angle = 2 * Mathf.PI * i / ringSegments;
+                float x = center.x + radius * Mathf.Cos(angle);
+                float z = center.z + radius * Mathf.Sin(angle) * zScale;
+                abilityRangeRing.SetPosition(i, new Vector3(x, 0 + 0.05f, z));
+            }
+        }
+
         // Updates currDirection
         public void setDirection(int dir)
         {
@@ -197,13 +243,6 @@ namespace Sunspore
                 ? Quaternion.LookRotation(currDirection)
                 : player.transform.rotation;
             boxCenter = player.transform.position + currDirection.normalized * offset;
-            if (attackBox != null)
-            {
-                attackBox.transform.position = boxCenter;
-                attackBox.transform.rotation = boxRotation;
-                attackBox.transform.localScale = hitArea;
-                //Debug.Log("hi");
-            }
         }
 
         // Assign Stats 
