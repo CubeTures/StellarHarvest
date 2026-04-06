@@ -50,7 +50,9 @@ namespace Sunspore
             }
 
             // Play tutorial dialogue if no steps have been completed (first time playing the game)
-            if (PlayerPrefManager.GetEventCount() == 0)
+            if ( /*PlayerPrefManager.GetEventCount() == 0*/
+                true
+            )
             {
                 _animator.SetTrigger("Enter");
                 dialogueTypeToUse = "TUTORIAL";
@@ -169,6 +171,7 @@ namespace Sunspore
             if (firstMessage == "EVENT")
             {
                 isEvent = true;
+                Debug.Log("EVENT detected at start - pausing dialogue");
                 // messageText.text = ""; // Clear the text so "EVENT" doesn't show
                 // Debug.Log("EVENT detected at start - pausing dialogue");
                 // Don't start TypeWriterEffect, wait for CompleteEvent() to be called
@@ -216,6 +219,7 @@ namespace Sunspore
                     else if (nextMessage == "EVENT")
                     {
                         isEvent = true;
+                        Debug.Log("EVENT detected - pausing dialogue");
                     }
                     else
                     {
@@ -287,16 +291,17 @@ namespace Sunspore
         }
 
         // Call this method from external scripts when the event is complete
-        public void CompleteEvent()
+        public bool CompleteEvent()
         {
             if (!isEvent)
             {
                 Debug.LogWarning("CompleteEvent called but no event is active!");
-                return;
+                return false;
             }
 
             // Debug.Log("CompleteEvent called - resuming dialogue");
             isEvent = false;
+            Debug.Log("EVENT completed - resuming dialogue");
             currentMessageIndex++;
 
             if (currentMessageIndex < messageList.Length)
@@ -308,6 +313,7 @@ namespace Sunspore
                 if (nextMessage == "EVENT")
                 {
                     isEvent = true;
+                    Debug.Log("Another EVENT detected - pausing dialogue again");
                     // messageText.text = ""; // Clear the text so "EVENT" doesn't show
                     // Debug.Log("Another EVENT detected - pausing dialogue again");
                     // Don't start TypeWriterEffect, wait for CompleteEvent() to be called again
@@ -329,6 +335,9 @@ namespace Sunspore
                 _animator.SetTrigger("Exit");
                 transform.gameObject.SetActive(false);
             }
+
+            Debug.Log("CompleteEvent called - dialogue complete");
+            return true;
         }
 
         public void LoadDialogueFromCsv(

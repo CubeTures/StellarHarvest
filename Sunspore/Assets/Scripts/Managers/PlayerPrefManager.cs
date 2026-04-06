@@ -87,6 +87,23 @@ public static class PlayerPrefManager
         }
     }
 
+    public static void SetMoveCount(int moveCount)
+    {
+        PlayerPrefs.SetInt("MoveCount", moveCount);
+    }
+
+    public static int GetMoveCount()
+    {
+        if (PlayerPrefs.HasKey("MoveCount"))
+        {
+            return PlayerPrefs.GetInt("MoveCount");
+        }
+        else
+        {
+            return 0;
+        }
+    }
+
     public static void SetCraftingCount(int craftingCount)
     {
         PlayerPrefs.SetInt("CraftingCount", craftingCount);
@@ -338,6 +355,7 @@ public static class PlayerPrefManager
             "Highscore",
             "EventCount",
             "InventoryOpenCount",
+            "MoveCount",
             "CraftingCount",
             "Resolution",
             "Main volume",

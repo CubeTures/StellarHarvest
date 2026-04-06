@@ -28,15 +28,30 @@ namespace Sunspore
 
         public void CompleteEvent()
         {
+            if (dialogue == null)
+            {
+                Debug.LogWarning("CompleteEvent called but dialogue reference is missing.");
+                return;
+            }
+
             // Check if dialogue GameObject is active before calling CompleteEvent
             if (!dialogue.activeInHierarchy)
             {
                 dialogue.SetActive(true);
             }
 
-            dialogue.GetComponent<Dialogue>().CompleteEvent();
+            Dialogue dialogueComponent = dialogue.GetComponent<Dialogue>();
+            if (dialogueComponent == null)
+            {
+                Debug.LogWarning("CompleteEvent called but Dialogue component is missing.");
+                return;
+            }
 
-            PlayerPrefManager.SetEventCount(PlayerPrefManager.GetEventCount() + 1);
+            bool completed = dialogueComponent.CompleteEvent();
+            if (completed)
+            {
+                PlayerPrefManager.SetEventCount(PlayerPrefManager.GetEventCount() + 1);
+            }
         }
 
         public bool GetEventStatus()

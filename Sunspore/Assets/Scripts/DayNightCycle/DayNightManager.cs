@@ -14,9 +14,6 @@ namespace Sunspore
         [SerializeField, Range(0f, 1f)] float initialTimeOfDay = 0f;
         [SerializeField] TMP_Dropdown timeSelector;
 
-        [Tooltip("While the tutorial has unfinished steps, the day/night clock does not advance.")]
-        bool pauseDayNightUntilTutorialComplete = true;
-
         GameManager gm;
 
         private float timeOfDay = 0f;
@@ -30,22 +27,6 @@ namespace Sunspore
 
         public float NormalizedTimeOfDay => timeOfDay;
         public event Action<float> TimeOfDayChanged;
-
-        bool IsTutorialBlockingTime()
-        {
-            if (!pauseDayNightUntilTutorialComplete)
-            {
-                return false;
-            }
-
-            // If the tutorial is complete, allow the day/night cycle to continue
-            if (PlayerPrefManager.GetTutorialStep() >= TutorialManager.Instance.TutorialStepLength)
-            {
-                return false;
-            }
-
-            return TutorialManager.Instance != null && TutorialManager.Instance.IsTutorialActive;
-        }
 
         void Start()
         {
@@ -62,7 +43,7 @@ namespace Sunspore
 
         void Update()
         {
-            if (!timeStopped && !IsTutorialBlockingTime())
+            if (!timeStopped)
             {
                 // Calculate angle based off percentage of day passed.
                 float prevTimeOfDay = timeOfDay;

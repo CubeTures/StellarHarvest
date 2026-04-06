@@ -23,15 +23,15 @@ public class TutorialManager : MonoBehaviour
     private void Start()
     {
         TutorialStepLength = steps.Count;
-        if (PlayerPrefManager.GetTutorialStep() >= TutorialStepLength)
-        {
-            Debug.Log("Tutorial completed automatically");
-            return;
-        }
-        else
-        {
-            StartStep();
-        }
+        // if (PlayerPrefManager.GetTutorialStep() >= TutorialStepLength)
+        // {
+        //     Debug.Log("Tutorial completed automatically");
+        //     return;
+        // }
+        // else
+        // {
+        StartStep();
+        // }
     }
 
     void Update()
@@ -52,10 +52,16 @@ public class TutorialManager : MonoBehaviour
         steps[currentStepIndex].End();
         currentStepIndex++;
         PlayerPrefManager.SetTutorialStep(currentStepIndex);
-        if (DialogueManager._dm != null)
+
+        if (DialogueManager._dm == null)
+        {
+            Debug.LogError("DialogueManager not found");
+        }
+        else
         {
             DialogueManager._dm.CompleteEvent();
         }
+
         Debug.Log("Tutorial Step: " + currentStepIndex);
 
         if (currentStepIndex < steps.Count)

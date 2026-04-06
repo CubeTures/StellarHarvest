@@ -111,7 +111,7 @@ public class Player : MonoBehaviour
         {
             if (spriteRenderer != null)
                 propBlock.SetColor("_Color", Color.red);
-                spriteRenderer.SetPropertyBlock(propBlock);
+            spriteRenderer.SetPropertyBlock(propBlock);
         }
 
         spriteRenderer.sortingOrder = (int)(-transform.position.z * 100);
@@ -126,9 +126,13 @@ public class Player : MonoBehaviour
         _vz = input.y;
 
         bool isMoving = input.sqrMagnitude > 0.01f;
+        if (isMoving)
+        {
+            PlayerPrefManager.SetMoveCount(PlayerPrefManager.GetMoveCount() + 1);
+        }
         anim.SetBool("isMoving", isMoving);
         anim.SetInteger("Direction", currentDirection);
-        
+
         anim.ResetTrigger("Plant");
 
         if (!isMoving || isDead)
@@ -173,7 +177,7 @@ public class Player : MonoBehaviour
         weaponHead.SetSwingTransform(dir, spriteRenderer.flipX);
         weaponBase.SetWeaponBaseTransform(dir, spriteRenderer.flipX);
         anim.SetInteger("Direction", dir);
-        
+
         if (_vx > 0)
         {
             spriteRenderer.flipX = true;
@@ -312,16 +316,16 @@ public class Player : MonoBehaviour
         {
             dirIndex = (mouseDir.x > 0f) ? 2 : 4;
         }
-        
+
         if (mouseDir.x > 0f)
-            {
-                spriteRenderer.flipX = true;
-            }
+        {
+            spriteRenderer.flipX = true;
+        }
         else
-            {
-                spriteRenderer.flipX = false;
-            }
-        
+        {
+            spriteRenderer.flipX = false;
+        }
+
         SetDirection(dirIndex);
 
         anim.SetTrigger("Shoot");
