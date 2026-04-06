@@ -12,6 +12,10 @@ namespace Sunspore
         [SerializeField] GameObject Light;
         [SerializeField] public float dayLengthSeconds = 30f;
         [SerializeField, Range(0f, 1f)] float initialTimeOfDay = 0f;
+        [SerializeField] TMP_Dropdown timeSelector;
+
+        [Tooltip("While the tutorial has unfinished steps, the day/night clock does not advance.")]
+        bool pauseDayNightUntilTutorialComplete = true;
 
         GameManager gm;
 
@@ -26,7 +30,23 @@ namespace Sunspore
 
         public float NormalizedTimeOfDay => timeOfDay;
         public event Action<float> TimeOfDayChanged;
-        
+
+        bool IsTutorialBlockingTime()
+        {
+            if (!pauseDayNightUntilTutorialComplete)
+            {
+                return false;
+            }
+
+            // If the tutorial is complete, allow the day/night cycle to continue
+            if (PlayerPrefManager.GetTutorialStep() >= TutorialManager.Instance.TutorialStepLength)
+            {
+                return false;
+            }
+
+            return TutorialManager.Instance != null && TutorialManager.Instance.IsTutorialActive;
+        }
+
         void Start()
         {
             spawner = GameObject.Find("Enemy Spawner").GetComponent<EnemySpawner>();
@@ -39,10 +59,10 @@ namespace Sunspore
             float sunAngle = Mathf.Lerp(0f, 360f, timeOfDay);
             Light.transform.rotation = Quaternion.Euler(sunAngle, 0, 0);
         }
-        
+
         void Update()
         {
-            if (!timeStopped)
+            if (!timeStopped && !IsTutorialBlockingTime())
             {
                 // Calculate angle based off percentage of day passed.
                 float prevTimeOfDay = timeOfDay;
@@ -70,7 +90,7 @@ namespace Sunspore
                     // Debug.Log("Nights: " + nights);
                 }
 
-                if (days == 7  && nights == 7)
+                if (days == 7 && nights == 7)
                 {
                     weeks++;
                     // Debug.Log("Weeks: " + weeks);
@@ -86,6 +106,55 @@ namespace Sunspore
             {
                 spawner.SetEnemiesPerWave();
                 spawner.spawning = true;
+            }
+        }
+
+        void startTime()
+        {
+            timeStopped = false;
+            isNight = false;
+            //Debug.Log("Cycle");
+        }
+
+        void stopTime()
+        {
+            timeStopped = true;
+            isNight = false;
+        }
+
+        void setDay()
+        {
+            timeStopped = true;
+            isNight = false;
+            Light.transform.rotation = Quaternion.Euler(90, 0, 0);
+            //Debug.Log("Day");
+        }
+
+        void setNight()
+        {
+            timeStopped = true;
+            isNight = true;
+            Light.transform.rotation = Quaternion.Euler(270, 0, 0);
+            //Debug.Log("Night");
+        }
+
+        public void changeTime()
+        {
+            if (timeStopped && timeSelector.value == 0)
+            {
+                startTime();
+            }
+            else if (isDay && timeSelector.value == 1)
+            {
+                stopTime();
+            }
+            else if (timeSelector.value == 2)
+            {
+                setDay();
+            }
+            else
+            {
+                setNight();
             }
         }
     }
