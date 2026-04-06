@@ -50,7 +50,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 681060bb61e61d84ebdec29d16ffb88a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Sunspore::Sunspore.InventoryItem
-  itemScriptableObject: {fileID: 11400000, guid: e6a7e8497a422434c9c3d117b7d67aad, type: 2}
+  itemScriptableObject: {fileID: 11400000, guid: 58d6f416806a6564bb13c2c1cfd41088, type: 2}
   iconImage: {fileID: 9143484807127562027}
   stackText: {fileID: 5221909316012194821}
   stackCurrent: 1

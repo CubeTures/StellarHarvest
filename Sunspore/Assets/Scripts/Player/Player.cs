@@ -170,7 +170,6 @@ public class Player : MonoBehaviour
         weaponHead.SetSwingTransform(dir, spriteRenderer.flipX);
         weaponBase.SetWeaponBaseTransform(dir, spriteRenderer.flipX);
         anim.SetInteger("Direction", dir);
-        anim.SetBool("isMoving", true);
         
         if (_vx > 0)
         {
@@ -293,8 +292,32 @@ public class Player : MonoBehaviour
         StartCoroutine(AnimationFinished());
     }
 
-    public void Shoot()
+    public void Shoot(Vector3 mouseDir)
     {
+        // Map mouseDir to the closest cardinal direction and update player direction
+        float ax = Mathf.Abs(mouseDir.x);
+        float az = Mathf.Abs(mouseDir.z);
+        int dirIndex;
+        if (az >= ax)
+        {
+            dirIndex = (mouseDir.z > 0f) ? 3 : 1;
+        }
+        else
+        {
+            dirIndex = (mouseDir.x > 0f) ? 2 : 4;
+        }
+        
+        if (mouseDir.x > 0f)
+            {
+                spriteRenderer.flipX = true;
+            }
+        else
+            {
+                spriteRenderer.flipX = false;
+            }
+        
+        SetDirection(dirIndex);
+
         anim.SetTrigger("Shoot");
         StartCoroutine(AnimationFinished());
     }
