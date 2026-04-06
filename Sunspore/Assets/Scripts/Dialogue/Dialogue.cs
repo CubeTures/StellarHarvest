@@ -5,8 +5,8 @@ using System.Globalization;
 using System.Text.RegularExpressions;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 namespace Sunspore
 {
@@ -14,7 +14,11 @@ namespace Sunspore
     {
         string characterName;
         private string[] messageList; // list of dialogue collected from the csv
+        private string[] characterNameList; // per-line speaker names collected from the csv
         private int currentMessageIndex = 0;
+        public Sprite SamSprite;
+        public Sprite TheManSprite;
+        public Image characterImage;
         public TMP_Text characterNameText;
         public TMP_Text messageText;
         public float speed = 0.01f;
@@ -72,7 +76,12 @@ namespace Sunspore
                 var csvFromResources = Resources.Load<TextAsset>("Dialogue");
                 if (csvFromResources != null)
                 {
-                    LoadDialogueFromCsv(csvFromResources, csvHasHeader, nameColumnIndex, dialogueTypeToUse);
+                    LoadDialogueFromCsv(
+                        csvFromResources,
+                        csvHasHeader,
+                        nameColumnIndex,
+                        dialogueTypeToUse
+                    );
                 }
             }
 
@@ -88,6 +97,49 @@ namespace Sunspore
             StopAllCoroutines(); // Stop any running typewriter effects
             messageText.text = ""; // Clear the text
             characterNameText.text = ""; // Clear the character name
+            characterImage.sprite = null;
+        }
+
+        void SetSpeakerUI(int messageIndex)
+        {
+            if (characterNameText == null || characterImage == null)
+            {
+                return;
+            }
+
+            if (
+                characterNameList == null
+                || messageIndex < 0
+                || messageIndex >= characterNameList.Length
+            )
+            {
+                return;
+            }
+
+            string speaker = characterNameList[messageIndex]?.Trim();
+            if (string.IsNullOrWhiteSpace(speaker))
+            {
+                characterNameText.text = "";
+                characterImage.sprite = null;
+                return;
+            }
+
+            // Update visible speaker name
+            characterNameText.text = speaker;
+
+            // Map speaker name to the configured portrait sprite
+            if (speaker.Equals("SAM", System.StringComparison.OrdinalIgnoreCase))
+            {
+                characterImage.sprite = SamSprite;
+            }
+            else if (speaker.Equals("THE MAN", System.StringComparison.OrdinalIgnoreCase))
+            {
+                characterImage.sprite = TheManSprite;
+            }
+            else
+            {
+                characterImage.sprite = null;
+            }
         }
 
         public void SetDialogueType(string newDialogueType)
@@ -122,6 +174,7 @@ namespace Sunspore
             }
             else
             {
+                SetSpeakerUI(currentMessageIndex);
                 typewriterCoroutine = StartCoroutine(TypeWriterEffect()); // Start with typewriter effect
             }
 
@@ -148,10 +201,8 @@ namespace Sunspore
                     // Check if the next message is "EVENT" before proceeding
                     string nextMessage = messageList[currentMessageIndex].Trim().ToUpper();
                     // Debug.Log($"Next message: '{nextMessage}' (index {currentMessageIndex})");
-                    if (nextMessage == "EVENT")
+                    if (nextMessage == "END")
                     {
-                        isEvent = true;
-
                         // End of tutorial
                         if (DialogueManager._dm != null && DialogueManager._dm.GetEventCount() == 1)
                         {
@@ -161,8 +212,13 @@ namespace Sunspore
                             transform.gameObject.SetActive(false);
                         }
                     }
+                    if (nextMessage == "EVENT")
+                    {
+                        isEvent = true;
+                    }
                     else
                     {
+                        SetSpeakerUI(currentMessageIndex);
                         typewriterCoroutine = StartCoroutine(TypeWriterEffect());
                     }
                 }
@@ -185,16 +241,23 @@ namespace Sunspore
             int[] clusterIndexes = StringInfo.ParseCombiningCharacters(full);
             for (int i = 0; i < clusterIndexes.Length; i++)
             {
-                int nextIndex = (i + 1 < clusterIndexes.Length) ? clusterIndexes[i + 1] : full.Length;
+                int nextIndex =
+                    (i + 1 < clusterIndexes.Length) ? clusterIndexes[i + 1] : full.Length;
                 messageText.text = full.Substring(0, nextIndex);
 
-                // Disable because might be too many sounds
-                // if (i % 4 == 0)
-                // {
-                //     // Change pitch randomly
-                //     _audioSource.pitch = UnityEngine.Random.Range(0.8f, 0.9f);
-                //     PlaySound(dialogueSFX);
-                // }
+                if (i % 4 == 0)
+                {
+                    // Change pitch randomly
+                    if (characterNameText.text == "SAM")
+                    {
+                        _audioSource.pitch = UnityEngine.Random.Range(0.7f, 0.8f);
+                    }
+                    else
+                    {
+                        _audioSource.pitch = UnityEngine.Random.Range(0.4f, 0.5f);
+                    }
+                    PlaySound(dialogueSFX);
+                }
 
                 yield return new WaitForSeconds(speed);
             }
@@ -256,6 +319,7 @@ namespace Sunspore
                         transform.gameObject.SetActive(true);
                     }
 
+                    SetSpeakerUI(currentMessageIndex);
                     typewriterCoroutine = StartCoroutine(TypeWriterEffect());
                 }
             }
@@ -266,7 +330,12 @@ namespace Sunspore
             }
         }
 
-        public void LoadDialogueFromCsv(TextAsset csv, bool hasHeader, int nameCol, string dialogueType)
+        public void LoadDialogueFromCsv(
+            TextAsset csv,
+            bool hasHeader,
+            int nameCol,
+            string dialogueType
+        )
         {
             if (csv == null)
             {
@@ -276,7 +345,6 @@ namespace Sunspore
             List<string> messages = new List<string>();
             List<string> poses = new List<string>();
             List<string> characterNames = new List<string>();
-            string detectedName = characterName;
 
             string[] lines = csv.text.Split(new[] { "\r\n", "\n", "\r" }, StringSplitOptions.None);
             if (lines.Length == 0)
@@ -301,14 +369,21 @@ namespace Sunspore
                 for (int h = 0; h < headerFields.Count; h++)
                 {
                     string header = headerFields[h].Trim();
-                    if (string.Equals(header, dialogueType, StringComparison.OrdinalIgnoreCase) ||
-                        string.Equals(header, dialogueType.Replace("_", " "), StringComparison.OrdinalIgnoreCase) ||
-                        string.Equals(header, dialogueType.Replace("_", "."), StringComparison.OrdinalIgnoreCase))
+                    if (
+                        string.Equals(header, dialogueType, StringComparison.OrdinalIgnoreCase)
+                        || string.Equals(
+                            header,
+                            dialogueType.Replace("_", " "),
+                            StringComparison.OrdinalIgnoreCase
+                        )
+                        || string.Equals(
+                            header,
+                            dialogueType.Replace("_", "."),
+                            StringComparison.OrdinalIgnoreCase
+                        )
+                    )
                     {
                         dialogueColumnIndex = h;
-                        nameColumnIndex = h - 1;
-                        characterName = headerFields[nameColumnIndex].Trim();
-                        poseColumnIndex = h + 1;
                         break;
                     }
                 }
@@ -316,12 +391,38 @@ namespace Sunspore
 
             if (dialogueColumnIndex == -1)
             {
-                Debug.LogWarning($"Could not find dialogue type '{dialogueType}' in CSV headers. Available headers: {string.Join(", ", headerFields)}");
+                Debug.LogWarning(
+                    $"Could not find dialogue type '{dialogueType}' in CSV headers. Available headers: {string.Join(", ", headerFields)}"
+                );
                 return;
             }
 
+            // Speaker name column is expected to be `NAME` in the CSV header.
+            // Fall back to the previous behavior (dialogue column - 1) if not found.
+            if (hasHeader && headerFields.Count > 0)
+            {
+                nameColumnIndex = headerFields.FindIndex(h =>
+                    string.Equals(h.Trim(), "NAME", StringComparison.OrdinalIgnoreCase)
+                );
+                if (nameColumnIndex == -1)
+                {
+                    nameColumnIndex = dialogueColumnIndex - 1;
+                }
+
+                // Pose is optional; current CSV doesn't include it.
+                // Keep old behavior as fallback if a pose column exists.
+                poseColumnIndex = headerFields.FindIndex(h =>
+                    string.Equals(h.Trim(), "POSE", StringComparison.OrdinalIgnoreCase)
+                );
+                if (poseColumnIndex == -1)
+                {
+                    poseColumnIndex = dialogueColumnIndex + 1;
+                }
+            }
+
             // Process data rows
-            string currentCharacterName = characterName;
+            // The speaker is taken from the `NAME` column; if NAME is blank, we keep the previous speaker.
+            string currentCharacterName = "";
             for (int i = startIndex; i < lines.Length; i++)
             {
                 string line = lines[i];
@@ -370,6 +471,7 @@ namespace Sunspore
             }
 
             messageList = messages.ToArray();
+            characterNameList = characterNames.ToArray();
         }
 
         private List<string> ParseCsvLine(string line)
@@ -453,7 +555,10 @@ namespace Sunspore
             }
 
             List<string> messages = new List<string>();
-            string[] lines = csvFile.text.Split(new[] { "\r\n", "\n", "\r" }, StringSplitOptions.None);
+            string[] lines = csvFile.text.Split(
+                new[] { "\r\n", "\n", "\r" },
+                StringSplitOptions.None
+            );
 
             if (lines.Length == 0)
             {
@@ -518,7 +623,10 @@ namespace Sunspore
             }
 
             // Parse all lines from CSV
-            string[] lines = csvFile.text.Split(new[] { "\r\n", "\n", "\r" }, StringSplitOptions.None);
+            string[] lines = csvFile.text.Split(
+                new[] { "\r\n", "\n", "\r" },
+                StringSplitOptions.None
+            );
             if (lines.Length == 0)
             {
                 Debug.LogWarning("CSV file is empty!");
@@ -542,13 +650,17 @@ namespace Sunspore
 
             if (typeColumnIndex == -1)
             {
-                Debug.LogWarning($"Could not find type column '{type}' in CSV headers. Available: {string.Join(", ", headerFields)}");
+                Debug.LogWarning(
+                    $"Could not find type column '{type}' in CSV headers. Available: {string.Join(", ", headerFields)}"
+                );
                 return "";
             }
 
             if (typeColumnIndex == 0)
             {
-                Debug.LogWarning($"Type column '{type}' is the first column, no trigger column to the left.");
+                Debug.LogWarning(
+                    $"Type column '{type}' is the first column, no trigger column to the left."
+                );
                 return "";
             }
 
@@ -580,7 +692,9 @@ namespace Sunspore
 
             if (rowIndex == -1)
             {
-                Debug.LogWarning($"Could not find row with trigger value '{trigger}' in column {triggerColumnIndex} ('{headerFields[triggerColumnIndex]}')");
+                Debug.LogWarning(
+                    $"Could not find row with trigger value '{trigger}' in column {triggerColumnIndex} ('{headerFields[triggerColumnIndex]}')"
+                );
                 return "";
             }
 
@@ -593,7 +707,9 @@ namespace Sunspore
             }
             else
             {
-                Debug.LogWarning($"Type column index {typeColumnIndex} out of range for row {rowIndex}.");
+                Debug.LogWarning(
+                    $"Type column index {typeColumnIndex} out of range for row {rowIndex}."
+                );
                 return "";
             }
         }
@@ -618,7 +734,12 @@ namespace Sunspore
                 var csvFromResources = Resources.Load<TextAsset>("Dialogue");
                 if (csvFromResources != null)
                 {
-                    LoadDialogueFromCsv(csvFromResources, csvHasHeader, nameColumnIndex, dialogueTypeToUse);
+                    LoadDialogueFromCsv(
+                        csvFromResources,
+                        csvHasHeader,
+                        nameColumnIndex,
+                        dialogueTypeToUse
+                    );
                 }
             }
 

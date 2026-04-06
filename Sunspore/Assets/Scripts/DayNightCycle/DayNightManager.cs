@@ -14,6 +14,9 @@ namespace Sunspore
         [SerializeField, Range(0f, 1f)] float initialTimeOfDay = 0f;
         [SerializeField] TMP_Dropdown timeSelector;
 
+        [Tooltip("While the tutorial has unfinished steps, the day/night clock does not advance.")]
+        bool pauseDayNightUntilTutorialComplete = true;
+
         GameManager gm;
 
         private float timeOfDay = 0f;
@@ -27,7 +30,17 @@ namespace Sunspore
 
         public float NormalizedTimeOfDay => timeOfDay;
         public event Action<float> TimeOfDayChanged;
-        
+
+        bool IsTutorialBlockingTime()
+        {
+            if (!pauseDayNightUntilTutorialComplete)
+            {
+                return false;
+            }
+
+            return TutorialManager.Instance != null && TutorialManager.Instance.IsTutorialActive;
+        }
+
         void Start()
         {
             spawner = GameObject.Find("Enemy Spawner").GetComponent<EnemySpawner>();
@@ -40,10 +53,10 @@ namespace Sunspore
             float sunAngle = Mathf.Lerp(0f, 360f, timeOfDay);
             Light.transform.rotation = Quaternion.Euler(sunAngle, 0, 0);
         }
-        
+
         void Update()
         {
-            if (!timeStopped)
+            if (!timeStopped && !IsTutorialBlockingTime())
             {
                 // Calculate angle based off percentage of day passed.
                 float prevTimeOfDay = timeOfDay;
@@ -71,7 +84,7 @@ namespace Sunspore
                     // Debug.Log("Nights: " + nights);
                 }
 
-                if (days == 7  && nights == 7)
+                if (days == 7 && nights == 7)
                 {
                     weeks++;
                     // Debug.Log("Weeks: " + weeks);
@@ -121,15 +134,15 @@ namespace Sunspore
 
         public void changeTime()
         {
-            if(timeStopped && timeSelector.value == 0)
+            if (timeStopped && timeSelector.value == 0)
             {
                 startTime();
             }
-            else if(isDay && timeSelector.value == 1)
+            else if (isDay && timeSelector.value == 1)
             {
                 stopTime();
             }
-            else if(timeSelector.value == 2)
+            else if (timeSelector.value == 2)
             {
                 setDay();
             }

@@ -18,6 +18,7 @@ public static class PlayerPrefManager
             return -300000000; // default score
         }
     }
+
     public static void SetHighscore(int highscore)
     {
         PlayerPrefs.SetInt("Highscore", highscore);
@@ -45,6 +46,23 @@ public static class PlayerPrefManager
         if (PlayerPrefs.HasKey("EventCount"))
         {
             return PlayerPrefs.GetInt("EventCount");
+        }
+        else
+        {
+            return 0;
+        }
+    }
+
+    public static void SetTutorialStep(int tutorialStep)
+    {
+        PlayerPrefs.SetInt("TutorialStep", tutorialStep);
+    }
+
+    public static int GetTutorialStep()
+    {
+        if (PlayerPrefs.HasKey("TutorialStep"))
+        {
+            return PlayerPrefs.GetInt("TutorialStep");
         }
         else
         {
@@ -314,7 +332,25 @@ public static class PlayerPrefManager
     public static void ShowPlayerPrefs()
     {
         // Store the PlayerPref keys to output to the console
-        string[] values = { "Score", "Highscore", "EventCount", "InventoryOpenCount", "CraftingCount", "Resolution", "Main volume", "Music volume", "SFX volume", "Quality", "Fullscreen", "Vibration", "Screenshake", "Mouse window lock", "Post processing" };
+        string[] values =
+        {
+            "Score",
+            "Highscore",
+            "EventCount",
+            "InventoryOpenCount",
+            "CraftingCount",
+            "Resolution",
+            "Main volume",
+            "Music volume",
+            "SFX volume",
+            "Quality",
+            "Fullscreen",
+            "Vibration",
+            "Screenshake",
+            "Mouse window lock",
+            "Post processing",
+            "TutorialStep",
+        };
 
         // Loop over the values and output to the console
         foreach (string value in values)
@@ -329,7 +365,6 @@ public static class PlayerPrefManager
                 {
                     Debug.Log(value + " = " + PlayerPrefs.GetInt(value));
                 }
-
             }
             else
             {
