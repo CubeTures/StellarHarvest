@@ -36,6 +36,7 @@ public class Player : MonoBehaviour
     CinemachineCamera _cinemachineCamera;
     public SpriteRenderer spriteRenderer;
     private Color _originalColor;
+    private MaterialPropertyBlock propBlock;
 
     GameManager gm;
 
@@ -61,7 +62,8 @@ public class Player : MonoBehaviour
         _mainCamera = Camera.main;
         spriteRenderer = GetComponent<SpriteRenderer>();
         gm = GameManager.gm;
-        if(spriteRenderer != null)
+        propBlock = new MaterialPropertyBlock();
+        if (spriteRenderer != null)
         {
             _originalColor = spriteRenderer.color;
         }
@@ -105,10 +107,11 @@ public class Player : MonoBehaviour
             Respawn(GameManager.gm.transform.position + new Vector3(0, 1.5f, 0));
         }
 
-        if (health == 10)
+        if (health <= 10)
         {
             if (spriteRenderer != null)
-                spriteRenderer.color = Color.red;
+                propBlock.SetColor("_Color", Color.red);
+                spriteRenderer.SetPropertyBlock(propBlock);
         }
 
         spriteRenderer.sortingOrder = (int)(-transform.position.z * 100);
@@ -193,6 +196,8 @@ public class Player : MonoBehaviour
     public void Respawn(Vector3 spawnloc)
     {
         UnFreezeMotion();
+        propBlock.SetColor("_Color", Color.white);
+        spriteRenderer.SetPropertyBlock(propBlock);
         _transform.parent = null;
         _transform.position = spawnloc;
     }
@@ -252,8 +257,9 @@ public class Player : MonoBehaviour
         health -= damage;
         if (spriteRenderer != null)
         {
-            spriteRenderer.color = Color.red;
             CancelInvoke(nameof(ResetColor));
+            propBlock.SetColor("_Color", Color.red);
+            spriteRenderer.SetPropertyBlock(propBlock);
             Invoke(nameof(ResetColor), 0.2f); // 0.2 seconds, adjust as needed
         }
         if (health <= 0)
@@ -276,8 +282,8 @@ public class Player : MonoBehaviour
 
     private void ResetColor()
     {
-        if (spriteRenderer != null)
-            spriteRenderer.color = _originalColor;
+        propBlock.SetColor("_Color", Color.white);
+        spriteRenderer.SetPropertyBlock(propBlock);
     }
     public void Planting()
     {
