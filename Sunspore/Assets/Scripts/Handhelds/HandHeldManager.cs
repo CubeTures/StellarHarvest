@@ -162,7 +162,7 @@ namespace Sunspore
             }
             if (handHeld.ranged)
             {
-
+                playerScript.Shoot(mouseDir);
             }
             else
             {
