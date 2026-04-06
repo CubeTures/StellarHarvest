@@ -1432,7 +1432,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 732848345113958734}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
@@ -3612,6 +3612,7 @@ MonoBehaviour:
   Light: {fileID: 0}
   dayLengthSeconds: 120
   initialTimeOfDay: 0
+  timeSelector: {fileID: 0}
   weeks: 0
 --- !u!1 &1740413732223974986
 GameObject:
@@ -16722,6 +16723,11 @@ MonoBehaviour:
   attackBoxPrefab: {fileID: 5205316236799757187, guid: c174272be9b777643925865b0a8962de, type: 3}
   head: 1
   handle: 1
+  abilityRangeRing: {fileID: 0}
+  ringSegments: 64
+  OnAbility:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &6266519543483846447
 GameObject:
   m_ObjectHideFlags: 0
