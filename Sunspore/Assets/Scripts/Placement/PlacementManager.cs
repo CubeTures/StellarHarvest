@@ -8,7 +8,7 @@ using System.Collections;
 [RequireComponent(typeof(InventoryManager))]
 public class PlacementManager : MonoBehaviour
 {
-    [SerializeField] LayerMask groundLayer;
+    [SerializeField] LayerMask groundLayer, ignoreCastLayer;
     [SerializeField]  Player player;
 
     Camera cam;
@@ -100,7 +100,7 @@ public class PlacementManager : MonoBehaviour
             {
                 float sizeX = preview.transform.localScale.x;
                 float sizeZ = preview.transform.localScale.z;
-                Debug.Log(sizeX + " " + sizeZ);
+                // Debug.Log(sizeX + " " + sizeZ);
                 preview.transform.position = SnapPosition(position, sizeX, sizeZ);
                 preview.SetActive(true);
             }
@@ -111,6 +111,7 @@ public class PlacementManager : MonoBehaviour
             {
                 preview.SetActive(false);
             }
+            Debug.Log("FALSE");
             allowPlacement = false;
         }
     }
@@ -122,7 +123,8 @@ public class PlacementManager : MonoBehaviour
             var sr = preview.GetComponent<SpriteRenderer>();
 
             Vector3 box = new((preview.transform.localScale.x - epsilon) / 2, 0.5f, (preview.transform.localScale.z - epsilon) / 2);
-            var colliders = Physics.OverlapBox(preview.transform.position, box, Quaternion.identity, ~groundLayer);
+            var colliders = Physics.OverlapBox(preview.transform.position, box, Quaternion.identity, ~(groundLayer | ignoreCastLayer));
+            
             
             if (colliders.Count() > 0 || !TerrainTilemap.Instance.CheckTilled(preview.transform.position))
             {
