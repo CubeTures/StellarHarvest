@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using System;
+using System.Collections;
 
 public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 {
@@ -12,6 +13,8 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
     Inventory inventory;
     [SerializeField] Hotbar hotbar;
     [SerializeField] GameObject craftingParent;
+    [SerializeField] GameObject debtParent;
+    [SerializeField] GameObject milestoneParent;
     [SerializeField] GameObject inventoryParent;
     [SerializeField] GameObject storeParent;
     [SerializeField] Transform handParent;
@@ -29,6 +32,8 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
     bool isCraftingOpened;
     public bool isInventoryOpened;
     bool isStoreOpened;
+    bool isDebtOpened;
+    bool isMilestoneOpened;
     // Inventory filtering
     private ItemCategory selectedInventoryCategory = ItemCategory.All;
     int selectedHotbarIndex = 0;
@@ -40,7 +45,7 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
         if (Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject);
+            // DontDestroyOnLoad(gameObject);
         }
         else
         {
@@ -59,6 +64,7 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
     {
         CheckForHotbarInput();
         craftingParent.SetActive(isCraftingOpened);
+        debtParent.SetActive(isDebtOpened);
         inventoryParent.SetActive(isInventoryOpened);
         if (isInventoryOpened)
         {
@@ -85,6 +91,8 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
                 isInventoryOpened = false;
                 isCraftingOpened = false;
                 isStoreOpened = false;
+                isDebtOpened = false;
+                isMilestoneOpened = false;
                 inventoryTabs.Reset();
             }
             else
@@ -217,14 +225,14 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
 
         var sel = GetSelectedItem();
 
-            if (handHeldManager != null)
+        if (handHeldManager != null)
+        {
+            handHeldManager.CancelAbility();
+            if (sel == null || (sel.category != ItemCategory.Weapons && sel.category != ItemCategory.Tools))
             {
-                handHeldManager.CancelAbility();
-                if (sel == null || (sel.category != ItemCategory.Weapons && sel.category != ItemCategory.Tools))
-                {
-                    handHeldManager.enabled = false;
-                }
+                handHeldManager.enabled = false;
             }
+        }
 
         foreach (GameObject slot in hotbarSlots)
         {
@@ -466,14 +474,16 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
             {
                 if (itemPrefab == null) break;
 
-                GameObject newItem = Instantiate(itemPrefab);
+                Transform container = slotObj.transform.parent.parent.GetChild(1);
+                GameObject newItem = Instantiate(itemPrefab, container);
                 var invItem = newItem.GetComponent<InventoryItem>();
                 if (invItem == null) continue;
                 invItem.itemScriptableObject = item;
-                int put = Mathf.Min(remaining, item.maxStackSize);
+                int maxStack = item.maxStackSize > 0 ? item.maxStackSize : invItem.stackMax;
+                int put = Mathf.Min(remaining, maxStack);
                 invItem.stackCurrent = put;
-                newItem.transform.SetParent(slotObj.transform.parent.parent.GetChild(1));
-                newItem.transform.localScale = new Vector3(1, 1, 1);
+                newItem.transform.position = slot.transform.position;
+                newItem.transform.localScale = Vector3.one;
                 slot.SetHeldItem(newItem);
                 remaining -= put;
             }
@@ -541,8 +551,34 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
         }
         else
         {
+            CloseSidebar();
             isStoreOpened = true;
-            isCraftingOpened = false;
+        }
+    }
+
+    public void OpenAndCloseDebt()
+    {
+        if (isDebtOpened)
+        {
+            isDebtOpened = false;
+        }
+        else
+        {
+            CloseSidebar();
+            isDebtOpened = true;
+        }
+    }
+
+    public void OpenAndCloseMilestone()
+    {
+        if (isMilestoneOpened)
+        {
+            isMilestoneOpened = false;
+        }
+        else
+        {
+            CloseSidebar();
+            isMilestoneOpened = true;
         }
     }
 
@@ -555,6 +591,14 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
         if (isStoreOpened)
         {
             isStoreOpened = false;
+        }
+        if (isDebtOpened)
+        {
+            isDebtOpened = false;
+        }
+        if (isMilestoneOpened)
+        {
+            isMilestoneOpened = false;
         }
     }
 

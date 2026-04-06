@@ -22,3 +22,4 @@ MonoBehaviour:
   description: Crafted from Bramblebed (Stage 4). Drops floor-damage zones.
   creditCost: 3600
   creditReward: 0
+  disabled: 1

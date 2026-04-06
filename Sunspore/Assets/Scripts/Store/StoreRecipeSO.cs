@@ -17,6 +17,8 @@ namespace Sunspore
         // For buy recipes: credits required to purchase
         public int creditCost = 0;
         public int creditReward = 0;
+
+        public bool disabled = false;
     }
 
     public enum StoreRecipeType { buy, sell }

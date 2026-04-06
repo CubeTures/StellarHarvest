@@ -22,3 +22,4 @@ MonoBehaviour:
   description: Crafted from Geminivora (Stage 4). Splits into sub-projectiles.
   creditCost: 0
   creditReward: 5000
+  disabled: 1

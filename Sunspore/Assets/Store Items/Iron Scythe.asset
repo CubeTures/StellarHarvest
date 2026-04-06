@@ -17,8 +17,9 @@ MonoBehaviour:
   category: 3
   ingredients: []
   resultItem:
-  - item: {fileID: 0}
+  - item: {fileID: 11400000, guid: b545eff1852afee43a18296692075c22, type: 2}
     amount: 1
   description: Harvests stalk crops; best melee combat weapon.
   creditCost: 1500
   creditReward: 0
+  disabled: 0

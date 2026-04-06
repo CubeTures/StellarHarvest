@@ -17,8 +17,9 @@ MonoBehaviour:
   category: 3
   ingredients: []
   resultItem:
-  - item: {fileID: 0}
+  - item: {fileID: 11400000, guid: 562b71639b7fd8747bd2e49ac54d5a20, type: 2}
     amount: 1
   description: 2nd Hoe Upgrade; tills soil very fast in a 2x2 grid
   creditCost: 5000
   creditReward: 0
+  disabled: 0

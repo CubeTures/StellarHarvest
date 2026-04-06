@@ -22,3 +22,4 @@ MonoBehaviour:
   description: Crafted from Elementa (Stage 3). Applies chosen status on hit.
   creditCost: 0
   creditReward: 1800
+  disabled: 1

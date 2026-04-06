@@ -1,35 +1,31 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Wallet : MonoBehaviour
 {
     [SerializeField] TMP_Text creditsText;
 
-    [SerializeField] string startingAmount = "0";
-    decimal amount = 0m;
+    [SerializeField] int startingAmount = 0;
+    int amount = 0;
 
-    void Awake()
+    void Start()
     {
-        decimal.TryParse(startingAmount, out amount);
+        amount = startingAmount;
     }
 
     void Update()
     {
         if (creditsText != null)
         {
-            int nextPayment = 0;
-            if (Bank.Instance != null)
+            string txt = amount.ToString("N0");
+            bool rebuild = txt != creditsText.text;
+            creditsText.text = txt;
+
+            if (rebuild)
             {
-                try
-                {
-                    nextPayment = Bank.Instance.GetNextPayment();
-                }
-                catch (System.Exception ex)
-                {
-                    Debug.LogWarning($"[Wallet] Failed to get next payment from Bank: {ex.Message}");
-                }
+                Rebuild();
             }
-            creditsText.text = $"{amount}";
         }
     }
 
@@ -41,26 +37,22 @@ public class Wallet : MonoBehaviour
 
     public void Add(int amount)
     {
-        Add((decimal)amount);
-    }
-
-    public void Add(decimal amount)
-    {
         this.amount += amount;
     }
 
     public void Subtract(int amount)
     {
-        Subtract((decimal)amount);
-    }
-
-    public void Subtract(decimal amount)
-    {
         this.amount -= amount;
     }
 
-    public decimal GetAmount()
+    public int GetAmount()
     {
         return amount;
+    }
+
+    void Rebuild()
+    {
+        LayoutRebuilder.ForceRebuildLayoutImmediate(creditsText.GetComponent<RectTransform>());
+        LayoutRebuilder.ForceRebuildLayoutImmediate(creditsText.transform.parent.GetComponent<RectTransform>());
     }
 }

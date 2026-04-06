@@ -22,3 +22,4 @@ MonoBehaviour:
   description: Crafted from Nova Bloom (Stage 4). Highest base damage.
   creditCost: 6000
   creditReward: 0
+  disabled: 1

@@ -74,11 +74,11 @@ namespace Sunspore
             if (waterDropPrefab != null)
             {
                 waterDropInstance = Instantiate(waterDropPrefab, transform);
-                waterDropInstance.SetActive(true);
+                waterDropInstance.SetActive(!watered);
             }
 
             // Start as seed
-            SetGrowthStage(GrowthStage.Seed);
+            SetGrowthStage(currentStage);
         }
 
         protected virtual void LateUpdate()
@@ -127,6 +127,7 @@ namespace Sunspore
                     _spriteRenderer.sprite = seedSprite;
                     _currentGrowthTime = _initialSeedToJuvenileTime + Random.Range(0f, growthTimeVariance);
                     OnSeedStage();
+                    watered = false;
                     waterDropInstance.SetActive(true);
                     break;
 
@@ -134,6 +135,7 @@ namespace Sunspore
                     _spriteRenderer.sprite = juvenileSprite;
                     _currentGrowthTime = _initialJuvenileToFullyGrownTime + Random.Range(0f, growthTimeVariance);
                     OnJuvenileStage();
+                    watered = false;
                     waterDropInstance.SetActive(true);
                     break;
 
@@ -148,7 +150,6 @@ namespace Sunspore
         {
             _anim.SetTrigger("Start");
             StartCoroutine(TransitionTimer(GrowthStage.Juvenile));
-            watered = false;
         }
 
         protected virtual void GrowToFullyGrown()
@@ -159,11 +160,11 @@ namespace Sunspore
 
         protected virtual void OnTriggerEnter(Collider other)
         {
-            if (other.gameObject.CompareTag("Player") && currentStage == GrowthStage.FullyGrown)
-            {
-                PlaySound(harvestSound);
-                Harvest();
-            }
+            // if (other.gameObject.CompareTag("Player") && currentStage == GrowthStage.FullyGrown)
+            // {
+            //     PlaySound(harvestSound);
+            //     Harvest();
+            // }
         }
 
         public virtual void Harvest()

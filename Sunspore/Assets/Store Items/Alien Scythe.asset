@@ -17,9 +17,10 @@ MonoBehaviour:
   category: 3
   ingredients: []
   resultItem:
-  - item: {fileID: 0}
+  - item: {fileID: 11400000, guid: 195753a3e114d72468a5a6840d1546db, type: 2}
     amount: 1
   description: Scythe made from alien technology; Strongest melee damage n the game
     and most efficient harvesting for stalk crops
   creditCost: 12000
   creditReward: 0
+  disabled: 0

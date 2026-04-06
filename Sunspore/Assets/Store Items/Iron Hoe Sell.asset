@@ -16,9 +16,10 @@ MonoBehaviour:
   recipeType: 1
   category: 3
   ingredients:
-  - item: {fileID: 0}
+  - item: {fileID: 11400000, guid: b839896818e0c114ea999495508280cf, type: 2}
     amount: 1
   resultItem: []
   description: Upgraded hoe; tills soil faster
   creditCost: 0
   creditReward: 1000
+  disabled: 0

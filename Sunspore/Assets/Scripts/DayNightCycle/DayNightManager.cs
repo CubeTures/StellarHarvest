@@ -45,7 +45,7 @@ namespace Sunspore
         {
             spawner = GameObject.Find("Enemy Spawner").GetComponent<EnemySpawner>();
             Light = GameObject.Find("Directional Light");
-            timeSelector = GameObject.Find("Dropdown").GetComponent<TMP_Dropdown>();
+            // timeSelector = GameObject.Find("Dropdown").GetComponent<TMP_Dropdown>();
             gm = GameManager.gm;
 
             // Ensure a deterministic start position for the day/night cycle and clock UI.
@@ -90,7 +90,7 @@ namespace Sunspore
                     // Debug.Log("Weeks: " + weeks);
                     days = 0;
                     nights = 0;
-                    Bank.Instance.CheckPayment(weeks);
+                    // Bank.Instance.CheckPayment(weeks);
                 }
             }
 

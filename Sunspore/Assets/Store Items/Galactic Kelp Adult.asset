@@ -22,3 +22,4 @@ MonoBehaviour:
   description: Requires Water Tank upgrade to plant.
   creditCost: 0
   creditReward: 6500
+  disabled: 1

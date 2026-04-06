@@ -13,12 +13,8 @@ namespace Sunspore
                 Plant plant = hit.collider.GetComponent<Plant>();
                 if (plant != null)
                 {
-                    float distance = Vector3.Distance(player.transform.position, plant.transform.position);
-                    if (distance <= abilityRange)
-                    {
-                        plant.WaterPlant();
-                        //Debug.Log("Plant Watered");
-                    }
+                    plant.WaterPlant();
+                    //Debug.Log("Plant Watered");
                     //else
                     //{
                     //    Debug.Log("Plant is out of range!");

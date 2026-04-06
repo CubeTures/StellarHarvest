@@ -16,10 +16,11 @@ MonoBehaviour:
   recipeType: 1
   category: 3
   ingredients:
-  - item: {fileID: 0}
+  - item: {fileID: 11400000, guid: e7dc6c675543dc042a26a6d61d35b3c9, type: 2}
     amount: 1
   resultItem: []
   description: Hoe made of alien technoloy; tills soil the fastest and works in a
     3x3 grid
   creditCost: 0
   creditReward: 1000
+  disabled: 0
