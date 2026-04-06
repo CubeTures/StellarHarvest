@@ -38,6 +38,12 @@ namespace Sunspore
                 return false;
             }
 
+            // If the tutorial is complete, allow the day/night cycle to continue
+            if (PlayerPrefManager.GetTutorialStep() >= TutorialManager.Instance.TutorialStepLength)
+            {
+                return false;
+            }
+
             return TutorialManager.Instance != null && TutorialManager.Instance.IsTutorialActive;
         }
 

@@ -18,7 +18,8 @@ MonoBehaviour:
   ingredients: []
   resultItem:
   - item: {fileID: 0}
-    amount: 1
+    amount: 0
   description: Crafted from Bloomburst (Stage 3). Triple-shot variant available.
   creditCost: 1200
   creditReward: 0
+  disabled: 0

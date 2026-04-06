@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1bca075d7798bd4c821b96710b40382, type: 3}
+  m_Name: Sword
+  m_EditorClassIdentifier: Sunspore::Sunspore.StoreRecipeSO
+  recipeName: Sword
+  recipeType: 0
+  category: 2
+  ingredients:
+  - item: {fileID: 11400000, guid: b216deef74420864cba9d71bb224dd60, type: 2}
+    amount: 1
+  resultItem:
+  - item: {fileID: 11400000, guid: e6a7e8497a422434c9c3d117b7d67aad, type: 2}
+    amount: 1
+  description: Not Crafted
+  creditCost: 0
+  creditReward: 0
+  disabled: 0

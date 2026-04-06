@@ -9,6 +9,8 @@ public class TutorialManager : MonoBehaviour
     [SerializeField]
     private List<TutorialStep> steps;
     private int currentStepIndex;
+    [HideInInspector]
+    public int TutorialStepLength;
 
     /// <summary>True while there is an active step; false after the last step completes.</summary>
     public bool IsTutorialActive => steps != null && currentStepIndex < steps.Count;
@@ -20,7 +22,16 @@ public class TutorialManager : MonoBehaviour
 
     private void Start()
     {
-        StartStep();
+        TutorialStepLength = steps.Count;
+        if (PlayerPrefManager.GetTutorialStep() >= TutorialStepLength)
+        {
+            Debug.Log("Tutorial completed automatically");
+            return;
+        }
+        else
+        {
+            StartStep();
+        }
     }
 
     void Update()

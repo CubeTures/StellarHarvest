@@ -4867,6 +4867,53 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!1 &1938006880274474819
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6135833956714289153}
+  - component: {fileID: 2438980872365116751}
+  m_Layer: 0
+  m_Name: Sell Step
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6135833956714289153
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1938006880274474819}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2930692587102299576}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2438980872365116751
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1938006880274474819}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6b37dd2b252f092c6b687a13af23fa4b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Sunspore::SellStep
+  inventoryManager: {fileID: 4196356726159557498}
+  sellTarget: {fileID: 11400000, guid: b216deef74420864cba9d71bb224dd60, type: 2}
+  sellAmount: 1
 --- !u!1 &1950879780085431434
 GameObject:
   m_ObjectHideFlags: 0
@@ -12144,53 +12191,6 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
---- !u!1 &4188797393325151368
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 8944773782896183560}
-  - component: {fileID: 2576836725346555571}
-  m_Layer: 0
-  m_Name: Sell Step
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &8944773782896183560
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4188797393325151368}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 2930692587102299576}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2576836725346555571
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4188797393325151368}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6b37dd2b252f092c6b687a13af23fa4b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Sunspore::SellStep
-  inventoryManager: {fileID: 4196356726159557498}
-  sellTarget: {fileID: 11400000, guid: b216deef74420864cba9d71bb224dd60, type: 2}
-  sellAmount: 1
 --- !u!1 &4219596939788117445
 GameObject:
   m_ObjectHideFlags: 0
@@ -15232,6 +15232,10 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 3711364cb2ad327439f8b158b8d35c03, type: 2}
   - {fileID: 11400000, guid: 66041b2384b059b4fb430052abd3e90d, type: 2}
   - {fileID: 11400000, guid: d4c64b6d21402dc47a5d61d956f8e4ce, type: 2}
+  - {fileID: 11400000, guid: cef627a3d859a674e9db57526847657d, type: 2}
+  - {fileID: 11400000, guid: 9f0bafbc8ea02214fb4cc05beecfa8e2, type: 2}
+  - {fileID: 11400000, guid: ca137c788af35514aa816634b92b2702, type: 2}
+  - {fileID: 11400000, guid: 64308fc5095cbc342a13e78f6143f098, type: 2}
   recipeUIPrefab: {fileID: 180202710489340725, guid: 7269871ed53158846a665dede5301c58, type: 3}
   recipeUIParent: {fileID: 187919005278313147}
   processButton: {fileID: 2000977366999539751}
@@ -18981,8 +18985,8 @@ MonoBehaviour:
     m_Top: 0
     m_Bottom: 0
   m_ChildAlignment: 4
-  m_Spacing: 5
-  m_ChildForceExpandWidth: 1
+  m_Spacing: 0
+  m_ChildForceExpandWidth: 0
   m_ChildForceExpandHeight: 1
   m_ChildControlWidth: 0
   m_ChildControlHeight: 0
@@ -20140,7 +20144,7 @@ Transform:
   - {fileID: 6095290929561070748}
   - {fileID: 4164853063141260776}
   - {fileID: 6599784743908277551}
-  - {fileID: 8944773782896183560}
+  - {fileID: 6135833956714289153}
   - {fileID: 8793204100954864559}
   - {fileID: 8250944372694815118}
   m_Father: {fileID: 6026573916693021106}
@@ -20161,9 +20165,10 @@ MonoBehaviour:
   - {fileID: 892922089171248713}
   - {fileID: 323084937240082717}
   - {fileID: 8916648932738953675}
-  - {fileID: 2576836725346555571}
+  - {fileID: 2438980872365116751}
   - {fileID: 8082116410314827168}
   - {fileID: 3713281519745298604}
+  TutorialStepLength: 0
 --- !u!1 &7242619425465287171
 GameObject:
   m_ObjectHideFlags: 0
@@ -26565,7 +26570,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7850990339615045409, guid: 42086e298ded5f74a964688e868d82db, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 128
+      value: 200
       objectReference: {fileID: 0}
     - target: {fileID: 7850990339615045409, guid: 42086e298ded5f74a964688e868d82db, type: 3}
       propertyPath: m_LocalPosition.x
@@ -26885,7 +26890,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7850990339615045409, guid: 42086e298ded5f74a964688e868d82db, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 128
+      value: 200
       objectReference: {fileID: 0}
     - target: {fileID: 7850990339615045409, guid: 42086e298ded5f74a964688e868d82db, type: 3}
       propertyPath: m_LocalPosition.x
@@ -29178,7 +29183,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7850990339615045409, guid: 42086e298ded5f74a964688e868d82db, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 128
+      value: 200
       objectReference: {fileID: 0}
     - target: {fileID: 7850990339615045409, guid: 42086e298ded5f74a964688e868d82db, type: 3}
       propertyPath: m_LocalPosition.x

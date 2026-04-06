@@ -52,7 +52,7 @@ MonoBehaviour:
   attackRange: 2.5
   abilityRange: 0
   knockback: 0
-  handHeldSprite: {fileID: 0}
+  handHeldSprite: {fileID: 21300000, guid: 83a075a1548ed774c96ec51832b6f581, type: 3}
   attackAnimation: {fileID: 0}
   melee: 1
   ranged: 0

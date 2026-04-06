@@ -49,6 +49,7 @@ namespace Sunspore
                 Debug.LogError("Animator not found on character!");
             }
 
+            // Play tutorial dialogue if no steps have been completed (first time playing the game)
             if (PlayerPrefManager.GetEventCount() == 0)
             {
                 _animator.SetTrigger("Enter");
@@ -212,7 +213,7 @@ namespace Sunspore
                             transform.gameObject.SetActive(false);
                         }
                     }
-                    if (nextMessage == "EVENT")
+                    else if (nextMessage == "EVENT")
                     {
                         isEvent = true;
                     }
