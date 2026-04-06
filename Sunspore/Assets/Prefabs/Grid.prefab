@@ -203,8 +203,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 48175c7303c1cd341b2d928cb2a886e9, type: 2}
   - {fileID: 11400000, guid: 88429b233ad045742bc4023d87ca79d2, type: 2}
   - {fileID: 11400000, guid: c3e57f242f1f51644a529c7baff9b532, type: 2}
-  - {fileID: 11400000, guid: 5fd14b3c7e37f524ab3ce4f8016bc7bd, type: 2}
-  - {fileID: 11400000, guid: d26df50f9c6eca445ad784c5c8e44a3f, type: 2}
   tilledTiles:
   - {fileID: 11400000, guid: 90fdf2a7328f38145a8cb2670d9572c0, type: 2}
   - {fileID: 11400000, guid: e32b7321ffb72464a8a24e87c7915853, type: 2}
