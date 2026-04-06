@@ -1,5 +1,5 @@
 <h1 align="center">
-    <img src="" alt="Stellar Harvest" width="600">
+    <img src="https://github.com/user-attachments/assets/103ea2ba-1087-4522-8d2f-38920da04354" alt="Stellar Harvest" width="600">
   <br>
 </h1>
 
