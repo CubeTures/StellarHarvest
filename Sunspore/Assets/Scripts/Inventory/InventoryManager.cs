@@ -642,7 +642,7 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
                 || slot != null && slot.heldItem != null && slot.heldItem.GetComponent<InventoryItem>().itemScriptableObject != draggedObject.GetComponent<InventoryItem>().itemScriptableObject)
             {
                 lastItemSlot.GetComponent<InventorySlot>().SetHeldItem(slot.heldItem);
-                slot.heldItem.transform.SetParent(slot.transform.parent.parent.GetChild(1));
+                slot.heldItem.transform.SetParent(lastItemSlot.transform.parent.parent.GetChild(1));
                 slot.SetHeldItem(draggedObject);
                 draggedObject.transform.SetParent(slot.transform.parent.parent.GetChild(1));
             }
