@@ -85,6 +85,8 @@ MonoBehaviour:
     m_path: Assets/_Scenes/Win.unity
   - m_enabled: 1
     m_path: Assets/_Scenes/Lose.unity
+  - m_enabled: 1
+    m_path: Assets/_Scenes/Loading.unity
   m_HasScriptingDefines: 1
   m_ScriptingDefines: []
   m_PlayerSettingsYaml:
