@@ -116,22 +116,6 @@ public sealed class TerrainTilemap : MonoBehaviour
 		var cell = _tilemap.WorldToCell(worldPosition);
 		if (!initialBounds.Contains(cell)) return;
 
-        // 1. Get the cell's world bounds
-        Vector3 cellSize = _tilemap.cellSize;
-        Bounds cellBounds = new Bounds(cell, cellSize);
-
-        // 2. Find the closest point on the cell's bounds to the player
-        Vector3 closestPoint = cellBounds.ClosestPoint(playerPos);
-		closestPoint.z = closestPoint.y;
-		closestPoint.y = 1.5f;
-
-        // 3. Calculate the distance
-        float distance = Vector3.Distance(playerPos, closestPoint);
-
-		Debug.Log(distance + " " + abilityRange);
-
-		if (distance > abilityRange) return;
-
         Debug.Log("Tilled" + cell);
 
         if (!_tilledCells.Add(cell)) return;
@@ -145,34 +129,40 @@ public sealed class TerrainTilemap : MonoBehaviour
 		RefreshCell(cell);
 	}
 
-	public bool CheckRange(Vector3 worldPosition, float abilityRange, Vector3 playerPos)
+    public bool CheckRange(Vector3 worldPosition, float abilityRange, Vector3 playerPos)
     {
         var cell = _tilemap.WorldToCell(worldPosition);
         if (!initialBounds.Contains(cell)) return false;
 
-        // 1. Get the cell's world bounds
-        Vector3 cellSize = _tilemap.cellSize;
-        Bounds cellBounds = new Bounds(cell, cellSize);
+        Vector3 cellWorldPos = _tilemap.CellToWorld(cell);
 
-        // 2. Find the closest point on the cell's bounds to the player
-        Vector3 closestPoint = cellBounds.ClosestPoint(playerPos) + new Vector3(0, 1.5f, 0);
-        closestPoint.z = closestPoint.y;
-        closestPoint.y = 1.5f;
+        // In CheckRange, change cos(30) to match the ring's zScale of 1.5f
+        float cameraComp = 1f / 1.5f; // Match the ring's zScale
 
-        // 3. Calculate the distance
-        float distance = Vector3.Distance(playerPos, closestPoint);
+        Vector3 compensatedCellPos = new Vector3(
+            cellWorldPos.x,
+            1.5f,
+            cellWorldPos.z * cameraComp  // divide by 1.5f, same as ring multiplying by 1.5f
+        );
 
-        Debug.Log("Player Position: " + playerPos + " Cell: " + cell + " Closest Cell Edge: " + closestPoint + " Distance: " + distance);
+        Vector3 compensatedSize = new Vector3(xScale, 0f, zScale * cameraComp);
 
-        if (distance <= abilityRange)
-		{
-			return true;
-		}
+        Bounds cellBounds = new Bounds(compensatedCellPos + compensatedSize * 0.5f, compensatedSize);
 
-		return false;
+        Vector3 compensatedPlayer = new Vector3(playerPos.x, 1.5f, playerPos.z * cameraComp);
+
+        Vector3 closestPoint = cellBounds.ClosestPoint(compensatedPlayer);
+
+        float distance = Vector3.Distance(compensatedPlayer, closestPoint);
+
+        Debug.Log("Player Position: " + compensatedPlayer + " Cell: " + cell +
+                  " Cell World Pos: " + cellWorldPos + " Closest Cell Edge: " + closestPoint +
+                  " Distance: " + distance);
+
+        return distance <= abilityRange;
     }
 
-	public bool CheckTilled(Vector3 worldPos)
+    public bool CheckTilled(Vector3 worldPos)
 	{
 		Debug.Log("Checking Till For Position: " + worldPos);
 

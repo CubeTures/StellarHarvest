@@ -68,7 +68,15 @@ namespace Sunspore
                 Plant plant = hit.collider.GetComponent<Plant>();
                 if (plant != null)
                 {
-                    float distance = Vector3.Distance(player.transform.position, plant.transform.position);
+                    Vector3 plantDist = plant.transform.position;
+
+                    // Line up plant with player and account for camera shift
+                    plantDist.y = 1.5f;
+                    plantDist.z /= 1.5f;
+                    Vector3 playerPos = player.transform.position;
+                    playerPos.z /= 1.5f;
+                    float distance = Vector3.Distance(playerPos, plantDist);
+                    Debug.Log("Player Position: " + playerPos + " Plant: " + plant.transform.position + " Distance: " + distance);
                     if (distance <= abilityRange)
                     {
                         return true;
