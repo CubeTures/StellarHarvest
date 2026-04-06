@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Sunspore;
 using UnityEngine;
 
 public class TutorialManager : MonoBehaviour
@@ -40,6 +41,10 @@ public class TutorialManager : MonoBehaviour
         steps[currentStepIndex].End();
         currentStepIndex++;
         PlayerPrefManager.SetTutorialStep(currentStepIndex);
+        if (DialogueManager._dm != null)
+        {
+            DialogueManager._dm.CompleteEvent();
+        }
         Debug.Log("Tutorial Step: " + currentStepIndex);
 
         if (currentStepIndex < steps.Count)
