@@ -166,9 +166,9 @@ public sealed class TerrainTilemap : MonoBehaviour
 	{
 		Debug.Log("Checking Till For Position: " + worldPos);
 
-		Vector3Int cell = new Vector3Int((int)(worldPos.x / xScale) - 1, (int)(worldPos.z / zScale) - 1, 0);
-
-		Debug.Log("Checking Till FOr Cell: " + cell);
+		var cell = _tilemap.WorldToCell(worldPos);
+		Debug.Log($"CheckTilled pos={worldPos} → cell={cell}");
+		Debug.Log($"TilledCells: {string.Join(", ", _tilledCells)}");
 
 		if (_tilledCells.Contains(cell)) return true;
 
