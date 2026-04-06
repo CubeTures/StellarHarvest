@@ -637,6 +637,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1001270149179028073, guid: 906065912e6b61a45858656fdfb13bd3, type: 3}
+      propertyPath: ignoreCastLayer.m_Bits
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 1026888069547768275, guid: 906065912e6b61a45858656fdfb13bd3, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -3234,7 +3238,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1509560952}
   - component: {fileID: 1509560951}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Camera Bounds
   m_TagString: Untagged
   m_Icon: {fileID: 0}

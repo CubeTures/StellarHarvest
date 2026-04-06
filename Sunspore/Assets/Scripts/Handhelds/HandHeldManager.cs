@@ -39,6 +39,8 @@ namespace Sunspore
             if (Instance == null)
             {
                 Instance = this;
+                player = GameObject.FindGameObjectWithTag("Player");
+                playerScript = player.GetComponent<Player>();
             }
             else
             {
@@ -56,9 +58,7 @@ namespace Sunspore
             directions[2] = new Vector3(0.0f, 0.0f, 1.0f);
             directions[3] = new Vector3(-1.0f, 0.0f, 0.0f);
             offset = 0;
-            player = GameObject.FindGameObjectWithTag("Player");
-            playerScript = player.GetComponent<Player>();
-
+            
             // Create the LineRenderer for the ability range ring
             abilityRangeRing = GetComponent<LineRenderer>();
             abilityRangeRing.transform.SetParent(transform);
