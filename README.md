@@ -16,10 +16,19 @@ Good luck space pioneer!
 Play [here](https://official-itchio.itch.io/stellar-harvest?secret=JedGTY65TFiabTqDBDnYhtORz2E)!
 
 ## Controls
-- WASD to move
-- Left mouse button to interact
-- E to open inventory
-- Esc to pause
+- **WASD**: Move
+- **E**: Open inventory
+- **Left click** with any tool/weapon: swing/shoot weapon
+
+- **Hoe**: Right click to till ground for planting
+- **Scythe**: Right click to harvest plants
+- **Watering** can: Right click to water thirsty plants
+
+- **Inventory**: click and drag
+- **Store**: buy and sell items
+- **Debt**: manage your loans
+
+- **Goal**: pay off all your loans
 
 ## Download
 Download the game on [itch.io](https://official-itchio.itch.io/stellar-harvest?secret=JedGTY65TFiabTqDBDnYhtORz2E)!
