@@ -332,62 +332,56 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
     {
         items.Clear();
 
-        foreach (GameObject slot in slots)
-        {
-            InventorySlot slotScript = slot.GetComponent<InventorySlot>();
-
-            if (slotScript.heldItem != null)
-            {
-                InventoryItem itemScript = slotScript.heldItem.GetComponent<InventoryItem>();
-
-                int i = 0;
-                bool wasItemAdded = false;
-
-                foreach (ItemTypeAndAmount itemAndCount in items)
-                {
-                    if (itemAndCount.item == itemScript.itemScriptableObject)
-                    {
-                        items[i].amount += itemScript.stackCurrent;
-                        wasItemAdded = true;
-                    }
-                    i++;
-                }
-
-                if (!wasItemAdded)
-                {
-                    items.Add(new ItemTypeAndAmount(itemScript.itemScriptableObject, itemScript.stackCurrent));
-                }
-            }
-        }
-
-        foreach (GameObject slot in hotbarSlots)
-        {
-            InventorySlot slotScript = slot.GetComponent<InventorySlot>();
-
-            if (slotScript.heldItem != null)
-            {
-                InventoryItem itemScript = slotScript.heldItem.GetComponent<InventoryItem>();
-
-                int i = 0;
-                bool wasItemAdded = false;
-
-                foreach (ItemTypeAndAmount itemAndCount in items)
-                {
-                    if (itemAndCount.item == itemScript.itemScriptableObject)
-                    {
-                        items[i].amount += itemScript.stackCurrent;
-                        wasItemAdded = true;
-                    }
-                    i++;
-                }
-
-                if (!wasItemAdded)
-                {
-                    items.Add(new ItemTypeAndAmount(itemScript.itemScriptableObject, itemScript.stackCurrent));
-                }
-            }
-        }
+        AccumulateItemsFromSlots(slots);
+        AccumulateItemsFromSlots(hotbarSlots);
         return items;
+    }
+
+    public List<ItemTypeAndAmount> GetInventoryItemsOnly()
+    {
+        items.Clear();
+
+        AccumulateItemsFromSlots(slots);
+        return items;
+    }
+
+    private void AccumulateItemsFromSlots(GameObject[] slotArray)
+    {
+        if (slotArray == null) return;
+
+        foreach (GameObject slot in slotArray)
+        {
+            if (slot == null) continue;
+
+            InventorySlot slotScript = slot.GetComponent<InventorySlot>();
+
+            if (slotScript != null && slotScript.heldItem != null)
+            {
+                InventoryItem itemScript = slotScript.heldItem.GetComponent<InventoryItem>();
+                if (itemScript == null || itemScript.itemScriptableObject == null || itemScript.stackCurrent <= 0)
+                {
+                    continue;
+                }
+
+                int i = 0;
+                bool wasItemAdded = false;
+
+                foreach (ItemTypeAndAmount itemAndCount in items)
+                {
+                    if (itemAndCount.item == itemScript.itemScriptableObject)
+                    {
+                        items[i].amount += itemScript.stackCurrent;
+                        wasItemAdded = true;
+                    }
+                    i++;
+                }
+
+                if (!wasItemAdded)
+                {
+                    items.Add(new ItemTypeAndAmount(itemScript.itemScriptableObject, itemScript.stackCurrent));
+                }
+            }
+        }
     }
 
     // public void AddItem(ItemSO item)
