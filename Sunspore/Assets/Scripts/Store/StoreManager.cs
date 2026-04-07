@@ -101,7 +101,7 @@ namespace Sunspore
             }
 
             // Selling/processing recipes require inventory ingredients
-            items = InventoryManager.Instance.GetAllItems();
+            items = InventoryManager.Instance.GetInventoryItemsOnly();
             int matchingIngredients = 0;
             foreach (ItemTypeAndAmount ingredient in recipeSO.ingredients)
             {
@@ -539,7 +539,7 @@ namespace Sunspore
                 return;
             }
 
-            var all = InventoryManager.Instance.GetAllItems();
+            var all = InventoryManager.Instance.GetInventoryItemsOnly();
             if (all == null || all.Count == 0)
             {
                 Debug.Log("StoreManager: No items in inventory to sell.");
