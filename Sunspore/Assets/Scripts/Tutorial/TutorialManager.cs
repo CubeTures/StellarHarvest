@@ -65,8 +65,20 @@ public class TutorialManager : MonoBehaviour
         Debug.Log("Tutorial Step: " + currentStepIndex);
 
         if (currentStepIndex < steps.Count)
+        {
             StartStep();
+        }
         else
+        {
             Debug.Log("Tutorial Complete");
+            if (DayNightManager.Instance != null)
+            {
+                DayNightManager.Instance.startTime();
+            }
+            else
+            {
+                Debug.LogWarning("Tutorial complete but DayNightManager.Instance is null.");
+            }
+        }
     }
 }

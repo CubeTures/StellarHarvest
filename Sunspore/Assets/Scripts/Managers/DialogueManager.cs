@@ -34,12 +34,6 @@ namespace Sunspore
                 return;
             }
 
-            // Check if dialogue GameObject is active before calling CompleteEvent
-            if (!dialogue.activeInHierarchy)
-            {
-                dialogue.SetActive(true);
-            }
-
             Dialogue dialogueComponent = dialogue.GetComponent<Dialogue>();
             if (dialogueComponent == null)
             {
@@ -81,7 +75,7 @@ namespace Sunspore
                     // Opening inventory
                     if (PlayerPrefManager.GetInventoryOpenCount() >= 1)
                     {
-                        CompleteEvent();
+                        // CompleteEvent();
                     }
                     break;
                     // case 1:

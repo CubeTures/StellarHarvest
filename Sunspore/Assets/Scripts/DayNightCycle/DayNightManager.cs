@@ -9,6 +9,7 @@ namespace Sunspore
 {
     public class DayNightManager : MonoBehaviour
     {
+        public static DayNightManager Instance;
         private Vector3 rotation = Vector3.zero;
         [SerializeField] EnemySpawner spawner;
         [SerializeField] GameObject Light;
@@ -33,6 +34,11 @@ namespace Sunspore
 
         public float NormalizedTimeOfDay => timeOfDay;
         public event Action<float> TimeOfDayChanged;
+
+        private void Awake()
+        {
+            Instance = this;
+        }
 
         void Start()
         {
@@ -59,6 +65,11 @@ namespace Sunspore
             {
                 nightVolumeComponent.profile.TryGet(out _vignette);
                 nightVolumeComponent.profile.TryGet(out _whiteBalance);
+            }
+
+            if (TutorialManager.Instance != null)
+            {
+                stopTime();
             }
         }
 
@@ -122,20 +133,20 @@ namespace Sunspore
             }
         }
 
-        void startTime()
+        public void startTime()
         {
             timeStopped = false;
             isNight = false;
             //Debug.Log("Cycle");
         }
 
-        void stopTime()
+        public void stopTime()
         {
             timeStopped = true;
             isNight = false;
         }
 
-        void setDay()
+        public void setDay()
         {
             timeStopped = true;
             isNight = false;
@@ -143,7 +154,7 @@ namespace Sunspore
             //Debug.Log("Day");
         }
 
-        void setNight()
+        public void setNight()
         {
             timeStopped = true;
             isNight = true;

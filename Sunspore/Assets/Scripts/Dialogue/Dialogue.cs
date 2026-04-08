@@ -56,16 +56,10 @@ namespace Sunspore
             {
                 _animator.SetTrigger("Enter");
                 dialogueTypeToUse = "TUTORIAL";
-
-                // Turn on dialogue box
-                transform.gameObject.SetActive(true);
             }
             else
             {
                 dialogueTypeToUse = "";
-
-                // Turn off dialogue box
-                transform.gameObject.SetActive(false);
             }
 
             // If a CSV is provided, load dialogue from it
@@ -162,9 +156,6 @@ namespace Sunspore
                 return;
             }
 
-            // Turn on dialogue box
-            transform.gameObject.SetActive(true);
-
             // Check if the first message is "EVENT"
             string firstMessage = messageList[currentMessageIndex].Trim().ToUpper();
             // Debug.Log($"First message: '{firstMessage}'");
@@ -211,9 +202,6 @@ namespace Sunspore
                         if (DialogueManager._dm != null && DialogueManager._dm.GetEventCount() == 1)
                         {
                             _animator.SetTrigger("Exit");
-
-                            // Turn off dialogue box
-                            transform.gameObject.SetActive(false);
                         }
                     }
                     else if (nextMessage == "EVENT")
@@ -230,16 +218,12 @@ namespace Sunspore
                 else
                 {
                     _animator.SetTrigger("Exit");
-                    transform.gameObject.SetActive(false);
                 }
             }
         }
 
         IEnumerator TypeWriterEffect()
         {
-            // Turn on dialogue box
-            transform.gameObject.SetActive(true);
-
             isTyping = true;
             string full = messageList[currentMessageIndex];
 
@@ -320,12 +304,6 @@ namespace Sunspore
                 }
                 else
                 {
-                    // Ensure the GameObject is active before starting coroutine
-                    if (!gameObject.activeInHierarchy)
-                    {
-                        transform.gameObject.SetActive(true);
-                    }
-
                     SetSpeakerUI(currentMessageIndex);
                     typewriterCoroutine = StartCoroutine(TypeWriterEffect());
                 }
@@ -333,7 +311,6 @@ namespace Sunspore
             else
             {
                 _animator.SetTrigger("Exit");
-                transform.gameObject.SetActive(false);
             }
 
             Debug.Log("CompleteEvent called - dialogue complete");
@@ -729,9 +706,6 @@ namespace Sunspore
             dialogueTypeToUse = dialogueType;
 
             _animator.SetTrigger("Enter");
-
-            // Turn on dialogue box
-            transform.gameObject.SetActive(true);
 
             // If a CSV is provided, load dialogue from it
             if (csvFile != null)
