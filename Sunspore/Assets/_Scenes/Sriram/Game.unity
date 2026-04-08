@@ -3685,6 +3685,7 @@ MonoBehaviour:
   harvestSound: {fileID: 8300000, guid: 35cccfa738cfa6743ba1d2f761199e1d, type: 3}
   growSound: {fileID: 8300000, guid: 35cccfa738cfa6743ba1d2f761199e1d, type: 3}
   plantSound: {fileID: 8300000, guid: 35cccfa738cfa6743ba1d2f761199e1d, type: 3}
+  attackSound: {fileID: 8300000, guid: d20a5ef2ea49b1c41b71b710858f70a5, type: 3}
   glowEffect: {fileID: 2446270667391804717, guid: f46e2420a80d0964e9afd78cde433563, type: 3}
   waterDropPrefab: {fileID: 4431333523166555220, guid: 3217ed6309e93434d8f7671159028d59, type: 3}
   seedItem: {fileID: 11400000, guid: 1d325e65992f7924eabffbd694fd446b, type: 2}
