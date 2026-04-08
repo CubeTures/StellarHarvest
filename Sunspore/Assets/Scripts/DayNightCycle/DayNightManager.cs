@@ -2,6 +2,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
 
 namespace Sunspore
 {
@@ -13,6 +15,10 @@ namespace Sunspore
         [SerializeField] public float dayLengthSeconds = 30f;
         [SerializeField, Range(0f, 1f)] float initialTimeOfDay = 0f;
         [SerializeField] TMP_Dropdown timeSelector;
+        [SerializeField] GameObject nightVolume;
+        Volume nightVolumeComponent;
+        private Vignette _vignette;
+        private WhiteBalance _whiteBalance;
 
         GameManager gm;
 
@@ -39,6 +45,21 @@ namespace Sunspore
             timeOfDay = Mathf.Repeat(initialTimeOfDay, 1f);
             float sunAngle = Mathf.Lerp(0f, 360f, timeOfDay);
             Light.transform.rotation = Quaternion.Euler(sunAngle, 0, 0);
+
+            if (nightVolume != null)
+            {
+                nightVolumeComponent = nightVolume.GetComponent<Volume>();
+            }
+            else
+            {
+                nightVolumeComponent = GameObject.Find("Night Volume").GetComponent<Volume>();
+            }
+
+            if (nightVolumeComponent != null && nightVolumeComponent.profile != null)
+            {
+                nightVolumeComponent.profile.TryGet(out _vignette);
+                nightVolumeComponent.profile.TryGet(out _whiteBalance);
+            }
         }
 
         void Update()
@@ -52,6 +73,17 @@ namespace Sunspore
 
                 float sunAngle = Mathf.Lerp(0f, 360f, timeOfDay);
                 Light.transform.rotation = Quaternion.Euler(sunAngle, 0, 0);
+
+                // Seamless 0..1 cycle (same value at timeOfDay 0 and 1).
+                float nightBlend = (1f - Mathf.Cos(timeOfDay * Mathf.PI * 2f)) * 0.5f;
+                if (_vignette != null)
+                {
+                    _vignette.intensity.value = nightBlend * 0.4f;
+                }
+                if (_whiteBalance != null)
+                {
+                    _whiteBalance.temperature.value = nightBlend * -25f;
+                }
 
                 // Day counter: when timeOfDay wraps around to 0
                 if (prevTimeOfDay > timeOfDay)
