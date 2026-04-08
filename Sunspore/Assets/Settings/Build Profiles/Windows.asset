@@ -135,6 +135,9 @@ MonoBehaviour:
     - line: '|   - logo: {fileID: 21300000, guid: c48057912317bc04aaa7f69c25b36735,
         type: 3}'
     - line: '|     duration: 2'
+    - line: '|   - logo: {fileID: 21300000, guid: f4972e7b38455e448b7db3e53455d5ff,
+        type: 3}'
+    - line: '|     duration: 2'
     - line: '|   m_VirtualRealitySplashScreen: {instanceID: 0}'
     - line: '|   m_HolographicTrackingLossScreen: {instanceID: 0}'
     - line: '|   defaultScreenWidth: 1024'
@@ -238,7 +241,7 @@ MonoBehaviour:
     - line: '|   loadStoreDebugModeEnabled: 0'
     - line: '|   visionOSBundleVersion: 1.0'
     - line: '|   tvOSBundleVersion: 1.0'
-    - line: '|   bundleVersion: 0.4.0'
+    - line: '|   bundleVersion: 0.5.0'
     - line: '|   preloadedAssets:'
     - line: '|   - {fileID: 11400000, guid: cee83841de1207243b771ec7e9639184, type:
         2}'

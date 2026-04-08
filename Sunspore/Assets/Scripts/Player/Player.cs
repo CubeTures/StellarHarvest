@@ -38,6 +38,10 @@ public class Player : MonoBehaviour
     private Color _originalColor;
     private MaterialPropertyBlock propBlock;
 
+    [Header("VFX")]
+    [SerializeField] private GameObject _hitEffect;
+    [SerializeField] private GameObject _deathEffect;
+
     GameManager gm;
 
     float _vx;
@@ -258,6 +262,7 @@ public class Player : MonoBehaviour
         }
 
         health -= damage;
+        Instantiate(_hitEffect, transform.position + new Vector3(0, 0.5f, 0), Quaternion.identity);
         if (spriteRenderer != null)
         {
             CancelInvoke(nameof(ResetColor));
@@ -267,6 +272,7 @@ public class Player : MonoBehaviour
         }
         if (health <= 0)
         {
+            Instantiate(_deathEffect, transform.position + new Vector3(0, 0.5f, 0), Quaternion.identity);
             StartCoroutine(RespawnWithDelay(5f));
         }
     }
