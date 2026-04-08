@@ -25662,6 +25662,10 @@ PrefabInstance:
       propertyPath: propsParent
       value: 
       objectReference: {fileID: 8010063947176389860}
+    - target: {fileID: 5125908075410474456, guid: a77d6ffe5746c0e4ca3e274b3fbd5081, type: 3}
+      propertyPath: generatePropsOnAwake
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6393015945898071054, guid: a77d6ffe5746c0e4ca3e274b3fbd5081, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
