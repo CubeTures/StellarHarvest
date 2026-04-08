@@ -27,7 +27,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1.5, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8379712381450250849}
@@ -186,7 +186,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Sunspore::TerrainTilemap
   emptyTiles:
-  - {fileID: 11400000, guid: 176f0ad8fda0aa2429068a3f203302ec, type: 2}
   - {fileID: 11400000, guid: 3d190d117b9b9b046a8af37ca1f7390d, type: 2}
   - {fileID: 11400000, guid: 6336b8387ebf2404a849346000354fb9, type: 2}
   - {fileID: 11400000, guid: 6ca5504accf2f434099a6ffbec9528da, type: 2}
@@ -203,6 +202,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 48175c7303c1cd341b2d928cb2a886e9, type: 2}
   - {fileID: 11400000, guid: 88429b233ad045742bc4023d87ca79d2, type: 2}
   - {fileID: 11400000, guid: c3e57f242f1f51644a529c7baff9b532, type: 2}
+  - {fileID: 11400000, guid: 5fd14b3c7e37f524ab3ce4f8016bc7bd, type: 2}
   tilledTiles:
   - {fileID: 11400000, guid: 90fdf2a7328f38145a8cb2670d9572c0, type: 2}
   - {fileID: 11400000, guid: e32b7321ffb72464a8a24e87c7915853, type: 2}
@@ -254,3 +254,62 @@ MonoBehaviour:
   initialBounds:
     m_Position: {x: -50, y: -50, z: 0}
     m_Size: {x: 100, y: 100, z: 1}
+  generatePropsOnAwake: 1
+  propSpawnChance: 0.02
+  noiseSpawnBoost: 1
+  bushWeight: 0.45
+  rockWeight: 0.2
+  treeWeight: 0.35
+  featureNoiseScale: 0.12
+  typeNoiseScale: 0.08
+  colorNoiseScale: 0.01
+  noiseSeed: 1234
+  propsParent: {fileID: 0}
+  greenBushPrefabs:
+  - {fileID: 4980934363747348378, guid: 1299b8d3b63fe244ca91c2c15baeecba, type: 3}
+  - {fileID: 4980934363747348378, guid: 182d39456cb5c344fbc8935fd3106ee6, type: 3}
+  - {fileID: 4980934363747348378, guid: 48579da3cddaea1419edf64f51704c1c, type: 3}
+  - {fileID: 4980934363747348378, guid: c687aea7296448444b12067ac4ddb532, type: 3}
+  - {fileID: 4980934363747348378, guid: a418b9bd52531f84cb6411a0b27c77f4, type: 3}
+  blueBushPrefabs:
+  - {fileID: 4980934363747348378, guid: d97156c34d674384ab3c0656da87f688, type: 3}
+  - {fileID: 4980934363747348378, guid: 2bfeabe457ec7a9498d2bcb07fa26385, type: 3}
+  - {fileID: 4980934363747348378, guid: bc8cbab5b1c424b41840f825773d40ed, type: 3}
+  - {fileID: 4980934363747348378, guid: d2f7c6d6d1782844498537fdbd566afa, type: 3}
+  - {fileID: 4980934363747348378, guid: 9938f3b13bfd10347b31be2c31f5ffbb, type: 3}
+  pinkBushPrefabs:
+  - {fileID: 4980934363747348378, guid: fa4ae954a84da034db380b6b9c8cb012, type: 3}
+  - {fileID: 4980934363747348378, guid: 476b7b8544c454344a68cd51a15037a6, type: 3}
+  - {fileID: 4980934363747348378, guid: 88a3d09517edc5f4993df443290369e1, type: 3}
+  - {fileID: 4980934363747348378, guid: 5f435173d1c83f6428aeca93a94e6c93, type: 3}
+  - {fileID: 4980934363747348378, guid: aa7be71c6a8b6514c861b4498c39569b, type: 3}
+  darkRockPrefabs:
+  - {fileID: 4980934363747348378, guid: 4e872e97be408db4c8fdbce6c704b1fa, type: 3}
+  - {fileID: 4980934363747348378, guid: fbc73e5b12a89114690f796b0ca5149f, type: 3}
+  - {fileID: 4980934363747348378, guid: 88787647bb5b8eb45a50ccb20be34700, type: 3}
+  - {fileID: 4980934363747348378, guid: 1326f4806213d9b4ba08ff012bacbc7b, type: 3}
+  - {fileID: 4980934363747348378, guid: c9371160169a0e648aef984836b9c6b3, type: 3}
+  lightRockPrefabs:
+  - {fileID: 4980934363747348378, guid: 931f02734007ebd4498bfe86d9ab2bc3, type: 3}
+  - {fileID: 4980934363747348378, guid: 87aeb07d222f18a4aa145de15cca0f56, type: 3}
+  - {fileID: 4980934363747348378, guid: d67a1536cb51de04c9b317dbc9b99457, type: 3}
+  - {fileID: 4980934363747348378, guid: fa3a42f68972c69478e807c91df4173e, type: 3}
+  - {fileID: 4980934363747348378, guid: 15aac7fe74d2af640a70eed0dc9b1561, type: 3}
+  greenTreePrefabs:
+  - {fileID: 4980934363747348378, guid: db589c4baefe0334aafffa7882558b1a, type: 3}
+  - {fileID: 4980934363747348378, guid: cf21757949508e74dbe6d0302f9cd950, type: 3}
+  - {fileID: 4980934363747348378, guid: 8ffb20f40045b7e448db28e8442246a5, type: 3}
+  - {fileID: 4980934363747348378, guid: a9075780dff6d8a47a0440afa042a0f0, type: 3}
+  - {fileID: 4980934363747348378, guid: b2c248f643edd064a9ee6bb041da6812, type: 3}
+  blueTreePrefabs:
+  - {fileID: 4980934363747348378, guid: 70553014e2e25da4ba230aded285fad4, type: 3}
+  - {fileID: 4980934363747348378, guid: 8e94a8d2a503379499e0785e183f40f7, type: 3}
+  - {fileID: 4980934363747348378, guid: 836c3aadfeed90243b0f9d6d45eb6605, type: 3}
+  - {fileID: 4980934363747348378, guid: cd0472e3dbb9be140aa6bd810a57ddf5, type: 3}
+  - {fileID: 4980934363747348378, guid: e7afab1c95f466d478ec16b9befd3d27, type: 3}
+  pinkTreePrefabs:
+  - {fileID: 4980934363747348378, guid: b9c406fa31bafbe4980b5b8554f4bf36, type: 3}
+  - {fileID: 4980934363747348378, guid: d3bd1d8dea5c11848b4feff2a453f170, type: 3}
+  - {fileID: 4980934363747348378, guid: e4e890bdd8be11b478a743470300b5a4, type: 3}
+  - {fileID: 4980934363747348378, guid: 5e231b5acca646848936d1da596de265, type: 3}
+  - {fileID: 4980934363747348378, guid: fd669eda27946e747a85f610c06fddfb, type: 3}

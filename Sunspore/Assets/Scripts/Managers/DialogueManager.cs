@@ -7,6 +7,7 @@ namespace Sunspore
     {
         public static DialogueManager _dm;
         public GameObject dialogue;
+        private int _pendingCompleteEventCount;
 
         void Awake()
         {
@@ -18,6 +19,7 @@ namespace Sunspore
 
         void Update()
         {
+            TryConsumePendingCompleteEvent();
             DialogueEvents();
 
             if (Input.GetKeyDown(KeyCode.L) && Application.isEditor)
@@ -28,20 +30,40 @@ namespace Sunspore
 
         public void CompleteEvent()
         {
-            // Check if dialogue GameObject is active before calling CompleteEvent
-            if (!dialogue.activeInHierarchy)
+            if (dialogue == null)
             {
-                dialogue.SetActive(true);
+                Debug.LogWarning("CompleteEvent called but dialogue reference is missing.");
+                return;
             }
 
-            dialogue.GetComponent<Dialogue>().CompleteEvent();
+            Dialogue dialogueComponent = dialogue.GetComponent<Dialogue>();
+            if (dialogueComponent == null)
+            {
+                Debug.LogWarning("CompleteEvent called but Dialogue component is missing.");
+                return;
+            }
 
-            PlayerPrefManager.SetEventCount(PlayerPrefManager.GetEventCount() + 1);
+            bool completed = dialogueComponent.CompleteEvent();
+            if (completed)
+            {
+                PlayerPrefManager.SetEventCount(PlayerPrefManager.GetEventCount() + 1);
+            }
+            else
+            {
+                // If called too early, queue it and auto-complete once an event becomes active.
+                _pendingCompleteEventCount++;
+            }
         }
 
         public bool GetEventStatus()
         {
-            return dialogue.GetComponent<Dialogue>().isEvent;
+            if (dialogue == null)
+            {
+                return false;
+            }
+
+            Dialogue dialogueComponent = dialogue.GetComponent<Dialogue>();
+            return dialogueComponent != null && dialogueComponent.isEvent;
         }
 
         public int GetEventCount()
@@ -66,7 +88,7 @@ namespace Sunspore
                     // Opening inventory
                     if (PlayerPrefManager.GetInventoryOpenCount() >= 1)
                     {
-                        CompleteEvent();
+                        // CompleteEvent();
                     }
                     break;
                     // case 1:
@@ -77,6 +99,34 @@ namespace Sunspore
                     //     }
                     //     break;
             }
+        }
+
+        private void TryConsumePendingCompleteEvent()
+        {
+            if (_pendingCompleteEventCount <= 0)
+            {
+                return;
+            }
+
+            if (dialogue == null)
+            {
+                return;
+            }
+
+            Dialogue dialogueComponent = dialogue.GetComponent<Dialogue>();
+            if (dialogueComponent == null || !dialogueComponent.isEvent)
+            {
+                return;
+            }
+
+            bool completed = dialogueComponent.CompleteEvent();
+            if (!completed)
+            {
+                return;
+            }
+
+            _pendingCompleteEventCount--;
+            PlayerPrefManager.SetEventCount(PlayerPrefManager.GetEventCount() + 1);
         }
     }
 }

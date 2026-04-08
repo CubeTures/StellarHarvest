@@ -81,7 +81,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: -674794713
-  m_SortingLayer: 1
+  m_SortingLayer: 4
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
@@ -159,3 +159,5 @@ MonoBehaviour:
   _lifetime: 5
   _hitSound: {fileID: 0}
   _missSound: {fileID: 0}
+  _hitEffect: {fileID: 8612311270224035912, guid: 18af14b0c37bb22479300738975c54de, type: 3}
+  _missEffect: {fileID: 8873088851218833594, guid: cc8952f86cdf2914facb569bfc19bea2, type: 3}

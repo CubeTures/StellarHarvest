@@ -24,7 +24,7 @@ namespace Sunspore
             base.Start();
             _animator = GetComponent<Animator>();
             // Debug.Log("Bloom Burst created!");
-        }   
+        }
 
         protected override void OnSeedStage()
         {
@@ -90,18 +90,13 @@ namespace Sunspore
                 }
             }
 
-            // Shoot at the closest enemy only
+            // Shoot at the closest enemy only, with a delay between bullets
             if (closestEnemy != null)
             {
                 if (_animator != null)
                     _animator.SetTrigger("JuvenileAttack");
 
-                for (int i = 0; i < juvenileAbilityPower; i++)
-                {
-                    Vector3 offset = new Vector3(Random.Range(-0.5f, 0.5f), Random.Range(-0.5f, 0.5f), 0f);
-                    GameObject bullet = Instantiate(_homingBulletPrefab, transform.position + offset, Quaternion.identity);
-                    bullet.GetComponent<HomingBullet>().SetTarget(closestEnemy);
-                }
+                StartCoroutine(SpawnBulletsOverTime(closestEnemy, juvenileAbilityPower));
             }
         }
 
@@ -127,18 +122,43 @@ namespace Sunspore
                 }
             }
 
-            // Shoot at the closest enemy only
+            // Shoot at the closest enemy only, with a delay between bullets
             if (closestEnemy != null)
             {
                 if (_animator != null)
                     _animator.SetTrigger("FullyGrownAttack");
 
-                for (int i = 0; i < fullyGrownAbilityPower; i++)
+                StartCoroutine(SpawnBulletsOverTime(closestEnemy, fullyGrownAbilityPower));
+            }
+        }
+
+        private System.Collections.IEnumerator SpawnBulletsOverTime(Transform target, float bulletCount)
+        {
+            // Small fixed delay between bullets; tweak as needed
+            const float delayBetweenBullets = 0.1f;
+
+            int count = Mathf.RoundToInt(bulletCount);
+            for (int i = 0; i < count; i++)
+            {
+                Vector3 offset = new Vector3(
+                    Random.Range(-0.5f, 0.5f),
+                    Random.Range(-0.5f, 0.5f),
+                    0f
+                );
+                GameObject bullet = Instantiate(
+                    _homingBulletPrefab,
+                    transform.position + offset,
+                    Quaternion.identity
+                );
+                PlaySound(attackSound);
+
+                var homing = bullet.GetComponent<HomingBullet>();
+                if (homing != null)
                 {
-                    Vector3 offset = new Vector3(Random.Range(-0.5f, 0.5f), Random.Range(-0.5f, 0.5f), 0f);
-                    GameObject bullet = Instantiate(_homingBulletPrefab, transform.position + offset, Quaternion.identity);
-                    bullet.GetComponent<HomingBullet>().SetTarget(closestEnemy);
+                    homing.SetTarget(target);
                 }
+
+                yield return new WaitForSeconds(delayBetweenBullets);
             }
         }
 

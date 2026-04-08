@@ -30,6 +30,8 @@ namespace Sunspore
         public NavMeshAgent agent;
         Pathfinding pathfinding;
         bool attackingPlayer = false;
+        [SerializeField] private GameObject _hitEffect;
+        [SerializeField] private GameObject _deathEffect;
 
         void Awake()
         {
@@ -50,6 +52,7 @@ namespace Sunspore
         public void TakeDamage(int weaponDamage, Vector2 direction, float knockback)
         {
             health -= weaponDamage;
+            Instantiate(_hitEffect, transform.position + new Vector3(0, 1, 0), Quaternion.identity);
             if (_spriteRenderer != null)
             {
                 _spriteRenderer.color = Color.red;
@@ -58,6 +61,7 @@ namespace Sunspore
             }
             if (health <= 0)
             {
+                Instantiate(_deathEffect, transform.position + new Vector3(0, 1, 0), Quaternion.identity);
                 Destroy(this.gameObject);
             }
         }

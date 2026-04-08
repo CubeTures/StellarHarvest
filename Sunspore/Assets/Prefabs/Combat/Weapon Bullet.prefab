@@ -52,6 +52,14 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2303154715263845798, guid: 6dc1efe34b88f384bb554626513d40de, type: 3}
+      propertyPath: _hitEffect
+      value: 
+      objectReference: {fileID: 8612311270224035912, guid: 18af14b0c37bb22479300738975c54de, type: 3}
+    - target: {fileID: 2303154715263845798, guid: 6dc1efe34b88f384bb554626513d40de, type: 3}
+      propertyPath: _missEffect
+      value: 
+      objectReference: {fileID: 8873088851218833594, guid: cc8952f86cdf2914facb569bfc19bea2, type: 3}
     - target: {fileID: 2510335163322140385, guid: 6dc1efe34b88f384bb554626513d40de, type: 3}
       propertyPath: m_Name
       value: Weapon Bullet
@@ -93,3 +101,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8fb053f219f77d342aa293d96ade216b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Sunspore::Sunspore.WeaponBullet
+  _speed: 5
+  _damage: 0
+  _hitSound: {fileID: 0}
+  _missSound: {fileID: 0}

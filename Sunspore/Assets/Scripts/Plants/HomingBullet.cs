@@ -14,6 +14,9 @@ namespace Sunspore
         private bool _hit = false;
         [SerializeField] private AudioClip _hitSound;
         [SerializeField] private AudioClip _missSound;
+        [SerializeField] private GameObject _hitEffect;
+        [SerializeField] private GameObject _missEffect;
+
 
         // Start is called once before the first execution of Update after the MonoBehaviour is created
         void Start()
@@ -33,6 +36,7 @@ namespace Sunspore
             if (_lifetime <= 0)
             {
                 PlaySound(_missSound);
+                Instantiate(_missEffect, transform.position, Quaternion.identity);
                 Destroy(gameObject);
             }
         }
@@ -50,6 +54,7 @@ namespace Sunspore
                 {
                     _hit = true;
                     PlaySound(_hitSound);
+                    Instantiate(_hitEffect, transform.position, Quaternion.identity);
                     Destroy(gameObject);
                     other.GetComponent<Enemy>()?.TakeDamage(_damage, Vector2.zero, 0f);
                 }

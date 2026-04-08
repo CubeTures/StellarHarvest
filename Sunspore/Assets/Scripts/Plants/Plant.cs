@@ -29,6 +29,7 @@ namespace Sunspore
         [SerializeField] protected AudioClip harvestSound;
         [SerializeField] protected AudioClip growSound;
         [SerializeField] protected AudioClip plantSound;
+        [SerializeField] protected AudioClip attackSound;
 
         [Header("Effects")]
         [SerializeField] protected GameObject glowEffect;

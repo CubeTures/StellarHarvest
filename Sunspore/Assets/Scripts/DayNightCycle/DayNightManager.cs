@@ -2,20 +2,24 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
 
 namespace Sunspore
 {
     public class DayNightManager : MonoBehaviour
     {
+        public static DayNightManager Instance;
         private Vector3 rotation = Vector3.zero;
         [SerializeField] EnemySpawner spawner;
         [SerializeField] GameObject Light;
         [SerializeField] public float dayLengthSeconds = 30f;
         [SerializeField, Range(0f, 1f)] float initialTimeOfDay = 0f;
         [SerializeField] TMP_Dropdown timeSelector;
-
-        [Tooltip("While the tutorial has unfinished steps, the day/night clock does not advance.")]
-        bool pauseDayNightUntilTutorialComplete = true;
+        [SerializeField] GameObject nightVolume;
+        Volume nightVolumeComponent;
+        private Vignette _vignette;
+        private WhiteBalance _whiteBalance;
 
         GameManager gm;
 
@@ -31,20 +35,9 @@ namespace Sunspore
         public float NormalizedTimeOfDay => timeOfDay;
         public event Action<float> TimeOfDayChanged;
 
-        bool IsTutorialBlockingTime()
+        private void Awake()
         {
-            if (!pauseDayNightUntilTutorialComplete)
-            {
-                return false;
-            }
-
-            // If the tutorial is complete, allow the day/night cycle to continue
-            if (PlayerPrefManager.GetTutorialStep() >= TutorialManager.Instance.TutorialStepLength)
-            {
-                return false;
-            }
-
-            return TutorialManager.Instance != null && TutorialManager.Instance.IsTutorialActive;
+            Instance = this;
         }
 
         void Start()
@@ -58,11 +51,31 @@ namespace Sunspore
             timeOfDay = Mathf.Repeat(initialTimeOfDay, 1f);
             float sunAngle = Mathf.Lerp(0f, 360f, timeOfDay);
             Light.transform.rotation = Quaternion.Euler(sunAngle, 0, 0);
+
+            if (nightVolume != null)
+            {
+                nightVolumeComponent = nightVolume.GetComponent<Volume>();
+            }
+            else
+            {
+                nightVolumeComponent = GameObject.Find("Night Volume").GetComponent<Volume>();
+            }
+
+            if (nightVolumeComponent != null && nightVolumeComponent.profile != null)
+            {
+                nightVolumeComponent.profile.TryGet(out _vignette);
+                nightVolumeComponent.profile.TryGet(out _whiteBalance);
+            }
+
+            if (TutorialManager.Instance != null)
+            {
+                stopTime();
+            }
         }
 
         void Update()
         {
-            if (!timeStopped && !IsTutorialBlockingTime())
+            if (!timeStopped)
             {
                 // Calculate angle based off percentage of day passed.
                 float prevTimeOfDay = timeOfDay;
@@ -71,6 +84,17 @@ namespace Sunspore
 
                 float sunAngle = Mathf.Lerp(0f, 360f, timeOfDay);
                 Light.transform.rotation = Quaternion.Euler(sunAngle, 0, 0);
+
+                // Seamless 0..1 cycle (same value at timeOfDay 0 and 1).
+                float nightBlend = (1f - Mathf.Cos(timeOfDay * Mathf.PI * 2f)) * 0.5f;
+                if (_vignette != null)
+                {
+                    _vignette.intensity.value = nightBlend * 0.4f;
+                }
+                if (_whiteBalance != null)
+                {
+                    _whiteBalance.temperature.value = nightBlend * -25f;
+                }
 
                 // Day counter: when timeOfDay wraps around to 0
                 if (prevTimeOfDay > timeOfDay)
@@ -109,20 +133,20 @@ namespace Sunspore
             }
         }
 
-        void startTime()
+        public void startTime()
         {
             timeStopped = false;
             isNight = false;
             //Debug.Log("Cycle");
         }
 
-        void stopTime()
+        public void stopTime()
         {
             timeStopped = true;
             isNight = false;
         }
 
-        void setDay()
+        public void setDay()
         {
             timeStopped = true;
             isNight = false;
@@ -130,7 +154,7 @@ namespace Sunspore
             //Debug.Log("Day");
         }
 
-        void setNight()
+        public void setNight()
         {
             timeStopped = true;
             isNight = true;

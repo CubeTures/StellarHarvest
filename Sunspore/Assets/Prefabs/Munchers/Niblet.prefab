@@ -126,3 +126,5 @@ MonoBehaviour:
   perchRadius: 2
   descentSpeed: 3
   agent: {fileID: 0}
+  _hitEffect: {fileID: 8533190726145184800, guid: bf99aee28fe35d1498be33b6d377b8bd, type: 3}
+  _deathEffect: {fileID: 6134884250422211280, guid: e810666f5a8e4de4c913c5dc6bdc2b8e, type: 3}
