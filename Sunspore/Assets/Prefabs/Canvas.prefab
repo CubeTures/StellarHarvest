@@ -2124,7 +2124,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Pawn
+  m_text: 'Sell
+
+'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 4ae949da521af1e4c8ed400e172ef96e, type: 2}
   m_sharedMaterial: {fileID: 7506003270039795981, guid: 4ae949da521af1e4c8ed400e172ef96e, type: 2}
@@ -3826,6 +3828,7 @@ MonoBehaviour:
   dayLengthSeconds: 120
   initialTimeOfDay: 0
   timeSelector: {fileID: 0}
+  nightVolume: {fileID: 0}
   weeks: 0
 --- !u!1 &1740413732223974986
 GameObject:
@@ -4597,7 +4600,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Pawn
+  m_text: 'Sell
+
+'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 4ae949da521af1e4c8ed400e172ef96e, type: 2}
   m_sharedMaterial: {fileID: 7506003270039795981, guid: 4ae949da521af1e4c8ed400e172ef96e, type: 2}
@@ -19051,7 +19056,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &3649257803423816698
 RectTransform:
   m_ObjectHideFlags: 0
@@ -19099,7 +19104,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Market
+  m_text: 'Buy
+
+'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 4ae949da521af1e4c8ed400e172ef96e, type: 2}
   m_sharedMaterial: {fileID: 7506003270039795981, guid: 4ae949da521af1e4c8ed400e172ef96e, type: 2}
@@ -19424,7 +19431,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Market
+  m_text: B
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 4ae949da521af1e4c8ed400e172ef96e, type: 2}
   m_sharedMaterial: {fileID: 7506003270039795981, guid: 4ae949da521af1e4c8ed400e172ef96e, type: 2}
