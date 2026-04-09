@@ -688,6 +688,14 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
                 Ray ray = cam.ScreenPointToRay(Input.mousePosition);
                 Vector3 position = ray.GetPoint(3);
 
+                // Prefer dropping onto the ground while ignoring non-clickable surfaces.
+                const int NonClickableLayer = 1;
+                int groundMask = LayerMask.GetMask("Ground") & ~(1 << NonClickableLayer);
+                if (Physics.Raycast(ray, out RaycastHit groundHit, 1000f, groundMask))
+                {
+                    position = groundHit.point;
+                }
+
                 GameObject newItem = Instantiate(draggedObject.GetComponent<InventoryItem>().itemScriptableObject.prefab, position, new Quaternion());
                 newItem.GetComponent<itemPickable>().itemScriptableObject = draggedObject.GetComponent<InventoryItem>().itemScriptableObject;
 

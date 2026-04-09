@@ -1,5 +1,5 @@
-using Sunspore;
 using System.Collections.Generic;
+using Sunspore;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -58,29 +58,143 @@ public sealed class TerrainTilemap : MonoBehaviour
 		public const int Count = 47;
 	}
 
-	[SerializeField] private TileBase[] emptyTiles;
-	[SerializeField] private TileBase[] tilledTiles; // exactly T.Count = 47 entries
-	[SerializeField] private BoundsInt initialBounds;
+	[SerializeField]
+	private TileBase[] emptyTiles;
+
+	[SerializeField]
+	private TileBase[] tilledTiles; // exactly T.Count = 47 entries
+
+	[SerializeField]
+	private BoundsInt initialBounds;
+
 	[Header("Procedural Terrain Props")]
-	[SerializeField] private bool generatePropsOnAwake = true;
-	[SerializeField, Range(0f, 1f)] private float propSpawnChance = 0.35f;
-	[SerializeField, Range(0f, 2f)] private float noiseSpawnBoost = 1f;
-	[SerializeField, Range(0f, 1f)] private float bushWeight = 0.45f;
-	[SerializeField, Range(0f, 1f)] private float rockWeight = 0.2f;
-	[SerializeField, Range(0f, 1f)] private float treeWeight = 0.35f;
-	[SerializeField] private float featureNoiseScale = 0.12f;
-	[SerializeField] private float typeNoiseScale = 0.08f;
-	[SerializeField] private float colorNoiseScale = 0.1f;
-	[SerializeField] private int noiseSeed = 12345;
-	[SerializeField] private Transform propsParent;
-	[SerializeField] private GameObject[] greenBushPrefabs;
-	[SerializeField] private GameObject[] blueBushPrefabs;
-	[SerializeField] private GameObject[] pinkBushPrefabs;
-	[SerializeField] private GameObject[] darkRockPrefabs;
-	[SerializeField] private GameObject[] lightRockPrefabs;
-	[SerializeField] private GameObject[] greenTreePrefabs;
-	[SerializeField] private GameObject[] blueTreePrefabs;
-	[SerializeField] private GameObject[] pinkTreePrefabs;
+	[SerializeField]
+	private bool generatePropsOnAwake = true;
+
+	[SerializeField, Range(0f, 1f)]
+	private float propSpawnChance = 0.35f;
+
+	[SerializeField, Range(0f, 2f)]
+	private float noiseSpawnBoost = 1f;
+
+	[SerializeField, Range(0f, 1f)]
+	private float bushWeight = 0.45f;
+
+	[SerializeField, Range(0f, 1f)]
+	private float rockWeight = 0.2f;
+
+	[SerializeField, Range(0f, 1f)]
+	private float treeWeight = 0.35f;
+
+	[SerializeField, Range(0f, 2f)]
+	private float bushDensityMultiplier = 1f;
+
+	[SerializeField, Range(0f, 2f)]
+	private float rockDensityMultiplier = 1f;
+
+	[SerializeField, Range(0f, 2f)]
+	private float treeDensityMultiplier = 1f;
+
+	[Header("Bush-only clusters")]
+	[SerializeField]
+	private bool bushUseClusterMask = true;
+
+	[SerializeField]
+	private float bushClusterNoiseScale = 0.022f;
+
+	[SerializeField, Range(0f, 1f)]
+	private float bushClusterDetailBlend = 0.4f;
+
+	[SerializeField, Range(0f, 1f)]
+	private float bushClusterSoftLow = 0.38f;
+
+	[SerializeField, Range(0f, 1f)]
+	private float bushClusterSoftHigh = 0.72f;
+
+	[Tooltip("Spawn chance multiplier for bushes outside bush patches (solo bushes). Lower = fewer lone bushes.")]
+	[SerializeField, Range(0f, 1f)]
+	private float bushOutsideClusterSpawnChance = 0.07f;
+
+	[Tooltip("Extra bush instances spawned in a tight ring around each bush roll so sprites overlap.")]
+	[SerializeField, Range(0, 16)]
+	private int bushOverlapExtraSpawns = 5;
+
+	[Tooltip("World XZ radius for overlap spawns (smaller = tighter pile).")]
+	[SerializeField]
+	private float bushOverlapRadius = 0.22f;
+
+	[SerializeField]
+	private float featureNoiseScale = 0.12f;
+
+	[SerializeField]
+	private bool usePropClumps = true;
+
+	[SerializeField]
+	private float clumpNoiseScale = 0.028f;
+
+	[SerializeField, Range(0f, 1f)]
+	private float clumpDetailBlend = 0.45f;
+
+	[SerializeField, Range(0f, 1f)]
+	private float clumpSoftLow = 0.32f;
+
+	[SerializeField, Range(0f, 1f)]
+	private float clumpSoftHigh = 0.68f;
+
+	[SerializeField, Range(0f, 1f)]
+	private float clumpOutsideDensity = 0.04f;
+
+	[SerializeField]
+	private bool useDensityFilter = true;
+
+	[SerializeField]
+	private float densityNoiseScale = 0.06f;
+
+	[SerializeField, Range(0f, 1f)]
+	private float densityMin = 0.35f;
+
+	[SerializeField, Range(0f, 1f)]
+	private float densityMax = 1f;
+
+	[SerializeField]
+	private float typeNoiseScale = 0.08f;
+
+	[SerializeField]
+	private float colorNoiseScale = 0.1f;
+
+	[SerializeField]
+	private int noiseSeed = 12345;
+
+	[SerializeField]
+	private Transform propsParent;
+
+	[SerializeField]
+	private GameObject[] greenBushPrefabs;
+
+	[SerializeField]
+	private GameObject[] blueBushPrefabs;
+
+	[SerializeField]
+	private GameObject[] pinkBushPrefabs;
+
+	[SerializeField]
+	private GameObject[] darkRockPrefabs;
+
+	[SerializeField]
+	private GameObject[] lightRockPrefabs;
+
+	[SerializeField]
+	private GameObject[] greenTreePrefabs;
+
+	[SerializeField]
+	private GameObject[] blueTreePrefabs;
+
+	[SerializeField]
+	private GameObject[] pinkTreePrefabs;
+
+	[Tooltip("Approximate number of placement tries vs. count of cells in initialBounds (1 ≈ one try per cell).")]
+	[SerializeField, Range(0.25f, 8f)]
+	private float worldPropSampleAttemptsMultiplier = 1f;
 
 	private static readonly Dictionary<int, int> CanonicalToIndex = BuildLookup();
 
@@ -90,16 +204,15 @@ public sealed class TerrainTilemap : MonoBehaviour
 
 	private static readonly Vector3Int[] AllNeighbourOffsets =
 	{
-		new( 0,  1, 0), // N
-        new( 1,  1, 0), // NE
-        new( 1,  0, 0), // E
-        new( 1, -1, 0), // SE
-        new( 0, -1, 0), // S
+		new(0, 1, 0), // N
+        new(1, 1, 0), // NE
+        new(1, 0, 0), // E
+        new(1, -1, 0), // SE
+        new(0, -1, 0), // S
         new(-1, -1, 0), // SW
-        new(-1,  0, 0), // W
-        new(-1,  1, 0), // NW
+        new(-1, 0, 0), // W
+        new(-1, 1, 0), // NW
     };
-
 
 	// SET TO SAME NUMBERS AS PLACEMENTMANAGER SCALES
 	private float zScale = 2.25f;
@@ -116,9 +229,17 @@ public sealed class TerrainTilemap : MonoBehaviour
 			GeneratePropsFromNoise();
 		}
 		GameObject parentObject = this.transform.parent.gameObject;
-		parentObject.transform.localScale = new Vector3(parentObject.transform.localScale.x * xScale, parentObject.transform.localScale.y * zScale, parentObject.transform.localScale.z);
+		parentObject.transform.localScale = new Vector3(
+			parentObject.transform.localScale.x * xScale,
+			parentObject.transform.localScale.y * zScale,
+			parentObject.transform.localScale.z
+		);
 
-		parentObject.transform.position = new Vector3((xScale / 2), parentObject.transform.position.y, (zScale / 2));
+		parentObject.transform.position = new Vector3(
+			(xScale / 2),
+			parentObject.transform.position.y,
+			(zScale / 2)
+		);
 
 		if (Instance == null)
 			Instance = this;
@@ -126,10 +247,10 @@ public sealed class TerrainTilemap : MonoBehaviour
 			Destroy(gameObject);
 	}
 
-
 	private void FillWithEmpty()
 	{
-		if (emptyTiles == null || emptyTiles.Length == 0) return;
+		if (emptyTiles == null || emptyTiles.Length == 0)
+			return;
 		foreach (var cell in initialBounds.allPositionsWithin)
 		{
 			_tilemap.SetTile(cell, emptyTiles[Random.Range(0, emptyTiles.Length)]);
@@ -138,38 +259,53 @@ public sealed class TerrainTilemap : MonoBehaviour
 
 	private void GeneratePropsFromNoise()
 	{
-		// Delete all props under propsParent
-		if (propsParent != null)
+		ClearSpawnedProps();
+
+		GetTerrainWorldXZExtents(out float minX, out float maxX, out float minZ, out float maxZ);
+		if (minX > maxX || minZ > maxZ)
 		{
-			foreach (Transform child in propsParent)
-			{
-				DestroyImmediate(child.gameObject);
-			}
+			return;
 		}
-		_spawnedProps.Clear();
 
 		float totalWeight = Mathf.Max(0.0001f, bushWeight + rockWeight + treeWeight);
 		float bushCutoff = bushWeight / totalWeight;
 		float rockCutoff = bushCutoff + (rockWeight / totalWeight);
 
-		foreach (var cell in initialBounds.allPositionsWithin)
-		{
-			float featureNoise = SampleNoise(cell, featureNoiseScale, 17.37f);
+		long cellCount = (long)initialBounds.size.x * initialBounds.size.y * initialBounds.size.z;
+		int attempts = (int)Mathf.Clamp(
+			Mathf.RoundToInt(cellCount * worldPropSampleAttemptsMultiplier),
+			1,
+			int.MaxValue - 1
+		);
 
-			// Dithered clusters: each tile rolls against a probability that increases with noise.
-			float spawnProbability = Mathf.Clamp01(propSpawnChance * Mathf.Lerp(0.25f, 1f + noiseSpawnBoost, featureNoise));
-			if (Random.value > spawnProbability)
+		Transform parent = propsParent != null ? propsParent : transform;
+
+		for (int i = 0; i < attempts; i++)
+		{
+			float wx = Random.Range(minX, maxX);
+			float wz = Random.Range(minZ, maxZ);
+			if (!IsWorldPositionInInitialBounds(wx, wz))
 			{
 				continue;
 			}
 
-			float typeNoise = SampleNoise(cell, typeNoiseScale, 71.11f);
-			// Shared biome color noise so bushes and trees group by the same color regions.
-			float colorNoise = SampleNoise(cell, colorNoiseScale, 133.7f);
+			float featureNoise = SampleNoiseWorld(wx, wz, featureNoiseScale, 17.37f);
+			float densityNoise = SampleNoiseWorld(wx, wz, densityNoiseScale, 19.91f);
+
+			if (useDensityFilter && (densityNoise < densityMin || densityNoise > densityMax))
+			{
+				continue;
+			}
+
+			float typeNoise = SampleNoiseWorld(wx, wz, typeNoiseScale, 71.11f);
+			float colorNoise = SampleNoiseWorld(wx, wz, colorNoiseScale, 133.7f);
+
+			float densityMultiplier = 1f;
 
 			GameObject prefabToSpawn = null;
 			if (typeNoise < bushCutoff)
 			{
+				densityMultiplier = bushDensityMultiplier;
 				prefabToSpawn = PickByBiome(
 					colorNoise,
 					greenBushPrefabs,
@@ -179,13 +315,16 @@ public sealed class TerrainTilemap : MonoBehaviour
 			}
 			else if (typeNoise < rockCutoff)
 			{
-				float rockNoise = SampleNoise(cell, colorNoiseScale, 211.13f);
-				prefabToSpawn = rockNoise < 0.5f
-					? PickRandomPrefab(darkRockPrefabs)
-					: PickRandomPrefab(lightRockPrefabs);
+				densityMultiplier = rockDensityMultiplier;
+				float rockNoise = SampleNoiseWorld(wx, wz, colorNoiseScale, 211.13f);
+				prefabToSpawn =
+					rockNoise < 0.5f
+						? PickRandomPrefab(darkRockPrefabs)
+						: PickRandomPrefab(lightRockPrefabs);
 			}
 			else
 			{
+				densityMultiplier = treeDensityMultiplier;
 				prefabToSpawn = PickByBiome(
 					colorNoise,
 					greenTreePrefabs,
@@ -194,20 +333,84 @@ public sealed class TerrainTilemap : MonoBehaviour
 				);
 			}
 
+			float clumpStrength = 1f;
+			if (usePropClumps)
+			{
+				float clumpA = SampleNoiseWorld(wx, wz, clumpNoiseScale, 301.71f);
+				float clumpB = SampleNoiseWorld(wx, wz, clumpNoiseScale * 1.85f, 409.13f);
+				float clumpCombined = Mathf.Lerp(clumpA, (clumpA + clumpB) * 0.5f, clumpDetailBlend);
+				float softLo = Mathf.Min(clumpSoftLow, clumpSoftHigh);
+				float softHi = Mathf.Max(clumpSoftLow, clumpSoftHigh);
+				clumpStrength = Mathf.SmoothStep(softLo, softHi, clumpCombined);
+				clumpStrength = Mathf.Clamp01(clumpStrength);
+			}
+
+			float bushClusterFactor = 1f;
+			if (typeNoise < bushCutoff && bushUseClusterMask)
+			{
+				float bcA = SampleNoiseWorld(wx, wz, bushClusterNoiseScale, 501.2f);
+				float bcB = SampleNoiseWorld(wx, wz, bushClusterNoiseScale * 1.72f, 608.5f);
+				float bcCombined = Mathf.Lerp(bcA, (bcA + bcB) * 0.5f, bushClusterDetailBlend);
+				float bcLo = Mathf.Min(bushClusterSoftLow, bushClusterSoftHigh);
+				float bcHi = Mathf.Max(bushClusterSoftLow, bushClusterSoftHigh);
+				float bushPatch = Mathf.Clamp01(Mathf.SmoothStep(bcLo, bcHi, bcCombined));
+				bushClusterFactor = Mathf.Lerp(bushOutsideClusterSpawnChance, 1f, bushPatch);
+			}
+
+			float spawnProbability = Mathf.Clamp01(
+				propSpawnChance
+				* Mathf.Lerp(clumpOutsideDensity, 1f, clumpStrength)
+				* Mathf.Lerp(0.25f, 1f + noiseSpawnBoost, featureNoise)
+				* Mathf.Max(0f, densityMultiplier)
+				* bushClusterFactor
+			);
+			if (Random.value > spawnProbability)
+			{
+				continue;
+			}
+
 			if (prefabToSpawn == null)
 			{
 				continue;
 			}
 
-			Vector3 cellWorld = _tilemap.CellToWorld(cell);
-			Vector3 spawnPos = new Vector3(
-				cellWorld.x + (xScale * 0.5f),
-				transform.position.y,
-				cellWorld.z + (zScale * 0.5f)
-			);
-			Transform parent = propsParent != null ? propsParent : transform;
+			Vector3 spawnPos = new Vector3(wx, transform.position.y, wz);
 			GameObject spawned = Instantiate(prefabToSpawn, spawnPos, Quaternion.identity, parent);
+			ApplySpriteSortingByY(spawned);
 			_spawnedProps.Add(spawned);
+
+			bool isBush = typeNoise < bushCutoff;
+			if (isBush && bushOverlapExtraSpawns > 0 && bushOverlapRadius > 0f)
+			{
+				float r = bushOverlapRadius;
+				for (int b = 0; b < bushOverlapExtraSpawns; b++)
+				{
+					Vector2 offset = Random.insideUnitCircle * r;
+					float ox = wx + offset.x;
+					float oz = wz + offset.y;
+					if (!IsWorldPositionInInitialBounds(ox, oz))
+					{
+						continue;
+					}
+
+					float colorJitter = Mathf.Clamp01(colorNoise + Random.Range(-0.09f, 0.09f));
+					GameObject overlapPrefab = PickByBiome(
+						colorJitter,
+						greenBushPrefabs,
+						blueBushPrefabs,
+						pinkBushPrefabs
+					);
+					if (overlapPrefab == null)
+					{
+						continue;
+					}
+
+					Vector3 extraPos = new Vector3(ox, transform.position.y, oz);
+					GameObject extra = Instantiate(overlapPrefab, extraPos, Quaternion.identity, parent);
+					ApplySpriteSortingByY(extra);
+					_spawnedProps.Add(extra);
+				}
+			}
 		}
 	}
 
@@ -229,17 +432,67 @@ public sealed class TerrainTilemap : MonoBehaviour
 
 	private void ClearSpawnedProps()
 	{
-		foreach (Transform child in propsParent)
+		Transform parent = propsParent != null ? propsParent : transform;
+		if (parent == null)
 		{
-			DestroyImmediate(child.gameObject);
+			return;
+		}
+
+		for (int i = parent.childCount - 1; i >= 0; i--)
+		{
+			GameObject child = parent.GetChild(i).gameObject;
+			if (Application.isPlaying)
+			{
+				Destroy(child);
+			}
+			else
+			{
+				DestroyImmediate(child);
+			}
 		}
 		_spawnedProps.Clear();
 	}
 
-	private float SampleNoise(Vector3Int cell, float scale, float offset)
+	private void GetTerrainWorldXZExtents(out float minX, out float maxX, out float minZ, out float maxZ)
 	{
-		float scaledX = (cell.x + noiseSeed + offset) * Mathf.Max(0.0001f, scale);
-		float scaledY = (cell.y + noiseSeed - offset) * Mathf.Max(0.0001f, scale);
+		minX = float.MaxValue;
+		maxX = float.MinValue;
+		minZ = float.MaxValue;
+		maxZ = float.MinValue;
+
+		Vector3 cellSize = _tilemap.cellSize;
+		Vector3 scale = _tilemap.transform.lossyScale;
+		float halfX = 0.5f * Mathf.Abs(cellSize.x * scale.x);
+		float halfZ = 0.5f * Mathf.Abs(cellSize.z * scale.z);
+
+		foreach (var cell in initialBounds.allPositionsWithin)
+		{
+			Vector3 c = _tilemap.GetCellCenterWorld(cell);
+			minX = Mathf.Min(minX, c.x - halfX);
+			maxX = Mathf.Max(maxX, c.x + halfX);
+			minZ = Mathf.Min(minZ, c.z - halfZ);
+			maxZ = Mathf.Max(maxZ, c.z + halfZ);
+		}
+	}
+
+	private bool IsWorldPositionInInitialBounds(float worldX, float worldZ)
+	{
+		Vector3 world = new Vector3(worldX, transform.position.y, worldZ);
+		Vector3Int cell = _tilemap.WorldToCell(world);
+		return initialBounds.Contains(cell);
+	}
+
+	/// <summary>
+	/// Perlin noise sampled from continuous world XZ (mapped through fractional tile coordinates so scales match grid-sized noise).
+	/// </summary>
+	private float SampleNoiseWorld(float worldX, float worldZ, float scale, float offset)
+	{
+		Vector3 cellSize = _tilemap.cellSize;
+		Vector3 lossyScale = _tilemap.transform.lossyScale;
+		float lx = worldX / Mathf.Max(0.001f, Mathf.Abs(cellSize.x * lossyScale.x));
+		float lz = worldZ / Mathf.Max(0.001f, Mathf.Abs(cellSize.z * lossyScale.z));
+		float scaledX = (lx + noiseSeed + offset) * Mathf.Max(0.0001f, scale);
+		float scaledY = (lz + noiseSeed - offset) * Mathf.Max(0.0001f, scale);
 		return Mathf.PerlinNoise(scaledX, scaledY);
 	}
 
@@ -272,14 +525,31 @@ public sealed class TerrainTilemap : MonoBehaviour
 		return prefabs[index];
 	}
 
+	private static void ApplySpriteSortingByY(GameObject root)
+	{
+		if (root == null)
+		{
+			return;
+		}
+
+		SpriteRenderer[] renderers = root.GetComponentsInChildren<SpriteRenderer>(true);
+		foreach (SpriteRenderer sr in renderers)
+		{
+			// Lower world Z renders in front (higher sorting order).
+			sr.sortingOrder = Mathf.RoundToInt(-sr.transform.position.z * 100f);
+		}
+	}
+
 	public void TillAtWorldPosition(Vector3 worldPosition, float abilityRange, Vector3 playerPos)
 	{
 		var cell = _tilemap.WorldToCell(worldPosition);
-		if (!initialBounds.Contains(cell)) return;
+		if (!initialBounds.Contains(cell))
+			return;
 
 		Debug.Log("Tilled" + cell);
 
-		if (!_tilledCells.Add(cell)) return;
+		if (!_tilledCells.Add(cell))
+			return;
 
 		foreach (var offset in AllNeighbourOffsets)
 		{
@@ -293,7 +563,8 @@ public sealed class TerrainTilemap : MonoBehaviour
 	public bool CheckRange(Vector3 worldPosition, float abilityRange, Vector3 playerPos)
 	{
 		var cell = _tilemap.WorldToCell(worldPosition);
-		if (!initialBounds.Contains(cell)) return false;
+		if (!initialBounds.Contains(cell))
+			return false;
 
 		Vector3 cellWorldPos = _tilemap.CellToWorld(cell);
 
@@ -303,12 +574,15 @@ public sealed class TerrainTilemap : MonoBehaviour
 		Vector3 compensatedCellPos = new Vector3(
 			cellWorldPos.x,
 			1.5f,
-			cellWorldPos.z * cameraComp  // divide by 1.5f, same as ring multiplying by 1.5f
+			cellWorldPos.z * cameraComp // divide by 1.5f, same as ring multiplying by 1.5f
 		);
 
 		Vector3 compensatedSize = new Vector3(xScale, 0f, zScale * cameraComp);
 
-		Bounds cellBounds = new Bounds(compensatedCellPos + compensatedSize * 0.5f, compensatedSize);
+		Bounds cellBounds = new Bounds(
+			compensatedCellPos + compensatedSize * 0.5f,
+			compensatedSize
+		);
 
 		Vector3 compensatedPlayer = new Vector3(playerPos.x, 1.5f, playerPos.z * cameraComp);
 
@@ -316,9 +590,18 @@ public sealed class TerrainTilemap : MonoBehaviour
 
 		float distance = Vector3.Distance(compensatedPlayer, closestPoint);
 
-		Debug.Log("Player Position: " + compensatedPlayer + " Cell: " + cell +
-				  " Cell World Pos: " + cellWorldPos + " Closest Cell Edge: " + closestPoint +
-				  " Distance: " + distance);
+		Debug.Log(
+			"Player Position: "
+				+ compensatedPlayer
+				+ " Cell: "
+				+ cell
+				+ " Cell World Pos: "
+				+ cellWorldPos
+				+ " Closest Cell Edge: "
+				+ closestPoint
+				+ " Distance: "
+				+ distance
+		);
 
 		return distance <= abilityRange;
 	}
@@ -331,7 +614,8 @@ public sealed class TerrainTilemap : MonoBehaviour
 		Debug.Log($"CheckTilled pos={worldPos} → cell={cell}");
 		Debug.Log($"TilledCells: {string.Join(", ", _tilledCells)}");
 
-		if (_tilledCells.Contains(cell)) return true;
+		if (_tilledCells.Contains(cell))
+			return true;
 
 		Debug.Log("tilled");
 		return false;
@@ -340,7 +624,8 @@ public sealed class TerrainTilemap : MonoBehaviour
 	private void RefreshCell(Vector3Int cell)
 	{
 		Debug.Log("refresheed");
-		if (!_tilledCells.Contains(cell)) return;
+		if (!_tilledCells.Contains(cell))
+			return;
 		var canonical = CanonicalMask(RawMask(cell));
 		_tilemap.SetTile(cell, tilledTiles[CanonicalToIndex[canonical]]);
 	}
@@ -348,14 +633,22 @@ public sealed class TerrainTilemap : MonoBehaviour
 	private int RawMask(Vector3Int cell)
 	{
 		var m = 0;
-		if (_tilledCells.Contains(cell + new Vector3Int(0, 1, 0))) m |= 1;   // N
-		if (_tilledCells.Contains(cell + new Vector3Int(1, 1, 0))) m |= 2;   // NE
-		if (_tilledCells.Contains(cell + new Vector3Int(1, 0, 0))) m |= 4;   // E
-		if (_tilledCells.Contains(cell + new Vector3Int(1, -1, 0))) m |= 8;   // SE
-		if (_tilledCells.Contains(cell + new Vector3Int(0, -1, 0))) m |= 16;  // S
-		if (_tilledCells.Contains(cell + new Vector3Int(-1, -1, 0))) m |= 32;  // SW
-		if (_tilledCells.Contains(cell + new Vector3Int(-1, 0, 0))) m |= 64;  // W
-		if (_tilledCells.Contains(cell + new Vector3Int(-1, 1, 0))) m |= 128; // NW
+		if (_tilledCells.Contains(cell + new Vector3Int(0, 1, 0)))
+			m |= 1; // N
+		if (_tilledCells.Contains(cell + new Vector3Int(1, 1, 0)))
+			m |= 2; // NE
+		if (_tilledCells.Contains(cell + new Vector3Int(1, 0, 0)))
+			m |= 4; // E
+		if (_tilledCells.Contains(cell + new Vector3Int(1, -1, 0)))
+			m |= 8; // SE
+		if (_tilledCells.Contains(cell + new Vector3Int(0, -1, 0)))
+			m |= 16; // S
+		if (_tilledCells.Contains(cell + new Vector3Int(-1, -1, 0)))
+			m |= 32; // SW
+		if (_tilledCells.Contains(cell + new Vector3Int(-1, 0, 0)))
+			m |= 64; // W
+		if (_tilledCells.Contains(cell + new Vector3Int(-1, 1, 0)))
+			m |= 128; // NW
 		return m;
 	}
 
@@ -371,65 +664,74 @@ public sealed class TerrainTilemap : MonoBehaviour
 		var nw = (m & 128) != 0;
 
 		var r = 0;
-		if (n) r |= 1;
-		if (ne && n && e) r |= 2;
-		if (e) r |= 4;
-		if (se && s && e) r |= 8;
-		if (s) r |= 16;
-		if (sw && s && w) r |= 32;
-		if (w) r |= 64;
-		if (nw && n && w) r |= 128;
+		if (n)
+			r |= 1;
+		if (ne && n && e)
+			r |= 2;
+		if (e)
+			r |= 4;
+		if (se && s && e)
+			r |= 8;
+		if (s)
+			r |= 16;
+		if (sw && s && w)
+			r |= 32;
+		if (w)
+			r |= 64;
+		if (nw && n && w)
+			r |= 128;
 		return r;
 	}
 
-	private static Dictionary<int, int> BuildLookup() => new()
-	{
-		[0b00000000] = T.Isolated,
-		[0b00000001] = T.EndN,
-		[0b00000100] = T.EndE,
-		[0b00000101] = T.CornerNE,
-		[0b00000111] = T.CornerNE_Inner,
-		[0b00010000] = T.EndS,
-		[0b00010001] = T.StraightNS,
-		[0b00010100] = T.CornerES,
-		[0b00010101] = T.TeeNES,
-		[0b00010111] = T.TeeNES_NE,
-		[0b00011100] = T.CornerES_Inner,
-		[0b00011101] = T.TeeNES_SE,
-		[0b00011111] = T.TeeNES_NE_SE,
-		[0b01000000] = T.EndW,
-		[0b01000001] = T.CornerWN,
-		[0b01000100] = T.StraightEW,
-		[0b01000101] = T.TeeNEW,
-		[0b01000111] = T.TeeNEW_NE,
-		[0b01010000] = T.CornerSW,
-		[0b01010001] = T.TeeNSW,
-		[0b01010100] = T.TeeESW,
-		[0b01010101] = T.Cross,
-		[0b01010111] = T.Cross_NE,
-		[0b01011100] = T.TeeESW_SE,
-		[0b01011101] = T.Cross_SE,
-		[0b01011111] = T.Cross_NE_SE,
-		[0b01110000] = T.CornerSW_Inner,
-		[0b01110001] = T.TeeNSW_SW,
-		[0b01110100] = T.TeeESW_SW,
-		[0b01110101] = T.Cross_SW,
-		[0b01110111] = T.Cross_NE_SW,
-		[0b01111100] = T.TeeESW_SE_SW,
-		[0b01111101] = T.Cross_SE_SW,
-		[0b01111111] = T.Cross_NE_SE_SW,
-		[0b11000001] = T.CornerWN_Inner,
-		[0b11000101] = T.TeeNEW_NW,
-		[0b11000111] = T.TeeNEW_NE_NW,
-		[0b11010001] = T.TeeNSW_NW,
-		[0b11010101] = T.Cross_NW,
-		[0b11010111] = T.Cross_NW_NE,
-		[0b11011101] = T.Cross_SE_NW,
-		[0b11011111] = T.Cross_NE_SE_NW,
-		[0b11110001] = T.TeeNSW_SW_NW,
-		[0b11110101] = T.Cross_SW_NW,
-		[0b11110111] = T.Cross_NE_SW_NW,
-		[0b11111101] = T.Cross_SE_SW_NW,
-		[0b11111111] = T.Cross_All,
-	};
+	private static Dictionary<int, int> BuildLookup() =>
+		new()
+		{
+			[0b00000000] = T.Isolated,
+			[0b00000001] = T.EndN,
+			[0b00000100] = T.EndE,
+			[0b00000101] = T.CornerNE,
+			[0b00000111] = T.CornerNE_Inner,
+			[0b00010000] = T.EndS,
+			[0b00010001] = T.StraightNS,
+			[0b00010100] = T.CornerES,
+			[0b00010101] = T.TeeNES,
+			[0b00010111] = T.TeeNES_NE,
+			[0b00011100] = T.CornerES_Inner,
+			[0b00011101] = T.TeeNES_SE,
+			[0b00011111] = T.TeeNES_NE_SE,
+			[0b01000000] = T.EndW,
+			[0b01000001] = T.CornerWN,
+			[0b01000100] = T.StraightEW,
+			[0b01000101] = T.TeeNEW,
+			[0b01000111] = T.TeeNEW_NE,
+			[0b01010000] = T.CornerSW,
+			[0b01010001] = T.TeeNSW,
+			[0b01010100] = T.TeeESW,
+			[0b01010101] = T.Cross,
+			[0b01010111] = T.Cross_NE,
+			[0b01011100] = T.TeeESW_SE,
+			[0b01011101] = T.Cross_SE,
+			[0b01011111] = T.Cross_NE_SE,
+			[0b01110000] = T.CornerSW_Inner,
+			[0b01110001] = T.TeeNSW_SW,
+			[0b01110100] = T.TeeESW_SW,
+			[0b01110101] = T.Cross_SW,
+			[0b01110111] = T.Cross_NE_SW,
+			[0b01111100] = T.TeeESW_SE_SW,
+			[0b01111101] = T.Cross_SE_SW,
+			[0b01111111] = T.Cross_NE_SE_SW,
+			[0b11000001] = T.CornerWN_Inner,
+			[0b11000101] = T.TeeNEW_NW,
+			[0b11000111] = T.TeeNEW_NE_NW,
+			[0b11010001] = T.TeeNSW_NW,
+			[0b11010101] = T.Cross_NW,
+			[0b11010111] = T.Cross_NW_NE,
+			[0b11011101] = T.Cross_SE_NW,
+			[0b11011111] = T.Cross_NE_SE_NW,
+			[0b11110001] = T.TeeNSW_SW_NW,
+			[0b11110101] = T.Cross_SW_NW,
+			[0b11110111] = T.Cross_NE_SW_NW,
+			[0b11111101] = T.Cross_SE_SW_NW,
+			[0b11111111] = T.Cross_All,
+		};
 }

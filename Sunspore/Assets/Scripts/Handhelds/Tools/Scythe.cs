@@ -23,6 +23,7 @@ namespace Sunspore
                     enemy.TakeDamage(damage, dir, knockback);
                 }
             }
+            SFXManager._sfxManager.PlaySound("swing");
         }
 
 
@@ -49,7 +50,7 @@ namespace Sunspore
                 }
 
                 var plant = collider.GetComponent<Plant>();
-                if(plant != null)
+                if (plant != null)
                 {
                     plant.Harvest();
                 }

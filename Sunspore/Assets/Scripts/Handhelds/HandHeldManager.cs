@@ -9,6 +9,7 @@ namespace Sunspore
     public class HandHeldManager : MonoBehaviour
     {
         public static HandHeldManager Instance { get; private set; }
+        private const int NonClickableLayer = 1; // "Non Clickable"
 
         [SerializeField] GameObject player;
 
@@ -132,7 +133,8 @@ namespace Sunspore
         {
             Vector3 mouseScreenPos = Input.mousePosition;
             Ray ray = Camera.main.ScreenPointToRay(mouseScreenPos);
-            if (Physics.Raycast(ray, out RaycastHit hit, 100f, LayerMask.GetMask("Ground")))
+            int mask = LayerMask.GetMask("Ground") & ~(1 << NonClickableLayer);
+            if (Physics.Raycast(ray, out RaycastHit hit, 100f, mask))
             {
                 return hit.point;
             }

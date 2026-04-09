@@ -37,6 +37,7 @@ namespace Sunspore
         public AudioClip dialogueSFX;
         Animator _animator;
         AudioSource _audioSource;
+        private bool _exitTriggered = false;
 
         void Awake()
         {
@@ -201,7 +202,11 @@ namespace Sunspore
                         // End of tutorial
                         if (DialogueManager._dm != null && DialogueManager._dm.GetEventCount() == 1)
                         {
-                            _animator.SetTrigger("Exit");
+                            if (!_exitTriggered)
+                            {
+                                _exitTriggered = true;
+                                _animator.SetTrigger("Exit");
+                            }
                         }
                     }
                     else if (nextMessage == "EVENT")

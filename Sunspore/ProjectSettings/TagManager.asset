@@ -20,7 +20,7 @@ TagManager:
   - UI
   - Player
   - NonPlayerCollide
-  - 
+  - Rock
   - 
   - 
   - 
@@ -71,7 +71,7 @@ TagManager:
     locked: 0
   m_RenderingLayers:
   - Default
-  - Light Layer 1
+  - Non Clickable
   - Light Layer 2
   - Light Layer 3
   - Light Layer 4

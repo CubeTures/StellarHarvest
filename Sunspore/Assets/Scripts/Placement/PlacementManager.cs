@@ -9,6 +9,7 @@ using System.Collections;
 public class PlacementManager : MonoBehaviour
 {
     [SerializeField] LayerMask groundLayer, ignoreCastLayer;
+    private const int NonClickableLayer = 1; // "Non Clickable"
     [SerializeField]  Player player;
 
     Camera cam;
@@ -200,7 +201,8 @@ public class PlacementManager : MonoBehaviour
     {
         Ray ray = cam.ScreenPointToRay(screenPosition);
 
-        if (Physics.Raycast(ray, out RaycastHit hit, 1000f, groundLayer))
+        int mask = groundLayer & ~(1 << NonClickableLayer);
+        if (Physics.Raycast(ray, out RaycastHit hit, 1000f, mask))
         {
             worldPosition = hit.point;
             return true;
