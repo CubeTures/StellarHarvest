@@ -27,6 +27,7 @@ namespace Sunspore
 
             GameObject bullet = Instantiate(bulletPrefab, playerPos, Quaternion.identity);
             bullet.GetComponent<WeaponBullet>().Shoot(attackDuration, damage, speed, dir);
+            SFXManager._sfxManager.PlaySound("shotgun");
         }
     }
 }

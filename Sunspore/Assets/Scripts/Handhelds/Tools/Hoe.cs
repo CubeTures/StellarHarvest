@@ -9,6 +9,7 @@ namespace Sunspore
             if (Physics.Raycast(ray, out RaycastHit hit))
             {
                 TerrainTilemap.Instance.TillAtWorldPosition(hit.point, abilityRange, player.transform.position);
+                SFXManager._sfxManager.PlaySound("plant");
             }
         }
 
