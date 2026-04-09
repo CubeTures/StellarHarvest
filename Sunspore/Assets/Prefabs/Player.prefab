@@ -143,6 +143,7 @@ GameObject:
   - component: {fileID: 7977193351103050734}
   - component: {fileID: 827796884500757949}
   - component: {fileID: 2688758304045228457}
+  - component: {fileID: 5735658064365752643}
   m_Layer: 6
   m_Name: Player
   m_TagString: Player
@@ -234,8 +235,8 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: -1965524509
-  m_SortingLayer: 2
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: 21300000, guid: 36d67ae0e9ffb264ba5ba71713baa975, type: 3}
@@ -273,7 +274,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 112
+  m_Constraints: 116
   m_CollisionDetection: 1
 --- !u!136 &8760029230240097853
 CapsuleCollider:
@@ -428,21 +429,9 @@ MonoBehaviour:
     m_ActionId: 8a24db2a-87fe-41f4-b0c0-2b265f4e15f9
     m_ActionName: 'UI/Pause[/Keyboard/escape]'
   - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 827796884500757949}
-        m_TargetAssemblyTypeName: Player, Sunspore
-        m_MethodName: Select
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 1
+      m_Calls: []
     m_ActionId: 6dc335cf-b758-4f37-87ce-763ef7b720b6
-    m_ActionName: 'Player/Select[/Mouse/leftButton]'
+    m_ActionName: 'Player/Select[/Mouse/leftButton,/Keyboard/p]'
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
@@ -574,6 +563,18 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!225 &5735658064365752643
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5651167634825025194}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 0
+  m_BlocksRaycasts: 0
+  m_IgnoreParentGroups: 0
 --- !u!1 &8280053076390940300
 GameObject:
   m_ObjectHideFlags: 0

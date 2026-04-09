@@ -164,7 +164,7 @@ TilemapRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: -20
+  m_SortingOrder: -12000
   m_MaskInteraction: 0
   m_ChunkSize: {x: 32, y: 32, z: 32}
   m_ChunkCullingBounds: {x: 0, y: 0, z: 0}
@@ -254,16 +254,37 @@ MonoBehaviour:
   initialBounds:
     m_Position: {x: -50, y: -50, z: 0}
     m_Size: {x: 100, y: 100, z: 1}
-  generatePropsOnAwake: 1
-  propSpawnChance: 0.02
+  generatePropsOnAwake: 0
+  propSpawnChance: 0.04
   noiseSpawnBoost: 1
-  bushWeight: 0.45
+  bushWeight: 0.4
   rockWeight: 0.2
-  treeWeight: 0.35
-  featureNoiseScale: 0.12
-  typeNoiseScale: 0.08
+  treeWeight: 0.3
+  bushDensityMultiplier: 2
+  rockDensityMultiplier: 2
+  treeDensityMultiplier: 0.75
+  bushUseClusterMask: 1
+  bushClusterNoiseScale: 0.01
+  bushClusterDetailBlend: 0.262
+  bushClusterSoftLow: 0.458
+  bushClusterSoftHigh: 0.95
+  bushOutsideClusterSpawnChance: 0.05
+  bushOverlapExtraSpawns: 16
+  bushOverlapRadius: 2
+  featureNoiseScale: 0.04
+  usePropClumps: 1
+  clumpNoiseScale: 0.4
+  clumpDetailBlend: 0.311
+  clumpSoftLow: 0.816
+  clumpSoftHigh: 0.95
+  clumpOutsideDensity: 0.05
+  useDensityFilter: 1
+  densityNoiseScale: 0.5
+  densityMin: 0.05
+  densityMax: 0.95
+  typeNoiseScale: 0.01
   colorNoiseScale: 0.01
-  noiseSeed: 1234
+  noiseSeed: 0
   propsParent: {fileID: 0}
   greenBushPrefabs:
   - {fileID: 4980934363747348378, guid: 1299b8d3b63fe244ca91c2c15baeecba, type: 3}
@@ -313,3 +334,4 @@ MonoBehaviour:
   - {fileID: 4980934363747348378, guid: e4e890bdd8be11b478a743470300b5a4, type: 3}
   - {fileID: 4980934363747348378, guid: 5e231b5acca646848936d1da596de265, type: 3}
   - {fileID: 4980934363747348378, guid: fd669eda27946e747a85f610c06fddfb, type: 3}
+  worldPropSampleAttemptsMultiplier: 1
