@@ -5,6 +5,7 @@ using UnityEngine.EventSystems;
 public sealed class InputDebugger : MonoBehaviour
 {
 	private readonly List<RaycastResult> _results = new();
+	private const int NonClickableLayer = 1; // "Non Clickable"
 
 	private void Update()
 	{
@@ -27,6 +28,10 @@ public sealed class InputDebugger : MonoBehaviour
 		foreach (RaycastResult result in _results)
 		{
 			GameObject go = result.gameObject;
+			if (go != null && go.layer == NonClickableLayer)
+			{
+				continue;
+			}
 			Debug.Log($"  → {go.name} | depth: {result.depth} | sortingOrder: {result.sortingOrder} | module: {result.module.GetType().Name}", go);
 		}
 
