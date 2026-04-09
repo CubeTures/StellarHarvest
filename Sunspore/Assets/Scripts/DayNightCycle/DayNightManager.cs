@@ -93,7 +93,7 @@ namespace Sunspore
                 }
                 if (_whiteBalance != null)
                 {
-                    _whiteBalance.temperature.value = nightBlend * -25f;
+                    _whiteBalance.temperature.value = nightBlend * -50f;
                 }
 
                 // Day counter: when timeOfDay wraps around to 0
