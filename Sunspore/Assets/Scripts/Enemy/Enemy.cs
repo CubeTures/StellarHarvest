@@ -30,6 +30,7 @@ namespace Sunspore
         public NavMeshAgent agent;
         Pathfinding pathfinding;
         bool attackingPlayer = false;
+        bool isAttacking = false;
         [SerializeField] private GameObject _hitEffect;
         [SerializeField] private GameObject _deathEffect;
 
@@ -92,6 +93,13 @@ namespace Sunspore
                     UpdateFlyingState(targetPlant);
             }
 
+            // update animator movement state (disable while attacking)
+            if (_anim != null)
+            {
+                bool moving = !isAttacking && agent != null && agent.velocity.sqrMagnitude > 0.01f;
+                _anim.SetBool("isMoving", moving);
+            }
+
             attackingPlayer = targetPlant == pathfinding.GetPlayerTransform();
             eatCooldown = Mathf.Max(eatCooldown - Time.deltaTime, 0);
             _spriteRenderer.sortingOrder = (int)(-transform.position.z * 100);
@@ -150,7 +158,6 @@ namespace Sunspore
         {
             _currentDirection = dir;
             _anim.SetInteger("Direction", dir);
-            _anim.SetBool("isMoving", true);
 
             if (_vx > 0)
             {
@@ -201,9 +208,23 @@ namespace Sunspore
         // Attack coroutine
         IEnumerator AttackCoroutine()
         {
-            _anim.SetBool("isAttacking", true);
+            _anim.SetTrigger("Attack");
+            // mark attacking, stop movement while attack animation runs
+            isAttacking = true;
+            if (_anim != null)
+                _anim.SetBool("isMoving", false);
+            if (agent != null)
+                agent.isStopped = true;
+
             yield return new WaitForSeconds(attackDuration);
-            _anim.SetBool("isAttacking", false);
+            _anim.ResetTrigger("Attack");
+
+            // restore movement
+            isAttacking = false;
+            if (agent != null)
+                agent.isStopped = false;
+            if (_anim != null)
+                _anim.SetBool("isMoving", true);
         }
 
         void OnDestroy()
