@@ -112,7 +112,7 @@ public class PlacementManager : MonoBehaviour
             {
                 preview.SetActive(false);
             }
-            Debug.Log("FALSE");
+            // Debug.Log("FALSE");
             allowPlacement = false;
         }
     }
@@ -126,8 +126,8 @@ public class PlacementManager : MonoBehaviour
             Vector3 box = new((preview.transform.localScale.x - epsilon) / 2, 0.5f, (preview.transform.localScale.z - epsilon) / 2);
             var colliders = Physics.OverlapBox(preview.transform.position, box, Quaternion.identity, ~(groundLayer | ignoreCastLayer));
             
-            
-            if (colliders.Count() > 0 || !TerrainTilemap.Instance.CheckTilled(preview.transform.position))
+            // updated the check to 1 from 0 because of camera bounds game object
+            if (colliders.Count() > 1 || !TerrainTilemap.Instance.CheckTilled(preview.transform.position))
             {
                 sr.color = cannotPlace;
                 allowPlacement = false;
@@ -169,12 +169,13 @@ public class PlacementManager : MonoBehaviour
         if (allowPlacement && currentPreviews.Count > 0 && !isPlacing)
         {
             Vector3 currPlace = currentPreviews[0].transform.position;
-            placingCoroutine = StartCoroutine(PlaceAfterAnimation(currPlace));
+            InventorySlot slot = inventoryManager.GetSelectedItemSlot();
+            placingCoroutine = StartCoroutine(PlaceAfterAnimation(currPlace, slot));
             isPlacing = true;
         }
     }
 
-    IEnumerator PlaceAfterAnimation(Vector3 currPlace)
+    IEnumerator PlaceAfterAnimation(Vector3 currPlace, InventorySlot slot)
     {
         GameObject prefab = currentItem.prefab;
         if (prefab.GetComponent<Plant>() == null || !TerrainTilemap.Instance.CheckTilled(currPlace))
@@ -191,7 +192,7 @@ public class PlacementManager : MonoBehaviour
         
         Instantiate(prefab, currPlace, Quaternion.identity);
 
-        inventoryManager.UseSelectedItem();
+        inventoryManager.UseThisItem(slot);
         player.animFinished = false;
         placingCoroutine = null;
         isPlacing = false;

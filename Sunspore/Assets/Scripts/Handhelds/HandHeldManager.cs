@@ -84,7 +84,7 @@ namespace Sunspore
 
             // If right click cast ability
 
-            if (enabled && handHeld.tool && !EventSystem.current.IsPointerOverGameObject() && Input.GetMouseButtonDown(1) && Time.time >= lastAttackTime + handHeld.attackCooldown)
+            if (enabled && handHeld.tool && !EventSystem.current.IsPointerOverGameObject() && Input.GetMouseButtonDown(1) && Time.time >= lastAttackTime + handHeld.attackCooldown && !player.GetComponent<Player>().anim.GetBool("isMoving"))
             {
                 if (handHeld.weapon)
                 {
@@ -201,6 +201,7 @@ namespace Sunspore
             }
             StopCoroutine(abilityCoroutine);
             abilityCoroutine = null;
+            OnAbility?.Invoke(0);
             // Optionally, call a cancel method on the current handHeld if needed
             if (handHeld != null && handHeld.cancelable)
                 handHeld.CancelAbility();
