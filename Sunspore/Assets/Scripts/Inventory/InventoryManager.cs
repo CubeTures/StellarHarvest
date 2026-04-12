@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using System;
 using System.Collections;
+using UnityEditor.Graphs;
 
 public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 {
@@ -40,6 +41,7 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
     GameObject draggedObject;
     GameObject lastItemSlot;
     bool hasLoggedMissingHandParent = false;
+    public bool pointerDown = false;
     void Awake()
     {
         if (Instance == null)
@@ -632,6 +634,7 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
         //{
         //    handHeldManager.enabled = false;
         //}
+        pointerDown = true;
         if (eventData.button == PointerEventData.InputButton.Left)
         {
             GameObject clickedObject = eventData.pointerCurrentRaycast.gameObject;
@@ -650,6 +653,7 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
 
     public void OnPointerUp(PointerEventData eventData)
     {
+        pointerDown = false;
         if (draggedObject != null && eventData.pointerCurrentRaycast.gameObject != null && eventData.button == PointerEventData.InputButton.Left)
         {
             GameObject clickedObject = eventData.pointerCurrentRaycast.gameObject;
@@ -826,6 +830,21 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
             return null;
 
         return slot;
+    }
+
+    public InventorySlot GetDraggedItemSlot()
+    {
+        if (draggedObject != null && lastItemSlot != null)
+        {
+            return lastItemSlot.GetComponent<InventorySlot>();
+        }
+
+        return null;
+    }
+
+    public ItemSO GetDraggedItem()
+    {
+        return draggedObject.GetComponent<InventoryItem>().itemScriptableObject;
     }
     public void CraftItem(List<ItemTypeAndAmount> itemsToCraft, List<ItemTypeAndAmount> itemsToDestroy)
     {
