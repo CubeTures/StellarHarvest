@@ -206,6 +206,7 @@ namespace Sunspore
                             {
                                 _exitTriggered = true;
                                 _animator.SetTrigger("Exit");
+                                Debug.Log("End of tutorial");
                             }
                         }
                     }
@@ -222,7 +223,12 @@ namespace Sunspore
                 }
                 else
                 {
-                    _animator.SetTrigger("Exit");
+                    if (!_exitTriggered)
+                    {
+                        _exitTriggered = true;
+                        _animator.SetTrigger("Exit");
+                        Debug.Log("End of tutorial");
+                    }
                 }
             }
         }
