@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using System;
 using System.Collections;
+using UnityEditor.Graphs;
 
 public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 {
@@ -40,6 +41,7 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
     GameObject draggedObject;
     GameObject lastItemSlot;
     bool hasLoggedMissingHandParent = false;
+    public bool pointerDown = false;
     void Awake()
     {
         if (Instance == null)
@@ -523,6 +525,36 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
         HotBarItemChanged();
     }
 
+    public void UseThisItem(InventorySlot slot)
+    {
+        if (hotbarSlots == null || hotbarSlots.Length == 0)
+            return;
+
+        if (selectedHotbarIndex < 0 || selectedHotbarIndex >= hotbarSlots.Length)
+            return;
+
+        if (slot == null || slot.heldItem == null)
+            return;
+
+        InventoryItem invItem = slot.heldItem.GetComponent<InventoryItem>();
+        if (invItem == null)
+            return;
+
+        ItemSO itemSO = GetSelectedItem();
+        if (itemSO == null)
+            return;
+
+        invItem.stackCurrent--;
+
+        if (invItem.stackCurrent <= 0)
+        {
+            Destroy(slot.heldItem);
+            slot.heldItem = null;
+        }
+
+        HotBarItemChanged();
+    }
+
 
     public void OpenAndCloseCrafting()
     {
@@ -602,6 +634,7 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
         //{
         //    handHeldManager.enabled = false;
         //}
+        pointerDown = true;
         if (eventData.button == PointerEventData.InputButton.Left)
         {
             GameObject clickedObject = eventData.pointerCurrentRaycast.gameObject;
@@ -620,6 +653,7 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
 
     public void OnPointerUp(PointerEventData eventData)
     {
+        pointerDown = false;
         if (draggedObject != null && eventData.pointerCurrentRaycast.gameObject != null && eventData.button == PointerEventData.InputButton.Left)
         {
             GameObject clickedObject = eventData.pointerCurrentRaycast.gameObject;
@@ -781,6 +815,36 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
             return null;
 
         return itemScript.itemScriptableObject;
+    }
+
+    public InventorySlot GetSelectedItemSlot()
+    {
+        if (hotbarSlots == null || hotbarSlots.Length == 0)
+            return null;
+
+        if (selectedHotbarIndex < 0 || selectedHotbarIndex >= hotbarSlots.Length)
+            return null;
+
+        InventorySlot slot = hotbarSlots[selectedHotbarIndex].GetComponent<InventorySlot>();
+        if (slot == null || slot.heldItem == null)
+            return null;
+
+        return slot;
+    }
+
+    public InventorySlot GetDraggedItemSlot()
+    {
+        if (draggedObject != null && lastItemSlot != null)
+        {
+            return lastItemSlot.GetComponent<InventorySlot>();
+        }
+
+        return null;
+    }
+
+    public ItemSO GetDraggedItem()
+    {
+        return draggedObject.GetComponent<InventoryItem>().itemScriptableObject;
     }
     public void CraftItem(List<ItemTypeAndAmount> itemsToCraft, List<ItemTypeAndAmount> itemsToDestroy)
     {
