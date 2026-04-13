@@ -16,8 +16,11 @@ public class PlacementManager : MonoBehaviour
     InventoryManager inventoryManager;
 
     ItemSO currentItem;
+    ItemSO draggedItem;
+    InventorySlot draggedSlot;
     [SerializeField] GameObject preview;
     List<GameObject> currentPreviews = new();
+    Vector3 draggedPreview;
     List<Vector2> footprints = new();
 
     const float epsilon = 0.01f;
@@ -56,19 +59,42 @@ public class PlacementManager : MonoBehaviour
             PlaceItem();
         }
 
+        if (!EventSystem.current.IsPointerOverGameObject() && Input.GetMouseButtonUp(0))
+        {
+            PlaceDraggedItem();
+        }
+
         if (player.anim.GetBool("isMoving") && placingCoroutine != null)
         {
             StopCoroutine(placingCoroutine);
             placingCoroutine = null;
             isPlacing = false;
         }
+
+        if (inventoryManager.pointerDown && currentPreviews.Count > 0)
+        {
+            draggedPreview = currentPreviews[0].transform.position;
+        }
+
+        Debug.Log("Allow Placement: " + allowPlacement);
     }
 
     void ShowPreview()
     {
         if (!EventSystem.current.IsPointerOverGameObject() && ScreenToWorld(Input.mousePosition, out Vector3 position))
         {
-            ItemSO item = inventoryManager.GetSelectedItem();
+            Debug.Log("Placing Allowed");
+            ItemSO item = null;
+            if (inventoryManager.pointerDown)
+            {
+                item = inventoryManager.GetDraggedItem();
+                draggedItem = item;
+                draggedSlot = inventoryManager.GetDraggedItemSlot();
+            }
+            else
+            {
+                item = inventoryManager.GetSelectedItem();
+            }
             if (item == null || !item.Equals(currentItem))
             {
                 foreach (var _ in footprints)
@@ -124,17 +150,16 @@ public class PlacementManager : MonoBehaviour
 
             Vector3 box = new((preview.transform.localScale.x - epsilon) / 2, 0.5f, (preview.transform.localScale.z - epsilon) / 2);
             var colliders = Physics.OverlapBox(preview.transform.position, box, Quaternion.identity, ~(groundLayer | ignoreCastLayer));
-            
-            
-            if (colliders.Count() > 0 || !TerrainTilemap.Instance.CheckTilled(preview.transform.position))
-            {
-                sr.color = cannotPlace;
-                allowPlacement = false;
-            }
-            else
+
+            if (colliders.Count() <= 0 && TerrainTilemap.Instance.CheckTilled(preview.transform.position))
             {
                 sr.color = canPlace;
                 allowPlacement = true;
+            }
+            else
+            {
+                sr.color = cannotPlace;
+                allowPlacement = false;
             }
         }
     }
@@ -168,14 +193,28 @@ public class PlacementManager : MonoBehaviour
         if (allowPlacement && currentPreviews.Count > 0 && !isPlacing)
         {
             Vector3 currPlace = currentPreviews[0].transform.position;
-            placingCoroutine = StartCoroutine(PlaceAfterAnimation(currPlace));
+            InventorySlot slot = inventoryManager.GetSelectedItemSlot();
+            GameObject prefab = currentItem.prefab;
+            placingCoroutine = StartCoroutine(PlaceAfterAnimation(currPlace, slot, prefab));
             isPlacing = true;
         }
     }
 
-    IEnumerator PlaceAfterAnimation(Vector3 currPlace)
+    void PlaceDraggedItem()
     {
-        GameObject prefab = currentItem.prefab;
+        Debug.Log(allowPlacement + " " + isPlacing);
+        if (allowPlacement && !isPlacing)
+        {
+            Vector3 currPlace = draggedPreview;
+            InventorySlot slot = draggedSlot;
+            GameObject prefab = draggedItem.prefab;
+            placingCoroutine = StartCoroutine(PlaceAfterAnimation(currPlace, slot, prefab));
+            isPlacing = true;
+        }
+    }
+
+    IEnumerator PlaceAfterAnimation(Vector3 currPlace, InventorySlot slot, GameObject prefab)
+    {
         if (prefab.GetComponent<Plant>() == null || !TerrainTilemap.Instance.CheckTilled(currPlace))
         {
             placingCoroutine = null;
@@ -187,10 +226,10 @@ public class PlacementManager : MonoBehaviour
         yield return new WaitUntil(() => player.animFinished);
 
         //Debug.Log(player.animFinished);
-        
+
         Instantiate(prefab, currPlace, Quaternion.identity);
 
-        inventoryManager.UseSelectedItem();
+        inventoryManager.UseThisItem(slot);
         player.animFinished = false;
         placingCoroutine = null;
         isPlacing = false;
