@@ -84,7 +84,7 @@ namespace Sunspore
 
             // If right click cast ability
 
-            if (enabled && handHeld.tool && !EventSystem.current.IsPointerOverGameObject() && Input.GetMouseButtonDown(1) && Time.time >= lastAttackTime + handHeld.attackCooldown && !player.GetComponent<Player>().anim.GetBool("isMoving"))
+            if (enabled && handHeld.tool && !EventSystem.current.IsPointerOverGameObject() && Input.GetMouseButtonDown(1) && Time.time >= lastAttackTime + handHeld.attackCooldown && (!player.GetComponent<Player>().anim.GetBool("isMoving") || handHeld.weapon))
             {
                 if (handHeld.weapon)
                 {

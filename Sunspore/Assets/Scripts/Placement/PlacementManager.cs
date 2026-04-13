@@ -152,8 +152,7 @@ public class PlacementManager : MonoBehaviour
             Vector3 box = new((preview.transform.localScale.x - epsilon) / 2, 0.5f, (preview.transform.localScale.z - epsilon) / 2);
             var colliders = Physics.OverlapBox(preview.transform.position, box, Quaternion.identity, ~(groundLayer | ignoreCastLayer));
 
-            // updated the check to 1 from 0 because of camera bounds game object
-            if (colliders.Count() <= 1 && TerrainTilemap.Instance.CheckTilled(preview.transform.position))
+            if (colliders.Count() <= 0 && TerrainTilemap.Instance.CheckTilled(preview.transform.position))
             {
                 sr.color = canPlace;
                 allowPlacement = true;
