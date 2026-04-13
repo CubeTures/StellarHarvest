@@ -62,8 +62,6 @@ MonoBehaviour:
   cancelable: 1
   head: 1
   handle: 1
-  attackSound: {fileID: 8300000, guid: f081fe3db9be3de4082a601d32ec4be6, type: 3}
-  tillSound: {fileID: 8300000, guid: f081fe3db9be3de4082a601d32ec4be6, type: 3}
 --- !u!82 &4269924024999132571
 AudioSource:
   m_ObjectHideFlags: 0

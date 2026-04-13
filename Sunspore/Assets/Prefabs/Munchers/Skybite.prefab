@@ -30,15 +30,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1583885426664768335, guid: 4393b48af626182408c439887b60415a, type: 3}
       propertyPath: m_Height
-      value: 1.2
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: 1583885426664768335, guid: 4393b48af626182408c439887b60415a, type: 3}
       propertyPath: m_Radius
-      value: 0.6
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1583885426664768335, guid: 4393b48af626182408c439887b60415a, type: 3}
       propertyPath: m_Center.y
-      value: 0.6
+      value: 0.8333333
       objectReference: {fileID: 0}
     - target: {fileID: 1583885426664768335, guid: 4393b48af626182408c439887b60415a, type: 3}
       propertyPath: m_IsTrigger
@@ -89,6 +89,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6822131166460621233, guid: 4393b48af626182408c439887b60415a, type: 3}
+      propertyPath: m_Speed
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6822131166460621233, guid: 4393b48af626182408c439887b60415a, type: 3}
       propertyPath: m_Height
       value: 1.2
       objectReference: {fileID: 0}
@@ -126,7 +130,7 @@ MonoBehaviour:
   maxHealth: 100
   enemyType: 1
   flyingState: 0
-  damage: 10
+  damage: 5
   cost: 1
   attackDuration: 0.25
   attackCooldown: 1
