@@ -138,7 +138,6 @@ public class PlacementManager : MonoBehaviour
             {
                 preview.SetActive(false);
             }
-            Debug.Log("Placing Not Allowed");
             allowPlacement = false;
         }
     }
