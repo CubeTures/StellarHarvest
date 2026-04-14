@@ -564,49 +564,29 @@ public sealed class TerrainTilemap : MonoBehaviour
 
 	public bool CheckRange(Vector3 worldPosition, float abilityRange, Vector3 playerPos)
 	{
-		var cell = _tilemap.WorldToCell(worldPosition);
-		if (!initialBounds.Contains(cell))
-			return false;
+        var cell = _tilemap.WorldToCell(worldPosition);
+        if (!initialBounds.Contains(cell)) return false;
 
-		Vector3 cellWorldPos = _tilemap.CellToWorld(cell);
+        // 1. Get the exact center of the cell in world space
+        Vector3 cellCenter = _tilemap.GetCellCenterWorld(cell);
 
-		// In CheckRange, change cos(30) to match the ring's zScale of 1.5f
-		float cameraComp = 1f / 1.5f; // Match the ring's zScale
+        // 2. Flatten both positions to the gameplay plane
+        cellCenter.y = 1.5f;
+        Vector3 pPos = playerPos;
+        pPos.y = 1.5f;
 
-		Vector3 compensatedCellPos = new Vector3(
-			cellWorldPos.x,
-			1.5f,
-			cellWorldPos.z * cameraComp // divide by 1.5f, same as ring multiplying by 1.5f
-		);
+        // 3. Calculate distance accounting for the camera's Z perspective shift
+        Vector3 difference = cellCenter - pPos;
+        difference.z /= 1.5f; // Scale Z to match X visually
+        float distance = difference.magnitude;
 
-		Vector3 compensatedSize = new Vector3(xScale, 0f, zScale * cameraComp);
+        // 4. Check for Grass in the cell
+        bool hasGrass = HasGrassInCell(cell);
 
-		Bounds cellBounds = new Bounds(
-			compensatedCellPos + compensatedSize * 0.5f,
-			compensatedSize
-		);
+        Debug.Log($"Cell: {cell} | Target Dist: {distance} | Range: {abilityRange} | Has Grass: {hasGrass}");
 
-		Vector3 compensatedPlayer = new Vector3(playerPos.x, 1.5f, playerPos.z * cameraComp);
-
-		Vector3 closestPoint = cellBounds.ClosestPoint(compensatedPlayer);
-
-		float distance = Vector3.Distance(compensatedPlayer, closestPoint);
-
-		Debug.Log(
-			"Player Position: "
-				+ compensatedPlayer
-				+ " Cell: "
-				+ cell
-				+ " Cell World Pos: "
-				+ cellWorldPos
-				+ " Closest Cell Edge: "
-				+ closestPoint
-				+ " Distance: "
-				+ distance
-		);
-
-		return distance <= abilityRange;
-	}
+        return distance <= abilityRange && !hasGrass;
+    }
 
 	public bool CheckTilled(Vector3 worldPos)
 	{
@@ -623,7 +603,29 @@ public sealed class TerrainTilemap : MonoBehaviour
 		return false;
 	}
 
-	private void RefreshCell(Vector3Int cell)
+    // Reusable helper method to check for any script in a given tilemap cell
+    public bool HasGrassInCell(Vector3Int cell)
+    {
+        Vector3 cellCenter = _tilemap.GetCellCenterWorld(cell);
+
+        // Half-extents match the size of the cell. 
+        // Scaling Y to 0.5f creates a 1-unit tall detection box.
+        Vector3 halfExtents = new Vector3(_tilemap.cellSize.x / 2f, 0.5f, _tilemap.cellSize.y / 2f);
+
+        Collider[] colliders = Physics.OverlapBox(cellCenter, halfExtents, Quaternion.identity);
+
+        foreach (var col in colliders)
+        {
+            if (col.GetComponent<Grass>() != null)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private void RefreshCell(Vector3Int cell)
 	{
 		Debug.Log("refresheed");
 		if (!_tilledCells.Contains(cell))
