@@ -128,6 +128,10 @@ MonoBehaviour:
   flyingState: 0
   damage: 3
   cost: 1
+  minGroupSize: 2
+  maxGroupSize: 5
+  groupSpread: 2
+  groupSizeScale: 0.5
   attackDuration: 0.25
   attackCooldown: 1
   flyHeight: 3

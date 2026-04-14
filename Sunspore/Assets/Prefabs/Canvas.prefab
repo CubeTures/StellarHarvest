@@ -901,7 +901,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -0.000061035156}
+  m_AnchoredPosition: {x: 0, y: -0.000030517578}
   m_SizeDelta: {x: 0.000061035, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &103907840378814452
@@ -3870,7 +3870,6 @@ RectTransform:
   - {fileID: 4639150419458974503}
   - {fileID: 2930692587102299576}
   - {fileID: 5934679347892273551}
-  - {fileID: 1847583204949427027}
   - {fileID: 969651359562635680}
   - {fileID: 900739928946598325}
   - {fileID: 6362164278806163307}
@@ -5344,7 +5343,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 8847202417122014133}
   m_HandleRect: {fileID: 533391216297110222}
   m_Direction: 2
-  m_Value: 1.0000002
+  m_Value: 0.9999998
   m_Size: 0.8112864
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -10108,41 +10107,6 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
---- !u!1 &3441068620630050587
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1847583204949427027}
-  m_Layer: 5
-  m_Name: Enemy Manager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &1847583204949427027
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3441068620630050587}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 6026573916693021106}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
-  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &3469606589760428418
 GameObject:
   m_ObjectHideFlags: 0
@@ -14507,7 +14471,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.000061035156}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &7373573239328364013
@@ -16863,7 +16827,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: -0.00030517578, y: -0.000061035156}
+  m_AnchoredPosition: {x: -0.00030517578, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!222 &938694540870583993
@@ -22097,16 +22061,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0faeda9a103492f4392195c62b56c4ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Sunspore::Sunspore.EnemySpawner
-  enemy:
-  - {fileID: 4210650941200008513, guid: b3c0a71d8e9c2c043bbf18f2a2668d4c, type: 3}
-  - {fileID: 4210650941200008513, guid: be9fdeffc064963479430e9ae199095e, type: 3}
-  - {fileID: 4210650941200008513, guid: 381e6d23dd7ea4d49a81c7df77cfd4f3, type: 3}
-  - {fileID: 4210650941200008513, guid: bdc2cb3d96587e54f98910232d21c750, type: 3}
+  niblet: {fileID: 4210650941200008513, guid: b3c0a71d8e9c2c043bbf18f2a2668d4c, type: 3}
+  glutton: {fileID: 4210650941200008513, guid: be9fdeffc064963479430e9ae199095e, type: 3}
+  gnasher: {fileID: 4210650941200008513, guid: bdc2cb3d96587e54f98910232d21c750, type: 3}
+  skybite: {fileID: 4210650941200008513, guid: 381e6d23dd7ea4d49a81c7df77cfd4f3, type: 3}
   dayNightManager: {fileID: 7067304971246511516}
   player: {fileID: 0}
   enemiesPerSecond: 0.5
   waveAmount: 0
   spawning: 0
+  groupSpawnChance: 0.3
 --- !u!1 &7649559746188697910
 GameObject:
   m_ObjectHideFlags: 0

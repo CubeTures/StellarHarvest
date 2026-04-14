@@ -76,6 +76,8 @@ public sealed class TerrainTilemap : MonoBehaviour
 
 	[SerializeField, Range(0f, 2f)]
 	private float noiseSpawnBoost = 1f;
+	[SerializeField]
+	private Vector2 noiseSpawnYOffset = new Vector2(-0.1f, 0.1f);
 
 	[SerializeField, Range(0f, 1f)]
 	private float bushWeight = 0.45f;
@@ -116,7 +118,7 @@ public sealed class TerrainTilemap : MonoBehaviour
 	private float bushOutsideClusterSpawnChance = 0.07f;
 
 	[Tooltip("Extra bush instances spawned in a tight ring around each bush roll so sprites overlap.")]
-	[SerializeField, Range(0, 16)]
+	[SerializeField]
 	private int bushOverlapExtraSpawns = 5;
 
 	[Tooltip("World XZ radius for overlap spawns (smaller = tighter pile).")]
@@ -374,7 +376,7 @@ public sealed class TerrainTilemap : MonoBehaviour
 				continue;
 			}
 
-			Vector3 spawnPos = new Vector3(wx, transform.position.y, wz);
+			Vector3 spawnPos = new Vector3(wx, transform.position.y + Random.Range(noiseSpawnYOffset.x, noiseSpawnYOffset.y), wz);
 			GameObject spawned = Instantiate(prefabToSpawn, spawnPos, Quaternion.identity, parent);
 			ApplySpriteSortingByY(spawned);
 			_spawnedProps.Add(spawned);

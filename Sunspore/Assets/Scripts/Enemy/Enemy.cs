@@ -13,6 +13,13 @@ namespace Sunspore
         public FlyingState flyingState = FlyingState.AIRBORNE;
         [SerializeField] int damage = 10;
         [SerializeField] public int cost = 1;
+
+        [Header("Group Spawning")]
+        [SerializeField] public int minGroupSize = 2;
+        [SerializeField] public int maxGroupSize = 4;
+        [SerializeField] public float groupSpread = 2f;
+        [SerializeField] public float groupSizeScale = 0.5f;
+
         [SerializeField] float attackDuration = 0.25f;
         [SerializeField] float attackCooldown = 1.0f;
         [SerializeField] float flyHeight = 3f;
