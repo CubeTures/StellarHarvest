@@ -15,13 +15,11 @@ MonoBehaviour:
   recipeName: Sword
   recipeType: 0
   category: 2
-  ingredients:
-  - item: {fileID: 11400000, guid: b216deef74420864cba9d71bb224dd60, type: 2}
-    amount: 1
+  ingredients: []
   resultItem:
   - item: {fileID: 11400000, guid: e6a7e8497a422434c9c3d117b7d67aad, type: 2}
     amount: 1
   description: Not Crafted
-  creditCost: 0
+  creditCost: 400
   creditReward: 0
   disabled: 0

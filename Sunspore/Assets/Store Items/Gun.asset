@@ -15,13 +15,11 @@ MonoBehaviour:
   recipeName: Gun
   recipeType: 0
   category: 2
-  ingredients:
-  - item: {fileID: 11400000, guid: b216deef74420864cba9d71bb224dd60, type: 2}
-    amount: 1
+  ingredients: []
   resultItem:
   - item: {fileID: 11400000, guid: 58d6f416806a6564bb13c2c1cfd41088, type: 2}
     amount: 1
   description: Not Crafted
-  creditCost: 0
+  creditCost: 400
   creditReward: 0
   disabled: 0

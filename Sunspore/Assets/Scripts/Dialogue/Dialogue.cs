@@ -5,6 +5,7 @@ using System.Globalization;
 using System.Text.RegularExpressions;
 using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -38,12 +39,14 @@ namespace Sunspore
         Animator _animator;
         AudioSource _audioSource;
         private bool _exitTriggered = false;
+        private PlayerInput playerInput;
 
         void Awake()
         {
             _animator = GetComponent<Animator>();
 
             _audioSource = GetComponent<AudioSource>();
+            playerInput = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerInput>();
 
             if (_animator == null)
             {
@@ -172,6 +175,7 @@ namespace Sunspore
             {
                 SetSpeakerUI(currentMessageIndex);
                 typewriterCoroutine = StartCoroutine(TypeWriterEffect()); // Start with typewriter effect
+                playerInput.DeactivateInput();
             }
 
             dialogueActive = true;
@@ -206,6 +210,7 @@ namespace Sunspore
                             {
                                 _exitTriggered = true;
                                 _animator.SetTrigger("Exit");
+                                playerInput.ActivateInput();
                                 Debug.Log("End of tutorial");
                             }
                         }
@@ -214,6 +219,10 @@ namespace Sunspore
                     {
                         isEvent = true;
                         Debug.Log("EVENT detected - pausing dialogue");
+                        string objective = characterNameList[currentMessageIndex]?.Trim();
+                        NotificationManager.Instance.PushFixedNotification(objective);
+                        playerInput.ActivateInput();
+                        _animator.SetTrigger("Exit");
                     }
                     else
                     {
@@ -227,6 +236,7 @@ namespace Sunspore
                     {
                         _exitTriggered = true;
                         _animator.SetTrigger("Exit");
+                        playerInput.ActivateInput();
                         Debug.Log("End of tutorial");
                     }
                 }
@@ -297,6 +307,9 @@ namespace Sunspore
             // Debug.Log("CompleteEvent called - resuming dialogue");
             isEvent = false;
             Debug.Log("EVENT completed - resuming dialogue");
+            NotificationManager.Instance.PopFixedNotification();
+            playerInput.DeactivateInput();
+            _animator.SetTrigger("Enter");
             currentMessageIndex++;
 
             if (currentMessageIndex < messageList.Length)
@@ -321,6 +334,7 @@ namespace Sunspore
             }
             else
             {
+                playerInput.ActivateInput();
                 _animator.SetTrigger("Exit");
             }
 
