@@ -17,7 +17,7 @@ class PaymentTimeline : MonoBehaviour
 
 	int amount = 0;
 	bool canPay = false;
-	float startTime, dueTime;
+	float startTime, dueTime, gameTime;
 
 	public void SetDayNightManager(DayNightManager dayNightManager)
 	{
@@ -51,17 +51,22 @@ class PaymentTimeline : MonoBehaviour
 
 	public void SetDueDate(float time, bool setStart = true)
 	{
-		startTime = setStart ? Time.time : startTime;
+		startTime = setStart ? 0 : startTime;
 		dueTime = time;
 	}
 
 	void Update()
 	{
-		float remaining = (dueTime - Time.time) / (dueTime - startTime);
+		if (!dayNightManager.timeStopped)
+		{
+			gameTime += Time.deltaTime;
+		}
+
+		float remaining = (dueTime - gameTime) / (dueTime - startTime);
 		timelineInner.sizeDelta = new(timelineOuter.sizeDelta.x * (1 - remaining), timelineInner.sizeDelta.y);
 
 		string label = "Due ";
-		int days = (int)((dueTime - Time.time) / dayNightManager.dayLengthSeconds);
+		int days = (int)((dueTime - gameTime) / dayNightManager.dayLengthSeconds);
 		if (days == 0)
 		{
 			label += "Today";
@@ -79,7 +84,7 @@ class PaymentTimeline : MonoBehaviour
 
 	public bool IsDue()
 	{
-		return Time.time >= dueTime;
+		return gameTime >= dueTime;
 	}
 
 	public float GetDueTime()

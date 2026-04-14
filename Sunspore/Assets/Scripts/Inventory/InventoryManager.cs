@@ -384,6 +384,24 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
         }
     }
 
+    public bool HasHotbarItem(ItemSO item)
+    {
+        foreach (var slot in hotbarSlots)
+        {
+            InventorySlot sl = slot.GetComponent<InventorySlot>();
+            if (sl != null && sl.heldItem != null)
+            {
+                InventoryItem ii = sl.heldItem.GetComponent<InventoryItem>();
+                if (ii != null && item.displayName == ii.itemScriptableObject.displayName)
+                {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
     // public void AddItem(ItemSO item)
     // {
     //     inventory.AddItem(item);

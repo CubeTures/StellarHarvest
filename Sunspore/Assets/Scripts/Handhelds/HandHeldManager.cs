@@ -75,7 +75,7 @@ namespace Sunspore
         {
             // If lieft click attack
 
-            if (enabled && !EventSystem.current.IsPointerOverGameObject() && Input.GetMouseButtonDown(0) && Time.time >= lastAttackTime + handHeld.attackCooldown)
+            if (enabled && !EventSystem.current.IsPointerOverGameObject() && Input.GetMouseButtonDown(0) && Time.time >= lastAttackTime + handHeld.attackCooldown && !TutorialManager.Instance.IsTutorialActive)
             {
                 Vector3 mouseWorldPos = GetMouseWorldPosition();
                 Attack(mouseWorldPos, false);

@@ -6,6 +6,7 @@ public class OpenInventoryStep : TutorialStep
 
     public override void Begin()
     {
+        PlayerPrefManager.SetInventoryOpenCount(0);
         Debug.Log("Dialog: Press E to open your inventory and toolbelt.");
     }
 

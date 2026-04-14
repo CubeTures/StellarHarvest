@@ -43,9 +43,9 @@ class DebtManager : MonoBehaviour
 		unityEvent.AddListener(MakePayment);
 		currentTimeline.SetOnClick(unityEvent);
 
-		startTime = Time.time;
+		startTime = 0;
 		currentTimeline.SetAmount(receipt[0].price);
-		currentTimeline.SetDueDate(2 * dayNightManager.dayLengthSeconds + startTime);
+		currentTimeline.SetDueDate(0.001f);
 		currentTimeline.SetCanPay(true);
 
 		for (int i = 1; i < payments.Length; i++)
@@ -53,7 +53,7 @@ class DebtManager : MonoBehaviour
 			GameObject upcoming = Instantiate(upcomingPrefab, upcomingParent);
 			PaymentTimeline timeline = upcoming.GetComponent<PaymentTimeline>();
 			timeline.SetDayNightManager(dayNightManager);
-			timeline.SetDueDate(2 * (i + 1) * dayNightManager.dayLengthSeconds + startTime);
+			timeline.SetDueDate(2 * i * dayNightManager.dayLengthSeconds);
 			timeline.SetAmount(payments[i]);
 		}
 
@@ -140,6 +140,7 @@ class DebtManager : MonoBehaviour
 	{
 		if (wallet.GetAmount() >= OwedAmount())
 		{
+			TutorialManager.Instance.BroadcastSignal(TutorialManager.Actions.DEBT);
 			wallet.Subtract(OwedAmount());
 			receipt.Clear();
 			AddNextPayment();
@@ -158,7 +159,7 @@ class DebtManager : MonoBehaviour
 
 			// missed last payment; keep going
 			currentTimeline.SetAmount(OwedAmount());
-			currentTimeline.SetDueDate(2 * dayNightManager.dayLengthSeconds + Time.time);
+			currentTimeline.SetDueDate(2 * dayNightManager.dayLengthSeconds);
 		}
 		else
 		{
