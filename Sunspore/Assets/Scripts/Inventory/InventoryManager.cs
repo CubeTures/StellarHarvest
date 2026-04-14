@@ -5,7 +5,6 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using System;
 using System.Collections;
-using UnityEditor.Graphs;
 
 public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 {
