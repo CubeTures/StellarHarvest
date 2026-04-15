@@ -9,6 +9,7 @@ using UnityEngine;
             HandHeld.WeaponHandle handle;
             Animator _anim;
             SpriteRenderer _sr;
+            SpriteRenderer playerSr;
             public SpriteRenderer headSr;
 
             int _currentDirection = -1;
@@ -19,6 +20,25 @@ using UnityEngine;
             {
                 _anim = GetComponent<Animator>();
                 _sr = GetComponent<SpriteRenderer>();
+
+                var headTransform = transform.Find("WeaponHead");
+                if (headTransform != null)
+                {
+                    headSr = headTransform.GetComponent<SpriteRenderer>();
+                }
+
+                if (headSr == null)
+                {
+                    var renderers = GetComponentsInChildren<SpriteRenderer>();
+                    foreach (var renderer in renderers)
+                    {
+                        if (renderer != _sr)
+                        {
+                            headSr = renderer;
+                            break;
+                        }
+                    }
+                }
             }
 
             public void TypeUpdate(HandHeld.WeaponHandle newHandle)
