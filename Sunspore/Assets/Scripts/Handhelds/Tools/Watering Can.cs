@@ -14,6 +14,7 @@ namespace Sunspore
                 if (plant != null)
                 {
                     plant.WaterPlant();
+                    TutorialManager.Instance.BroadcastSignal(TutorialManager.Actions.WATERING_CAN);
                     //Debug.Log("Plant Watered");
                     //else
                     //{

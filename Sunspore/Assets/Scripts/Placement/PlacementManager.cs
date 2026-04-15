@@ -233,6 +233,7 @@ public class PlacementManager : MonoBehaviour
         player.animFinished = false;
         placingCoroutine = null;
         isPlacing = false;
+        TutorialManager.Instance.BroadcastSignal(TutorialManager.Actions.PLANT);
         //Debug.Log("done placing");
     }
     public bool ScreenToWorld(Vector2 screenPosition, out Vector3 worldPosition)
