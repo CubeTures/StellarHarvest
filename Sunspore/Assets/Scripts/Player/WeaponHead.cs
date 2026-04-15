@@ -9,11 +9,19 @@ using UnityEngine;
             HandHeld.WeaponHead head;
             Player player;
             int sortOrder = 0;
+            private enum SlashEffect { METAL = 1 };
+
+
             void Awake()
             {
                 _anim = GetComponent<Animator>();
                 _sr = GetComponent<SpriteRenderer>();
+                if (_sr == null)
+                {
+                    _sr = GetComponentInChildren<SpriteRenderer>();
+                }
                 player = GetComponentInParent<Player>();
+                
                 SetSwingTransform(1, false);
             }
 
@@ -22,10 +30,34 @@ using UnityEngine;
                 sortOrder = player.spriteRenderer.sortingOrder;
                 _sr.sortingOrder = sortOrder;
             }
-            public void TypeUpdate(HandHeld.WeaponHead newHead)
+            public void TypeUpdate(HandHeld.WeaponHead newHead, HandHeld handheld)
             {
                 head = newHead;
-                _anim.SetInteger("Type", (int)head);
+                if (handheld != null && handheld.headSprite != null)
+                {
+                    _sr.sprite = handheld.headSprite;
+                }
+
+                switch(head)
+                {
+                    case HandHeld.WeaponHead.SHOVEL:
+                        _anim.SetInteger("Type", (int)SlashEffect.METAL);
+                        Debug.Log("Shovel equipped");
+                        break;
+
+                    case HandHeld.WeaponHead.HOE:
+                        _anim.SetInteger("Type", (int)SlashEffect.METAL);
+                        Debug.Log("Hoe equipped");
+                        break;
+
+                    case HandHeld.WeaponHead.SCYTHE:
+                        _anim.SetInteger("Type", (int)SlashEffect.METAL);
+                        Debug.Log("Scythe equipped");
+                        break;
+
+                    default:
+                        break;
+                }
             }
             public void Swing()
             {

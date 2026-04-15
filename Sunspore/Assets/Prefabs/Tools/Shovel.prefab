@@ -60,9 +60,9 @@ MonoBehaviour:
   weapon: 0
   tool: 1
   cancelable: 1
-  head: 0
-  handle: 0
-  attackSound: {fileID: 8300000, guid: f081fe3db9be3de4082a601d32ec4be6, type: 3}
+  headSprite: {fileID: 21300000, guid: 3330d7d8750c7a9478fc763b724990a5, type: 3}
+  head: 1
+  handle: 1
 --- !u!82 &3141578772844438297
 AudioSource:
   m_ObjectHideFlags: 0

@@ -26,7 +26,7 @@ namespace Sunspore
         private Player playerScript;
 
         private HandHeld handHeld;
-        public HandHeld.WeaponHead head = HandHeld.WeaponHead.METAL;
+        public HandHeld.WeaponHead head;
         public HandHeld.WeaponHandle handle = HandHeld.WeaponHandle.WOOD;
         private Coroutine abilityCoroutine;
         [SerializeField] LineRenderer abilityRangeRing;
@@ -253,8 +253,9 @@ namespace Sunspore
             handHeld = handHeldPrefab.GetComponent<HandHeld>();
             offset = handHeld.attackRange / 2;
             hitArea.z = handHeld.attackRange;
-            playerScript.weaponHead.TypeUpdate(head);
+            playerScript.weaponHead.TypeUpdate(handHeld.head, handHeld);
             playerScript.weaponBase.TypeUpdate(handle);
+            playerScript.weaponBase.SetHeadSprite(handHeld.headSprite);
             //hitArea.x = handHeld.abilityRange;
 
             //if (!melee)
