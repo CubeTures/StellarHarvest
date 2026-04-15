@@ -28,10 +28,14 @@ namespace Sunspore
 
 
         // Scythe no longer attacks when harvesting
-        public override void AttackWithAbility(Vector3 boxCenter, Vector3 hitArea, Quaternion boxRotation, Vector3 mousePos, Vector3 Playerpos)
+        public override void AttackWithAbility(Vector3 boxCenter, Vector3 hitArea, Quaternion boxRotation, Vector3 mousePos, Vector3 Playerpos, bool z)
         {
+            hitArea.z = abilityRange;
+            if (z)
+            {
+                hitArea.z *= 1.5f;
+            }
             // Attack
-            hitArea.x = abilityRange;
             Collider[] hitTargets = Physics.OverlapBox(
                boxCenter,
                hitArea / 2f,

@@ -50,7 +50,7 @@ MonoBehaviour:
   attackCooldown: 0.75
   attackDuration: 0.25
   abilityDuration: 1
-  attackRange: 2.5
+  attackRange: 1.75
   abilityRange: 5
   knockback: 0
   handHeldSprite: {fileID: 0}

@@ -51,7 +51,7 @@ MonoBehaviour:
   attackDuration: 0.25
   abilityDuration: 0
   attackRange: 2.75
-  abilityRange: 3.5
+  abilityRange: 1.5
   knockback: 0
   handHeldSprite: {fileID: 0}
   attackAnimation: {fileID: 0}

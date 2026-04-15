@@ -35,6 +35,9 @@ namespace Sunspore
         private float castTime = 0;
         public UnityEvent<float> OnAbility;
 
+        private float zScale = 1.0f;
+        private bool z = false;
+
         private void Awake()
         {
             if (Instance == null)
@@ -53,7 +56,7 @@ namespace Sunspore
         {
             // Setting up direction and attackBox
 
-            hitArea = new Vector3(1.0f, 2.5f, 1.0f);
+            hitArea = new Vector3(1.25f, 2.5f, 1.0f);
             directions[0] = new Vector3(0.0f, 0.0f, -1.0f);
             directions[1] = new Vector3(1.0f, 0.0f, 0.0f);
             directions[2] = new Vector3(0.0f, 0.0f, 1.0f);
@@ -155,7 +158,7 @@ namespace Sunspore
             Vector3 mouseDir = (mouseWorldPos - playerPos).normalized;
             if (ability)
             {
-                handHeld.AttackWithAbility(boxCenter, hitArea, boxRotation, mouseDir, playerPos);
+                handHeld.AttackWithAbility(boxCenter, hitArea, boxRotation, mouseDir, playerPos, z);
             }
             else
             {
@@ -170,15 +173,19 @@ namespace Sunspore
                 playerScript.Swing();
             }
         }
-        // private void OnDrawGizmos()
-        // {
-        //     Quaternion boxRotation = currDirection != Vector3.zero
-        //         ? Quaternion.LookRotation(currDirection)
-        //         : player.transform.rotation;
-        //     Gizmos.color = Color.red;
-        //     Gizmos.matrix = Matrix4x4.TRS(boxCenter, boxRotation, Vector3.one);
-        //     Gizmos.DrawWireCube(Vector3.zero, hitArea * 1.5f);
-        // }
+        private void OnDrawGizmos()
+        {
+            if(player == null)
+            {
+                return;
+            }
+            Quaternion boxRotation = currDirection != Vector3.zero
+                ? Quaternion.LookRotation(currDirection)
+                : player.transform.rotation;
+            Gizmos.color = Color.red;
+            Gizmos.matrix = Matrix4x4.TRS(boxCenter, boxRotation, Vector3.one);
+            Gizmos.DrawWireCube(Vector3.zero, hitArea * 1.5f);
+        }
 
         private IEnumerator AbilityDelayCoroutine(Player player, Ray ray, float delay)
         {
@@ -236,11 +243,30 @@ namespace Sunspore
                 CancelAbility();
             }
             currDirection = directions[dir-1];
+            Debug.Log("Direction set to: " + currDirection);
         }
 
         // Sets attackBox direction to currDirection
         private void updateDirection()
         {
+            hitArea.z = 1.0f * handHeld.attackRange;
+
+            // Update scale of attackBox based on direction
+            if (currDirection == Vector3.forward || currDirection == Vector3.back)
+            {
+                zScale = 1.5f;
+                z = true;
+            }
+            else if (currDirection == Vector3.right || currDirection == Vector3.left)
+            {
+                zScale = 1.0f;
+                z = false;
+            }
+
+            hitArea.z *= zScale;
+
+            offset = hitArea.z / 2;
+
             boxRotation = currDirection != Vector3.zero
                 ? Quaternion.LookRotation(currDirection)
                 : player.transform.rotation;
