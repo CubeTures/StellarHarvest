@@ -50,7 +50,7 @@ namespace Sunspore
         protected float _initialSeedToJuvenileTime;
         protected float _initialJuvenileToFullyGrownTime;
         protected Animator _anim;
-        protected float _health = 50f;
+        protected float _health = 150f;
         protected Pathfinding pathfinding;
         public bool transitionFinish;
 

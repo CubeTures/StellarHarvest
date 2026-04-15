@@ -46,7 +46,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Sunspore::Sunspore.Sword
   handHeldName: Sword
-  damage: 25
+  damage: 75
   attackCooldown: 0.25
   attackDuration: 0.25
   abilityDuration: 0
@@ -62,7 +62,6 @@ MonoBehaviour:
   cancelable: 0
   head: 1
   handle: 1
-  attackSound: {fileID: 8300000, guid: 9f596d50538839743b707c5a6ea14382, type: 3}
 --- !u!82 &-2809568923698506592
 AudioSource:
   m_ObjectHideFlags: 0

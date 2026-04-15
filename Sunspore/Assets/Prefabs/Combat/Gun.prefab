@@ -46,7 +46,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Sunspore::Sunspore.Gun
   handHeldName: Gun
-  damage: 25
+  damage: 50
   attackCooldown: 0.25
   attackDuration: 3
   abilityDuration: 0
@@ -62,7 +62,6 @@ MonoBehaviour:
   cancelable: 0
   head: 0
   handle: 0
-  attackSound: {fileID: 8300000, guid: c0bb08e2f04569e4491d0bd1e9964dfc, type: 3}
   speed: 15
   bulletPrefab: {fileID: 7437182469646719332, guid: 6765f237a9f3f7341bf8f7b003107c0f, type: 3}
 --- !u!82 &8183989431452803207

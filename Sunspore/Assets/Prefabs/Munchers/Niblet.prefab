@@ -26,7 +26,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1583885426664768335, guid: 4393b48af626182408c439887b60415a, type: 3}
       propertyPath: m_Radius
-      value: 0.6
+      value: 0.75
       objectReference: {fileID: 0}
     - target: {fileID: 1583885426664768335, guid: 4393b48af626182408c439887b60415a, type: 3}
       propertyPath: m_Center.y
@@ -81,12 +81,20 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6822131166460621233, guid: 4393b48af626182408c439887b60415a, type: 3}
+      propertyPath: m_Speed
+      value: 2.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6822131166460621233, guid: 4393b48af626182408c439887b60415a, type: 3}
       propertyPath: m_Height
       value: 1.2
       objectReference: {fileID: 0}
     - target: {fileID: 6822131166460621233, guid: 4393b48af626182408c439887b60415a, type: 3}
       propertyPath: m_Radius
       value: 0.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 6822131166460621233, guid: 4393b48af626182408c439887b60415a, type: 3}
+      propertyPath: m_BaseOffset
+      value: -0.05
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 7561344218795518820, guid: 4393b48af626182408c439887b60415a, type: 3}
@@ -114,12 +122,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae32ad0855b7d4e4f9da335d55dea86d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Sunspore::SwarmEnemy
-  health: 100
-  maxHealth: 100
+  health: 25
+  maxHealth: 25
   enemyType: 0
   flyingState: 0
-  damage: 10
+  damage: 1
   cost: 1
+  minGroupSize: 3
+  maxGroupSize: 100
+  groupSpread: 4
+  groupSizeScale: 0.5
   attackDuration: 1
   attackCooldown: 1
   flyHeight: 3
