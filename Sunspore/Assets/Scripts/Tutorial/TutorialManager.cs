@@ -1,9 +1,24 @@
+using System;
 using System.Collections.Generic;
 using Sunspore;
 using UnityEngine;
 
 public class TutorialManager : MonoBehaviour
 {
+    [Serializable]
+    public enum Actions
+    {
+        HOE,
+        WATERING_CAN,
+        SCYTHE,
+        HOTBAR,
+        PLANT,
+        DEBT,
+    }
+
+    public delegate void OnSignal(Actions action);
+    public OnSignal onSignalSubscribers;
+
     public static TutorialManager Instance;
 
     [SerializeField]
@@ -11,9 +26,11 @@ public class TutorialManager : MonoBehaviour
     private int currentStepIndex;
     [HideInInspector]
     public int TutorialStepLength;
+    public Dictionary<string, int> availableActions = new();
 
     /// <summary>True while there is an active step; false after the last step completes.</summary>
     public bool IsTutorialActive => steps != null && currentStepIndex < steps.Count;
+    bool stepActive = false;
 
     private void Awake()
     {
@@ -36,19 +53,21 @@ public class TutorialManager : MonoBehaviour
 
     void Update()
     {
-        if (currentStepIndex < steps.Count)
+        if (stepActive && currentStepIndex < steps.Count)
         {
             steps[currentStepIndex].Check();
         }
     }
 
-    private void StartStep()
+    public void StartStep()
     {
+        stepActive = true;
         steps[currentStepIndex].Begin();
     }
 
     public void CompleteStep()
     {
+        stepActive = false;
         steps[currentStepIndex].End();
         currentStepIndex++;
         PlayerPrefManager.SetTutorialStep(currentStepIndex);
@@ -61,24 +80,42 @@ public class TutorialManager : MonoBehaviour
         {
             DialogueManager._dm.CompleteEvent();
         }
+    }
 
-        Debug.Log("Tutorial Step: " + currentStepIndex);
-
-        if (currentStepIndex < steps.Count)
+    public void CompleteTutorial()
+    {
+        currentStepIndex = steps.Count;
+        Debug.Log("Tutorial Complete");
+        if (DayNightManager.Instance != null)
         {
-            StartStep();
+            DayNightManager.Instance.startTime();
         }
         else
         {
-            Debug.Log("Tutorial Complete");
-            if (DayNightManager.Instance != null)
+            Debug.LogWarning("Tutorial complete but DayNightManager.Instance is null.");
+        }
+    }
+
+    public void BroadcastSignal(Actions action)
+    {
+        if (!IsTutorialActive) return;
+        if (onSignalSubscribers == null) return;
+        foreach (OnSignal onSignal in onSignalSubscribers.GetInvocationList())
+        {
+            if (onSignal != null)
             {
-                DayNightManager.Instance.startTime();
-            }
-            else
-            {
-                Debug.LogWarning("Tutorial complete but DayNightManager.Instance is null.");
+                onSignal.Invoke(action);
             }
         }
+    }
+
+    public void SubscribeBroadcast(OnSignal onSignal)
+    {
+        onSignalSubscribers += onSignal;
+    }
+
+    public void UnsubscribeBroadcast(OnSignal onSignal)
+    {
+        onSignalSubscribers -= onSignal;
     }
 }

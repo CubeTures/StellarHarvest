@@ -6,6 +6,7 @@ public class MoveStep : TutorialStep
 
     public override void Begin()
     {
+        PlayerPrefManager.SetMoveCount(0);
         Debug.Log("Dialog: Use WASD to move around.");
     }
 

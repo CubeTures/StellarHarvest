@@ -24,7 +24,7 @@ namespace Sunspore
         GameManager gm;
 
         private float timeOfDay = 0f;
-        private bool timeStopped = false;
+        public bool timeStopped = false;
         private bool isNight = false;
         private bool isDay = false;
 

@@ -13,6 +13,7 @@ namespace Sunspore
             {
                 TerrainTilemap.Instance.TillAtWorldPosition(hit.point, abilityRange, player.transform.position);
                 SFXManager._sfxManager.PlaySound("plant");
+                TutorialManager.Instance.BroadcastSignal(TutorialManager.Actions.HOE);
             }
         }
 

@@ -1,0 +1,106 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &108361487049205696
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 909548397648102177, guid: 04fad9b53f5c6004ea1d478f93f95fd0, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 909548397648102177, guid: 04fad9b53f5c6004ea1d478f93f95fd0, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 909548397648102177, guid: 04fad9b53f5c6004ea1d478f93f95fd0, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 909548397648102177, guid: 04fad9b53f5c6004ea1d478f93f95fd0, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 909548397648102177, guid: 04fad9b53f5c6004ea1d478f93f95fd0, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 909548397648102177, guid: 04fad9b53f5c6004ea1d478f93f95fd0, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 909548397648102177, guid: 04fad9b53f5c6004ea1d478f93f95fd0, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 909548397648102177, guid: 04fad9b53f5c6004ea1d478f93f95fd0, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 909548397648102177, guid: 04fad9b53f5c6004ea1d478f93f95fd0, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 909548397648102177, guid: 04fad9b53f5c6004ea1d478f93f95fd0, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5854925016969665656, guid: 04fad9b53f5c6004ea1d478f93f95fd0, type: 3}
+      propertyPath: m_Name
+      value: Glowbud
+      objectReference: {fileID: 0}
+    - target: {fileID: 8633607651646711802, guid: 04fad9b53f5c6004ea1d478f93f95fd0, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 897d4b9e6162339498133441461da7c2, type: 3}
+    - target: {fileID: 8633607651646711802, guid: 04fad9b53f5c6004ea1d478f93f95fd0, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 7c09187c3232f4d40a599b690faf0cfd, type: 2}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 5854925016969665656, guid: 04fad9b53f5c6004ea1d478f93f95fd0, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -6247784100498609250}
+  m_SourcePrefab: {fileID: 100100000, guid: 04fad9b53f5c6004ea1d478f93f95fd0, type: 3}
+--- !u!1 &5818691928671189944 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5854925016969665656, guid: 04fad9b53f5c6004ea1d478f93f95fd0, type: 3}
+  m_PrefabInstance: {fileID: 108361487049205696}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &-6247784100498609250
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5818691928671189944}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e729a5e3f46ee7d478efbf69bf3f1d7a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Sunspore::Sunspore.Glowbud
+  plantType: 0
+  seedSprite: {fileID: 21300000, guid: 897d4b9e6162339498133441461da7c2, type: 3}
+  juvenileSprite: {fileID: 21300000, guid: d025fa658b1b5674180591472e7fdb84, type: 3}
+  fullyGrownSprite: {fileID: 21300000, guid: 23eea3953dab7fb48895cf8cb08ae9a0, type: 3}
+  seedToJuvenileTime: 15
+  juvenileToFullyGrownTime: 15
+  growthTimeVariance: 5
+  watered: 0
+  harvestSound: {fileID: 8300000, guid: 35cccfa738cfa6743ba1d2f761199e1d, type: 3}
+  growSound: {fileID: 8300000, guid: 35cccfa738cfa6743ba1d2f761199e1d, type: 3}
+  plantSound: {fileID: 8300000, guid: 35cccfa738cfa6743ba1d2f761199e1d, type: 3}
+  attackSound: {fileID: 0}
+  glowEffect: {fileID: 2446270667391804717, guid: f46e2420a80d0964e9afd78cde433563, type: 3}
+  waterDropPrefab: {fileID: 4431333523166555220, guid: 3217ed6309e93434d8f7671159028d59, type: 3}
+  seedItem: {fileID: 11400000, guid: 1fae9a5c2adca514aa689b793b1dc726, type: 2}
+  plantItem: {fileID: 11400000, guid: 61d2fb666c5c362448c71a2ed49a50b7, type: 2}
+  _transitionTimer: 0
+  currentStage: 0
+  transitionFinish: 0

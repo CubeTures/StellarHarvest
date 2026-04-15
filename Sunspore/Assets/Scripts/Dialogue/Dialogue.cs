@@ -5,6 +5,7 @@ using System.Globalization;
 using System.Text.RegularExpressions;
 using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -38,12 +39,15 @@ namespace Sunspore
         Animator _animator;
         AudioSource _audioSource;
         private bool _exitTriggered = false;
+        private PlayerInput playerInput;
+        private int completeEventsQueue = 0;
 
         void Awake()
         {
             _animator = GetComponent<Animator>();
 
             _audioSource = GetComponent<AudioSource>();
+            playerInput = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerInput>();
 
             if (_animator == null)
             {
@@ -82,7 +86,10 @@ namespace Sunspore
                     );
                 }
             }
+        }
 
+        void Start()
+        {
             StartDialogue();
         }
 
@@ -164,6 +171,7 @@ namespace Sunspore
             {
                 isEvent = true;
                 Debug.Log("EVENT detected at start - pausing dialogue");
+                TutorialManager.Instance.StartStep();
                 // messageText.text = ""; // Clear the text so "EVENT" doesn't show
                 // Debug.Log("EVENT detected at start - pausing dialogue");
                 // Don't start TypeWriterEffect, wait for CompleteEvent() to be called
@@ -172,6 +180,7 @@ namespace Sunspore
             {
                 SetSpeakerUI(currentMessageIndex);
                 typewriterCoroutine = StartCoroutine(TypeWriterEffect()); // Start with typewriter effect
+                playerInput.DeactivateInput();
             }
 
             dialogueActive = true;
@@ -206,7 +215,9 @@ namespace Sunspore
                             {
                                 _exitTriggered = true;
                                 _animator.SetTrigger("Exit");
+                                playerInput.ActivateInput();
                                 Debug.Log("End of tutorial");
+                                TutorialManager.Instance.CompleteTutorial();
                             }
                         }
                     }
@@ -214,6 +225,12 @@ namespace Sunspore
                     {
                         isEvent = true;
                         Debug.Log("EVENT detected - pausing dialogue");
+                        string objective = characterNameList[currentMessageIndex]?.Trim();
+                        NotificationManager.Instance.PushFixedNotification(objective);
+                        playerInput.ActivateInput();
+                        _animator.SetTrigger("Exit");
+                        TutorialManager.Instance.StartStep();
+
                     }
                     else
                     {
@@ -227,7 +244,9 @@ namespace Sunspore
                     {
                         _exitTriggered = true;
                         _animator.SetTrigger("Exit");
+                        playerInput.ActivateInput();
                         Debug.Log("End of tutorial");
+                        TutorialManager.Instance.CompleteTutorial();
                     }
                 }
             }
@@ -267,6 +286,14 @@ namespace Sunspore
             isTyping = false;
         }
 
+        public void CompleteDialog()
+        {
+            _exitTriggered = true;
+            _animator.SetTrigger("Exit");
+            playerInput.ActivateInput();
+            Debug.Log("End of tutorial");
+        }
+
         void SkipTypewriter()
         {
             // Stop the current typewriter coroutine
@@ -290,13 +317,16 @@ namespace Sunspore
         {
             if (!isEvent)
             {
-                Debug.LogWarning("CompleteEvent called but no event is active!");
+                Debug.LogError("Tried to complete dialog event when none was active");
                 return false;
             }
 
             // Debug.Log("CompleteEvent called - resuming dialogue");
             isEvent = false;
             Debug.Log("EVENT completed - resuming dialogue");
+            NotificationManager.Instance.PopFixedNotification();
+            playerInput.DeactivateInput();
+            _animator.SetTrigger("Enter");
             currentMessageIndex++;
 
             if (currentMessageIndex < messageList.Length)
@@ -309,6 +339,7 @@ namespace Sunspore
                 {
                     isEvent = true;
                     Debug.Log("Another EVENT detected - pausing dialogue again");
+                    TutorialManager.Instance.StartStep();
                     // messageText.text = ""; // Clear the text so "EVENT" doesn't show
                     // Debug.Log("Another EVENT detected - pausing dialogue again");
                     // Don't start TypeWriterEffect, wait for CompleteEvent() to be called again
@@ -321,7 +352,9 @@ namespace Sunspore
             }
             else
             {
+                playerInput.ActivateInput();
                 _animator.SetTrigger("Exit");
+                TutorialManager.Instance.CompleteTutorial();
             }
 
             Debug.Log("CompleteEvent called - dialogue complete");

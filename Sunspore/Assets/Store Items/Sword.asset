@@ -20,6 +20,6 @@ MonoBehaviour:
   - item: {fileID: 11400000, guid: e6a7e8497a422434c9c3d117b7d67aad, type: 2}
     amount: 1
   description: Not Crafted
-  creditCost: 750
+  creditCost: 400
   creditReward: 0
   disabled: 0
