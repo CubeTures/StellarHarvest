@@ -10,12 +10,14 @@ using UnityEngine;
             Animator _anim;
             SpriteRenderer _sr;
             SpriteRenderer playerSr;
+            SpriteRenderer _head;
 
             int _currentDirection = -1;
             void Awake()
             {                
                 _anim = GetComponent<Animator>();
                 _sr = GetComponent<SpriteRenderer>();
+                _head = GetComponentInChildren<SpriteRenderer>();
             }
 
             public void TypeUpdate(HandHeld.WeaponHandle newHandle)
@@ -31,6 +33,7 @@ using UnityEngine;
             public void SetWeaponBaseTransform(int dir, bool flipped)
             {
                 _sr.flipX = flipped;
+                _head.flipX = flipped;
                 _anim.SetInteger("Direction", dir);
                 _currentDirection = dir;
             }
