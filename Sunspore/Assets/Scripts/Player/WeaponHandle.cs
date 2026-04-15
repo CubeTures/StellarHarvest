@@ -9,17 +9,19 @@ using UnityEngine;
             HandHeld.WeaponHandle handle;
             Animator _anim;
             SpriteRenderer _sr;
-            SpriteRenderer playerSr;
+            SpriteRenderer _playerSr;
             public SpriteRenderer headSr;
 
             int _currentDirection = -1;
             int sortOrder = 0;
+            int playerSortOrder = 0;
 
             
             void Awake()
             {
                 _anim = GetComponent<Animator>();
                 _sr = GetComponent<SpriteRenderer>();
+                _playerSr = GetComponentInParent<SpriteRenderer>();
 
                 var headTransform = transform.Find("WeaponHead");
                 if (headTransform != null)
@@ -39,6 +41,12 @@ using UnityEngine;
                         }
                     }
                 }
+            }
+
+            void Update()
+            {
+                sortOrder = _playerSr.sortingOrder;
+                headSr.sortingOrder = sortOrder;
             }
 
             public void TypeUpdate(HandHeld.WeaponHandle newHandle)
@@ -66,5 +74,14 @@ using UnityEngine;
 
                 _anim.SetInteger("Direction", dir);
                 _currentDirection = dir;
+
+                if (dir == 3)
+                {
+                    sortOrder -= 100;
+                }
+                else
+                {
+                    sortOrder += 100;
+                }
             }
         }

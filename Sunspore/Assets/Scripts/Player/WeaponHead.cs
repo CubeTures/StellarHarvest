@@ -28,7 +28,6 @@ using UnityEngine;
             void Update()
             {
                 sortOrder = player.spriteRenderer.sortingOrder;
-                _sr.sortingOrder = sortOrder;
             }
             public void TypeUpdate(HandHeld.WeaponHead newHead, HandHeld handheld)
             {
