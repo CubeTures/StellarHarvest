@@ -207,4 +207,10 @@ class DebtManager : MonoBehaviour
 			defaultWarning.text = 2 - missedPayments + " Missed Payment Until Default";
 		}
 	}
+
+	public void SkipFirstDebt()
+	{
+		wallet.Add(50);
+		MakePayment();
+	}
 }
