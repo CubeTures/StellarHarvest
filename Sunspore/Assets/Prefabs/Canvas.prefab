@@ -4113,6 +4113,7 @@ MonoBehaviour:
   handHeldManager: {fileID: 7222036683002896631}
   inventoryTabs: {fileID: 1351482763111342435}
   isInventoryOpened: 0
+  pointerDown: 0
 --- !u!114 &1001270149179028073
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -22742,7 +22743,7 @@ MonoBehaviour:
   enemiesPerSecond: 0.5
   waveAmount: 0
   spawning: 0
-  groupSpawnChance: 0.3
+  groupSpawnChance: 0.99
 --- !u!1 &7649559746188697910
 GameObject:
   m_ObjectHideFlags: 0
