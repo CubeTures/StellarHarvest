@@ -150,11 +150,14 @@ public class Player : MonoBehaviour
             {
                 _facingRight = true;
                 SetDirection(2); // Right
+                spriteRenderer.flipX = true;
+                
             }
             else
             {
                 _facingRight = false;
                 SetDirection(4); // Left
+                spriteRenderer.flipX = false;
             }
         }
         else
@@ -164,11 +167,13 @@ public class Player : MonoBehaviour
             {
                 _facingFront = true;
                 SetDirection(3); // Forward
+                spriteRenderer.flipX = false;
             }
             else
             {
                 _facingFront = false;
-                SetDirection(1); // Back            
+                SetDirection(1); // Back     
+                spriteRenderer.flipX = false;       
             }
         }
 
@@ -182,14 +187,14 @@ public class Player : MonoBehaviour
         weaponBase.SetWeaponBaseTransform(dir, spriteRenderer.flipX);
         anim.SetInteger("Direction", dir);
 
-        if (_vx > 0)
+        /*if (_vx > 0)
         {
             spriteRenderer.flipX = true;
         }
         else if (_vx < 0)
         {
             spriteRenderer.flipX = false;
-        }
+        }*/
     }
     public void Move()
     {

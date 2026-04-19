@@ -19,8 +19,9 @@ namespace Sunspore
         public bool weapon;
         public bool tool;
         public bool cancelable;
-        public enum WeaponHead { METAL = 1 };
+        public enum WeaponHead { SHOVEL = 1, HOE = 2, SCYTHE = 3};
         public enum WeaponHandle { WOOD = 1, METAL = 2 };
+        [SerializeField] public Sprite headSprite;
 
         public WeaponHead head;
         public WeaponHandle handle;
