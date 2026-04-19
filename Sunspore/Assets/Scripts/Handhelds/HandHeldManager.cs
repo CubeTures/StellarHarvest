@@ -190,14 +190,16 @@ namespace Sunspore
         private IEnumerator AbilityDelayCoroutine(Player player, Ray ray, float delay)
         {
             player.anim.SetTrigger("Plant");
+            player.animFinished = false;
             castTime = Time.time;
             yield return new WaitForSeconds(delay);
-            Debug.Log("ability cast");
+            //Debug.Log("ability cast");
             handHeld.Ability(player, ray);
-            abilityCoroutine = null;
             OnAbility?.Invoke(0);
             player.anim.SetInteger("Direction", player.currentDirection);
             player.anim.SetTrigger("Finished");
+            Debug.Log("Player animFinished: " + player.animFinished);
+            abilityCoroutine = null;
         }
 
         public void CancelAbility()
