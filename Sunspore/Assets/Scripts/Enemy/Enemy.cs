@@ -14,7 +14,9 @@ namespace Sunspore
         [SerializeField] int damage = 10;
         [SerializeField] public int cost = 1;
 
-        [Header("Group Spawning")]
+        [Header("Spawning")]
+        [SerializeField, Range(0f, 1f)] public float spawnChance = 0.25f;
+        [SerializeField, Range(0f, 1f)] public float groupSpawnChance = 0.3f;
         [SerializeField] public int minGroupSize = 2;
         [SerializeField] public int maxGroupSize = 4;
         [SerializeField] public float groupSpread = 2f;

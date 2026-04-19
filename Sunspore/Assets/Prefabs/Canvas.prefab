@@ -22743,7 +22743,6 @@ MonoBehaviour:
   enemiesPerSecond: 0.5
   waveAmount: 0
   spawning: 0
-  groupSpawnChance: 0.99
 --- !u!1 &7649559746188697910
 GameObject:
   m_ObjectHideFlags: 0
