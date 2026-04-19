@@ -122,6 +122,20 @@ namespace Sunspore
                     nights = 0;
                     // Bank.Instance.CheckPayment(weeks);
                 }
+
+            // Editor-only keybinds: Ctrl+N sets night, Ctrl+D sets day
+                if (Application.isEditor)
+                {
+                    if ((Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl)) && Input.GetKeyDown(KeyCode.N))
+                    {
+                        setNight();
+                    }
+
+                    if ((Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl)) && Input.GetKeyDown(KeyCode.D))
+                    {
+                        setDay();
+                    }
+                }
             }
 
             TimeOfDayChanged?.Invoke(timeOfDay);
@@ -151,7 +165,19 @@ namespace Sunspore
             timeStopped = true;
             isNight = false;
             Light.transform.rotation = Quaternion.Euler(90, 0, 0);
-            //Debug.Log("Day");
+            // Stop spawning and remove existing enemies when forcing day
+            if (spawner != null)
+            {
+                spawner.spawning = false;
+            }
+
+            var existingEnemies = FindObjectsByType<Enemy>(FindObjectsSortMode.None);
+            for (int i = 0; i < existingEnemies.Length; i++)
+            {
+                if (existingEnemies[i] != null)
+                    Destroy(existingEnemies[i].gameObject);
+            }
+            Debug.Log("Day");
         }
 
         public void setNight()
@@ -159,7 +185,7 @@ namespace Sunspore
             timeStopped = true;
             isNight = true;
             Light.transform.rotation = Quaternion.Euler(270, 0, 0);
-            //Debug.Log("Night");
+            Debug.Log("Night");
         }
 
         public void changeTime()
