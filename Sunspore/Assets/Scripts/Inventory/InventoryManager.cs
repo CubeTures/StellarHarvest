@@ -523,19 +523,40 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
         if (slot == null || slot.heldItem == null)
             return;
 
-        InventoryItem invItem = slot.heldItem.GetComponent<InventoryItem>();
+        InventoryItem invItem = null;
+
+        if (slot.heldItem == null)
+        {
+            InventoryItem draggedItem = GetDraggedInventoryItem();
+            if (draggedItem == null)
+            {
+                return;
+            }
+            else
+            {
+                invItem = draggedItem;
+            }
+        }
+        else
+        {
+            invItem = slot.heldItem.GetComponent<InventoryItem>();
+        }
+
         if (invItem == null)
             return;
 
-        ItemSO itemSO = GetSelectedItem();
+        ItemSO itemSO = invItem.itemScriptableObject;
         if (itemSO == null)
+        {
+            Debug.Log("itemSO is problem");
             return;
+        }
 
         invItem.stackCurrent--;
 
         if (invItem.stackCurrent <= 0)
         {
-            Destroy(slot.heldItem);
+            Destroy(invItem.gameObject);
             slot.heldItem = null;
         }
 
@@ -545,27 +566,59 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
     public void UseThisItem(InventorySlot slot)
     {
         if (hotbarSlots == null || hotbarSlots.Length == 0)
+        {
             return;
+        }
 
         if (selectedHotbarIndex < 0 || selectedHotbarIndex >= hotbarSlots.Length)
+        {
             return;
+        }
 
-        if (slot == null || slot.heldItem == null)
+        if (slot == null)
+        {
             return;
+        }
 
-        InventoryItem invItem = slot.heldItem.GetComponent<InventoryItem>();
+        InventoryItem invItem = null;
+
+        if (slot.heldItem == null)
+        {
+            InventoryItem draggedItem = GetDraggedInventoryItem();
+            if(draggedItem == null)
+            {
+                Debug.Log("dragging is probmel");
+                return;
+            }
+            else
+            {
+                invItem = draggedItem;
+            }
+        }
+        else
+        {
+            invItem = slot.heldItem.GetComponent<InventoryItem>();
+        }
+
+             
         if (invItem == null)
+        {
+            Debug.Log("invitme is prlbme");
             return;
-
-        ItemSO itemSO = GetSelectedItem();
+        }
+            
+        ItemSO itemSO = invItem.itemScriptableObject;
         if (itemSO == null)
+        {
+            Debug.Log("itemSO is problem");
             return;
+        }
 
         invItem.stackCurrent--;
 
         if (invItem.stackCurrent <= 0)
         {
-            Destroy(slot.heldItem);
+            Destroy(invItem.gameObject);
             slot.heldItem = null;
         }
 
@@ -859,9 +912,22 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
         return null;
     }
 
-    public ItemSO GetDraggedItem()
+    public InventoryItem GetDraggedInventoryItem()
     {
-        return draggedObject.GetComponent<InventoryItem>().itemScriptableObject;
+        if (draggedObject != null)
+        {
+            return draggedObject.GetComponent<InventoryItem>();
+        }
+        return null;
+    }
+
+    public ItemSO GetDraggedItemSO()
+    {
+        if (draggedObject != null)
+        {
+            return draggedObject.GetComponent<InventoryItem>().itemScriptableObject;
+        }
+        return null;
     }
     public void CraftItem(List<ItemTypeAndAmount> itemsToCraft, List<ItemTypeAndAmount> itemsToDestroy)
     {
