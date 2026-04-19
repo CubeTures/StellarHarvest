@@ -132,6 +132,8 @@ MonoBehaviour:
   flyingState: 0
   damage: 10
   cost: 1
+  spawnChance: 0.1
+  groupSpawnChance: 0.3
   minGroupSize: 2
   maxGroupSize: 3
   groupSpread: 3

@@ -21,8 +21,7 @@ namespace Sunspore
         private float difficultyScale = 0.75f;
         public bool spawning = false;
 
-        [Header("Group Spawning")]
-        [SerializeField, Range(0f, 1f)] private float groupSpawnChance = 0.3f;
+        private float totalSpawnWeight;
 
         private void Start()
         {
@@ -30,6 +29,14 @@ namespace Sunspore
             enemies = new GameObject[] { niblet, glutton, gnasher, skybite };
             enemiesPerSecond = baseWaveAmount / (dayNightManager.dayLengthSeconds / 2);
             waveAmount = baseWaveAmount;
+            CacheTotalSpawnWeight();
+        }
+
+        private void CacheTotalSpawnWeight()
+        {
+            totalSpawnWeight = 0f;
+            foreach (var enemy in enemies)
+                totalSpawnWeight += enemy.GetComponent<Enemy>().spawnChance;
         }
 
         void Update()
@@ -39,10 +46,26 @@ namespace Sunspore
                 return;
             }
 
-            if (Random.value < groupSpawnChance)
-                SpawnGroup();
+            var prefab = PickWeightedEnemy();
+            var stats = prefab.GetComponent<Enemy>();
+
+            if (Random.value < stats.groupSpawnChance)
+                SpawnGroup(prefab, stats);
             else
-                SpawnEnemy();
+                SpawnEnemy(prefab, stats);
+        }
+
+        private GameObject PickWeightedEnemy()
+        {
+            float roll = Random.Range(0f, totalSpawnWeight);
+            float cumulative = 0f;
+            foreach (var enemy in enemies)
+            {
+                cumulative += enemy.GetComponent<Enemy>().spawnChance;
+                if (roll <= cumulative)
+                    return enemy;
+            }
+            return enemies[enemies.Length - 1];
         }
 
         private Vector3 GetRingSpawnPoint()
@@ -59,20 +82,16 @@ namespace Sunspore
             return new Vector3(x, 0, z);
         }
 
-        private void SpawnEnemy()
+        private void SpawnEnemy(GameObject prefab, Enemy stats)
         {
             Vector3 spawnPoint = GetRingSpawnPoint();
-            var prefab = enemies[Random.Range(0, enemies.Length)];
             Instantiate(prefab, spawnPoint, Quaternion.identity);
             lastSpawnTime = Time.time;
-            waveAmount -= prefab.GetComponent<Enemy>().cost;
+            waveAmount -= stats.cost;
         }
 
-        private void SpawnGroup()
+        private void SpawnGroup(GameObject prefab, Enemy stats)
         {
-            var prefab = enemies[Random.Range(0, enemies.Length)];
-            var stats = prefab.GetComponent<Enemy>();
-
             int scaledMax = Mathf.RoundToInt(stats.maxGroupSize + (dayNightManager.weeks * stats.groupSizeScale));
             int groupSize = Random.Range(stats.minGroupSize, scaledMax + 1);
 
