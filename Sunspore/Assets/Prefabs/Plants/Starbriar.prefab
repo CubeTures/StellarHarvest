@@ -72,6 +72,10 @@ PrefabInstance:
       propertyPath: m_IsTrigger
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4044746103206823721, guid: 04fad9b53f5c6004ea1d478f93f95fd0, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5854925016969665656, guid: 04fad9b53f5c6004ea1d478f93f95fd0, type: 3}
       propertyPath: m_Name
       value: Starbriar

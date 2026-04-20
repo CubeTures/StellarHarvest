@@ -225,7 +225,7 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
         }
 
         float scroll = Input.GetAxis("Mouse ScrollWheel");
-        if (scroll != 0f)
+        if (scroll != 0f && !isInventoryOpened)
         {
             selectedHotbarIndex += scroll < 0f ? 1 : -1;
             if (selectedHotbarIndex < 0) selectedHotbarIndex = hotbarSlots.Length - 1;

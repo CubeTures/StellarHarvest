@@ -99,7 +99,6 @@ namespace Sunspore
                     agent.isStopped = false;
                     agent.SetDestination(targetPlant.position);
                 }
-
                 else
                 {
                     agent.isStopped = true;
@@ -123,7 +122,7 @@ namespace Sunspore
 
             attackingPlayer = targetPlant == pathfinding.GetPlayerTransform();
             eatCooldown = Mathf.Max(eatCooldown - Time.deltaTime, 0);
-            _spriteRenderer.sortingOrder = (int)(-transform.position.z * 100);
+            _spriteRenderer.sortingOrder = (int)(-transform.position.z * 100) - 50 * 100;
 
             updateDirection();
         }

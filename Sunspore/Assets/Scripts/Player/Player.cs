@@ -118,7 +118,7 @@ public class Player : MonoBehaviour
             spriteRenderer.SetPropertyBlock(propBlock);
         }
 
-        spriteRenderer.sortingOrder = (int)(-transform.position.z * 100);
+        spriteRenderer.sortingOrder = (int)(-transform.position.z * 100) - 50 * 100;
         // Debug.Log(animFinished);
     }
 
