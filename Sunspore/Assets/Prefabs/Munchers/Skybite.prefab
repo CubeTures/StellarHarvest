@@ -48,6 +48,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Skybite
       objectReference: {fileID: 0}
+    - target: {fileID: 2793509737439912095, guid: 4393b48af626182408c439887b60415a, type: 3}
+      propertyPath: m_Color.a
+      value: 0.5882353
+      objectReference: {fileID: 0}
     - target: {fileID: 5034763247155655074, guid: 4393b48af626182408c439887b60415a, type: 3}
       propertyPath: m_LocalPosition.x
       value: 1.5882246
@@ -131,7 +135,7 @@ MonoBehaviour:
   enemyType: 1
   flyingState: 0
   damage: 5
-  cost: 1
+  cost: 0.6
   spawnChance: 0.2
   groupSpawnChance: 0.99
   minGroupSize: 2

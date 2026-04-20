@@ -44,6 +44,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: Glutton
       objectReference: {fileID: 0}
+    - target: {fileID: 2793509737439912095, guid: 4393b48af626182408c439887b60415a, type: 3}
+      propertyPath: m_Color.a
+      value: 0.78431374
+      objectReference: {fileID: 0}
+    - target: {fileID: 3686177108432208594, guid: 4393b48af626182408c439887b60415a, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 3686177108432208594, guid: 4393b48af626182408c439887b60415a, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.4
+      objectReference: {fileID: 0}
     - target: {fileID: 5034763247155655074, guid: 4393b48af626182408c439887b60415a, type: 3}
       propertyPath: m_LocalPosition.x
       value: 3.5047636

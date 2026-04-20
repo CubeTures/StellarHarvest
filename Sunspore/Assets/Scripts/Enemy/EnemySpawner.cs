@@ -15,9 +15,9 @@ namespace Sunspore
         [SerializeField] GameObject player;
         private float lastSpawnTime = -Mathf.Infinity;
 
-        private int baseWaveAmount = 5;
+        [SerializeField] private float baseWaveAmount = 5f;
         [SerializeField] private float enemiesPerSecond = 0.5f;
-        [SerializeField] private int waveAmount = 0;
+        private float waveAmount = 0f;
         private float difficultyScale = 0.75f;
         public bool spawning = false;
 
@@ -111,7 +111,7 @@ namespace Sunspore
 
         public void SetEnemiesPerWave()
         {
-            waveAmount = Mathf.RoundToInt(baseWaveAmount * Mathf.Pow(dayNightManager.weeks + 1, difficultyScale));
+            waveAmount = baseWaveAmount * Mathf.Pow(dayNightManager.weeks + 1, difficultyScale);
             enemiesPerSecond = waveAmount / (dayNightManager.dayLengthSeconds / 2);
         }
     }

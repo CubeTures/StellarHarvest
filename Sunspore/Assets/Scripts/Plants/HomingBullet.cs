@@ -8,6 +8,7 @@ namespace Sunspore
         private Rigidbody _rb;
         private Collider _collider;
         private AudioSource _audioSource;
+        private SpriteRenderer _spriteRenderer;
         [SerializeField] private float _speed = 5f;
         [SerializeField] private int _damage = 15;
         [SerializeField] private float _lifetime = 5f;
@@ -17,21 +18,43 @@ namespace Sunspore
         [SerializeField] private GameObject _hitEffect;
         [SerializeField] private GameObject _missEffect;
 
+        [Header("Retargeting")]
+        [SerializeField] private float _retargetRange = 10f;
+        [SerializeField] private float _retargetAngle = 45f;
 
-        // Start is called once before the first execution of Update after the MonoBehaviour is created
+        private Vector3 _direction;
+
         void Start()
         {
             _rb = GetComponent<Rigidbody>();
             _collider = GetComponent<Collider>();
+            _spriteRenderer = GetComponent<SpriteRenderer>();
         }
 
-        // Update is called once per frame
         void FixedUpdate()
         {
             if (_target != null)
             {
+                Vector3 toTarget = _target.position - transform.position;
+                if (toTarget.sqrMagnitude > 0.001f)
+                    _direction = toTarget.normalized;
+
                 transform.position = Vector3.MoveTowards(transform.position, _target.position, _speed * Time.fixedDeltaTime);
+                UpdateSortingOrder();
             }
+            else
+            {
+                if (TryRetarget())
+                {
+                    // acquired new target, next frame will home in
+                }
+                else
+                {
+                    transform.position += _direction * _speed * Time.fixedDeltaTime;
+                    UpdateSortingOrder();
+                }
+            }
+
             _lifetime -= Time.fixedDeltaTime;
             if (_lifetime <= 0)
             {
@@ -44,6 +67,44 @@ namespace Sunspore
         public void SetTarget(Transform target)
         {
             _target = target;
+            if (_target != null)
+            {
+                Vector3 toTarget = _target.position - transform.position;
+                if (toTarget.sqrMagnitude > 0.001f)
+                    _direction = toTarget.normalized;
+            }
+        }
+
+        private bool TryRetarget()
+        {
+            Collider[] nearby = Physics.OverlapSphere(transform.position, _retargetRange);
+            Transform best = null;
+            float bestDist = float.MaxValue;
+
+            foreach (Collider col in nearby)
+            {
+                if (!col.CompareTag("Enemy")) continue;
+
+                Vector3 toCandidate = col.transform.position - transform.position;
+                if (toCandidate.sqrMagnitude < 0.001f) continue;
+
+                float angle = Vector3.Angle(_direction, toCandidate);
+                if (angle > _retargetAngle) continue;
+
+                float dist = toCandidate.sqrMagnitude;
+                if (dist < bestDist)
+                {
+                    bestDist = dist;
+                    best = col.transform;
+                }
+            }
+
+            if (best != null)
+            {
+                _target = best;
+                return true;
+            }
+            return false;
         }
 
         private void OnTriggerEnter(Collider other)
@@ -58,6 +119,14 @@ namespace Sunspore
                     Destroy(gameObject);
                     other.GetComponent<Enemy>()?.TakeDamage(_damage, Vector2.zero, 0f);
                 }
+            }
+        }
+
+        private void UpdateSortingOrder()
+        {
+            if (_spriteRenderer != null)
+            {
+                _spriteRenderer.sortingOrder = (int)(-transform.position.z * 100);
             }
         }
 

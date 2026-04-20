@@ -37,6 +37,7 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
     // Inventory filtering
     private ItemCategory selectedInventoryCategory = ItemCategory.All;
     int selectedHotbarIndex = 0;
+    public int SelectedHotbarIndex => selectedHotbarIndex;
     GameObject draggedObject;
     GameObject lastItemSlot;
     bool hasLoggedMissingHandParent = false;
@@ -59,6 +60,21 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
         AutoPopulateHeldItems();
         HotBarItemChanged();
         Cursor.lockState = CursorLockMode.Locked;
+
+        for (int i = 0; i < hotbarSlots.Length; i++)
+        {
+            int index = i;
+            Button btn = hotbarSlots[i].GetComponent<Button>();
+            if (btn == null)
+                btn = hotbarSlots[i].AddComponent<Button>();
+            btn.onClick.AddListener(() => SelectHotbarSlot(index));
+        }
+    }
+
+    public void SelectHotbarSlot(int index)
+    {
+        selectedHotbarIndex = index;
+        HotBarItemChanged();
     }
 
     void Update()
@@ -197,6 +213,15 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
         else if (Input.GetKeyDown(KeyCode.Alpha7))
         {
             selectedHotbarIndex = 6;
+            HotBarItemChanged();
+        }
+
+        float scroll = Input.GetAxis("Mouse ScrollWheel");
+        if (scroll != 0f)
+        {
+            selectedHotbarIndex += scroll < 0f ? 1 : -1;
+            if (selectedHotbarIndex < 0) selectedHotbarIndex = hotbarSlots.Length - 1;
+            else if (selectedHotbarIndex >= hotbarSlots.Length) selectedHotbarIndex = 0;
             HotBarItemChanged();
         }
     }

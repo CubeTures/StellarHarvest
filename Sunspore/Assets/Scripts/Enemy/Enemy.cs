@@ -12,7 +12,7 @@ namespace Sunspore
         [SerializeField] public EnemyType enemyType = EnemyType.SWARM;
         public FlyingState flyingState = FlyingState.AIRBORNE;
         [SerializeField] int damage = 10;
-        [SerializeField] public int cost = 1;
+        [SerializeField] public float cost = 1f;
 
         [Header("Spawning")]
         [SerializeField, Range(0f, 1f)] public float spawnChance = 0.25f;

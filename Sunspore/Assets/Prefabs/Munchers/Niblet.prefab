@@ -40,6 +40,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Niblet
       objectReference: {fileID: 0}
+    - target: {fileID: 3686177108432208594, guid: 4393b48af626182408c439887b60415a, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 3686177108432208594, guid: 4393b48af626182408c439887b60415a, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.8
+      objectReference: {fileID: 0}
     - target: {fileID: 5034763247155655074, guid: 4393b48af626182408c439887b60415a, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.92468
@@ -127,7 +135,7 @@ MonoBehaviour:
   enemyType: 0
   flyingState: 0
   damage: 1
-  cost: 1
+  cost: 0.25
   spawnChance: 0.4
   groupSpawnChance: 0.99
   minGroupSize: 3
