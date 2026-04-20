@@ -99,7 +99,6 @@ namespace Sunspore
                     agent.isStopped = false;
                     agent.SetDestination(targetPlant.position);
                 }
-
                 else
                 {
                     agent.isStopped = true;
