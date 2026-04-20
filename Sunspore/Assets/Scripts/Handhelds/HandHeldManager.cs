@@ -36,6 +36,8 @@ namespace Sunspore
         public UnityEvent<float> OnAbility;
 
         private float zScale = 1.0f;
+        private float xScale = 1.0f;
+        private float zOffset = 1.5f;
         private bool z = false;
 
         private void Awake()
@@ -252,27 +254,30 @@ namespace Sunspore
         private void updateDirection()
         {
             hitArea.z = 1.0f * handHeld.attackRange;
+            hitArea.x = 1.25f;
 
             // Update scale of attackBox based on direction
             if (currDirection == Vector3.forward || currDirection == Vector3.back)
             {
                 zScale = 1.5f;
+                xScale = 1.0f;
                 z = true;
             }
             else if (currDirection == Vector3.right || currDirection == Vector3.left)
             {
                 zScale = 1.0f;
+                xScale = 1.5f;
                 z = false;
             }
-
             hitArea.z *= zScale;
+            hitArea.x *= xScale;
 
             offset = hitArea.z / 2;
 
             boxRotation = currDirection != Vector3.zero
                 ? Quaternion.LookRotation(currDirection)
                 : player.transform.rotation;
-            boxCenter = player.transform.position + currDirection.normalized * offset;
+            boxCenter = player.transform.position + currDirection.normalized * offset + new Vector3(0, 0, zOffset);
         }
 
         // Assign Stats 
