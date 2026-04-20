@@ -26,7 +26,7 @@ Transform:
   m_GameObject: {fileID: 3251551590962503855}
   serializedVersion: 2
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: -100}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -257,6 +257,7 @@ MonoBehaviour:
   generatePropsOnAwake: 0
   propSpawnChance: 0.04
   noiseSpawnBoost: 1
+  noiseSpawnYOffset: {x: -0.1, y: 0.1}
   bushWeight: 0.4
   rockWeight: 0.2
   treeWeight: 0.3

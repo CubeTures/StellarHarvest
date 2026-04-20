@@ -60,6 +60,14 @@ PrefabInstance:
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 7c09187c3232f4d40a599b690faf0cfd, type: 2}
+    - target: {fileID: 9217954750179045167, guid: 04fad9b53f5c6004ea1d478f93f95fd0, type: 3}
+      propertyPath: body
+      value: A spiky plant. Deals melee damage.
+      objectReference: {fileID: 0}
+    - target: {fileID: 9217954750179045167, guid: 04fad9b53f5c6004ea1d478f93f95fd0, type: 3}
+      propertyPath: header
+      value: Spike Bramble
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -96,11 +104,14 @@ MonoBehaviour:
   harvestSound: {fileID: 8300000, guid: 35cccfa738cfa6743ba1d2f761199e1d, type: 3}
   growSound: {fileID: 8300000, guid: 35cccfa738cfa6743ba1d2f761199e1d, type: 3}
   plantSound: {fileID: 8300000, guid: 35cccfa738cfa6743ba1d2f761199e1d, type: 3}
+  attackSound: {fileID: 0}
   glowEffect: {fileID: 2446270667391804717, guid: f46e2420a80d0964e9afd78cde433563, type: 3}
   waterDropPrefab: {fileID: 4431333523166555220, guid: 3217ed6309e93434d8f7671159028d59, type: 3}
   seedItem: {fileID: 11400000, guid: 343fbddfa5e4a2c4b9809a43af48d23b, type: 2}
   plantItem: {fileID: 11400000, guid: eaac53e7d7630d34b879ec9dc62325d0, type: 2}
+  _transitionTimer: 0
   currentStage: 0
+  transitionFinish: 0
   juvenileAbilityPower: 5
   fullyGrownAbilityPower: 15
   juvenileAbilityRange: 1

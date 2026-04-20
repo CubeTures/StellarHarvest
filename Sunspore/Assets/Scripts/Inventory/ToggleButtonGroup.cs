@@ -1,4 +1,5 @@
 using System;
+using Sunspore;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -18,6 +19,14 @@ class ToggleButtonGroup : MonoBehaviour
 			buttons[i].onClick.AddListener(() => Intercept(capture));
 			toggles[i].img = buttons[i].GetComponent<Image>();
 			selected = toggles[i].selected ? i : selected;
+
+			if (!string.IsNullOrEmpty(toggles[i].tooltipText))
+			{
+				var trigger = buttons[i].GetComponent<TooltipTrigger>();
+				if (trigger == null)
+					trigger = buttons[i].gameObject.AddComponent<TooltipTrigger>();
+				trigger.SetContent(toggles[i].tooltipText);
+			}
 		}
 		Toggle(selected);
 	}
@@ -76,6 +85,7 @@ class ToggleButton
 	public GameObject selectedContent;
 	public UnityEvent onClick;
 	public bool defaultSelected;
+	public string tooltipText;
 	[HideInInspector] public Image img;
 	[HideInInspector] public bool selected;
 }

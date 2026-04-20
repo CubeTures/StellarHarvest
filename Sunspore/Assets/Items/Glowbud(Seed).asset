@@ -13,7 +13,8 @@ MonoBehaviour:
   m_Name: Glowbud(Seed)
   m_EditorClassIdentifier: Sunspore::ItemSO
   displayName: Glowbud
-  description: A defenseless, high value plant
+  description: A defenseless, high value plant seed. Its crystals are rumored to
+    be made of shooting stars.
   icon: {fileID: 21300000, guid: 897d4b9e6162339498133441461da7c2, type: 3}
   stackable: 1
   maxStackSize: 16

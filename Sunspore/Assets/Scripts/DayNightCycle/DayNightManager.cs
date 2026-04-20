@@ -12,6 +12,7 @@ namespace Sunspore
         public static DayNightManager Instance;
         private Vector3 rotation = Vector3.zero;
         [SerializeField] EnemySpawner spawner;
+        [SerializeField] MusicManager musicManager;
         [SerializeField] GameObject Light;
         [SerializeField] public float dayLengthSeconds = 30f;
         [SerializeField, Range(0f, 1f)] float initialTimeOfDay = 0f;
@@ -71,6 +72,14 @@ namespace Sunspore
             {
                 stopTime();
             }
+
+            if (musicManager != null)
+            {
+                if (timeOfDay < 0.5f)
+                    musicManager.PlayDayMusic();
+                else
+                    musicManager.PlayNightMusic();
+            }
         }
 
         void Update()
@@ -100,18 +109,16 @@ namespace Sunspore
                 if (prevTimeOfDay > timeOfDay)
                 {
                     days++;
-                    //Debug.Log("day");
                     spawner.spawning = false;
-                    // Debug.Log("Days: " + days);
+                    if (musicManager != null) musicManager.PlayDayMusic();
                 }
 
                 if (prevTimeOfDay < 0.5f && timeOfDay >= 0.5f)
                 {
                     nights++;
-                    //Debug.Log("night");
                     spawner.SetEnemiesPerWave();
                     spawner.spawning = true;
-                    // Debug.Log("Nights: " + nights);
+                    if (musicManager != null) musicManager.PlayNightMusic();
                 }
 
                 if (days == 7 && nights == 7)

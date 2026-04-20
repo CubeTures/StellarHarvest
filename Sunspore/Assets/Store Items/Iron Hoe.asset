@@ -19,7 +19,7 @@ MonoBehaviour:
   resultItem:
   - item: {fileID: 11400000, guid: b839896818e0c114ea999495508280cf, type: 2}
     amount: 1
-  description: Upgraded hoe; tills soil faster
+  description: Tills soil to plant crops. It's a bit rusty, but gets the job done.
   creditCost: 2500
   creditReward: 0
   disabled: 0

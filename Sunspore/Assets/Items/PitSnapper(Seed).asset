@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: PitSnapper(Seed)
   m_EditorClassIdentifier: Sunspore::ItemSO
   displayName: Pit Snapper(Seed)
-  description: 
+  description: A trap plant seed. Eats its prey whole.
   icon: {fileID: 21300000, guid: 7b3ff4fd95f535577b225419bbc85560, type: 3}
   stackable: 1
   maxStackSize: 16

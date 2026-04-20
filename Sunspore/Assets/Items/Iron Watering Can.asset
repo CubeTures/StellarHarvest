@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b55df8fc0627f99cbf602cf22f90418, type: 3}
   m_Name: Iron Watering Can
   m_EditorClassIdentifier: Sunspore::ItemSO
-  displayName: 
-  description: 
+  displayName: Iron Watering Can
+  description: A standard watering can. Does it look like anything special?
   icon: {fileID: 21300000, guid: a7e66dcb1f85a32438f19ec3811be69a, type: 3}
   stackable: 0
   maxStackSize: 1

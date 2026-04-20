@@ -119,7 +119,7 @@ public class Player : MonoBehaviour
         }
 
         spriteRenderer.sortingOrder = (int)(-transform.position.z * 100);
-        Debug.Log(animFinished);
+        // Debug.Log(animFinished);
     }
 
     public void SetMove(InputAction.CallbackContext context)
@@ -151,7 +151,7 @@ public class Player : MonoBehaviour
                 _facingRight = true;
                 SetDirection(2); // Right
                 spriteRenderer.flipX = true;
-                
+
             }
             else
             {
@@ -173,7 +173,7 @@ public class Player : MonoBehaviour
             {
                 _facingFront = false;
                 SetDirection(1); // Back     
-                spriteRenderer.flipX = false;       
+                spriteRenderer.flipX = false;
             }
         }
 

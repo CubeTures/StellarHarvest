@@ -19,7 +19,7 @@ MonoBehaviour:
   - item: {fileID: 0}
     amount: 1
   resultItem: []
-  description: Damages enemies that walk over it
+  description: A fully grown spiky plant. Deals melee damage.
   creditCost: 0
   creditReward: 2100
   disabled: 1

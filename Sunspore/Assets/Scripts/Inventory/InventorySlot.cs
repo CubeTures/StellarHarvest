@@ -9,10 +9,15 @@ public class InventorySlot: MonoBehaviour
     public int quantity;
     public bool IsEmpty => item == null || quantity <= 0;
     Vector3 prevPosition;
+    TooltipTrigger _tooltip;
 
     void Start()
     {
         prevPosition = transform.position;
+        _tooltip = GetComponent<TooltipTrigger>();
+        if (_tooltip == null)
+            _tooltip = gameObject.AddComponent<TooltipTrigger>();
+        RefreshTooltip();
     }
 
 	public void SetHeldItem(GameObject item)
@@ -20,8 +25,30 @@ public class InventorySlot: MonoBehaviour
         this.heldItem = item;
         Canvas.ForceUpdateCanvases();
         heldItem.transform.position = transform.position;
+        RefreshTooltip();
 
         Log();
+    }
+
+    public void RefreshTooltip()
+    {
+        if (_tooltip == null) return;
+
+        ItemSO itemData = null;
+        if (heldItem != null)
+        {
+            var invItem = heldItem.GetComponent<InventoryItem>();
+            if (invItem != null)
+                itemData = invItem.itemScriptableObject;
+        }
+
+        if (itemData == null)
+            itemData = item;
+
+        if (itemData == null)
+            _tooltip.SetContent("");
+        else
+            _tooltip.SetContent(itemData.displayName, itemData.description);
     }
 
     void Update()
@@ -30,7 +57,6 @@ public class InventorySlot: MonoBehaviour
         {
             heldItem.transform.position = transform.position;
         }
-        // Log();
     }
 
     void Log()

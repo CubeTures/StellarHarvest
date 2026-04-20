@@ -8,6 +8,7 @@ namespace Sunspore
         private Rigidbody _rb;
         private Collider _collider;
         private AudioSource _audioSource;
+        private SpriteRenderer _spriteRenderer;
         [SerializeField] private float _speed = 5f;
         [SerializeField] private int _damage = 0;
         private Vector3 direction;
@@ -19,11 +20,13 @@ namespace Sunspore
         {
             _rb = GetComponent<Rigidbody>();
             _collider = GetComponent<Collider>();
+            _spriteRenderer = GetComponent<SpriteRenderer>();
         }
 
         void FixedUpdate()
         {
             transform.position += direction * _speed * Time.fixedDeltaTime;
+            UpdateSortingOrder();
         }
 
         public void Shoot(float attackDuration, int damage, float speed, Vector3 mouseDir)
@@ -54,6 +57,14 @@ namespace Sunspore
                     Destroy(gameObject);
                     other.GetComponent<Enemy>()?.TakeDamage(_damage, Vector2.zero, 0f);
                 }
+            }
+        }
+
+        private void UpdateSortingOrder()
+        {
+            if (_spriteRenderer != null)
+            {
+                _spriteRenderer.sortingOrder = (int)(-transform.position.z * 100);
             }
         }
 

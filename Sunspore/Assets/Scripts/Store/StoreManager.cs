@@ -132,7 +132,8 @@ namespace Sunspore
             {
                 bool typeMatch = recipes[i].recipeType == selectedRecipeType;
                 bool categoryMatch = selectedCategory == StoreRecipeCategory.All || recipes[i].category == selectedCategory;
-                bool availableDuringTutorial = TutorialManager.Instance.IsTutorialActive ? ((recipes[i].name.Contains("Glowbud") && recipes[i].creditCost > 0) || (recipes[i].name.Contains("Bloomburst") && recipes[i].creditReward > 0 && recipes[i].category == StoreRecipeCategory.Plants)) : true;
+                bool isTutorial = TutorialManager.Instance != null && TutorialManager.Instance.IsTutorialActive;
+                bool availableDuringTutorial = isTutorial ? ((recipes[i].name.Contains("Glowbud") && recipes[i].creditCost > 0) || (recipes[i].name.Contains("Bloomburst") && recipes[i].creditReward > 0 && recipes[i].category == StoreRecipeCategory.Plants)) : true;
                 if (typeMatch && categoryMatch && availableDuringTutorial)
                 {
                     Debug.Log(recipes[i].name);

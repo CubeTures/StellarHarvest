@@ -19,6 +19,7 @@ MonoBehaviour:
   resultItem:
   - item: {fileID: 11400000, guid: 1d325e65992f7924eabffbd694fd446b, type: 2}
     amount: 1
-  description: "Projectile plant \u2014 medium DPS\n"
+  description: A standard projectile plant seed. Shoots bursts of homing bullets.
   creditCost: 600
   creditReward: 0
+  disabled: 0

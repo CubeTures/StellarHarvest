@@ -19,7 +19,8 @@ MonoBehaviour:
   resultItem:
   - item: {fileID: 11400000, guid: 1fae9a5c2adca514aa689b793b1dc726, type: 2}
     amount: 1
-  description: A defenseless, high value plant.
+  description: A defenseless, high value plant seed. Its crystals are rumored to
+    be made of shooting stars.
   creditCost: 700
   creditReward: 0
   disabled: 0
