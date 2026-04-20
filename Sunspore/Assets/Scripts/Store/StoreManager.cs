@@ -36,6 +36,8 @@ namespace Sunspore
         private List<ItemTypeAndAmount> items = new List<ItemTypeAndAmount>();
 
         [Header("Selected Recipe Preview")]
+        [SerializeField] TMP_Text previewInstructions;
+        [SerializeField] Image previewBackground;
         [SerializeField] UnityEngine.UI.Image previewIcon;
         [SerializeField] TMP_Text previewName;
         [SerializeField] TMP_Text previewDescription;
@@ -432,6 +434,8 @@ namespace Sunspore
             // Keep the preview container visible; only update contents.
             if (recipeSO == null)
             {
+                previewInstructions.gameObject.SetActive(true);
+                previewBackground.gameObject.SetActive(false);
                 if (previewIcon != null)
                 {
                     previewIcon.sprite = null;
@@ -454,6 +458,8 @@ namespace Sunspore
 
             if (itemToShow != null)
             {
+                previewInstructions.gameObject.SetActive(false);
+                previewBackground.gameObject.SetActive(true);
                 if (previewIcon != null)
                 {
                     previewIcon.sprite = itemToShow.icon;
@@ -464,6 +470,8 @@ namespace Sunspore
             }
             else
             {
+                previewInstructions.gameObject.SetActive(true);
+                previewBackground.gameObject.SetActive(false);
                 if (previewIcon != null)
                 {
                     previewIcon.sprite = null;

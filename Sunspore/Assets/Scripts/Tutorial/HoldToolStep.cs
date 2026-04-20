@@ -7,6 +7,8 @@ public class HoldToolStep : TutorialStep
 
 	public override void Begin()
 	{
+		TutorialManager.Instance.availableActions[TutorialManager.Actions.INVENTORY] = false;
+		TutorialManager.Instance.availableActions[TutorialManager.Actions.HOTBAR] = true;
 	}
 
 	public override void Check()

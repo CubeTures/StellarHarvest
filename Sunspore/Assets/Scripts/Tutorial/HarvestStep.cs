@@ -17,6 +17,7 @@ public class HarvestStep : TutorialStep
 
     public override void Begin()
     {
+        TutorialManager.Instance.availableActions[TutorialManager.Actions.INVENTORY] = false;
         if (inventoryManager == null)
         {
             Debug.LogWarning("HarvestStep: inventoryManager is not assigned.");

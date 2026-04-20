@@ -105,17 +105,20 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
         {
             if (isInventoryOpened)
             {
-                isInventoryOpened = false;
-                isCraftingOpened = false;
-                isStoreOpened = false;
-                isDebtOpened = false;
-                isMilestoneOpened = false;
-                inventoryTabs.Reset();
+                CloseInventory();
             }
             else
             {
-                isInventoryOpened = true;
-                PlayerPrefManager.SetInventoryOpenCount(PlayerPrefManager.GetInventoryOpenCount() + 1);
+                if (TutorialManager.Instance.IsTutorialActive && !TutorialManager.Instance.availableActions[TutorialManager.Actions.INVENTORY])
+                {
+                    // skip
+                }
+                else
+                {
+                    isInventoryOpened = true;
+                    PlayerPrefManager.SetInventoryOpenCount(PlayerPrefManager.GetInventoryOpenCount() + 1);
+                }
+
             }
         }
         itemsContainer.anchoredPosition = scrollRect.content.anchoredPosition;
@@ -180,6 +183,11 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
 
     private void CheckForHotbarInput()
     {
+        if (TutorialManager.Instance.IsTutorialActive && !TutorialManager.Instance.availableActions[TutorialManager.Actions.HOTBAR])
+        {
+            return;
+        }
+
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
             selectedHotbarIndex = 0;
@@ -610,7 +618,7 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
         if (slot.heldItem == null)
         {
             InventoryItem draggedItem = GetDraggedInventoryItem();
-            if(draggedItem == null)
+            if (draggedItem == null)
             {
                 Debug.Log("dragging is probmel");
                 return;
@@ -625,13 +633,13 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
             invItem = slot.heldItem.GetComponent<InventoryItem>();
         }
 
-             
+
         if (invItem == null)
         {
             Debug.Log("invitme is prlbme");
             return;
         }
-            
+
         ItemSO itemSO = invItem.itemScriptableObject;
         if (itemSO == null)
         {
@@ -648,6 +656,16 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
         }
 
         HotBarItemChanged();
+    }
+
+    public void CloseInventory()
+    {
+        isInventoryOpened = false;
+        isCraftingOpened = false;
+        isStoreOpened = false;
+        isDebtOpened = false;
+        isMilestoneOpened = false;
+        inventoryTabs.Reset();
     }
 
 
