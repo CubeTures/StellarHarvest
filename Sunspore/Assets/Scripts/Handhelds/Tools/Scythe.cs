@@ -30,16 +30,18 @@ namespace Sunspore
         // Scythe no longer attacks when harvesting
         public override void AttackWithAbility(Vector3 boxCenter, Vector3 hitArea, Quaternion boxRotation, Vector3 mousePos, Vector3 Playerpos, bool z)
         {
-            hitArea.z = abilityRange;
+            Vector3 harvestArea = hitArea;
+            harvestArea.z = abilityRange;
             if (z)
             {
-                hitArea.z *= 1.5f;
+                harvestArea.z *= 1.5f;
             }
-            // Attack
+
+            // Destroy grass
             Collider[] hitTargets = Physics.OverlapBox(
-               boxCenter,
-               hitArea / 2f,
-               boxRotation
+                boxCenter,
+                hitArea / 2f,
+                boxRotation
             );
 
             //Debug.Log(hitTargets);
@@ -52,18 +54,29 @@ namespace Sunspore
                 //    Vector2 dir = new Vector2(direction.x, direction.z);
                 //    enemy.TakeDamage(damage, dir, knockback);
                 //}
+                var grass = collider.GetComponent<Grass>();
+                if(grass != null)
+                {
+                    grass.DestroyGrass();
+                }
+            }
 
+            // Harvest plants
+
+            hitTargets = Physics.OverlapBox(
+               boxCenter,
+               harvestArea / 2f,
+               boxRotation
+            );
+
+            foreach (var collider in hitTargets)
+            {
                 var plant = collider.GetComponent<Plant>();
                 if (plant != null)
                 {
                     plant.Harvest();
                 }
 
-                var grass = collider.GetComponent<Grass>();
-                if(grass != null)
-                {
-                    grass.DestroyGrass();
-                }
             }
         }
     }
