@@ -119,7 +119,7 @@ public class Player : MonoBehaviour
         }
 
         spriteRenderer.sortingOrder = (int)(-transform.position.z * 100);
-
+        Debug.Log(animFinished);
     }
 
     public void SetMove(InputAction.CallbackContext context)
@@ -349,6 +349,6 @@ public class Player : MonoBehaviour
         yield return new WaitUntil(() => animFinished);
         anim.SetInteger("Direction", currentDirection);
         anim.SetTrigger("Finished");
-        //Debug.Log("finished animation");
+        Debug.Log("finished animation" + animFinished);
     }
 }

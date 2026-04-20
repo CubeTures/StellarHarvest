@@ -87,7 +87,7 @@ public class PlacementManager : MonoBehaviour
             ItemSO item = null;
             if (inventoryManager.pointerDown)
             {
-                item = inventoryManager.GetDraggedItem();
+                item = inventoryManager.GetDraggedItemSO();
                 draggedItem = item;
                 draggedSlot = inventoryManager.GetDraggedItemSlot();
             }
@@ -231,9 +231,9 @@ public class PlacementManager : MonoBehaviour
 
         inventoryManager.UseThisItem(slot);
         player.animFinished = false;
-        placingCoroutine = null;
         isPlacing = false;
         TutorialManager.Instance.BroadcastSignal(TutorialManager.Actions.PLANT);
+        placingCoroutine = null;
         //Debug.Log("done placing");
     }
     public bool ScreenToWorld(Vector2 screenPosition, out Vector3 worldPosition)

@@ -47,7 +47,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Sunspore::Sunspore.Hoe
   handHeldName: Hoe
   damage: 10
-  attackCooldown: 0.25
+  attackCooldown: 0.5
   attackDuration: 0.25
   abilityDuration: 1
   attackRange: 1.5
