@@ -145,6 +145,8 @@ namespace Sunspore
                     OnFullyGrownStage();
                     break;
             }
+
+            _spriteRenderer.sortingOrder = (int)(-transform.position.z * 100);
         }
 
         protected virtual void GrowToJuvenile()
