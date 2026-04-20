@@ -540,7 +540,7 @@ public sealed class TerrainTilemap : MonoBehaviour
 		foreach (SpriteRenderer sr in renderers)
 		{
 			// Lower world Z renders in front (higher sorting order).
-			sr.sortingOrder = Mathf.RoundToInt(-sr.transform.position.z * 100f);
+			sr.sortingOrder = Mathf.RoundToInt(-sr.transform.position.z * 100f) - 50 * 100;
 		}
 	}
 

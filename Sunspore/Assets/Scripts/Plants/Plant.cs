@@ -146,7 +146,7 @@ namespace Sunspore
                     break;
             }
 
-            _spriteRenderer.sortingOrder = (int)(-transform.position.z * 100);
+            _spriteRenderer.sortingOrder = (int)(-transform.position.z * 100) - 50 * 100;
         }
 
         protected virtual void GrowToJuvenile()

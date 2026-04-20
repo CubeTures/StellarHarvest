@@ -89,5 +89,25 @@ PrefabInstance:
     - {fileID: 8252092736202294584, guid: 42f299e6bd7a9324cbd5de5f7accd0e5, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 1657707074468437151, guid: 42f299e6bd7a9324cbd5de5f7accd0e5, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -1537475818013735056}
   m_SourcePrefab: {fileID: 100100000, guid: 42f299e6bd7a9324cbd5de5f7accd0e5, type: 3}
+--- !u!1 &4980934363747348378 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1657707074468437151, guid: 42f299e6bd7a9324cbd5de5f7accd0e5, type: 3}
+  m_PrefabInstance: {fileID: 5917323798858019589}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &-1537475818013735056
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4980934363747348378}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c5f66c964e08d3441a048f8c96e34513, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Sunspore::Sunspore.Grass
