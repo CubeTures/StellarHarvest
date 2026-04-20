@@ -376,7 +376,9 @@ public sealed class TerrainTilemap : MonoBehaviour
 				continue;
 			}
 
-			Vector3 spawnPos = new Vector3(wx, transform.position.y + Random.Range(noiseSpawnYOffset.x, noiseSpawnYOffset.y), wz);
+			bool isRock = typeNoise >= bushCutoff && typeNoise < rockCutoff;
+			float yOffset = isRock ? 0.1f : Random.Range(noiseSpawnYOffset.x, noiseSpawnYOffset.y);
+			Vector3 spawnPos = new Vector3(wx, transform.position.y + yOffset, wz);
 			GameObject spawned = Instantiate(prefabToSpawn, spawnPos, Quaternion.identity, parent);
 			ApplySpriteSortingByY(spawned);
 			_spawnedProps.Add(spawned);
@@ -564,29 +566,29 @@ public sealed class TerrainTilemap : MonoBehaviour
 
 	public bool CheckRange(Vector3 worldPosition, float abilityRange, Vector3 playerPos)
 	{
-        var cell = _tilemap.WorldToCell(worldPosition);
-        if (!initialBounds.Contains(cell)) return false;
+		var cell = _tilemap.WorldToCell(worldPosition);
+		if (!initialBounds.Contains(cell)) return false;
 
-        // 1. Get the exact center of the cell in world space
-        Vector3 cellCenter = _tilemap.GetCellCenterWorld(cell);
+		// 1. Get the exact center of the cell in world space
+		Vector3 cellCenter = _tilemap.GetCellCenterWorld(cell);
 
-        // 2. Flatten both positions to the gameplay plane
-        cellCenter.y = 1.5f;
-        Vector3 pPos = playerPos;
-        pPos.y = 1.5f;
+		// 2. Flatten both positions to the gameplay plane
+		cellCenter.y = 1.5f;
+		Vector3 pPos = playerPos;
+		pPos.y = 1.5f;
 
-        // 3. Calculate distance accounting for the camera's Z perspective shift
-        Vector3 difference = cellCenter - pPos;
-        difference.z /= 1.5f; // Scale Z to match X visually
-        float distance = difference.magnitude;
+		// 3. Calculate distance accounting for the camera's Z perspective shift
+		Vector3 difference = cellCenter - pPos;
+		difference.z /= 1.5f; // Scale Z to match X visually
+		float distance = difference.magnitude;
 
-        // 4. Check for Grass in the cell
-        bool hasGrass = HasGrassInCell(cell);
+		// 4. Check for Grass in the cell
+		bool hasGrass = HasGrassInCell(cell);
 
-        Debug.Log($"Cell: {cell} | Target Dist: {distance} | Range: {abilityRange} | Has Grass: {hasGrass}");
+		Debug.Log($"Cell: {cell} | Target Dist: {distance} | Range: {abilityRange} | Has Grass: {hasGrass}");
 
-        return distance <= abilityRange && !hasGrass;
-    }
+		return distance <= abilityRange && !hasGrass;
+	}
 
 	public bool CheckTilled(Vector3 worldPos)
 	{
@@ -603,29 +605,29 @@ public sealed class TerrainTilemap : MonoBehaviour
 		return false;
 	}
 
-    // Reusable helper method to check for any script in a given tilemap cell
-    public bool HasGrassInCell(Vector3Int cell)
-    {
-        Vector3 cellCenter = _tilemap.GetCellCenterWorld(cell);
+	// Reusable helper method to check for any script in a given tilemap cell
+	public bool HasGrassInCell(Vector3Int cell)
+	{
+		Vector3 cellCenter = _tilemap.GetCellCenterWorld(cell);
 
-        // Half-extents match the size of the cell. 
-        // Scaling Y to 0.5f creates a 1-unit tall detection box.
-        Vector3 halfExtents = new Vector3(_tilemap.cellSize.x / 2f, 0.5f, _tilemap.cellSize.y / 2f);
+		// Half-extents match the size of the cell. 
+		// Scaling Y to 0.5f creates a 1-unit tall detection box.
+		Vector3 halfExtents = new Vector3(_tilemap.cellSize.x / 2f, 0.5f, _tilemap.cellSize.y / 2f);
 
-        Collider[] colliders = Physics.OverlapBox(cellCenter, halfExtents, Quaternion.identity);
+		Collider[] colliders = Physics.OverlapBox(cellCenter, halfExtents, Quaternion.identity);
 
-        foreach (var col in colliders)
-        {
-            if (col.GetComponent<Grass>() != null)
-            {
-                return true;
-            }
-        }
+		foreach (var col in colliders)
+		{
+			if (col.GetComponent<Grass>() != null)
+			{
+				return true;
+			}
+		}
 
-        return false;
-    }
+		return false;
+	}
 
-    private void RefreshCell(Vector3Int cell)
+	private void RefreshCell(Vector3Int cell)
 	{
 		Debug.Log("refresheed");
 		if (!_tilledCells.Contains(cell))
