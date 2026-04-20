@@ -93,7 +93,19 @@ namespace Sunspore
 
             if (agent != null && agent.enabled && agent.isOnNavMesh && targetPlant != null)
             {
-                agent.SetDestination(targetPlant.position);
+                float distToTarget = Vector3.Distance(transform.position, targetPlant.position);
+                if (distToTarget > agent.stoppingDistance)
+                {
+                    agent.isStopped = false;
+                    agent.SetDestination(targetPlant.position);
+                }
+
+                else
+                {
+                    agent.isStopped = true;
+                    agent.SetDestination(transform.position);
+                }
+
                 _vx = targetPlant.position.x - transform.position.x;
                 _vz = targetPlant.position.z - transform.position.z;
                 SetDirection(_currentDirection);

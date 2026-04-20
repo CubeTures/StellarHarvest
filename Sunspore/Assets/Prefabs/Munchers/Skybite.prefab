@@ -34,11 +34,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1583885426664768335, guid: 4393b48af626182408c439887b60415a, type: 3}
       propertyPath: m_Radius
-      value: 1
+      value: 1.1
       objectReference: {fileID: 0}
     - target: {fileID: 1583885426664768335, guid: 4393b48af626182408c439887b60415a, type: 3}
       propertyPath: m_Center.y
-      value: 0.8333333
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1583885426664768335, guid: 4393b48af626182408c439887b60415a, type: 3}
       propertyPath: m_IsTrigger
@@ -111,7 +111,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6822131166460621233, guid: 4393b48af626182408c439887b60415a, type: 3}
       propertyPath: m_Radius
-      value: 0.6
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6822131166460621233, guid: 4393b48af626182408c439887b60415a, type: 3}
+      propertyPath: m_StoppingDistance
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 7561344218795518820, guid: 4393b48af626182408c439887b60415a, type: 3}
