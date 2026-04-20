@@ -14,6 +14,7 @@ public class TutorialManager : MonoBehaviour
         HOTBAR,
         PLANT,
         DEBT,
+        INVENTORY,
     }
 
     public delegate void OnSignal(Actions action);
@@ -26,7 +27,16 @@ public class TutorialManager : MonoBehaviour
     private int currentStepIndex;
     [HideInInspector]
     public int TutorialStepLength;
-    public Dictionary<string, int> availableActions = new();
+    public Dictionary<Actions, bool> availableActions = new Dictionary<Actions, bool>
+    {
+        {Actions.HOE, false},
+        {Actions.WATERING_CAN, false},
+        {Actions.SCYTHE, false},
+        {Actions.HOTBAR, false},
+        {Actions.PLANT, false},
+        {Actions.DEBT, false},
+        {Actions.INVENTORY, false},
+    };
 
     /// <summary>True while there is an active step; false after the last step completes.</summary>
     public bool IsTutorialActive => steps != null && currentStepIndex < steps.Count;
@@ -63,11 +73,13 @@ public class TutorialManager : MonoBehaviour
     {
         if (currentStepIndex >= steps.Count) return;
         stepActive = true;
+        availableActions[Actions.INVENTORY] = true;
         steps[currentStepIndex].Begin();
     }
 
     public void CompleteStep()
     {
+        availableActions[Actions.INVENTORY] = false;   
         stepActive = false;
         steps[currentStepIndex].End();
         currentStepIndex++;

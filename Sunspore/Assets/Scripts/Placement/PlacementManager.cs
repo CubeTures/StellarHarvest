@@ -76,14 +76,14 @@ public class PlacementManager : MonoBehaviour
             draggedPreview = currentPreviews[0].transform.position;
         }
 
-        Debug.Log("Allow Placement: " + allowPlacement);
+        // Debug.Log("Allow Placement: " + allowPlacement);
     }
 
     void ShowPreview()
     {
         if (!EventSystem.current.IsPointerOverGameObject() && ScreenToWorld(Input.mousePosition, out Vector3 position))
         {
-            Debug.Log("Placing Allowed");
+            // Debug.Log("Placing Allowed");
             ItemSO item = null;
             if (inventoryManager.pointerDown)
             {

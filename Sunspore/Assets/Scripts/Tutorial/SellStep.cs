@@ -6,6 +6,7 @@ public class SellStep : TutorialStep
 {
     [SerializeField]
     InventoryManager inventoryManager;
+    [SerializeField] Wallet wallet;
 
     [SerializeField]
     ItemSO sellTarget;
@@ -17,7 +18,7 @@ public class SellStep : TutorialStep
 
     public override void Begin()
     {
-        _initialAmount = GetCurrentAmount();
+        _initialAmount = wallet.GetAmount();
         Debug.Log(
             "Dialog: Open the store inside the inventory tab and sell some of your harvested plants."
         );
@@ -25,9 +26,9 @@ public class SellStep : TutorialStep
 
     public override void Check()
     {
-        int currentAmount = GetCurrentAmount();
+        int currentAmount = wallet.GetAmount();
 
-        if (currentAmount <= _initialAmount - sellAmount)
+        if (currentAmount > _initialAmount)
         {
             TutorialManager.Instance.CompleteStep();
         }
