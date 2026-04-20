@@ -19,7 +19,7 @@ MonoBehaviour:
   resultItem:
   - item: {fileID: 0}
     amount: 1
-  description: Damages enemies that walk over it
+  description: A spiky plant seed. Deals melee damage.
   creditCost: 1800
   creditReward: 0
   disabled: 1

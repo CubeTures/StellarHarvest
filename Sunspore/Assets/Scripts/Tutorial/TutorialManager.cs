@@ -61,6 +61,7 @@ public class TutorialManager : MonoBehaviour
 
     public void StartStep()
     {
+        if (currentStepIndex >= steps.Count) return;
         stepActive = true;
         steps[currentStepIndex].Begin();
     }

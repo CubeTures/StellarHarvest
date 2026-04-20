@@ -21,7 +21,7 @@ namespace Sunspore
         private float offset;
         private Vector3[] directions = new Vector3[4];
         private Vector3 currDirection = Vector3.zero;
-        
+
         [SerializeField] private GameObject attackBoxPrefab;
         private Player playerScript;
 
@@ -62,7 +62,7 @@ namespace Sunspore
             directions[2] = new Vector3(0.0f, 0.0f, 1.0f);
             directions[3] = new Vector3(-1.0f, 0.0f, 0.0f);
             offset = 0;
-            
+
             // Create the LineRenderer for the ability range ring
             abilityRangeRing = GetComponent<LineRenderer>();
             abilityRangeRing.transform.SetParent(transform);
@@ -76,7 +76,7 @@ namespace Sunspore
         }
         private void Update()
         {
-            // If lieft click attack
+            // If left click attack
 
             if (enabled && !EventSystem.current.IsPointerOverGameObject() && Input.GetMouseButtonDown(0) && Time.time >= lastAttackTime + handHeld.attackCooldown && !TutorialManager.Instance.IsTutorialActive)
             {
@@ -92,12 +92,12 @@ namespace Sunspore
                 if (handHeld.weapon)
                 {
                     Vector3 mouseWorldPos = GetMouseWorldPosition();
-                     Attack(mouseWorldPos, true);
+                    Attack(mouseWorldPos, true);
                 }
                 else
                 {
                     Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-                    if(abilityCoroutine == null && handHeld.CheckRange(player.GetComponent<Player>(), ray))
+                    if (abilityCoroutine == null && handHeld.CheckRange(player.GetComponent<Player>(), ray))
                     {
                         abilityCoroutine = StartCoroutine(AbilityDelayCoroutine(player.GetComponent<Player>(), ray, handHeld.abilityDuration));
                         lastAttackTime = Time.time;
@@ -108,7 +108,7 @@ namespace Sunspore
                     }
                 }
             }
-            
+
             // Update direction based off player movement
 
             if (enabled)
@@ -127,7 +127,7 @@ namespace Sunspore
             }
 
             // Show ability cooldown ring if ability is active
-            if(abilityCoroutine != null)
+            if (abilityCoroutine != null)
             {
                 OnAbility?.Invoke((Time.time - castTime) / handHeld.abilityDuration);
             }
@@ -175,7 +175,7 @@ namespace Sunspore
         }
         private void OnDrawGizmos()
         {
-            if(player == null)
+            if (player == null)
             {
                 return;
             }
@@ -244,7 +244,7 @@ namespace Sunspore
             {
                 CancelAbility();
             }
-            currDirection = directions[dir-1];
+            currDirection = directions[dir - 1];
             Debug.Log("Direction set to: " + currDirection);
         }
 

@@ -739,6 +739,7 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
             {
                 draggedObject = slot.heldItem;
                 slot.heldItem = null;
+                slot.RefreshTooltip();
                 lastItemSlot = clickedObject;
                 scrollRect.enabled = false;
                 draggedObject.transform.SetParent(transform);
@@ -828,7 +829,9 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
                 GameObject newItem = Instantiate(draggedObject.GetComponent<InventoryItem>().itemScriptableObject.prefab, position, new Quaternion());
                 newItem.GetComponent<itemPickable>().itemScriptableObject = draggedObject.GetComponent<InventoryItem>().itemScriptableObject;
 
-                lastItemSlot.GetComponent<InventorySlot>().heldItem = null;
+                var dropSlot = lastItemSlot.GetComponent<InventorySlot>();
+                dropSlot.heldItem = null;
+                dropSlot.RefreshTooltip();
                 Destroy(draggedObject);
             }
 

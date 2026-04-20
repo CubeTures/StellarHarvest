@@ -56,6 +56,14 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: 0.2
       objectReference: {fileID: 0}
+    - target: {fileID: 4925672522118210379, guid: 4393b48af626182408c439887b60415a, type: 3}
+      propertyPath: body
+      value: Very fast. They prefer munching on your value crops.
+      objectReference: {fileID: 0}
+    - target: {fileID: 4925672522118210379, guid: 4393b48af626182408c439887b60415a, type: 3}
+      propertyPath: header
+      value: Gnasher
+      objectReference: {fileID: 0}
     - target: {fileID: 5034763247155655074, guid: 4393b48af626182408c439887b60415a, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

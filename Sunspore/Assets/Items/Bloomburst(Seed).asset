@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Bloomburst(Seed)
   m_EditorClassIdentifier: Sunspore::ItemSO
   displayName: Bloomburst(Seed)
-  description: 
+  description: A standard projectile plant seed. Shoots bursts of homing bullets.
   icon: {fileID: 21300000, guid: e8e5c12b122378817ad81867dde09545, type: 3}
   stackable: 1
   maxStackSize: 16

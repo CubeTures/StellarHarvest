@@ -19,7 +19,7 @@ MonoBehaviour:
   resultItem:
   - item: {fileID: 11400000, guid: 343fbddfa5e4a2c4b9809a43af48d23b, type: 2}
     amount: 1
-  description: " Melee plant \u2014 fast DPS, wide swing."
+  description: A fully grown spiky plant. Deals melee damage.
   creditCost: 300
   creditReward: 0
   disabled: 0

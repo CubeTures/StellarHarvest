@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 7561344218795518820}
   - component: {fileID: 1463616092573366569}
   - component: {fileID: 6822131166460621233}
+  - component: {fileID: 4925672522118210379}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Enemy
@@ -321,6 +322,20 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!114 &4925672522118210379
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1588823627670416362}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b44c4f8d6f5ac824990282ba35fcffd8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Sunspore::Sunspore.TooltipTrigger
+  header: Muncher
+  body: ...
 --- !u!1 &5004768875814188942
 GameObject:
   m_ObjectHideFlags: 0

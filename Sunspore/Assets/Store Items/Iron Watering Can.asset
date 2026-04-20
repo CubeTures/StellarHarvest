@@ -19,7 +19,7 @@ MonoBehaviour:
   resultItem:
   - item: {fileID: 11400000, guid: ebae8a59fd2d4f54c9edb3f4f28a231c, type: 2}
     amount: 1
-  description: 1st Watering Can Upgrade; waters plants
+  description: A standard watering can. Does it look like anything special?
   creditCost: 500
   creditReward: 0
   disabled: 0

@@ -56,6 +56,14 @@ PrefabInstance:
       propertyPath: m_LocalScale.y
       value: 1.4
       objectReference: {fileID: 0}
+    - target: {fileID: 4925672522118210379, guid: 4393b48af626182408c439887b60415a, type: 3}
+      propertyPath: body
+      value: They're always hungry for more. These tanks have 200 health.
+      objectReference: {fileID: 0}
+    - target: {fileID: 4925672522118210379, guid: 4393b48af626182408c439887b60415a, type: 3}
+      propertyPath: header
+      value: Glutton
+      objectReference: {fileID: 0}
     - target: {fileID: 5034763247155655074, guid: 4393b48af626182408c439887b60415a, type: 3}
       propertyPath: m_LocalPosition.x
       value: 3.5047636

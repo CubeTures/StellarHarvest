@@ -4790,7 +4790,7 @@ ParticleSystemRenderer:
   m_SmallMeshCulling: 1
   m_ForceMeshLod: -1
   m_MeshLodSelectionBias: 0
-  m_RenderingLayerMask: 1
+  m_RenderingLayerMask: 2
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: 6c396243921f28746bb4f60d5b8bc321, type: 2}
@@ -4856,6 +4856,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 128355989736991593}
     m_Modifications:
+    - target: {fileID: 1718788499897464401, guid: 27083b64d79e2d8428fabc517af53c19, type: 3}
+      propertyPath: stopAction
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2906293878373100582, guid: 27083b64d79e2d8428fabc517af53c19, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

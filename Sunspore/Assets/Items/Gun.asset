@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Gun
   m_EditorClassIdentifier: Sunspore::InventoryItem
   displayName: Gun
-  description: 
+  description: Forged from ceremonial grade Bloombursts. Deals 50 damage.
   icon: {fileID: 21300000, guid: 30decb28081847f409bd955b26711bf1, type: 3}
   stackable: 0
   maxStackSize: 1

@@ -19,6 +19,7 @@ MonoBehaviour:
   - item: {fileID: 11400000, guid: fae4269e3aaface4ebda681ae4106731, type: 2}
     amount: 1
   resultItem: []
-  description: "Trap plant \u2014 eats enemies whole"
+  description: A fully grown trap plant. Eats its prey whole.
   creditCost: 0
   creditReward: 1350
+  disabled: 0

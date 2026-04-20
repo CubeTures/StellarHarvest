@@ -48,6 +48,14 @@ PrefabInstance:
       propertyPath: m_LocalScale.y
       value: 0.8
       objectReference: {fileID: 0}
+    - target: {fileID: 4925672522118210379, guid: 4393b48af626182408c439887b60415a, type: 3}
+      propertyPath: body
+      value: They may be weak, but they come in numbers.
+      objectReference: {fileID: 0}
+    - target: {fileID: 4925672522118210379, guid: 4393b48af626182408c439887b60415a, type: 3}
+      propertyPath: header
+      value: Niblet
+      objectReference: {fileID: 0}
     - target: {fileID: 5034763247155655074, guid: 4393b48af626182408c439887b60415a, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.92468

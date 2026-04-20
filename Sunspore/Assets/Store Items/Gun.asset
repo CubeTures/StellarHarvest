@@ -19,7 +19,7 @@ MonoBehaviour:
   resultItem:
   - item: {fileID: 11400000, guid: 58d6f416806a6564bb13c2c1cfd41088, type: 2}
     amount: 1
-  description: Not Crafted
+  description: Forged from ceremonial grade Bloombursts. Deals 50 damage.
   creditCost: 400
   creditReward: 0
   disabled: 0

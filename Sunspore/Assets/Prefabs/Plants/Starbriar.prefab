@@ -84,6 +84,14 @@ PrefabInstance:
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 7c09187c3232f4d40a599b690faf0cfd, type: 2}
+    - target: {fileID: 9217954750179045167, guid: 04fad9b53f5c6004ea1d478f93f95fd0, type: 3}
+      propertyPath: body
+      value: A wall plant seed. Makes good use for barricades.
+      objectReference: {fileID: 0}
+    - target: {fileID: 9217954750179045167, guid: 04fad9b53f5c6004ea1d478f93f95fd0, type: 3}
+      propertyPath: header
+      value: Layerleaf
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
