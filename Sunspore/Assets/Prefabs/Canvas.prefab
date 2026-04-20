@@ -1600,7 +1600,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6362164278806163307}
   - component: {fileID: 3626389671406537930}
-  - component: {fileID: 6522773043349612362}
+  - component: {fileID: 2299106316578897089}
   m_Layer: 0
   m_Name: Music Manager
   m_TagString: Untagged
@@ -1634,7 +1634,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: -934453893474680432, guid: 2a775af2addda5f45b46ce5bf5d99e21, type: 2}
   m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 8300000, guid: 7ac702b218cacf14da6fc4b1ed13c3e4, type: 3}
+  m_Resource: {fileID: 0}
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
@@ -1720,7 +1720,7 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &6522773043349612362
+--- !u!114 &2299106316578897089
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1729,9 +1729,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 762517869040438620}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dc9d99f6f44fc4470bd028f054f71bf8, type: 3}
+  m_Script: {fileID: 11500000, guid: f1b930639c9d31749956f9f00317b124, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Sunspore::EnemyManager
+  m_EditorClassIdentifier: '::'
+  dayMusic: {fileID: 8300000, guid: b90f861dd80a92e4f9f7dd623d7c2945, type: 3}
+  nightMusic: {fileID: 8300000, guid: d1c77bfa750ccfa42a0ed79f129495d7, type: 3}
+  fadeDuration: 2
+  targetVolume: 0
 --- !u!1 &844175095568838994
 GameObject:
   m_ObjectHideFlags: 0
@@ -3914,6 +3918,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Sunspore::Sunspore.DayNightManager
   spawner: {fileID: 0}
+  musicManager: {fileID: 2299106316578897089}
   Light: {fileID: 0}
   dayLengthSeconds: 120
   initialTimeOfDay: 0
@@ -3961,6 +3966,7 @@ RectTransform:
   - {fileID: 4639150419458974503}
   - {fileID: 2930692587102299576}
   - {fileID: 5934679347892273551}
+  - {fileID: 5719022874705280672}
   - {fileID: 969651359562635680}
   - {fileID: 900739928946598325}
   - {fileID: 6362164278806163307}
@@ -10855,6 +10861,50 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!1 &3688235670804087902
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5719022874705280672}
+  - component: {fileID: 2801781544587750586}
+  m_Layer: 5
+  m_Name: Enemy Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5719022874705280672
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3688235670804087902}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6026573916693021106}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2801781544587750586
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3688235670804087902}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc9d99f6f44fc4470bd028f054f71bf8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Sunspore::EnemyManager
 --- !u!1 &3698560155116506055
 GameObject:
   m_ObjectHideFlags: 0
