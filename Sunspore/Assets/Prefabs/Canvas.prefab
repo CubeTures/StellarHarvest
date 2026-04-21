@@ -22027,6 +22027,8 @@ MonoBehaviour:
   - {fileID: 2205333709126644919}
   - {fileID: 3713281519745298604}
   TutorialStepLength: 0
+  cratePrefab: {fileID: 7968093512009859335, guid: cacb25db05f4ce049ac7425a9029bf29, type: 3}
+  crateSpawnPoint: {fileID: 0}
 --- !u!1 &7242619425465287171
 GameObject:
   m_ObjectHideFlags: 0
@@ -24542,7 +24544,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 125.3063, y: -52.7415}
-  m_SizeDelta: {x: 37.12, y: 77.483}
+  m_SizeDelta: {x: 0, y: 77.483}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6805894395041223701
 CanvasRenderer:

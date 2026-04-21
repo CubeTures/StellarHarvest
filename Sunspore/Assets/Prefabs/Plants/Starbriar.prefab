@@ -137,7 +137,7 @@ MonoBehaviour:
   plantSound: {fileID: 8300000, guid: 35cccfa738cfa6743ba1d2f761199e1d, type: 3}
   attackSound: {fileID: 0}
   glowEffect: {fileID: 2446270667391804717, guid: f46e2420a80d0964e9afd78cde433563, type: 3}
-  waterDropPrefab: {fileID: 0}
+  waterDropPrefab: {fileID: 4431333523166555220, guid: 3217ed6309e93434d8f7671159028d59, type: 3}
   seedItem: {fileID: 11400000, guid: 3712edf31b8c2ce4aba4ec39cc6479b6, type: 2}
   plantItem: {fileID: 11400000, guid: a89e7c544f4de504fa512891b47a9e01, type: 2}
   _transitionTimer: 0

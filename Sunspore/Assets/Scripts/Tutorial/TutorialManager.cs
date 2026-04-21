@@ -42,6 +42,10 @@ public class TutorialManager : MonoBehaviour
     public bool IsTutorialActive => steps != null && currentStepIndex < steps.Count;
     bool stepActive = false;
 
+    [SerializeField] private GameObject cratePrefab;
+    [SerializeField] private Vector3 crateSpawnPoint = new Vector3(0, 100, -100);
+    Quaternion crateRotation;
+
     private void Awake()
     {
         Instance = this;
@@ -79,7 +83,7 @@ public class TutorialManager : MonoBehaviour
 
     public void CompleteStep()
     {
-        availableActions[Actions.INVENTORY] = false;   
+        availableActions[Actions.INVENTORY] = false;
         stepActive = false;
         steps[currentStepIndex].End();
         currentStepIndex++;
@@ -99,6 +103,20 @@ public class TutorialManager : MonoBehaviour
     {
         currentStepIndex = steps.Count;
         Debug.Log("Tutorial Complete");
+
+        // Spawn crate
+        crateSpawnPoint += new Vector3(
+            UnityEngine.Random.Range(-5, 5),
+            1,
+            UnityEngine.Random.Range(-5, 5)
+        );
+        crateRotation = Quaternion.Euler(
+            UnityEngine.Random.Range(0, 360),
+            UnityEngine.Random.Range(0, 360),
+            UnityEngine.Random.Range(0, 360)
+        );
+        Instantiate(cratePrefab, crateSpawnPoint, crateRotation);
+
         if (DayNightManager.Instance != null)
         {
             DayNightManager.Instance.startTime();
