@@ -2,17 +2,29 @@ using UnityEngine;
 
 public class OpenInventoryStep : TutorialStep
 {
-    [SerializeField] private int requiredOpenCount = 1;
+    private bool _openedOnce;
 
     public override void Begin()
     {
+        _openedOnce = false;
         PlayerPrefManager.SetInventoryOpenCount(0);
-        Debug.Log("Dialog: Press E to open your inventory and toolbelt.");
+        Debug.Log("Dialog: Press E to open your inventory, then press E again to close it.");
     }
 
     public override void Check()
     {
-        if (PlayerPrefManager.GetInventoryOpenCount() >= requiredOpenCount)
+        if (InventoryManager.Instance == null)
+        {
+            return;
+        }
+
+        if (!_openedOnce && InventoryManager.Instance.isInventoryOpened)
+        {
+            _openedOnce = true;
+            return;
+        }
+
+        if (_openedOnce && !InventoryManager.Instance.isInventoryOpened)
         {
             TutorialManager.Instance.CompleteStep();
         }

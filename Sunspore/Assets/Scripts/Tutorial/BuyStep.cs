@@ -14,10 +14,14 @@ public class BuyStep : TutorialStep
     List<int> buyAmounts;
 
     private List<int> _initialAmounts = new();
+    private int _initialStoreOpenCount;
+    private bool _openedStoreThisStep;
 
     public override void Begin()
     {
         _initialAmounts.Clear();
+        _initialStoreOpenCount = PlayerPrefManager.GetStoreOpenCount();
+        _openedStoreThisStep = false;
 
         if (buyTargets != null)
         {
@@ -27,11 +31,25 @@ public class BuyStep : TutorialStep
             }
         }
 
-        Debug.Log("Dialog: Use the store to buy the plants you need.");
+        Debug.Log("Dialog: Walk to the house shop and press I to open the store.");
     }
 
     public override void Check()
     {
+        if (!_openedStoreThisStep)
+        {
+            bool storeOpenCountIncreased = PlayerPrefManager.GetStoreOpenCount() > _initialStoreOpenCount;
+            bool storeCurrentlyOpen = InventoryManager.Instance != null && InventoryManager.Instance.IsStoreOpened;
+
+            if (!storeOpenCountIncreased && !storeCurrentlyOpen)
+            {
+                return;
+            }
+
+            _openedStoreThisStep = true;
+            Debug.Log("Dialog: Great. Now use the store to buy the plants you need.");
+        }
+
         if (buyTargets == null || buyAmounts == null)
             return;
         if (buyTargets.Count != buyAmounts.Count || buyTargets.Count != _initialAmounts.Count)
