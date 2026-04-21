@@ -376,14 +376,22 @@ public sealed class TerrainTilemap : MonoBehaviour
 				continue;
 			}
 
+			bool isBush = typeNoise < bushCutoff;
 			bool isRock = typeNoise >= bushCutoff && typeNoise < rockCutoff;
 			float yOffset = isRock ? 0.1f : Random.Range(noiseSpawnYOffset.x, noiseSpawnYOffset.y);
-			Vector3 spawnPos = new Vector3(wx, transform.position.y + yOffset, wz);
+			Vector3 spawnPos;
+			if (isBush)
+			{
+				spawnPos = new Vector3(wx, 0.6f, wz);
+			}
+			else
+			{
+				spawnPos = new Vector3(wx, transform.position.y + yOffset, wz);
+			}
 			GameObject spawned = Instantiate(prefabToSpawn, spawnPos, Quaternion.identity, parent);
 			ApplySpriteSortingByY(spawned);
 			_spawnedProps.Add(spawned);
 
-			bool isBush = typeNoise < bushCutoff;
 			if (isBush && bushOverlapExtraSpawns > 0 && bushOverlapRadius > 0f)
 			{
 				float r = bushOverlapRadius;
@@ -409,7 +417,7 @@ public sealed class TerrainTilemap : MonoBehaviour
 						continue;
 					}
 
-					Vector3 extraPos = new Vector3(ox, transform.position.y, oz);
+					Vector3 extraPos = new Vector3(ox, 0.6f, oz);
 					GameObject extra = Instantiate(overlapPrefab, extraPos, Quaternion.identity, parent);
 					ApplySpriteSortingByY(extra);
 					_spawnedProps.Add(extra);
@@ -540,7 +548,7 @@ public sealed class TerrainTilemap : MonoBehaviour
 		foreach (SpriteRenderer sr in renderers)
 		{
 			// Lower world Z renders in front (higher sorting order).
-			sr.sortingOrder = Mathf.RoundToInt(-sr.transform.position.z * 100f) - 50 * 100;
+			sr.sortingOrder = (int)(-sr.transform.position.z * 100) - 50 * 100;
 		}
 	}
 
