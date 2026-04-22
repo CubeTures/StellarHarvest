@@ -42,6 +42,7 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
     GameObject lastItemSlot;
     bool hasLoggedMissingHandParent = false;
     public bool pointerDown = false;
+    public bool IsStoreOpened => isStoreOpened;
     void Awake()
     {
         if (Instance == null)
@@ -109,12 +110,13 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
             }
             else
             {
-                if (TutorialManager.Instance.IsTutorialActive && !TutorialManager.Instance.availableActions[TutorialManager.Actions.INVENTORY])
+                if (TutorialManager.Instance != null && TutorialManager.Instance.IsTutorialActive && !TutorialManager.Instance.availableActions[TutorialManager.Actions.INVENTORY])
                 {
                     // skip
                 }
                 else
                 {
+                    isStoreOpened = false;
                     isInventoryOpened = true;
                     PlayerPrefManager.SetInventoryOpenCount(PlayerPrefManager.GetInventoryOpenCount() + 1);
                 }
@@ -693,6 +695,39 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
             CloseSidebar();
             isStoreOpened = true;
         }
+    }
+
+    public bool OpenStoreFromEnvironment()
+    {
+        if (TutorialManager.Instance != null && TutorialManager.Instance.IsTutorialActive && !TutorialManager.Instance.availableActions[TutorialManager.Actions.INVENTORY])
+        {
+            return false;
+        }
+
+        isInventoryOpened = true;
+        CloseSidebar();
+        isStoreOpened = true;
+        PlayerPrefManager.SetInventoryOpenCount(PlayerPrefManager.GetInventoryOpenCount() + 1);
+        PlayerPrefManager.SetStoreOpenCount(PlayerPrefManager.GetStoreOpenCount() + 1);
+        return true;
+    }
+
+    public void CloseStoreFromEnvironment()
+    {
+        isInventoryOpened = false;
+        isStoreOpened = false;
+        CloseSidebar();
+    }
+
+    public bool ToggleStoreFromEnvironment()
+    {
+        if (isStoreOpened)
+        {
+            CloseStoreFromEnvironment();
+            return false;
+        }
+
+        return OpenStoreFromEnvironment();
     }
 
     public void OpenAndCloseDebt()

@@ -20,7 +20,7 @@ public class SellStep : TutorialStep
     {
         _initialAmount = wallet.GetAmount();
         Debug.Log(
-            "Dialog: Open the store inside the inventory tab and sell some of your harvested plants."
+            "Dialog: Go to the shop in the world, press I to open it, and sell some of your harvested plants."
         );
     }
 
