@@ -86,7 +86,7 @@ namespace Sunspore
             {
                 case 0:
                     // Opening inventory
-                    if (PlayerPrefManager.GetInventoryOpenCount() >= 1)
+                    if (PlayerPrefManager.GetInventoryOpenCount() >= 1 || PlayerPrefManager.GetStoreOpenCount() >= 1)
                     {
                         // CompleteEvent();
                     }

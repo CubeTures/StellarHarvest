@@ -87,6 +87,23 @@ public static class PlayerPrefManager
         }
     }
 
+    public static void SetStoreOpenCount(int eventCount)
+    {
+        PlayerPrefs.SetInt("StoreOpenCount", eventCount);
+    }
+
+    public static int GetStoreOpenCount()
+    {
+        if (PlayerPrefs.HasKey("StoreOpenCount"))
+        {
+            return PlayerPrefs.GetInt("StoreOpenCount");
+        }
+        else
+        {
+            return 0;
+        }
+    }
+
     public static void SetMoveCount(int moveCount)
     {
         PlayerPrefs.SetInt("MoveCount", moveCount);
@@ -355,6 +372,7 @@ public static class PlayerPrefManager
             "Highscore",
             "EventCount",
             "InventoryOpenCount",
+            "StoreOpenCount",
             "MoveCount",
             "CraftingCount",
             "Resolution",
