@@ -16,7 +16,9 @@ public class StoreWorldInteractable : MonoBehaviour
     [SerializeField] private bool useDistanceFallback = true;
     [SerializeField] private Transform playerTransform;
     [SerializeField] private float interactionRadius = 3f;
+    [SerializeField] private GameObject hologram;
 
+    private Animator holoAnim;
     private bool _playerInRange;
 
     private void Reset()
@@ -37,6 +39,11 @@ public class StoreWorldInteractable : MonoBehaviour
             {
                 playerTransform = playerObject.transform;
             }
+        }
+
+        if (hologram != null)
+        {
+            holoAnim = hologram.GetComponent<Animator>();
         }
 
         if (autoUpdatePromptText && interactPromptLabel == null && interactPrompt != null)
@@ -98,6 +105,8 @@ public class StoreWorldInteractable : MonoBehaviour
         {
             UpdatePromptText(false);
             interactPrompt.SetActive(true);
+            holoAnim.SetTrigger("Enter");
+
         }
     }
 
@@ -112,6 +121,7 @@ public class StoreWorldInteractable : MonoBehaviour
         if (interactPrompt != null)
         {
             interactPrompt.SetActive(false);
+            holoAnim.SetTrigger("Exit");
         }
 
         if (closeStoreWhenPlayerLeaves && InventoryManager.Instance != null && InventoryManager.Instance.IsStoreOpened)
