@@ -30,7 +30,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 355423213755701724}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: -102.25}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -111,7 +111,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 5300
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 21300000, guid: 45c4e7ce16b3d864e8469c80d97ccb44, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 166bf9b6f3a9f0443b5db9c3d4544530, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -277,10 +277,10 @@ MonoBehaviour:
   _juvenileAbilityCooldown: 3
   _fullyGrownAbilityCooldown: 2
   _homingBulletPrefab: {fileID: 2510335163322140385, guid: 6dc1efe34b88f384bb554626513d40de, type: 3}
-  snapToGridOnStart: 0
+  snapToGridOnStart: 1
   gridSizeX: 1.5
   gridSizeZ: 2.25
-  tillGroundOnStart: 0
+  tillGroundOnStart: 1
 --- !u!114 &6015679569791173063
 MonoBehaviour:
   m_ObjectHideFlags: 0

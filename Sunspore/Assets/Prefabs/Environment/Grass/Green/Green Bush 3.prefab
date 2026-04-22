@@ -64,10 +64,18 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6128207806939387193, guid: 42f299e6bd7a9324cbd5de5f7accd0e5, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7804165044289371376, guid: 42f299e6bd7a9324cbd5de5f7accd0e5, type: 3}
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: fbc01b4d1a0efd44fa461f9967f968b1, type: 3}
+    - target: {fileID: 7804165044289371376, guid: 42f299e6bd7a9324cbd5de5f7accd0e5, type: 3}
+      propertyPath: m_SpriteSortPoint
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7804165044289371376, guid: 42f299e6bd7a9324cbd5de5f7accd0e5, type: 3}
       propertyPath: m_WasSpriteAssigned
       value: 1
