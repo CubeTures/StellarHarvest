@@ -31,7 +31,7 @@ public class BuyStep : TutorialStep
             }
         }
 
-        Debug.Log("Dialog: Walk to the house shop and press I to open the store.");
+        Debug.Log("Dialog: Walk to the market and press I to open the store.");
     }
 
     public override void Check()

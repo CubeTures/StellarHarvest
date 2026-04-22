@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Sunspore::ItemSO
   displayName: Spike Bramble(Fully Grown)
   description: A fully grown spiky plant. Deals melee damage.
-  icon: {fileID: 21300000, guid: c0494158fb45e78c0988aa1ff06090be, type: 3}
+  icon: {fileID: 21300000, guid: 93dca5b4b25822e48aed3426c4029636, type: 3}
   stackable: 1
   maxStackSize: 16
   placeable: 0

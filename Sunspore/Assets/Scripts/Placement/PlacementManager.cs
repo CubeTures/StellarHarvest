@@ -4,6 +4,7 @@ using Sunspore;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using System.Collections;
+using UnityEngine.Tilemaps;
 
 [RequireComponent(typeof(InventoryManager))]
 public class PlacementManager : MonoBehaviour
@@ -22,6 +23,7 @@ public class PlacementManager : MonoBehaviour
     List<GameObject> currentPreviews = new();
     Vector3 draggedPreview;
     List<Vector2> footprints = new();
+    readonly Dictionary<GameObject, LineRenderer> previewOutlines = new();
 
     const float epsilon = 0.01f;
     Color cannotPlace = new Color(245f / 255f, 103f / 255f, 105f / 255f);
@@ -120,6 +122,7 @@ public class PlacementManager : MonoBehaviour
                 {
                     GameObject inst = Instantiate(preview, position, Quaternion.Euler(90f, 0, 0));
                     inst.transform.localScale = new Vector3(1.0f * xScale, 1.0f * zScale, 1.0f * zScale);
+                    EnsureOutline(inst);
                     currentPreviews.Add(inst);
                 }
             }
@@ -144,24 +147,110 @@ public class PlacementManager : MonoBehaviour
 
     void ColorPreviews()
     {
+        bool canPlaceAllPreviews = currentPreviews.Count > 0;
+
         foreach (var preview in currentPreviews)
         {
-            var sr = preview.GetComponent<SpriteRenderer>();
+            bool isTilled = TerrainTilemap.Instance.CheckTilled(preview.transform.position);
+            bool hasBlockingCollider = HasBlockingCollider(preview.transform.position, preview.transform.localScale);
+            bool canPlaceHere = isTilled && !hasBlockingCollider;
 
-            Vector3 box = new((preview.transform.localScale.x - epsilon) / 2, 0.5f, (preview.transform.localScale.z - epsilon) / 2);
-            var colliders = Physics.OverlapBox(preview.transform.position, box, Quaternion.identity, ~(groundLayer | ignoreCastLayer));
+            DrawSquareOutline(preview, canPlaceHere ? canPlace : cannotPlace);
 
-            if (colliders.Count() <= 0 && TerrainTilemap.Instance.CheckTilled(preview.transform.position))
-            {
-                sr.color = canPlace;
-                allowPlacement = true;
-            }
-            else
-            {
-                sr.color = cannotPlace;
-                allowPlacement = false;
-            }
+            if (!canPlaceHere)
+                canPlaceAllPreviews = false;
         }
+
+        allowPlacement = canPlaceAllPreviews;
+    }
+
+    bool HasBlockingCollider(Vector3 previewPosition, Vector3 previewScale)
+    {
+        Vector3 halfExtents = new((previewScale.x - epsilon) / 2f, 0.5f, (previewScale.z - epsilon) / 2f);
+        Collider[] colliders = Physics.OverlapBox(previewPosition, halfExtents, Quaternion.identity, ~(groundLayer | ignoreCastLayer));
+
+        foreach (var collider in colliders)
+        {
+            if (collider == null)
+            {
+                continue;
+            }
+
+            Plant plant = collider.GetComponentInParent<Plant>();
+            if (plant != null)
+            {
+                // Ignore nearby plants unless they are on this exact planting tile.
+                if (IsSameTile(plant.transform.position, previewPosition))
+                {
+                    return true;
+                }
+
+                continue;
+            }
+
+            return true;
+        }
+
+        return false;
+    }
+
+    bool IsSameTile(Vector3 a, Vector3 b)
+    {
+        return Mathf.Abs(a.x - b.x) <= epsilon && Mathf.Abs(a.z - b.z) <= epsilon;
+    }
+
+    void EnsureOutline(GameObject previewObject)
+    {
+        if (previewObject == null || previewOutlines.ContainsKey(previewObject))
+        {
+            return;
+        }
+
+        var spriteRenderer = previewObject.GetComponent<SpriteRenderer>();
+        if (spriteRenderer != null)
+        {
+            spriteRenderer.enabled = false;
+        }
+
+        GameObject outlineObject = new GameObject("PreviewOutline");
+        outlineObject.transform.SetParent(previewObject.transform, false);
+        outlineObject.transform.localPosition = new Vector3(0f, 0f, -0.01f);
+
+        LineRenderer line = outlineObject.AddComponent<LineRenderer>();
+        line.material = new Material(Shader.Find("Sprites/Default"));
+        line.widthMultiplier = 0.08f;
+        line.loop = true;
+        line.useWorldSpace = true;
+        line.positionCount = 5;
+        previewOutlines[previewObject] = line;
+    }
+
+    void DrawSquareOutline(GameObject previewObject, Color color)
+    {
+        if (previewObject == null)
+        {
+            return;
+        }
+
+        EnsureOutline(previewObject);
+        if (!previewOutlines.TryGetValue(previewObject, out var line) || line == null)
+        {
+            return;
+        }
+
+        line.startColor = color;
+        line.endColor = color;
+
+        Vector3 center = previewObject.transform.position;
+        Vector3 scale = previewObject.transform.localScale;
+        float halfX = scale.x / 2f;
+        float halfZ = scale.z / 2f;
+
+        line.SetPosition(0, new Vector3(center.x - halfX, center.y + 0.01f, center.z - halfZ));
+        line.SetPosition(1, new Vector3(center.x + halfX, center.y + 0.01f, center.z - halfZ));
+        line.SetPosition(2, new Vector3(center.x + halfX, center.y + 0.01f, center.z + halfZ));
+        line.SetPosition(3, new Vector3(center.x - halfX, center.y + 0.01f, center.z + halfZ));
+        line.SetPosition(4, new Vector3(center.x - halfX, center.y + 0.01f, center.z - halfZ));
     }
 
     void GetFootprints(ItemSO item)
@@ -205,7 +294,7 @@ public class PlacementManager : MonoBehaviour
         Debug.Log(allowPlacement + " " + isPlacing);
         if (allowPlacement && !isPlacing)
         {
-            Vector3 currPlace = draggedPreview;
+            Vector3 currPlace = currentPreviews.Count > 0 ? currentPreviews[0].transform.position : draggedPreview;
             InventorySlot slot = draggedSlot;
             GameObject prefab = draggedItem.prefab;
             placingCoroutine = StartCoroutine(PlaceAfterAnimation(currPlace, slot, prefab));

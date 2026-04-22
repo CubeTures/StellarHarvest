@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Sunspore::ItemSO
   displayName: Bloomburst(Fully Grown)
   description: A fully grown standard projectile plant. Shoots bursts of homing bullets.
-  icon: {fileID: 21300000, guid: 03be909c6013e3b5589aab13fd3c9995, type: 3}
+  icon: {fileID: 21300000, guid: 3a8edec7173538c4584f0ee5811e42f2, type: 3}
   stackable: 1
   maxStackSize: 16
   placeable: 0

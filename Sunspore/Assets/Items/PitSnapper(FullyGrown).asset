@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Sunspore::ItemSO
   displayName: Pit Snapper(Fully Grown)
   description: A fully grown trap plant. Eats its prey whole.
-  icon: {fileID: 21300000, guid: a0d7005ca2ffdd58d987e0b04a828ecf, type: 3}
+  icon: {fileID: 21300000, guid: 38689a9a8c67fd942b1591980a91dd63, type: 3}
   stackable: 1
   maxStackSize: 16
   placeable: 0

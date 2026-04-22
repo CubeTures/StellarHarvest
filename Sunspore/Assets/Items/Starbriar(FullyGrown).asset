@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Sunspore::ItemSO
   displayName: Layerleaf
   description: A fully grown wall plant. Makes good use for barricades.
-  icon: {fileID: 21300000, guid: 293b6cb8899a3f946a3a96f7ee27f249, type: 3}
+  icon: {fileID: 21300000, guid: 474c32f567c6d9b46b9e3e084173e133, type: 3}
   stackable: 1
   maxStackSize: 16
   placeable: 0

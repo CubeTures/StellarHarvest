@@ -15,7 +15,7 @@ MonoBehaviour:
   displayName: Glowbud
   description: A fully grown defenseless, high value plant. Its crystals are rumored
     to be made of shooting stars.
-  icon: {fileID: 21300000, guid: 23eea3953dab7fb48895cf8cb08ae9a0, type: 3}
+  icon: {fileID: 21300000, guid: 9ed79485baeba184294006c7041fd90d, type: 3}
   stackable: 1
   maxStackSize: 16
   placeable: 0

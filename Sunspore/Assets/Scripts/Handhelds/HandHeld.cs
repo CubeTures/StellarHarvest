@@ -61,6 +61,14 @@ namespace Sunspore
 
         }
 
+        public virtual bool TryGetAbilityPreview(Player player, Ray ray, out Vector3 previewCenter, out Vector3 previewSize, out bool canUse)
+        {
+            previewCenter = default;
+            previewSize = default;
+            canUse = false;
+            return false;
+        }
+
         public virtual bool CheckRange(Player player, Ray ray)
         {
             if (Physics.Raycast(ray, out RaycastHit hit))
