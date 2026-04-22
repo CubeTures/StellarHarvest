@@ -13,7 +13,7 @@ THE MAN,"Notice how <color=#FF0000>the seed is left</color> after you harvested 
 THE MAN,"First, get used to your bag. Open it, close it, then head to the house store.",
 "Open your inventory with E, then press E again to close it.",EVENT,
 THE MAN,"You can both buy and sell here. Hurry up and <color=#FF0000>pawn that plant</color>.",
-"Walk to the house and press I to open the store. Then open the Sell tab and sell your harvested plant.",EVENT,
+"Walk to the market and press I to open the store. Then open the Sell tab and sell your harvested plant.",EVENT,
 THE MAN,"<color=#FF0000>Buying more plants</color> will be essential to your survival.",
 Buy a Glowbud seed from the store's Buy tab.,EVENT,
 THE MAN,"The seed was transferred to your inventory. <color=#FF0000>Move it to your pocket</color>.",
