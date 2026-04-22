@@ -15,7 +15,7 @@ class TutorialSkipper : MonoBehaviour
 
 	void Update()
 	{
-		if (Input.GetKey(KeyCode.LeftControl) && Input.GetKey(KeyCode.LeftAlt) && Input.GetKey(KeyCode.LeftShift) && Input.GetKey(KeyCode.P))
+		if (Application.isEditor && Input.GetKey(KeyCode.LeftControl) && Input.GetKey(KeyCode.LeftAlt) && Input.GetKey(KeyCode.LeftShift) && Input.GetKey(KeyCode.P))
 		{
 			visible = true;
 		}
@@ -24,7 +24,6 @@ class TutorialSkipper : MonoBehaviour
 
 	public void SkipTutorial()
 	{
-		dm.SkipFirstDebt();
 		dl.CompleteDialog();
 		tm.CompleteTutorial();
 		im.AddItem(glowbudSeed, 1);
