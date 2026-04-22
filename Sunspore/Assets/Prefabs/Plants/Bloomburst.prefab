@@ -98,7 +98,7 @@ PrefabInstance:
       objectReference: {fileID: 21300000, guid: 166bf9b6f3a9f0443b5db9c3d4544530, type: 3}
     - target: {fileID: 8633607651646711802, guid: 04fad9b53f5c6004ea1d478f93f95fd0, type: 3}
       propertyPath: m_SpriteSortPoint
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8633607651646711802, guid: 04fad9b53f5c6004ea1d478f93f95fd0, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
@@ -163,3 +163,7 @@ MonoBehaviour:
   _juvenileAbilityCooldown: 3
   _fullyGrownAbilityCooldown: 2
   _homingBulletPrefab: {fileID: 2510335163322140385, guid: 6dc1efe34b88f384bb554626513d40de, type: 3}
+  snapToGridOnStart: 0
+  gridSizeX: 1.5
+  gridSizeZ: 2.25
+  tillGroundOnStart: 0

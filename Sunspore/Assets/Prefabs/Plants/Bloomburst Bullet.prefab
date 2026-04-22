@@ -93,7 +93,7 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_SpriteSortPoint: 0
+  m_SpriteSortPoint: 1
 --- !u!54 &7333063501568720586
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -161,3 +161,5 @@ MonoBehaviour:
   _missSound: {fileID: 0}
   _hitEffect: {fileID: 8612311270224035912, guid: 18af14b0c37bb22479300738975c54de, type: 3}
   _missEffect: {fileID: 8873088851218833594, guid: cc8952f86cdf2914facb569bfc19bea2, type: 3}
+  _retargetRange: 10
+  _retargetAngle: 45
