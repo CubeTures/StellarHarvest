@@ -403,7 +403,7 @@ GameObject:
   - component: {fileID: 1413893761743246142}
   - component: {fileID: 582695202153942276}
   m_Layer: 0
-  m_Name: GameObject
+  m_Name: Hologram
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
