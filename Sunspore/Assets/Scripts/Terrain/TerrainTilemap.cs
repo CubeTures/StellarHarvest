@@ -613,6 +613,27 @@ public sealed class TerrainTilemap : MonoBehaviour
 		return false;
 	}
 
+	public Vector3 GetCellCenterWorld(Vector3 worldPosition)
+	{
+		var cell = _tilemap.WorldToCell(worldPosition);
+		return _tilemap.GetCellCenterWorld(cell);
+	}
+
+	public Vector3 GetCellWorldSize()
+	{
+		if (transform.parent == null)
+		{
+			return new Vector3(_tilemap.cellSize.x, 0f, _tilemap.cellSize.y);
+		}
+
+		Vector3 parentScale = transform.parent.lossyScale;
+		return new Vector3(
+			Mathf.Abs(_tilemap.cellSize.x * parentScale.x),
+			0f,
+			Mathf.Abs(_tilemap.cellSize.y * parentScale.y)
+		);
+	}
+
 	// Reusable helper method to check for any script in a given tilemap cell
 	public bool HasGrassInCell(Vector3Int cell)
 	{
