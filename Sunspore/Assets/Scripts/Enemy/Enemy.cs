@@ -71,6 +71,10 @@ namespace Sunspore
             }
             if (health <= 0)
             {
+                var wallet = FindFirstObjectByType<Wallet>();
+                if (wallet != null)
+                    wallet.Add(Mathf.RoundToInt(cost));
+
                 Instantiate(_deathEffect, transform.position + new Vector3(0, 1, 0), Quaternion.identity);
                 Destroy(this.gameObject);
             }
