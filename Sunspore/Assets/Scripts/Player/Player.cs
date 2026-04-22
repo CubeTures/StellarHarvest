@@ -108,7 +108,7 @@ public class Player : MonoBehaviour
         // If player fell out of the map, respawn
         if (transform.position.y < -10f)
         {
-            Respawn(GameManager.gm.transform.position + new Vector3(0, 1.5f, 0));
+            Respawn(new Vector3(0, 1.5f, -100));
         }
 
         if (health <= 10)
@@ -291,7 +291,7 @@ public class Player : MonoBehaviour
         health = 100;
         wallet.Subtract(wallet.GetAmount() / 2);
         UnFreezeMotion();
-        Respawn(GameManager.gm.transform.position + new Vector3(0, 1.5f, 0));
+        Respawn(new Vector3(0, 1.5f, -100));
     }
 
     private void ResetColor()

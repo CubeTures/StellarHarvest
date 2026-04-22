@@ -6,6 +6,9 @@ public class EnemyManager : MonoBehaviour
 
     public void Awake()
     {
-        pathfinding = new();
+        if (Pathfinding.Instance == null)
+            pathfinding = new();
+        else
+            pathfinding = Pathfinding.Instance;
     }
 }

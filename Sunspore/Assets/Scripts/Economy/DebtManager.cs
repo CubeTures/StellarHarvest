@@ -8,6 +8,8 @@ using UnityEngine.Events;
 
 class DebtManager : MonoBehaviour
 {
+	public static DebtManager Instance { get; private set; }
+
 	[SerializeField] DayNightManager dayNightManager;
 	[SerializeField] Wallet wallet;
 
@@ -30,8 +32,20 @@ class DebtManager : MonoBehaviour
 		public int price;
 	}
 
+	bool _initialized;
+
+	void Awake()
+	{
+		Instance = this;
+	}
+
+	public int RemainingPayments => _initialized
+		? upcomingParent.childCount + (OwedAmount() > 0 ? 1 : 0)
+		: payments.Length;
+
 	void Start()
 	{
+		_initialized = true;
 		receipt.Add(new Item
 		{
 			label = "Current Payment",
