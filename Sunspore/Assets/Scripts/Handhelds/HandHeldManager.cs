@@ -30,6 +30,7 @@ namespace Sunspore
         public HandHeld.WeaponHandle handle = HandHeld.WeaponHandle.WOOD;
         private Coroutine abilityCoroutine;
         [SerializeField] LineRenderer abilityRangeRing;
+        [SerializeField] LineRenderer targetPreviewRing;
         [SerializeField] private int ringSegments = 64;
 
         private float castTime = 0;
@@ -73,6 +74,20 @@ namespace Sunspore
             abilityRangeRing.positionCount = ringSegments + 1;
             abilityRangeRing.enabled = false;
             abilityRangeRing.useWorldSpace = true;
+
+            if (targetPreviewRing == null)
+            {
+                GameObject ringObject = new GameObject("TargetPreviewRing");
+                ringObject.transform.SetParent(transform);
+                targetPreviewRing = ringObject.AddComponent<LineRenderer>();
+                targetPreviewRing.material = new Material(Shader.Find("Sprites/Default"));
+            }
+
+            targetPreviewRing.widthMultiplier = 0.08f;
+            targetPreviewRing.loop = true;
+            targetPreviewRing.positionCount = ringSegments + 1;
+            targetPreviewRing.enabled = false;
+            targetPreviewRing.useWorldSpace = true;
 
             OnAbility?.Invoke(0);
         }
@@ -118,14 +133,28 @@ namespace Sunspore
                 updateDirection();
             }
 
-            if (enabled && handHeld != null && handHeld.tool && !handHeld.weapon)
+            if (enabled && handHeld != null && (handHeld.tool || handHeld is Scythe))
             {
                 // Show the ring at the player's position with the ability range
                 DrawAbilityRangeRing(player.transform.position, handHeld.abilityRange);
+
+                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                if (handHeld.TryGetAbilityPreview(playerScript, ray, out Vector3 previewCenter, out Vector3 previewSize, out bool canUse))
+                {
+                    DrawTargetPreviewRing(previewCenter, previewSize, canUse ? Color.green : Color.red);
+                }
+                else if (targetPreviewRing != null)
+                {
+                    targetPreviewRing.enabled = false;
+                }
             }
             else
             {
                 abilityRangeRing.enabled = false;
+                if (targetPreviewRing != null)
+                {
+                    targetPreviewRing.enabled = false;
+                }
             }
 
             // Show ability cooldown ring if ability is active
@@ -237,6 +266,25 @@ namespace Sunspore
                 float z = center.z + radius * Mathf.Sin(angle) * zScale;
                 abilityRangeRing.SetPosition(i, new Vector3(x, 0 + 0.05f, z));
             }
+        }
+
+        private void DrawTargetPreviewRing(Vector3 center, Vector3 size, Color color)
+        {
+            if (targetPreviewRing == null) return;
+
+            targetPreviewRing.enabled = true;
+            targetPreviewRing.startColor = color;
+            targetPreviewRing.endColor = color;
+
+            float halfWidth = Mathf.Max(0.4f, size.x / 2f);
+            float halfDepth = Mathf.Max(0.4f, size.z / 2f);
+
+            targetPreviewRing.positionCount = 5;
+            targetPreviewRing.SetPosition(0, new Vector3(center.x - halfWidth, center.y + 0.05f, center.z - halfDepth));
+            targetPreviewRing.SetPosition(1, new Vector3(center.x + halfWidth, center.y + 0.05f, center.z - halfDepth));
+            targetPreviewRing.SetPosition(2, new Vector3(center.x + halfWidth, center.y + 0.05f, center.z + halfDepth));
+            targetPreviewRing.SetPosition(3, new Vector3(center.x - halfWidth, center.y + 0.05f, center.z + halfDepth));
+            targetPreviewRing.SetPosition(4, new Vector3(center.x - halfWidth, center.y + 0.05f, center.z - halfDepth));
         }
 
         // Updates currDirection

@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 namespace Sunspore
 {
@@ -16,14 +17,62 @@ namespace Sunspore
         [SerializeField] private float _fullyGrownAbilityCooldown = 2f;
         [SerializeField] private GameObject _homingBulletPrefab;
 
+        [Header("Placement")]
+        [SerializeField] private bool snapToGridOnStart = false;
+        [SerializeField] private float gridSizeX = 1.5f;
+        [SerializeField] private float gridSizeZ = 2.25f;
+        [SerializeField] private bool tillGroundOnStart = false;
+
         private float _juvenileAbilityTimer = 0f;
         private float _fullyGrownAbilityTimer = 0f;
         private Animator _animator;
         protected override void Start()
         {
+            if (snapToGridOnStart && IsTutorialActive())
+            {
+                SnapToGrid();
+            }
+
+            if (
+                tillGroundOnStart
+                && IsTutorialActive()
+                && TerrainTilemap.Instance != null
+            )
+            {
+                TerrainTilemap.Instance.TillAtWorldPosition(transform.position, 0f, transform.position);
+            }
+
             base.Start();
             _animator = GetComponent<Animator>();
             // Debug.Log("Bloom Burst created!");
+        }
+
+        [ContextMenu("Snap To Placement Grid")]
+        private void SnapToGrid()
+        {
+            Tilemap tilemap = TerrainTilemap.Instance != null ? TerrainTilemap.Instance.GetComponent<Tilemap>() : null;
+            if (tilemap != null)
+            {
+                Vector3Int cell = tilemap.WorldToCell(transform.position);
+                Vector3 center = tilemap.GetCellCenterWorld(cell);
+                transform.position = new Vector3(center.x, transform.position.y, center.z);
+                return;
+            }
+
+            if (gridSizeX <= 0f || gridSizeZ <= 0f)
+            {
+                return;
+            }
+
+            Vector3 pos = transform.position;
+            float snappedX = Mathf.Round(pos.x / gridSizeX) * gridSizeX;
+            float snappedZ = Mathf.Round(pos.z / gridSizeZ) * gridSizeZ;
+            transform.position = new Vector3(snappedX, pos.y, snappedZ);
+        }
+
+        private static bool IsTutorialActive()
+        {
+            return TutorialManager.Instance != null && TutorialManager.Instance.IsTutorialActive;
         }
 
         protected override void OnSeedStage()
