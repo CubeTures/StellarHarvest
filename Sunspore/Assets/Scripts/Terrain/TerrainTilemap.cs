@@ -82,6 +82,8 @@ public sealed class TerrainTilemap : MonoBehaviour
 	[SerializeField, Range(0f, 1f)]
 	private float bushWeight = 0.45f;
 
+	[SerializeField] private float bushSpawnHeight = 0.25f;
+
 	[SerializeField, Range(0f, 1f)]
 	private float rockWeight = 0.2f;
 
@@ -382,7 +384,7 @@ public sealed class TerrainTilemap : MonoBehaviour
 			Vector3 spawnPos;
 			if (isBush)
 			{
-				spawnPos = new Vector3(wx, 0.6f, wz);
+				spawnPos = new Vector3(wx, bushSpawnHeight, wz);
 			}
 			else
 			{
@@ -417,7 +419,7 @@ public sealed class TerrainTilemap : MonoBehaviour
 						continue;
 					}
 
-					Vector3 extraPos = new Vector3(ox, 0.6f, oz);
+					Vector3 extraPos = new Vector3(ox, bushSpawnHeight, oz);
 					GameObject extra = Instantiate(overlapPrefab, extraPos, Quaternion.identity, parent);
 					ApplySpriteSortingByY(extra);
 					_spawnedProps.Add(extra);
