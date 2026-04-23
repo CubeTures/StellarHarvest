@@ -124,7 +124,7 @@ public class StoreWorldInteractable : MonoBehaviour
         {
             interactPrompt.SetActive(false);
             holoAnim.SetTrigger("Exit");
-            SFXManager.StopLoop();
+            SFXManager.StopLoop("hologramhum");
             SFXManager.Play("hologramdeactivate");
         }
 

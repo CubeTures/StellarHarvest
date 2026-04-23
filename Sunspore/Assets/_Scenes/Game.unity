@@ -979899,6 +979899,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 8300000, guid: d20a5ef2ea49b1c41b71b710858f70a5, type: 3}
     - target: {fileID: 7462038642578740300, guid: 604f83d99ad6df74fbf8070044eae5a8, type: 3}
+      propertyPath: HologramHumVolume
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7462038642578740300, guid: 604f83d99ad6df74fbf8070044eae5a8, type: 3}
       propertyPath: InventoryClickSFX
       value: 
       objectReference: {fileID: 8300000, guid: 78eee3f8d9d40a943b5977eef928618f, type: 3}
@@ -979915,9 +979919,17 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 8300000, guid: 0c974c7873bbd3c4582cd8d64d955f03, type: 3}
     - target: {fileID: 7462038642578740300, guid: 604f83d99ad6df74fbf8070044eae5a8, type: 3}
+      propertyPath: InventoryClickVolume
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7462038642578740300, guid: 604f83d99ad6df74fbf8070044eae5a8, type: 3}
       propertyPath: HologramDeactivateSFX
       value: 
       objectReference: {fileID: 8300000, guid: 07115e7d7c4d7e94d9e17263d6b5dc78, type: 3}
+    - target: {fileID: 7462038642578740300, guid: 604f83d99ad6df74fbf8070044eae5a8, type: 3}
+      propertyPath: InventoryOpenCloseSFX
+      value: 
+      objectReference: {fileID: 8300000, guid: 57d49b9a8e5ceb448a33a867a2695a8c, type: 3}
     - target: {fileID: 7977193351103050734, guid: 604f83d99ad6df74fbf8070044eae5a8, type: 3}
       propertyPath: m_ActionEvents.Array.data[19].m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
