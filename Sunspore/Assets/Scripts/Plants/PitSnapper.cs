@@ -48,10 +48,20 @@ namespace Sunspore
             base.UpdateJuvenileAbilities();
 
             _juvenileAbilityTimer += Time.deltaTime;
+            // If timer reached cooldown, stop munch loop and perform ability
             if (_juvenileAbilityTimer >= _juvenileAbilityCooldown)
             {
+                SFXManager.StopLoop("pitsnappermunch");
                 UseJuvenileAbility();
                 _juvenileAbilityTimer = 0f;
+            }
+            else
+            {
+                // If there is an enemy in range while on cooldown, ensure munch loop is playing
+                if (pathfinding != null && pathfinding.GetEnemyTarget(this, juvenileAbilityRange) != null && _juvenileAbilityTimer > 0f)
+                {
+                    SFXManager.PlayLoop("pitsnappermunch");
+                }
             }
         }
 
@@ -60,10 +70,19 @@ namespace Sunspore
             base.UpdateFullyGrownAbilities();
 
             _fullyGrownAbilityTimer += Time.deltaTime;
+            // Stop munch loop when ready, otherwise play munch loop while on cooldown if enemy present
             if (_fullyGrownAbilityTimer >= _fullyGrownAbilityCooldown)
             {
+                SFXManager.StopLoop("pitsnappermunch");
                 UseFullAbility();
                 _fullyGrownAbilityTimer = 0f;
+            }
+            else
+            {
+                if (pathfinding != null && pathfinding.GetEnemyTarget(this, fullyGrownAbilityRange) != null && _fullyGrownAbilityTimer > 0f)
+                {
+                    SFXManager.PlayLoop("pitsnappermunch");
+                }
             }
         }
 
@@ -75,6 +94,8 @@ namespace Sunspore
             {
                 _animator.SetTrigger("FullyGrownAttack");
                 enemy.TakeDamage((int)fullyGrownAbilityPower, Vector2.zero, 0f);
+                // start munching loop while on cooldown
+                SFXManager.PlayLoop("pitsnappermunch");
             }
         }
 
@@ -86,6 +107,8 @@ namespace Sunspore
             {
                 _animator.SetTrigger("FullyGrownAttack");
                 enemy.TakeDamage((int)fullyGrownAbilityPower, Vector2.zero, 0f);
+                // start munching loop while on cooldown
+                SFXManager.PlayLoop("pitsnappermunch");
             }
         }
 

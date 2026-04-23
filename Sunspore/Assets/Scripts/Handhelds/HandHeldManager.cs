@@ -223,9 +223,23 @@ namespace Sunspore
             player.anim.SetTrigger("Plant");
             player.animFinished = false;
             castTime = Time.time;
+            // If the current handHeld declares a looping SFX key, start looping now
+            string loopKey = handHeld != null ? handHeld.AbilityLoopSfxKey() : null;
+            bool loopStarted = false;
+            if (!string.IsNullOrEmpty(loopKey))
+            {
+                SFXManager.PlayLoop(loopKey);
+                loopStarted = true;
+            }
+
             yield return new WaitForSeconds(delay);
             //Debug.Log("ability cast");
             handHeld.Ability(player, ray);
+            // stop loop if we started one
+            if (loopStarted && !string.IsNullOrEmpty(loopKey))
+            {
+                SFXManager.StopLoop(loopKey);
+            }
             OnAbility?.Invoke(0);
             player.anim.SetInteger("Direction", player.currentDirection);
             player.anim.SetTrigger("Finished");
@@ -242,10 +256,17 @@ namespace Sunspore
             StopCoroutine(abilityCoroutine);
             abilityCoroutine = null;
             OnAbility?.Invoke(0);
-            // Optionally, call a cancel method on the current handHeld if needed
+
+            // Stop any looping SFX that was started by AbilityDelayCoroutine
+            if (handHeld != null)
+            {
+                string loopKey = handHeld.AbilityLoopSfxKey();
+                if (!string.IsNullOrEmpty(loopKey))
+                    SFXManager.StopLoop(loopKey);
+            }
+
             if (handHeld != null && handHeld.cancelable)
                 handHeld.CancelAbility();
-            Debug.Log("Ability cancelled!");
         }
 
         public void OutOfRange()

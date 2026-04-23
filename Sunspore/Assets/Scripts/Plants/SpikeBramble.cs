@@ -87,6 +87,7 @@ namespace Sunspore
             {
                 _animator.SetTrigger("FullyGrownAttack");
                 enemy.TakeDamage((int)fullyGrownAbilityPower, Vector2.zero, 0f);
+                SFXManager.Play("spikebramblehit");
             }
         }
 

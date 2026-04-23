@@ -66,10 +66,10 @@ namespace Sunspore
                 {
                     Vector3 direction = (enemy.transform.position - boxCenter).normalized;
                     Vector2 dir = new Vector2(direction.x, direction.z);
-                    enemy.TakeDamage(damage, dir, knockback);
+                        enemy.TakeDamage(damage, dir, knockback);
+                        SFXManager.Play("hitenemy");
                 }
             }
-            SFXManager._sfxManager.PlaySound("swing");
         }
 
 

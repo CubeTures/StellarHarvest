@@ -1,5 +1,6 @@
 using UnityEngine;
 using TMPro;
+using Sunspore;
 
 [RequireComponent(typeof(Collider))]
 public class StoreWorldInteractable : MonoBehaviour
@@ -106,7 +107,8 @@ public class StoreWorldInteractable : MonoBehaviour
             UpdatePromptText(false);
             interactPrompt.SetActive(true);
             holoAnim.SetTrigger("Enter");
-
+            SFXManager.Play("hologramactivate");
+            SFXManager.PlayLoop("hologramhum");
         }
     }
 
@@ -122,6 +124,8 @@ public class StoreWorldInteractable : MonoBehaviour
         {
             interactPrompt.SetActive(false);
             holoAnim.SetTrigger("Exit");
+            SFXManager.StopLoop("hologramhum");
+            SFXManager.Play("hologramdeactivate");
         }
 
         if (closeStoreWhenPlayerLeaves && InventoryManager.Instance != null && InventoryManager.Instance.IsStoreOpened)

@@ -75,6 +75,7 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
     public void SelectHotbarSlot(int index)
     {
         selectedHotbarIndex = index;
+        SFXManager.Play("inventoryclick");
         HotBarItemChanged();
     }
 
@@ -118,6 +119,7 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
                 {
                     isStoreOpened = false;
                     isInventoryOpened = true;
+                    SFXManager.Play("inventoryopenclose");
                     PlayerPrefManager.SetInventoryOpenCount(PlayerPrefManager.GetInventoryOpenCount() + 1);
                 }
 
@@ -193,36 +195,43 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
             selectedHotbarIndex = 0;
+            SFXManager.Play("inventoryclick");
             HotBarItemChanged();
         }
         else if (Input.GetKeyDown(KeyCode.Alpha2))
         {
             selectedHotbarIndex = 1;
+            SFXManager.Play("inventoryclick");
             HotBarItemChanged();
         }
         else if (Input.GetKeyDown(KeyCode.Alpha3))
         {
             selectedHotbarIndex = 2;
+            SFXManager.Play("inventoryclick");
             HotBarItemChanged();
         }
         else if (Input.GetKeyDown(KeyCode.Alpha4))
         {
             selectedHotbarIndex = 3;
+            SFXManager.Play("inventoryclick");
             HotBarItemChanged();
         }
         else if (Input.GetKeyDown(KeyCode.Alpha5))
         {
             selectedHotbarIndex = 4;
+            SFXManager.Play("inventoryclick");
             HotBarItemChanged();
         }
         else if (Input.GetKeyDown(KeyCode.Alpha6))
         {
             selectedHotbarIndex = 5;
+            SFXManager.Play("inventoryclick");
             HotBarItemChanged();
         }
         else if (Input.GetKeyDown(KeyCode.Alpha7))
         {
             selectedHotbarIndex = 6;
+            SFXManager.Play("inventoryclick");
             HotBarItemChanged();
         }
 
@@ -232,6 +241,7 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
             selectedHotbarIndex += scroll < 0f ? 1 : -1;
             if (selectedHotbarIndex < 0) selectedHotbarIndex = hotbarSlots.Length - 1;
             else if (selectedHotbarIndex >= hotbarSlots.Length) selectedHotbarIndex = 0;
+            SFXManager.Play("inventoryclick");
             HotBarItemChanged();
         }
     }
@@ -662,6 +672,7 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
 
     public void CloseInventory()
     {
+        SFXManager.Play("inventoryopenclose");
         isInventoryOpened = false;
         isCraftingOpened = false;
         isStoreOpened = false;
@@ -676,11 +687,13 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
         if (isCraftingOpened)
         {
             isCraftingOpened = false;
+            SFXManager.Play("inventoryopenclose");
         }
         else
         {
             isCraftingOpened = true;
             isStoreOpened = false;
+            SFXManager.Play("inventoryopenclose");
         }
     }
 
@@ -689,11 +702,13 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
         if (isStoreOpened)
         {
             isStoreOpened = false;
+            SFXManager.Play("inventoryopenclose");
         }
         else
         {
             CloseSidebar();
             isStoreOpened = true;
+            SFXManager.Play("inventoryopenclose");
         }
     }
 
@@ -707,6 +722,7 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
         isInventoryOpened = true;
         CloseSidebar();
         isStoreOpened = true;
+        SFXManager.Play("inventoryopenclose");
         PlayerPrefManager.SetInventoryOpenCount(PlayerPrefManager.GetInventoryOpenCount() + 1);
         PlayerPrefManager.SetStoreOpenCount(PlayerPrefManager.GetStoreOpenCount() + 1);
         return true;
@@ -714,6 +730,7 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
 
     public void CloseStoreFromEnvironment()
     {
+        SFXManager.Play("inventoryopenclose");
         isInventoryOpened = false;
         isStoreOpened = false;
         CloseSidebar();
@@ -735,11 +752,13 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
         if (isDebtOpened)
         {
             isDebtOpened = false;
+            SFXManager.Play("inventoryopenclose");
         }
         else
         {
             CloseSidebar();
             isDebtOpened = true;
+            SFXManager.Play("inventoryopenclose");
         }
     }
 
@@ -748,16 +767,20 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
         if (isMilestoneOpened)
         {
             isMilestoneOpened = false;
+            SFXManager.Play("inventoryopenclose");
         }
         else
         {
             CloseSidebar();
             isMilestoneOpened = true;
+            SFXManager.Play("inventoryopenclose");
         }
     }
 
     public void CloseSidebar()
     {
+        bool anyOpen = isCraftingOpened || isStoreOpened || isDebtOpened || isMilestoneOpened;
+
         if (isCraftingOpened)
         {
             isCraftingOpened = false;
@@ -773,6 +796,11 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
         if (isMilestoneOpened)
         {
             isMilestoneOpened = false;
+        }
+
+        if (anyOpen)
+        {
+            SFXManager.Play("inventoryopenclose");
         }
     }
 
@@ -796,6 +824,7 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
                 lastItemSlot = clickedObject;
                 scrollRect.enabled = false;
                 draggedObject.transform.SetParent(transform);
+                SFXManager.Play("inventoryclick");
             }
         }
     }
@@ -889,6 +918,7 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
             }
 
             HotBarItemChanged();
+            SFXManager.Play("inventoryclick");
             draggedObject = null;
             scrollRect.enabled = true;
         }
@@ -898,6 +928,7 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
             draggedObject.transform.SetParent(lastItemSlot.transform.parent.parent.GetChild(1));
 
             HotBarItemChanged();
+            SFXManager.Play("inventoryclick");
             draggedObject = null;
             scrollRect.enabled = true;
         }
