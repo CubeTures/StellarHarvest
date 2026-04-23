@@ -54,8 +54,9 @@ class ToggleButtonGroup : MonoBehaviour
 	{
 		ToggleButton t = toggles[i];
 		if (t == null) return;
-		
-		t.img.sprite = selected ? t.selectedSprite : t.unselectedSprite;
+
+		if (t.img != null)
+			t.img.sprite = selected ? t.selectedSprite : t.unselectedSprite;
 		if (t.selectedContent != null && t.unselectedContent != null)
 		{
 			t.selectedContent.SetActive(selected);

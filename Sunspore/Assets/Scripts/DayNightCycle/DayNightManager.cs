@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -18,6 +19,15 @@ namespace Sunspore
         [SerializeField, Range(0f, 1f)] float initialTimeOfDay = 0f;
         [SerializeField] TMP_Dropdown timeSelector;
         [SerializeField] GameObject nightVolume;
+        [SerializeField] GameObject announcementObject;
+        [SerializeField] TMP_Text announcementTitle;
+        [SerializeField] TMP_Text announcementSubtitle;
+        [SerializeField] float announcementDuration = 3f;
+        [SerializeField] float typewriterSpeed = 20f;
+
+        private int totalDays = 0;
+        private int totalNights = 0;
+
         Volume nightVolumeComponent;
         private Vignette _vignette;
         private WhiteBalance _whiteBalance;
@@ -109,16 +119,20 @@ namespace Sunspore
                 if (prevTimeOfDay > timeOfDay)
                 {
                     days++;
+                    totalDays++;
                     spawner.spawning = false;
                     if (musicManager != null) musicManager.PlayDayMusic();
+                    ShowAnnouncement("Day " + totalDays);
                 }
 
                 if (prevTimeOfDay < 0.5f && timeOfDay >= 0.5f)
                 {
                     nights++;
+                    totalNights++;
                     spawner.SetEnemiesPerWave();
                     spawner.spawning = true;
                     if (musicManager != null) musicManager.PlayNightMusic();
+                    ShowAnnouncement("Night " + totalNights);
                 }
 
                 if (days == 7 && nights == 7)
@@ -144,7 +158,32 @@ namespace Sunspore
         {
             timeStopped = false;
             isNight = false;
-            //Debug.Log("Cycle");
+            StartCoroutine(DeferredStartAnnouncement());
+        }
+
+        IEnumerator DeferredStartAnnouncement()
+        {
+            // Wait until DebtManager is initialized and has payments set up
+            float timeout = 2f;
+            float waited = 0f;
+            DebtManager debt = null;
+            while (debt == null || debt.RemainingPayments == 0)
+            {
+                yield return null;
+                waited += Time.deltaTime;
+                debt = DebtManager.Instance ?? FindFirstObjectByType<DebtManager>(FindObjectsInactive.Include);
+                if (waited >= timeout) break;
+            }
+            if (timeOfDay < 0.5f)
+            {
+                totalDays++;
+                ShowAnnouncement("Day " + totalDays);
+            }
+            else
+            {
+                totalNights++;
+                ShowAnnouncement("Night " + totalNights);
+            }
         }
 
         public void stopTime()
@@ -167,6 +206,56 @@ namespace Sunspore
             isNight = true;
             Light.transform.rotation = Quaternion.Euler(270, 0, 0);
             //Debug.Log("Night");
+        }
+
+        private Coroutine _announcementCoroutine;
+
+        void ShowAnnouncement(string title)
+        {
+            if (announcementObject == null || announcementTitle == null) return;
+
+            string subtitle = "";
+            var debt = DebtManager.Instance ?? FindFirstObjectByType<DebtManager>(FindObjectsInactive.Include);
+            if (debt != null)
+            {
+                int remaining = debt.RemainingPayments;
+                subtitle = remaining > 0
+                    ? remaining + " payment" + (remaining != 1 ? "s" : "") + " remaining"
+                    : "All payments complete";
+            }
+
+            if (_announcementCoroutine != null)
+                StopCoroutine(_announcementCoroutine);
+            _announcementCoroutine = StartCoroutine(AnnouncementCoroutine(title, subtitle));
+        }
+
+        IEnumerator AnnouncementCoroutine(string title, string subtitle)
+        {
+            announcementObject.SetActive(true);
+            announcementTitle.text = "";
+            if (announcementSubtitle != null) announcementSubtitle.text = "";
+
+            var anim = announcementObject.GetComponent<Animator>();
+            if (anim != null) anim.SetTrigger("Enter");
+
+            yield return StartCoroutine(TypewriterCoroutine(announcementTitle, title));
+            if (announcementSubtitle != null)
+                yield return StartCoroutine(TypewriterCoroutine(announcementSubtitle, subtitle));
+
+            yield return new WaitForSeconds(announcementDuration);
+            announcementObject.SetActive(false);
+            _announcementCoroutine = null;
+        }
+
+        IEnumerator TypewriterCoroutine(TMP_Text label, string fullText)
+        {
+            label.text = "";
+            float delay = typewriterSpeed > 0f ? 1f / typewriterSpeed : 0f;
+            foreach (char c in fullText)
+            {
+                label.text += c;
+                yield return new WaitForSeconds(delay);
+            }
         }
 
         public void changeTime()
