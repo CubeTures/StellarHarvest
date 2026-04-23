@@ -59,106 +59,10 @@ namespace Sunspore
 
         public void PlaySound(string sound)
         {
-            switch (sound.ToLower())
+            var clip = GetClipByName(sound);
+            if (clip != null && _audioSource != null)
             {
-                // Player SFX
-                case "swing":
-                    _audioSource.PlayOneShot(SwingSFX);
-                    break;
-                /*case "hitenemy":
-                    _audioSource.PlayOneShot(HitEnemySFX);
-                    break;
-                */
-                case "gethit":
-                    _audioSource.PlayOneShot(GetHitSFX);
-                        break;
-                case "shotgun":
-                    _audioSource.PlayOneShot(ShotgunSFX);
-                    break;
-                case "plant":
-                    _audioSource.PlayOneShot(PlantSFX);
-                    break;
-                case "harvest":
-                    _audioSource.PlayOneShot(HarvestSFX);
-                        break;
-                case "step":
-                    _audioSource.PlayOneShot(StepSFX);
-                    break;
-                case "watering":
-                    _audioSource.PlayOneShot(WateringSFX);
-                    break;
-                case "dig":
-                    _audioSource.PlayOneShot(DigSFX);
-                    break;
-                /*case "tilling":
-                    _audioSource.PlayOneShot(TillingSFX);
-                    break;
-                */
-                case "kickrock":
-                    _audioSource.PlayOneShot(KickRockSFX);
-                    break;
-
-                // UI SFX
-                case "inventoryclick":
-                    _audioSource.PlayOneShot(InventoryClickSFX);
-                    break;
-                case "hologramhum":
-                    _audioSource.PlayOneShot(HologramHumSFX);
-                    break;
-                case "buyitem":
-                    _audioSource.PlayOneShot(BuyItemSFX);
-                    break;
-                case "sellitem":
-                    _audioSource.PlayOneShot(SellItemSFX);
-                    break;
-                case "hologramactivate":
-                    _audioSource.PlayOneShot(HologramActivateSFX);
-                    break;
-                case "hologramdeactivate":
-                    _audioSource.PlayOneShot(HologramDeactivateSFX);
-                    break;
-
-                // Enemy SFX
-                case "nibletgethit":
-                    _audioSource.PlayOneShot(NibletGetHitSFX);
-                    break;
-                case "skybitegethit":
-                    _audioSource.PlayOneShot(SkybiteGetHitSFX);
-                    break;
-                case "gnashergethit":
-                    _audioSource.PlayOneShot(GnasherGetHitSFX);
-                    break;
-                case "gluttongethit":
-                    _audioSource.PlayOneShot(GluttonGetHitSFX);
-                    break;
-                    
-                case "nibletattack":
-                    _audioSource.PlayOneShot(NibletAttackSFX);
-                    break;
-                case "skybiteattack":
-                    _audioSource.PlayOneShot(SkybiteAttackSFX);
-                    break;
-                case "gnasherattack":
-                    _audioSource.PlayOneShot(GnasherAttackSFX);
-                    break;
-                case "gluttonattack":
-                    _audioSource.PlayOneShot(GluttonAttackSFX);
-                    break;
-
-                //Plant SFX
-                case "bloomburstshot":
-                    _audioSource.PlayOneShot(BloomburstShotSFX);
-                    break;
-                case "pitsnappermunch":
-                    _audioSource.PlayOneShot(PitSnapperMunchSFX);
-                    break;
-                case "spikebramblehit":
-                    _audioSource.PlayOneShot(SpikeBrambleHitSFX);
-                    break;
-
-                default:
-                    _audioSource.PlayOneShot(SwingSFX); // default to swing
-                    break;
+                _audioSource.PlayOneShot(clip);
             }
         }
 
@@ -172,6 +76,102 @@ namespace Sunspore
         {
             if (_sfxManager == null || clip == null) return;
             _sfxManager._audioSource.PlayOneShot(clip);
+        }
+
+        // Play an AudioClip on the manager's AudioSource and loop it until stopped.
+        public void PlayLoopClip(AudioClip clip)
+        {
+            if (clip == null || _audioSource == null) return;
+
+            // If already looping the same clip, do nothing
+            if (_audioSource.isPlaying && _audioSource.loop && _audioSource.clip == clip) return;
+
+            _audioSource.clip = clip;
+            _audioSource.loop = true;
+            _audioSource.Play();
+        }
+
+        // Stop any looping playback started via PlayLoopClip
+        public void StopLooping()
+        {
+            if (_audioSource == null) return;
+            _audioSource.loop = false;
+            _audioSource.Stop();
+            _audioSource.clip = null;
+        }
+
+        // Static wrappers so other scripts can start/stop looping without a direct reference
+        public static void PlayLoop(AudioClip clip)
+        {
+            if (_sfxManager == null || clip == null) return;
+            _sfxManager.PlayLoopClip(clip);
+        }
+
+        // Instance method to play a named sound in a loop (uses same keys as PlaySound)
+        public void PlayLoopByName(string sound)
+        {
+            var clip = GetClipByName(sound);
+            if (clip != null)
+            {
+                PlayLoopClip(clip);
+            }
+        }
+
+        // Helper to map a string key to the appropriate AudioClip
+        AudioClip GetClipByName(string sound)
+        {
+            if (string.IsNullOrEmpty(sound)) return SwingSFX;
+
+            switch (sound.ToLower())
+            {
+                // Player SFX
+                case "swing": return SwingSFX;
+                case "gethit": return GetHitSFX;
+                case "shotgun": return ShotgunSFX;
+                case "plant": return PlantSFX;
+                case "harvest": return HarvestSFX;
+                case "step": return StepSFX;
+                case "watering": return WateringSFX;
+                case "dig": return DigSFX;
+                case "kickrock": return KickRockSFX;
+
+                // UI SFX
+                case "inventoryclick": return InventoryClickSFX;
+                case "hologramhum": return HologramHumSFX;
+                case "buyitem": return BuyItemSFX;
+                case "sellitem": return SellItemSFX;
+                case "hologramactivate": return HologramActivateSFX;
+                case "hologramdeactivate": return HologramDeactivateSFX;
+
+                // Enemy SFX
+                case "nibletgethit": return NibletGetHitSFX;
+                case "skybitegethit": return SkybiteGetHitSFX;
+                case "gnashergethit": return GnasherGetHitSFX;
+                case "gluttongethit": return GluttonGetHitSFX;
+                case "nibletattack": return NibletAttackSFX;
+                case "skybiteattack": return SkybiteAttackSFX;
+                case "gnasherattack": return GnasherAttackSFX;
+                case "gluttonattack": return GluttonAttackSFX;
+
+                // Plant SFX
+                case "bloomburstshot": return BloomburstShotSFX;
+                case "pitsnappermunch": return PitSnapperMunchSFX;
+                case "spikebramblehit": return SpikeBrambleHitSFX;
+
+                default: return SwingSFX;
+            }
+        }
+
+        // Static wrapper for name-based looping
+        public static void PlayLoop(string sound)
+        {
+            if (_sfxManager == null || string.IsNullOrEmpty(sound)) return;
+            _sfxManager.PlayLoopByName(sound);
+        }
+
+        public static void StopLoop()
+        {
+            _sfxManager?.StopLooping();
         }
     }
 }
