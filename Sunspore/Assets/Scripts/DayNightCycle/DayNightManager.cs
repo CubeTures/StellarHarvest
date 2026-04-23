@@ -23,6 +23,7 @@ namespace Sunspore
         [SerializeField] TMP_Text announcementTitle;
         [SerializeField] TMP_Text announcementSubtitle;
         [SerializeField] float announcementDuration = 3f;
+        [SerializeField] float typewriterSpeed = 20f;
 
         private int totalDays = 0;
         private int totalNights = 0;
@@ -223,24 +224,38 @@ namespace Sunspore
                     : "All payments complete";
             }
 
-            announcementTitle.text = title;
-            if (announcementSubtitle != null)
-                announcementSubtitle.text = subtitle;
-
             if (_announcementCoroutine != null)
                 StopCoroutine(_announcementCoroutine);
-            _announcementCoroutine = StartCoroutine(AnnouncementCoroutine());
+            _announcementCoroutine = StartCoroutine(AnnouncementCoroutine(title, subtitle));
         }
 
-        IEnumerator AnnouncementCoroutine()
+        IEnumerator AnnouncementCoroutine(string title, string subtitle)
         {
             announcementObject.SetActive(true);
+            announcementTitle.text = "";
+            if (announcementSubtitle != null) announcementSubtitle.text = "";
+
             var anim = announcementObject.GetComponent<Animator>();
-            if (anim != null)
-                anim.SetTrigger("Enter");
+            if (anim != null) anim.SetTrigger("Enter");
+
+            yield return StartCoroutine(TypewriterCoroutine(announcementTitle, title));
+            if (announcementSubtitle != null)
+                yield return StartCoroutine(TypewriterCoroutine(announcementSubtitle, subtitle));
+
             yield return new WaitForSeconds(announcementDuration);
             announcementObject.SetActive(false);
             _announcementCoroutine = null;
+        }
+
+        IEnumerator TypewriterCoroutine(TMP_Text label, string fullText)
+        {
+            label.text = "";
+            float delay = typewriterSpeed > 0f ? 1f / typewriterSpeed : 0f;
+            foreach (char c in fullText)
+            {
+                label.text += c;
+                yield return new WaitForSeconds(delay);
+            }
         }
 
         public void changeTime()
