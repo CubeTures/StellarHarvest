@@ -39,5 +39,18 @@ namespace Sunspore
                 _spriteRenderer.sortingOrder = (int)(-transform.position.z * 100) - 50 * 100;
             }
         }
+
+        private void OnCollisionEnter(Collision collision)
+        {
+            // Play kick rock SFX when the player collides with sufficient force
+            if (collision.gameObject != null && collision.gameObject.CompareTag("Player"))
+            {
+                float impact = collision.relativeVelocity.magnitude;
+                if (impact > 0.5f)
+                {
+                    SFXManager.Play("kickrock");
+                }
+            }
+        }
     }
 }

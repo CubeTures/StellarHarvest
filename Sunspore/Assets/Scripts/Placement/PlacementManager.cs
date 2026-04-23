@@ -313,7 +313,8 @@ public class PlacementManager : MonoBehaviour
         player.Planting();
 
         yield return new WaitUntil(() => player.animFinished);
-
+        SFXManager.Play("plant");
+        
         //Debug.Log(player.animFinished);
 
         Instantiate(prefab, currPlace, Quaternion.identity);

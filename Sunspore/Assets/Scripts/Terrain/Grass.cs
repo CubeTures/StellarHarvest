@@ -14,6 +14,8 @@ namespace Sunspore
 
         public void DestroyGrass()
         {
+            // play cut-grass sound then destroy
+            SFXManager.Play("cutgrass");
             Destroy(gameObject);
         }
     }

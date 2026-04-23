@@ -35,6 +35,8 @@ public class Player : MonoBehaviour
     Camera _mainCamera;
     CinemachineCamera _cinemachineCamera;
     public SpriteRenderer spriteRenderer;
+    public bool EnableStepSfx = true;
+    public string StepSfxKey = "step";
     private Color _originalColor;
     private MaterialPropertyBlock propBlock;
 
@@ -238,6 +240,14 @@ public class Player : MonoBehaviour
         _audioSource.PlayOneShot(clip);
     }
 
+    // Animation event: call this from the step animation to play the step SFX
+    // Example: add an Animation Event that calls `TriggerStepSfx` on the Player
+    public void TriggerStepSfx()
+    {
+        if (EnableStepSfx)
+            SFXManager.Play(StepSfxKey);
+    }
+
     // Method to handle cursor locked/unlocked when game is paused
     public void SetPauseState(bool isPaused)
     {
@@ -280,6 +290,7 @@ public class Player : MonoBehaviour
             Instantiate(_deathEffect, transform.position + new Vector3(0, 0.5f, 0), Quaternion.identity);
             StartCoroutine(RespawnWithDelay(5f));
         }
+        SFXManager.Play("gethit");
     }
 
     private IEnumerator RespawnWithDelay(float delay)
@@ -311,6 +322,8 @@ public class Player : MonoBehaviour
         weaponHead.Swing();
         weaponBase.Swing();
         StartCoroutine(AnimationFinished());
+
+        SFXManager.Play("swing");
     }
 
     public void Shoot(Vector3 mouseDir)
@@ -341,6 +354,8 @@ public class Player : MonoBehaviour
 
         anim.SetTrigger("Shoot");
         StartCoroutine(AnimationFinished());
+
+        SFXManager.Play("shoot");
     }
 
     private IEnumerator AnimationFinished()

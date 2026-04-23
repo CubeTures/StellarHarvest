@@ -117,7 +117,12 @@ namespace Sunspore
                     PlaySound(_hitSound);
                     Instantiate(_hitEffect, transform.position, Quaternion.identity);
                     Destroy(gameObject);
-                    other.GetComponent<Enemy>()?.TakeDamage(_damage, Vector2.zero, 0f);
+                    var e = other.GetComponent<Enemy>();
+                    if (e != null)
+                    {
+                        e.TakeDamage(_damage, Vector2.zero, 0f);
+                        SFXManager.Play("hitenemy");
+                    }
                 }
             }
         }

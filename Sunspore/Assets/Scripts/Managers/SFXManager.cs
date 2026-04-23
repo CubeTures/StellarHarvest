@@ -45,11 +45,15 @@ namespace Sunspore
         Dictionary<string, float> _volumeMap = new Dictionary<string, float>();
         // Reverse lookup from AudioClip to normalized key (for PlayClip overloads)
         Dictionary<AudioClip, string> _clipToKeyMap = new Dictionary<AudioClip, string>();
+        // Recent play timestamps per sound key (used to attenuate overlapping one-shots)
+        Dictionary<string, List<float>> _recentPlayTimestamps = new Dictionary<string, List<float>>();
+        // Time window (seconds) to consider plays "simultaneous" for attenuation
+        public float PolyphonyWindow = 0.5f;
 
         [Header("SFX")]
         [Header("Player")]
         public AudioClip SwingSFX; 
-//      public AudioClip HitEnemySFX;
+        public AudioClip HitEnemySFX;
         public AudioClip GetHitSFX;
         public AudioClip ShotgunSFX;
         public AudioClip PlantSFX;
@@ -57,8 +61,9 @@ namespace Sunspore
         public AudioClip StepSFX;
         public AudioClip WateringSFX;
         public AudioClip DigSFX;
-        //public AudioClip TillingSFX;
+        public AudioClip TillingSFX;
         public AudioClip KickRockSFX;
+        public AudioClip CutGrassSFX;
 
         [Header("UI")]
         public AudioClip InventoryClickSFX;
@@ -88,6 +93,7 @@ namespace Sunspore
 
         [Header("Volumes")]
         public float SwingVolume = 1f;
+        public float HitEnemyVolume = 1f;
         public float GetHitVolume = 1f;
         public float ShotgunVolume = 1f;
         public float PlantVolume = 1f;
@@ -95,7 +101,9 @@ namespace Sunspore
         public float StepVolume = 1f;
         public float WateringVolume = 1f;
         public float DigVolume = 1f;
+        public float TillingVolume = 1f;
         public float KickRockVolume = 1f;
+        public float CutGrassVolume = 1f;
 
         public float InventoryClickVolume = 1f;
         public float InventoryOpenCloseVolume = 1f;
@@ -143,7 +151,10 @@ namespace Sunspore
                 {"step", StepSFX},
                 {"watering", WateringSFX},
                 {"dig", DigSFX},
+                {"tilling", TillingSFX},
                 {"kickrock", KickRockSFX},
+                {"hitenemy", HitEnemySFX},
+                {"cutgrass", CutGrassSFX},
 
                 {"inventoryclick", InventoryClickSFX},
                 {"inventoryopenclose", InventoryOpenCloseSFX},
@@ -188,7 +199,11 @@ namespace Sunspore
                 {"step", StepVolume},
                 {"watering", WateringVolume},
                 {"dig", DigVolume},
+                {"tilling", TillingVolume},
                 {"kickrock", KickRockVolume},
+                {"kickrock", KickRockVolume},
+                {"hitenemy", HitEnemyVolume},
+                {"cutgrass", CutGrassVolume},
 
                 {"inventoryclick", InventoryClickVolume},
                 {"inventoryopenclose", InventoryOpenCloseVolume},
@@ -222,12 +237,30 @@ namespace Sunspore
             {
                 _audioSource.pitch = Random.Range(0.8f, 1.2f);
                 float vol = 1f;
+                string key = null;
                 if (!string.IsNullOrEmpty(sound))
                 {
-                    var key = sound.ToLower();
+                    key = sound.ToLower();
                     if (_volumeMap != null && _volumeMap.TryGetValue(key, out var v)) vol = v;
                 }
-                _audioSource.PlayOneShot(clip, vol);
+
+                // Attenuate based on recent plays of the same sound to avoid loud stacking
+                float scale = 1f;
+                if (!string.IsNullOrEmpty(key))
+                {
+                    if (!_recentPlayTimestamps.TryGetValue(key, out var list) || list == null)
+                    {
+                        list = new List<float>();
+                        _recentPlayTimestamps[key] = list;
+                    }
+                    float now = Time.time;
+                    list.RemoveAll(t => now - t > PolyphonyWindow);
+                    int count = list.Count + 1; // include this play
+                    scale = 1f / Mathf.Sqrt(Mathf.Max(1, count));
+                    list.Add(now);
+                }
+
+                _audioSource.PlayOneShot(clip, vol * scale);
             }
         }
 

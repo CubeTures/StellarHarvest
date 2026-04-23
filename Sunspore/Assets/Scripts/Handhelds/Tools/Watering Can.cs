@@ -37,6 +37,8 @@ namespace Sunspore
                 if (plant != null)
                 {
                     plant.WaterPlant();
+                    // Play watering loop while ability is active (handled by HandHeldManager)
+                    // AbilityLoopSfxKey overridden below
                     TutorialManager.Instance.BroadcastSignal(TutorialManager.Actions.WATERING_CAN);
                     //Debug.Log("Plant Watered");
                     //else
@@ -67,6 +69,11 @@ namespace Sunspore
             }
 
             return new Vector3(Mathf.Max(0.8f, bounds.size.x), 0f, Mathf.Max(0.8f, bounds.size.z));
+        }
+
+        public override string AbilityLoopSfxKey()
+        {
+            return "watering";
         }
     }
 }
