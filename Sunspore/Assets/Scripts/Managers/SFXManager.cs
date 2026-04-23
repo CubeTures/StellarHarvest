@@ -39,16 +39,21 @@ namespace Sunspore
         AudioSource _audioSource;
         // Active looping audio sources keyed by sound name
         Dictionary<string, AudioSource> _loopingSources = new Dictionary<string, AudioSource>();
+        // Reference counts so multiple callers sharing the same loop don't kill each other early
+        Dictionary<string, int> _loopRefCounts = new Dictionary<string, int>();
         // Mapping from string keys to AudioClips for fast lookup
         Dictionary<string, AudioClip> _clipMap = new Dictionary<string, AudioClip>();
         // Per-sound volume mapping (key -> volume 0-1)
         Dictionary<string, float> _volumeMap = new Dictionary<string, float>();
         // Reverse lookup from AudioClip to normalized key (for PlayClip overloads)
         Dictionary<AudioClip, string> _clipToKeyMap = new Dictionary<AudioClip, string>();
-        // Recent play timestamps per sound key (used to attenuate overlapping one-shots)
+        // Recent play timestamps per sound key (used to attenuate and cap overlapping one-shots)
         Dictionary<string, List<float>> _recentPlayTimestamps = new Dictionary<string, List<float>>();
-        // Time window (seconds) to consider plays "simultaneous" for attenuation
-        public float PolyphonyWindow = 0.5f;
+        // Time window (seconds) within which repeat plays are attenuated and capped
+        public float PolyphonyWindow = 0.15f;
+        // Hard cap: at most this many instances of any one sound play within PolyphonyWindow
+        // Prevents exhausting Unity's voice budget when large swarms trigger the same SFX
+        [SerializeField] int _maxSimultaneousPerSound = 4;
 
         [Header("SFX")]
         [Header("Player")]
@@ -244,7 +249,8 @@ namespace Sunspore
                     if (_volumeMap != null && _volumeMap.TryGetValue(key, out var v)) vol = v;
                 }
 
-                // Attenuate based on recent plays of the same sound to avoid loud stacking
+                // Attenuate and hard-cap overlapping plays of the same sound.
+                // This prevents swarms from exhausting Unity's voice budget and silencing all audio.
                 float scale = 1f;
                 if (!string.IsNullOrEmpty(key))
                 {
@@ -255,8 +261,14 @@ namespace Sunspore
                     }
                     float now = Time.time;
                     list.RemoveAll(t => now - t > PolyphonyWindow);
-                    int count = list.Count + 1; // include this play
-                    scale = 1f / Mathf.Sqrt(Mathf.Max(1, count));
+                    int count = list.Count; // plays already in-flight for this sound
+
+                    // Hard cap: drop the sound entirely if too many instances are already playing
+                    if (count >= _maxSimultaneousPerSound)
+                        return;
+
+                    // Attenuate volume so simultaneous plays don't stack to an uncomfortable level
+                    scale = 1f / Mathf.Sqrt(Mathf.Max(1, count + 1));
                     list.Add(now);
                 }
 
@@ -355,13 +367,23 @@ namespace Sunspore
                 Destroy(kv.Value.gameObject);
             }
             _loopingSources.Clear();
+            _loopRefCounts.Clear();
         }
 
-        // Stop a specific looping sound by name
+        // Stop a specific looping sound by name (reference-counted; audio stops only when all callers release it)
         public void StopLooping(string sound)
         {
             if (string.IsNullOrEmpty(sound)) return;
             var key = sound.ToLower();
+
+            // Decrement ref count; clamp at 0
+            _loopRefCounts.TryGetValue(key, out int refs);
+            refs = Mathf.Max(0, refs - 1);
+            _loopRefCounts[key] = refs;
+
+            // Only stop playback when no more users are holding the loop
+            if (refs > 0) return;
+
             if (_loopingSources.TryGetValue(key, out var src) && src != null)
             {
                 src.loop = false;
@@ -378,41 +400,45 @@ namespace Sunspore
             _sfxManager.PlayLoopClip(clip);
         }
 
-        // Instance method to play a named sound in a loop (uses same keys as PlaySound)
+        // Instance method to play a named sound in a loop (uses same keys as PlaySound).
+        // Reference-counted: multiple callers share one AudioSource; audio only stops when all release it.
         public void PlayLoopByName(string sound)
         {
             if (string.IsNullOrEmpty(sound)) return;
+            var key = sound.ToLower();
+
+            // Increment ref count
+            _loopRefCounts.TryGetValue(key, out int refs);
+            _loopRefCounts[key] = refs + 1;
+
+            // If audio is already running, nothing more to do
+            if (_loopingSources.TryGetValue(key, out var existing) && existing != null && existing.isPlaying)
+                return;
+
             var clip = GetClipByName(sound);
-            if (clip != null)
+            if (clip == null) return;
+
+            // Reuse a stopped source if one exists
+            if (existing != null)
             {
-                // Use lowercase key for consistent lookup
-                var key = sound.ToLower();
-                // Create loop using the clip but store under the lowercase key
-                if (_loopingSources.TryGetValue(key, out var existing) && existing != null && existing.isPlaying)
-                    return;
-
-                // If there's an existing source for this key but not playing, reuse it
-                if (existing != null)
-                {
-                    existing.clip = clip;
-                    existing.loop = true;
-                    existing.pitch = Random.Range(0.8f, 1.2f);
-                    if (_volumeMap != null && _volumeMap.TryGetValue(key, out var lv2)) existing.volume = lv2;
-                    existing.Play();
-                    return;
-                }
-
-                var go = new GameObject($"SFXLoop_{key}");
-                go.transform.SetParent(transform);
-                var src = go.AddComponent<AudioSource>();
-                src.playOnAwake = false;
-                src.loop = true;
-                src.clip = clip;
-                src.pitch = Random.Range(0.8f, 1.2f);
-                if (_volumeMap != null && _volumeMap.TryGetValue(key, out var initVol2)) src.volume = initVol2;
-                src.Play();
-                _loopingSources[key] = src;
+                existing.clip = clip;
+                existing.loop = true;
+                existing.pitch = Random.Range(0.8f, 1.2f);
+                if (_volumeMap != null && _volumeMap.TryGetValue(key, out var lv2)) existing.volume = lv2;
+                existing.Play();
+                return;
             }
+
+            var go = new GameObject($"SFXLoop_{key}");
+            go.transform.SetParent(transform);
+            var src = go.AddComponent<AudioSource>();
+            src.playOnAwake = false;
+            src.loop = true;
+            src.clip = clip;
+            src.pitch = Random.Range(0.8f, 1.2f);
+            if (_volumeMap != null && _volumeMap.TryGetValue(key, out var initVol2)) src.volume = initVol2;
+            src.Play();
+            _loopingSources[key] = src;
         }
 
         // Helper to map a string key to the appropriate AudioClip (uses runtime dictionary)

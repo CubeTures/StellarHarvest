@@ -279855,7 +279855,7 @@ GameObject:
   - component: {fileID: 5020019719942408259}
   m_Layer: 0
   m_Name: NavMesh Surface
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

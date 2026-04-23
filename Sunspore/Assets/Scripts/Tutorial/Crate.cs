@@ -21,6 +21,7 @@ namespace Sunspore
             {
                 Instantiate(crateExplosionPrefab, transform.position, Quaternion.identity);
                 PlaySound(crateExplosionSound);
+                SFXManager.Play("shotgun");
 
                 foreach (var entry in items)
                 {
@@ -28,6 +29,12 @@ namespace Sunspore
                 }
 
                 Destroy(gameObject);
+            }
+
+            if (collision.gameObject.CompareTag("Ground"))
+            {
+                Debug.Log("Crate hit ground");
+                SFXManager.Play("gethit");
             }
         }
 

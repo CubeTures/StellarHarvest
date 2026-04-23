@@ -11,6 +11,7 @@ TagManager:
   - Plant
   - Weapon
   - Player Body
+  - Ground
   layers:
   - Default
   - TransparentFX

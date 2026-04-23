@@ -287,21 +287,11 @@ namespace Sunspore
             if (agent != null)
                 agent.isStopped = true;
 
-            bool loopStarted = false;
             if (!string.IsNullOrEmpty(loopSfxKey))
-            {
-                SFXManager.PlayLoop(loopSfxKey);
-                loopStarted = true;
-            }
+                SFXManager.Play(loopSfxKey);
 
             yield return new WaitForSeconds(attackDuration);
             _anim.ResetTrigger("Attack");
-
-            // stop looping SFX if we started one
-            if (loopStarted && !string.IsNullOrEmpty(loopSfxKey))
-            {
-                SFXManager.StopLoop(loopSfxKey);
-            }
 
             // restore movement
             isAttacking = false;

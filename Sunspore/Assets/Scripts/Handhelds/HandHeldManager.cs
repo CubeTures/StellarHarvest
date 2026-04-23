@@ -256,10 +256,17 @@ namespace Sunspore
             StopCoroutine(abilityCoroutine);
             abilityCoroutine = null;
             OnAbility?.Invoke(0);
-            // Optionally, call a cancel method on the current handHeld if needed
+
+            // Stop any looping SFX that was started by AbilityDelayCoroutine
+            if (handHeld != null)
+            {
+                string loopKey = handHeld.AbilityLoopSfxKey();
+                if (!string.IsNullOrEmpty(loopKey))
+                    SFXManager.StopLoop(loopKey);
+            }
+
             if (handHeld != null && handHeld.cancelable)
                 handHeld.CancelAbility();
-            Debug.Log("Ability cancelled!");
         }
 
         public void OutOfRange()
