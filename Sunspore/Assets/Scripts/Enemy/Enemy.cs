@@ -42,6 +42,8 @@ namespace Sunspore
         bool isAttacking = false;
         [SerializeField] private GameObject _hitEffect;
         [SerializeField] private GameObject _deathEffect;
+        public bool EnableStepSfx = true;
+        public string StepSfxKey = "step";
 
         void Awake()
         {
@@ -78,12 +80,36 @@ namespace Sunspore
                 Instantiate(_deathEffect, transform.position + new Vector3(0, 1, 0), Quaternion.identity);
                 Destroy(this.gameObject);
             }
+            switch (enemyType)
+                {
+                    case EnemyType.TANK:
+                        SFXManager.Play("gluttongethit");
+                        break;
+                    case EnemyType.BREAKER:
+                        SFXManager.Play("gnashergethit");
+                        break;
+                    case EnemyType.SWARM:
+                        SFXManager.Play("nibletgethit");
+                        break;
+                    case EnemyType.FLYING:
+                        SFXManager.Play("skybitegethit");
+                        break;
+                    default:
+                        break;
+                }
         }
 
         private void ResetColor()
         {
             if (_spriteRenderer != null)
                 _spriteRenderer.color = _originalColor;
+        }
+
+        // Animation event: call this from the enemy step animation to play the step SFX
+        public void TriggerStepSfx()
+        {
+            if (EnableStepSfx)
+                SFXManager.Play(StepSfxKey);
         }
 
         void Update()
@@ -218,19 +244,40 @@ namespace Sunspore
                 // maybe take damage as well
 
                 // may need to be a coroutine or some other loop
-                StartCoroutine(AttackCoroutine());
+                // Play attack SFX on loop while attacking plants
+                string sfxKey = null;
+                switch (enemyType)
+                {
+                    case EnemyType.TANK:
+                        sfxKey = "gluttonattack";
+                        break;
+                    case EnemyType.BREAKER:
+                        sfxKey = "gnasherattack";
+                        break;
+                    case EnemyType.SWARM:
+                        sfxKey = "nibletattack";
+                        break;
+                    case EnemyType.FLYING:
+                        sfxKey = "skybiteattack";
+                        break;
+                    default:
+                        sfxKey = null;
+                        break;
+                }
+                StartCoroutine(AttackCoroutine(sfxKey));
                 plant.TakeDamage(damage);
             }
 
             void Attack(Player player)
             {
-                StartCoroutine(AttackCoroutine());
+                // player attacks do not loop attack SFX via SFXManager here
+                StartCoroutine(AttackCoroutine(null));
                 player.TakeDamage(damage);
             }
         }
 
         // Attack coroutine
-        IEnumerator AttackCoroutine()
+        IEnumerator AttackCoroutine(string loopSfxKey)
         {
             _anim.SetTrigger("Attack");
             // mark attacking, stop movement while attack animation runs
@@ -240,8 +287,21 @@ namespace Sunspore
             if (agent != null)
                 agent.isStopped = true;
 
+            bool loopStarted = false;
+            if (!string.IsNullOrEmpty(loopSfxKey))
+            {
+                SFXManager.PlayLoop(loopSfxKey);
+                loopStarted = true;
+            }
+
             yield return new WaitForSeconds(attackDuration);
             _anim.ResetTrigger("Attack");
+
+            // stop looping SFX if we started one
+            if (loopStarted && !string.IsNullOrEmpty(loopSfxKey))
+            {
+                SFXManager.StopLoop(loopSfxKey);
+            }
 
             // restore movement
             isAttacking = false;

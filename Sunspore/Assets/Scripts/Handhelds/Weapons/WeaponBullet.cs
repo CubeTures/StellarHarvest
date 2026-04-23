@@ -55,7 +55,12 @@ namespace Sunspore
                     _hit = true;
                     PlaySound(_hitSound);
                     Destroy(gameObject);
-                    other.GetComponent<Enemy>()?.TakeDamage(_damage, Vector2.zero, 0f);
+                    var e = other.GetComponent<Enemy>();
+                    if (e != null)
+                    {
+                        e.TakeDamage(_damage, Vector2.zero, 0f);
+                        SFXManager.Play("hitenemy");
+                    }
                 }
             }
         }

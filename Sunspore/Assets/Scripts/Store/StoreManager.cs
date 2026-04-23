@@ -220,6 +220,7 @@ namespace Sunspore
 
         public void SelectedRecipeType(string type)
         {
+            var previous = selectedRecipeType;
             if (string.IsNullOrEmpty(type))
             {
                 selectedRecipeType = StoreRecipeType.buy;
@@ -238,6 +239,12 @@ namespace Sunspore
                         selectedRecipeType = StoreRecipeType.buy;
                         break;
                 }
+            }
+
+            // Play open/close SFX when switching tabs (only if the tab actually changed)
+            if (previous != selectedRecipeType)
+            {
+                SFXManager.Play("inventoryopenandclose");
             }
 
             // reset category to All when switching between buy/sell tabs so user can re-select
@@ -322,7 +329,10 @@ namespace Sunspore
 
             selectedRecipeSO = recipeSO;
             selectedRecipeUI = recipeUI;
-            if (selectedRecipeUI != null) selectedRecipeUI.SetSelected(true);
+            if (selectedRecipeUI != null) {
+                selectedRecipeUI.SetSelected(true);
+                SFXManager.Play("inventoryclick");
+            }
             bool hasSelection = selectedRecipeSO != null;
             bool processable = hasSelection && CanProcessRecipe(selectedRecipeSO);
             SetButtonState(hasSelection, processable);
@@ -342,6 +352,7 @@ namespace Sunspore
 
             if (selectedRecipeSO.recipeType == StoreRecipeType.buy)
             {
+                SFXManager.Play("buyorsell");
                 // Deduct credits (creditCost) then give result items
                 int price = selectedRecipeSO.creditCost;
                 if (walletComponent != null)
@@ -369,6 +380,7 @@ namespace Sunspore
             }
             else // sell/process
             {
+                SFXManager.Play("buyorsell");
                 // remove ingredients via InventoryManager and give credits
                 InventoryManager.Instance.CraftItem(new List<ItemTypeAndAmount>(), new List<ItemTypeAndAmount>(selectedRecipeSO.ingredients));
                 AddCredits(selectedRecipeSO.creditReward);
@@ -585,6 +597,7 @@ namespace Sunspore
             }
 
             InventoryManager.Instance.SellItems(new List<ItemTypeAndAmount> { new ItemTypeAndAmount(match, 1) });
+            SFXManager.Play("buyorsell");
             UpdateRecipeUI();
         }
     }

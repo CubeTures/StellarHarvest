@@ -14,6 +14,7 @@ namespace Sunspore
                 if (plant != null)
                 {
                     Destroy(plant.gameObject);
+                    // tool till/dig loop handled by HandHeldManager via AbilityLoopSfxKey
                     //Debug.Log("Plant Removed");
                 //else
                 //{
@@ -22,5 +23,10 @@ namespace Sunspore
                 }
             }
         }
+        
+            public override string AbilityLoopSfxKey()
+            {
+                return "dig";
+            }
     }
 }

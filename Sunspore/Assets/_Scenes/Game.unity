@@ -460991,6 +460991,63 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!1001 &1024362733
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 257691232243731048, guid: ccb0ff220d228d24eb18daa4c85aba62, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -2.2094707
+      objectReference: {fileID: 0}
+    - target: {fileID: 257691232243731048, guid: ccb0ff220d228d24eb18daa4c85aba62, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.00000019928106
+      objectReference: {fileID: 0}
+    - target: {fileID: 257691232243731048, guid: ccb0ff220d228d24eb18daa4c85aba62, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -100.7117
+      objectReference: {fileID: 0}
+    - target: {fileID: 257691232243731048, guid: ccb0ff220d228d24eb18daa4c85aba62, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 257691232243731048, guid: ccb0ff220d228d24eb18daa4c85aba62, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 257691232243731048, guid: ccb0ff220d228d24eb18daa4c85aba62, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 257691232243731048, guid: ccb0ff220d228d24eb18daa4c85aba62, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 257691232243731048, guid: ccb0ff220d228d24eb18daa4c85aba62, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 257691232243731048, guid: ccb0ff220d228d24eb18daa4c85aba62, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 257691232243731048, guid: ccb0ff220d228d24eb18daa4c85aba62, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6794809191556961585, guid: ccb0ff220d228d24eb18daa4c85aba62, type: 3}
+      propertyPath: m_Name
+      value: Spike Bramble
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: ccb0ff220d228d24eb18daa4c85aba62, type: 3}
 --- !u!1 &1024602235
 GameObject:
   m_ObjectHideFlags: 0
@@ -802806,6 +802863,63 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!1001 &1777521899
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 257691232243731048, guid: 6af75cdf3a414eb4ba6ac88e558f7973, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.09830725
+      objectReference: {fileID: 0}
+    - target: {fileID: 257691232243731048, guid: 6af75cdf3a414eb4ba6ac88e558f7973, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.000000074180946
+      objectReference: {fileID: 0}
+    - target: {fileID: 257691232243731048, guid: 6af75cdf3a414eb4ba6ac88e558f7973, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -101.39059
+      objectReference: {fileID: 0}
+    - target: {fileID: 257691232243731048, guid: 6af75cdf3a414eb4ba6ac88e558f7973, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 257691232243731048, guid: 6af75cdf3a414eb4ba6ac88e558f7973, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 257691232243731048, guid: 6af75cdf3a414eb4ba6ac88e558f7973, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 257691232243731048, guid: 6af75cdf3a414eb4ba6ac88e558f7973, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 257691232243731048, guid: 6af75cdf3a414eb4ba6ac88e558f7973, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 257691232243731048, guid: 6af75cdf3a414eb4ba6ac88e558f7973, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 257691232243731048, guid: 6af75cdf3a414eb4ba6ac88e558f7973, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6794809191556961585, guid: 6af75cdf3a414eb4ba6ac88e558f7973, type: 3}
+      propertyPath: m_Name
+      value: Pit Snapper
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 6af75cdf3a414eb4ba6ac88e558f7973, type: 3}
 --- !u!1 &1777683635
 GameObject:
   m_ObjectHideFlags: 0
@@ -979847,6 +979961,18 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 8300000, guid: f081fe3db9be3de4082a601d32ec4be6, type: 3}
     - target: {fileID: 7462038642578740300, guid: 604f83d99ad6df74fbf8070044eae5a8, type: 3}
+      propertyPath: TillingSFX
+      value: 
+      objectReference: {fileID: 8300000, guid: 2aa20dadd2b2bd94887b3e5f7cdcf732, type: 3}
+    - target: {fileID: 7462038642578740300, guid: 604f83d99ad6df74fbf8070044eae5a8, type: 3}
+      propertyPath: CutGrassSFX
+      value: 
+      objectReference: {fileID: 8300000, guid: 6348863a3bbcd124caf96e8948ca1aeb, type: 3}
+    - target: {fileID: 7462038642578740300, guid: 604f83d99ad6df74fbf8070044eae5a8, type: 3}
+      propertyPath: HitEnemySFX
+      value: 
+      objectReference: {fileID: 8300000, guid: 931396fc8f556264fa91ba589e8c210c, type: 3}
+    - target: {fileID: 7462038642578740300, guid: 604f83d99ad6df74fbf8070044eae5a8, type: 3}
       propertyPath: KickRockSFX
       value: 
       objectReference: {fileID: 8300000, guid: fb1c855a847763c46a0246fc273d8000, type: 3}
@@ -979899,9 +980025,21 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 8300000, guid: d20a5ef2ea49b1c41b71b710858f70a5, type: 3}
     - target: {fileID: 7462038642578740300, guid: 604f83d99ad6df74fbf8070044eae5a8, type: 3}
+      propertyPath: HologramHumVolume
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7462038642578740300, guid: 604f83d99ad6df74fbf8070044eae5a8, type: 3}
       propertyPath: InventoryClickSFX
       value: 
       objectReference: {fileID: 8300000, guid: 78eee3f8d9d40a943b5977eef928618f, type: 3}
+    - target: {fileID: 7462038642578740300, guid: 604f83d99ad6df74fbf8070044eae5a8, type: 3}
+      propertyPath: NibletAttackVolume
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7462038642578740300, guid: 604f83d99ad6df74fbf8070044eae5a8, type: 3}
+      propertyPath: NibletGetHitVolume
+      value: 0.2
+      objectReference: {fileID: 0}
     - target: {fileID: 7462038642578740300, guid: 604f83d99ad6df74fbf8070044eae5a8, type: 3}
       propertyPath: PitSnapperMunchSFX
       value: 
@@ -979911,13 +980049,45 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 8300000, guid: f43548f5aab9ce545b3027b8876caa87, type: 3}
     - target: {fileID: 7462038642578740300, guid: 604f83d99ad6df74fbf8070044eae5a8, type: 3}
+      propertyPath: GluttonAttackVolume
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7462038642578740300, guid: 604f83d99ad6df74fbf8070044eae5a8, type: 3}
+      propertyPath: GluttonGetHitVolume
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7462038642578740300, guid: 604f83d99ad6df74fbf8070044eae5a8, type: 3}
+      propertyPath: GnasherAttackVolume
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7462038642578740300, guid: 604f83d99ad6df74fbf8070044eae5a8, type: 3}
+      propertyPath: GnasherGetHitVolume
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7462038642578740300, guid: 604f83d99ad6df74fbf8070044eae5a8, type: 3}
       propertyPath: HologramActivateSFX
       value: 
       objectReference: {fileID: 8300000, guid: 0c974c7873bbd3c4582cd8d64d955f03, type: 3}
     - target: {fileID: 7462038642578740300, guid: 604f83d99ad6df74fbf8070044eae5a8, type: 3}
+      propertyPath: SkybiteAttackVolume
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7462038642578740300, guid: 604f83d99ad6df74fbf8070044eae5a8, type: 3}
+      propertyPath: SkybiteGetHitVolume
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7462038642578740300, guid: 604f83d99ad6df74fbf8070044eae5a8, type: 3}
+      propertyPath: InventoryClickVolume
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7462038642578740300, guid: 604f83d99ad6df74fbf8070044eae5a8, type: 3}
       propertyPath: HologramDeactivateSFX
       value: 
       objectReference: {fileID: 8300000, guid: 07115e7d7c4d7e94d9e17263d6b5dc78, type: 3}
+    - target: {fileID: 7462038642578740300, guid: 604f83d99ad6df74fbf8070044eae5a8, type: 3}
+      propertyPath: InventoryOpenCloseSFX
+      value: 
+      objectReference: {fileID: 8300000, guid: 57d49b9a8e5ceb448a33a867a2695a8c, type: 3}
     - target: {fileID: 7977193351103050734, guid: 604f83d99ad6df74fbf8070044eae5a8, type: 3}
       propertyPath: m_ActionEvents.Array.data[19].m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
@@ -997687,3 +997857,5 @@ SceneRoots:
   - {fileID: 1794464200}
   - {fileID: 1535812840}
   - {fileID: 5990174519368901529}
+  - {fileID: 1777521899}
+  - {fileID: 1024362733}

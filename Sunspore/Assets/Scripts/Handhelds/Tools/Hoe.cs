@@ -35,7 +35,8 @@ namespace Sunspore
             if (Physics.Raycast(ray, out RaycastHit hit, 1000f, mask))
             {
                 TerrainTilemap.Instance.TillAtWorldPosition(hit.point, abilityRange, player.transform.position);
-                SFXManager._sfxManager.PlaySound("plant");
+                // Tilling loop handled by HandHeldManager via AbilityLoopSfxKey
+                SFXManager.Play("plant");
                 TutorialManager.Instance.BroadcastSignal(TutorialManager.Actions.HOE);
             }
         }
@@ -50,5 +51,10 @@ namespace Sunspore
 
             return false;
         }
+        
+            public override string AbilityLoopSfxKey()
+            {
+                return "tilling";
+            }
     }
 }

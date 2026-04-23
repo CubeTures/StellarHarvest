@@ -42,6 +42,8 @@ namespace Sunspore
                     Vector3 direction = (enemy.transform.position - boxCenter).normalized;
                     Vector2 dir = new Vector2(direction.x, direction.z);
                     enemy.TakeDamage(damage, dir, knockback);
+                    // Play a player-hit SFX when the player damages an enemy
+                    SFXManager.Play("hitenemy");
                 }
             }
         }
@@ -93,6 +95,12 @@ namespace Sunspore
                 }
             }
             return false;
+        }
+
+        // Return a normalized SFX key to loop while the ability cast is active (or null for none)
+        public virtual string AbilityLoopSfxKey()
+        {
+            return null;
         }
     }
 }
