@@ -9,8 +9,8 @@ namespace Sunspore
 
         [Header("SFX")]
         [Header("Player")]
-        public AudioClip SwingSFX;
-        public AudioClip HitEnemySFX;
+        public AudioClip SwingSFX; 
+//      public AudioClip HitEnemySFX;
         public AudioClip GetHitSFX;
         public AudioClip ShotgunSFX;
         public AudioClip PlantSFX;
@@ -18,7 +18,7 @@ namespace Sunspore
         public AudioClip StepSFX;
         public AudioClip WateringSFX;
         public AudioClip DigSFX;
-        public AudioClip TillingSFX;
+        //public AudioClip TillingSFX;
         public AudioClip KickRockSFX;
 
         [Header("UI")]
@@ -30,7 +30,11 @@ namespace Sunspore
         public AudioClip HologramDeactivateSFX;
 
         [Header("Enemy")]
-        public AudioClip EnemyGetHitSFX;
+        public AudioClip NibletGetHitSFX;
+        public AudioClip SkybiteGetHitSFX;
+        public AudioClip GnasherGetHitSFX;
+        public AudioClip GluttonGetHitSFX;
+        
 
         public AudioClip NibletAttackSFX;
         public AudioClip SkybiteAttackSFX;
@@ -61,9 +65,10 @@ namespace Sunspore
                 case "swing":
                     _audioSource.PlayOneShot(SwingSFX);
                     break;
-                case "hitenemy":
+                /*case "hitenemy":
                     _audioSource.PlayOneShot(HitEnemySFX);
                     break;
+                */
                 case "gethit":
                     _audioSource.PlayOneShot(GetHitSFX);
                         break;
@@ -85,9 +90,10 @@ namespace Sunspore
                 case "dig":
                     _audioSource.PlayOneShot(DigSFX);
                     break;
-                case "tilling":
+                /*case "tilling":
                     _audioSource.PlayOneShot(TillingSFX);
                     break;
+                */
                 case "kickrock":
                     _audioSource.PlayOneShot(KickRockSFX);
                     break;
@@ -113,9 +119,19 @@ namespace Sunspore
                     break;
 
                 // Enemy SFX
-                case "enemygethit":
-                    _audioSource.PlayOneShot(EnemyGetHitSFX);
+                case "nibletgethit":
+                    _audioSource.PlayOneShot(NibletGetHitSFX);
                     break;
+                case "skybitegethit":
+                    _audioSource.PlayOneShot(SkybiteGetHitSFX);
+                    break;
+                case "gnashergethit":
+                    _audioSource.PlayOneShot(GnasherGetHitSFX);
+                    break;
+                case "gluttongethit":
+                    _audioSource.PlayOneShot(GluttonGetHitSFX);
+                    break;
+                    
                 case "nibletattack":
                     _audioSource.PlayOneShot(NibletAttackSFX);
                     break;
