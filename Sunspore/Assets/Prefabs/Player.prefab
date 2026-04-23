@@ -77,36 +77,36 @@ MonoBehaviour:
   BloomburstShotSFX: {fileID: 8300000, guid: 816353a0f84619043ad9c5c88a1ce48d, type: 3}
   PitSnapperMunchSFX: {fileID: 8300000, guid: 7676c0f8dce940b4b87621b4ceb5832a, type: 3}
   SpikeBrambleHitSFX: {fileID: 8300000, guid: a7276e4847ebe5e458fc02194e1af6da, type: 3}
-  SwingVolume: 1
-  HitEnemyVolume: 1
-  GetHitVolume: 1
-  ShotgunVolume: 1
-  PlantVolume: 1
-  HarvestVolume: 1
-  StepVolume: 1
-  WateringVolume: 1
-  DigVolume: 1
-  TillingVolume: 1
-  KickRockVolume: 1
-  CutGrassVolume: 1
-  InventoryClickVolume: 1
+  SwingVolume: 0.1
+  HitEnemyVolume: 0.25
+  GetHitVolume: 0.5
+  ShotgunVolume: 0.5
+  PlantVolume: 0.5
+  HarvestVolume: 0.5
+  StepVolume: 0.1
+  WateringVolume: 0.5
+  DigVolume: 0.5
+  TillingVolume: 0.5
+  KickRockVolume: 0.2
+  CutGrassVolume: 0.25
+  InventoryClickVolume: 0.15
   InventoryOpenCloseVolume: 1
-  HologramHumVolume: 1
-  BuyItemVolume: 1
-  SellItemVolume: 1
-  HologramActivateVolume: 1
-  HologramDeactivateVolume: 1
-  NibletGetHitVolume: 1
-  SkybiteGetHitVolume: 1
-  GnasherGetHitVolume: 1
-  GluttonGetHitVolume: 1
-  NibletAttackVolume: 1
-  SkybiteAttackVolume: 1
-  GnasherAttackVolume: 1
-  GluttonAttackVolume: 1
-  BloomburstShotVolume: 1
-  PitSnapperMunchVolume: 1
-  SpikeBrambleHitVolume: 1
+  HologramHumVolume: 0.5
+  BuyItemVolume: 0.5
+  SellItemVolume: 0.5
+  HologramActivateVolume: 0.5
+  HologramDeactivateVolume: 0.5
+  NibletGetHitVolume: 0.3
+  SkybiteGetHitVolume: 0.3
+  GnasherGetHitVolume: 0.3
+  GluttonGetHitVolume: 0.3
+  NibletAttackVolume: 0.3
+  SkybiteAttackVolume: 0.3
+  GnasherAttackVolume: 0.3
+  GluttonAttackVolume: 0.3
+  BloomburstShotVolume: 0.5
+  PitSnapperMunchVolume: 0.5
+  SpikeBrambleHitVolume: 0.5
 --- !u!82 &7146392148225412156
 AudioSource:
   m_ObjectHideFlags: 0
