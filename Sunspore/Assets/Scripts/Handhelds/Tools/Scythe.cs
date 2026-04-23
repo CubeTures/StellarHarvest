@@ -121,6 +121,7 @@ namespace Sunspore
                 if (plant != null)
                 {
                     plant.Harvest();
+                    SFXManager.Play("harvest");
                 }
 
             }

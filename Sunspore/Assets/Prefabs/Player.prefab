@@ -45,9 +45,68 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ad06eee34d9a624785b0be87377bf3e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  SwingSFX: {fileID: 8300000, guid: 9f596d50538839743b707c5a6ea14382, type: 3}
-  ShotgunSFX: {fileID: 8300000, guid: c0bb08e2f04569e4491d0bd1e9964dfc, type: 3}
-  PlantSFX: {fileID: 8300000, guid: f081fe3db9be3de4082a601d32ec4be6, type: 3}
+  PolyphonyWindow: 0.15
+  _maxSimultaneousPerSound: 4
+  SwingSFX: {fileID: 8300000, guid: d17cfee60b149c14c936cae055df06c6, type: 3}
+  HitEnemySFX: {fileID: 8300000, guid: a1c235be1c85cc6469c0c305778bd5c1, type: 3}
+  GetHitSFX: {fileID: 8300000, guid: a1c235be1c85cc6469c0c305778bd5c1, type: 3}
+  ShotgunSFX: {fileID: 8300000, guid: 8bb63fadfbcace041b828446127dac0b, type: 3}
+  PlantSFX: {fileID: 8300000, guid: 650d97e81933d2e48880a8f102018c03, type: 3}
+  HarvestSFX: {fileID: 8300000, guid: 11d3738bbab83c64aa8c056cbb3c1a61, type: 3}
+  StepSFX: {fileID: 8300000, guid: 69a5bb48c4e9a4f43b0113bcec46d7a4, type: 3}
+  WateringSFX: {fileID: 8300000, guid: 4733a5eba949d034ab2644a688c27f23, type: 3}
+  DigSFX: {fileID: 8300000, guid: b9dc6a8be721b7041a5275e4476c887d, type: 3}
+  TillingSFX: {fileID: 8300000, guid: b9dc6a8be721b7041a5275e4476c887d, type: 3}
+  KickRockSFX: {fileID: 8300000, guid: 267d649f47575b9458995114b58b448c, type: 3}
+  CutGrassSFX: {fileID: 8300000, guid: 11d3738bbab83c64aa8c056cbb3c1a61, type: 3}
+  InventoryClickSFX: {fileID: 8300000, guid: 67764dc48ed8da5409acb06f3a59b65e, type: 3}
+  InventoryOpenCloseSFX: {fileID: 8300000, guid: 57d49b9a8e5ceb448a33a867a2695a8c, type: 3}
+  HologramHumSFX: {fileID: 8300000, guid: d3a2f85566f487648bb2355119187a2b, type: 3}
+  BuyItemSFX: {fileID: 8300000, guid: 303086d523cfe6e499525b22fc57521f, type: 3}
+  SellItemSFX: {fileID: 8300000, guid: 303086d523cfe6e499525b22fc57521f, type: 3}
+  HologramActivateSFX: {fileID: 8300000, guid: eba37a11422bc2f468fee02fae34ed8d, type: 3}
+  HologramDeactivateSFX: {fileID: 8300000, guid: 7410ac345f0e45e42ab83f9b6db504ef, type: 3}
+  NibletGetHitSFX: {fileID: 8300000, guid: 2dcb3335ebaa46e4c8c3b92a28582ae7, type: 3}
+  SkybiteGetHitSFX: {fileID: 8300000, guid: 8c92d13958126134bb86525469e7aa47, type: 3}
+  GnasherGetHitSFX: {fileID: 8300000, guid: cc82673c85b7de348b43169a14c0eda4, type: 3}
+  GluttonGetHitSFX: {fileID: 8300000, guid: cc5a40a3b3e3fd54ab21f87530f74b83, type: 3}
+  NibletAttackSFX: {fileID: 8300000, guid: ff93ff26124beb444b328b9ba6c82d51, type: 3}
+  SkybiteAttackSFX: {fileID: 8300000, guid: 730994b99fa0e614d868a82161a6c79f, type: 3}
+  GnasherAttackSFX: {fileID: 8300000, guid: c3d8960fa52120548be8d17265d3e8a8, type: 3}
+  GluttonAttackSFX: {fileID: 8300000, guid: 0204b427b1ed06e44bb1df07d214c04c, type: 3}
+  BloomburstShotSFX: {fileID: 8300000, guid: 816353a0f84619043ad9c5c88a1ce48d, type: 3}
+  PitSnapperMunchSFX: {fileID: 8300000, guid: 7676c0f8dce940b4b87621b4ceb5832a, type: 3}
+  SpikeBrambleHitSFX: {fileID: 8300000, guid: a7276e4847ebe5e458fc02194e1af6da, type: 3}
+  SwingVolume: 1
+  HitEnemyVolume: 1
+  GetHitVolume: 1
+  ShotgunVolume: 1
+  PlantVolume: 1
+  HarvestVolume: 1
+  StepVolume: 1
+  WateringVolume: 1
+  DigVolume: 1
+  TillingVolume: 1
+  KickRockVolume: 1
+  CutGrassVolume: 1
+  InventoryClickVolume: 0.2
+  InventoryOpenCloseVolume: 1
+  HologramHumVolume: 0.5
+  BuyItemVolume: 1
+  SellItemVolume: 1
+  HologramActivateVolume: 1
+  HologramDeactivateVolume: 1
+  NibletGetHitVolume: 0.2
+  SkybiteGetHitVolume: 0.2
+  GnasherGetHitVolume: 0.2
+  GluttonGetHitVolume: 0.2
+  NibletAttackVolume: 1
+  SkybiteAttackVolume: 1
+  GnasherAttackVolume: 1
+  GluttonAttackVolume: 1
+  BloomburstShotVolume: 1
+  PitSnapperMunchVolume: 1
+  SpikeBrambleHitVolume: 1
 --- !u!82 &7146392148225412156
 AudioSource:
   m_ObjectHideFlags: 0
@@ -389,7 +448,7 @@ Transform:
   m_GameObject: {fileID: 5625893463482297566}
   serializedVersion: 2
   m_LocalRotation: {x: -0.5, y: -0.5, z: -0.5, w: 0.5}
-  m_LocalPosition: {x: 1.022, y: 0, z: 0.18800002}
+  m_LocalPosition: {x: 1.022, y: -0.273, z: 0.18800002}
   m_LocalScale: {x: 0.59341013, y: 0.5934101, z: 0.5934101}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -444,7 +503,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 1
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 21300000, guid: 3330d7d8750c7a9478fc763b724990a5, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 07045d5f27439c64bb84709ea1878f9b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -791,6 +850,8 @@ MonoBehaviour:
   animFinished: 0
   anim: {fileID: 0}
   spriteRenderer: {fileID: 0}
+  EnableStepSfx: 1
+  StepSfxKey: step
   _hitEffect: {fileID: 8533190726145184800, guid: bf99aee28fe35d1498be33b6d377b8bd, type: 3}
   _deathEffect: {fileID: 6134884250422211280, guid: e810666f5a8e4de4c913c5dc6bdc2b8e, type: 3}
   currentDirection: -1
