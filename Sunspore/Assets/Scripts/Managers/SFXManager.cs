@@ -57,7 +57,7 @@ namespace Sunspore
 
         [Header("SFX")]
         [Header("Player")]
-        public AudioClip SwingSFX; 
+        public AudioClip SwingSFX;
         public AudioClip HitEnemySFX;
         public AudioClip GetHitSFX;
         public AudioClip ShotgunSFX;
@@ -84,7 +84,7 @@ namespace Sunspore
         public AudioClip SkybiteGetHitSFX;
         public AudioClip GnasherGetHitSFX;
         public AudioClip GluttonGetHitSFX;
-        
+
 
         public AudioClip NibletAttackSFX;
         public AudioClip SkybiteAttackSFX;
@@ -97,40 +97,44 @@ namespace Sunspore
         public AudioClip SpikeBrambleHitSFX;
 
         [Header("Volumes")]
-        public float SwingVolume = 1f;
-        public float HitEnemyVolume = 1f;
-        public float GetHitVolume = 1f;
-        public float ShotgunVolume = 1f;
-        public float PlantVolume = 1f;
-        public float HarvestVolume = 1f;
-        public float StepVolume = 1f;
-        public float WateringVolume = 1f;
-        public float DigVolume = 1f;
-        public float TillingVolume = 1f;
-        public float KickRockVolume = 1f;
-        public float CutGrassVolume = 1f;
+        [Header("Player")]
+        [Range(0f, 1f)] public float SwingVolume = 1f;
+        [Range(0f, 1f)] public float HitEnemyVolume = 1f;
+        [Range(0f, 1f)] public float GetHitVolume = 1f;
+        [Range(0f, 1f)] public float ShotgunVolume = 1f;
+        [Range(0f, 1f)] public float PlantVolume = 1f;
+        [Range(0f, 1f)] public float HarvestVolume = 1f;
+        [Range(0f, 1f)] public float StepVolume = 1f;
+        [Range(0f, 1f)] public float WateringVolume = 1f;
+        [Range(0f, 1f)] public float DigVolume = 1f;
+        [Range(0f, 1f)] public float TillingVolume = 1f;
+        [Range(0f, 1f)] public float KickRockVolume = 1f;
+        [Range(0f, 1f)] public float CutGrassVolume = 1f;
 
-        public float InventoryClickVolume = 1f;
-        public float InventoryOpenCloseVolume = 1f;
-        public float HologramHumVolume = 1f;
-        public float BuyItemVolume = 1f;
-        public float SellItemVolume = 1f;
-        public float HologramActivateVolume = 1f;
-        public float HologramDeactivateVolume = 1f;
+        [Header("UI")]
+        [Range(0f, 1f)] public float InventoryClickVolume = 1f;
+        [Range(0f, 1f)] public float InventoryOpenCloseVolume = 1f;
+        [Range(0f, 1f)] public float HologramHumVolume = 1f;
+        [Range(0f, 1f)] public float BuyItemVolume = 1f;
+        [Range(0f, 1f)] public float SellItemVolume = 1f;
+        [Range(0f, 1f)] public float HologramActivateVolume = 1f;
+        [Range(0f, 1f)] public float HologramDeactivateVolume = 1f;
 
-        public float NibletGetHitVolume = 1f;
-        public float SkybiteGetHitVolume = 1f;
-        public float GnasherGetHitVolume = 1f;
-        public float GluttonGetHitVolume = 1f;
+        [Header("Enemy")]
+        [Range(0f, 1f)] public float NibletGetHitVolume = 1f;
+        [Range(0f, 1f)] public float SkybiteGetHitVolume = 1f;
+        [Range(0f, 1f)] public float GnasherGetHitVolume = 1f;
+        [Range(0f, 1f)] public float GluttonGetHitVolume = 1f;
 
-        public float NibletAttackVolume = 1f;
-        public float SkybiteAttackVolume = 1f;
-        public float GnasherAttackVolume = 1f;
-        public float GluttonAttackVolume = 1f;
+        [Range(0f, 1f)] public float NibletAttackVolume = 1f;
+        [Range(0f, 1f)] public float SkybiteAttackVolume = 1f;
+        [Range(0f, 1f)] public float GnasherAttackVolume = 1f;
+        [Range(0f, 1f)] public float GluttonAttackVolume = 1f;
 
-        public float BloomburstShotVolume = 1f;
-        public float PitSnapperMunchVolume = 1f;
-        public float SpikeBrambleHitVolume = 1f;
+        [Header("Plants")]
+        [Range(0f, 1f)] public float BloomburstShotVolume = 1f;
+        [Range(0f, 1f)] public float PitSnapperMunchVolume = 1f;
+        [Range(0f, 1f)] public float SpikeBrambleHitVolume = 1f;
 
 
         void Awake()
@@ -205,7 +209,6 @@ namespace Sunspore
                 {"watering", WateringVolume},
                 {"dig", DigVolume},
                 {"tilling", TillingVolume},
-                {"kickrock", KickRockVolume},
                 {"kickrock", KickRockVolume},
                 {"hitenemy", HitEnemyVolume},
                 {"cutgrass", CutGrassVolume},
@@ -316,6 +319,31 @@ namespace Sunspore
             var key = sound.ToLower();
             if (_sfxManager._volumeMap != null && _sfxManager._volumeMap.TryGetValue(key, out var v)) return v;
             return 1f;
+        }
+
+        public void RefreshVolumes()
+        {
+            BuildClipMap();
+
+            // Push updated volumes to any currently active looping sources
+            if (_loopingSources == null) return;
+            foreach (var kv in _loopingSources)
+            {
+                if (kv.Value == null) continue;
+                if (_volumeMap.TryGetValue(kv.Key, out var vol))
+                    kv.Value.volume = vol;
+            }
+        }
+
+        public static void RefreshAllVolumes()
+        {
+            _sfxManager?.RefreshVolumes();
+        }
+
+        void OnValidate()
+        {
+            if (Application.isPlaying && _volumeMap != null)
+                RefreshVolumes();
         }
 
         // Play an AudioClip in a dedicated looping AudioSource (allows multiple concurrent loops)

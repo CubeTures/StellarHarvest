@@ -89,17 +89,17 @@ MonoBehaviour:
   TillingVolume: 1
   KickRockVolume: 1
   CutGrassVolume: 1
-  InventoryClickVolume: 0.2
+  InventoryClickVolume: 1
   InventoryOpenCloseVolume: 1
-  HologramHumVolume: 0.5
+  HologramHumVolume: 1
   BuyItemVolume: 1
   SellItemVolume: 1
   HologramActivateVolume: 1
   HologramDeactivateVolume: 1
-  NibletGetHitVolume: 0.2
-  SkybiteGetHitVolume: 0.2
-  GnasherGetHitVolume: 0.2
-  GluttonGetHitVolume: 0.2
+  NibletGetHitVolume: 1
+  SkybiteGetHitVolume: 1
+  GnasherGetHitVolume: 1
+  GluttonGetHitVolume: 1
   NibletAttackVolume: 1
   SkybiteAttackVolume: 1
   GnasherAttackVolume: 1
