@@ -15,6 +15,7 @@ namespace Sunspore
         [SerializeField] private float fullyGrownAbilityRange = 10f;
         [SerializeField] private float _juvenileAbilityCooldown = 3f;
         [SerializeField] private float _fullyGrownAbilityCooldown = 2f;
+        [SerializeField] private float bulletDelay = 1f;
         [SerializeField] private GameObject _homingBulletPrefab;
 
         [Header("Placement")]
@@ -184,7 +185,7 @@ namespace Sunspore
         private System.Collections.IEnumerator SpawnBulletsOverTime(Transform target, float bulletCount)
         {
             // Small fixed delay between bullets; tweak as needed
-            const float delayBetweenBullets = 0.1f;
+            float delayBetweenBullets = bulletDelay;
 
             int count = Mathf.RoundToInt(bulletCount);
             for (int i = 0; i < count; i++)
