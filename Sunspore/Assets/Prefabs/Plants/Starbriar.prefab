@@ -141,7 +141,7 @@ MonoBehaviour:
   seedItem: {fileID: 11400000, guid: 3712edf31b8c2ce4aba4ec39cc6479b6, type: 2}
   plantItem: {fileID: 11400000, guid: a89e7c544f4de504fa512891b47a9e01, type: 2}
   _transitionTimer: 0
-  currentStage: 2
+  currentStage: 0
   transitionFinish: 0
   juvenileAbilityPower: 0
   fullyGrownAbilityPower: 5

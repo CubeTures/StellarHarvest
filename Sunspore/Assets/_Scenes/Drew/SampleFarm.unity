@@ -706124,22 +706124,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2600775922056441537, guid: 9d6bc5b7f8a717a4faeefeecd24a9f44, type: 3}
-      propertyPath: currentStage
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 2600775922056441537, guid: 9d6bc5b7f8a717a4faeefeecd24a9f44, type: 3}
-      propertyPath: snapToGridOnStart
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2600775922056441537, guid: 9d6bc5b7f8a717a4faeefeecd24a9f44, type: 3}
-      propertyPath: juvenileAbilityPower
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2600775922056441537, guid: 9d6bc5b7f8a717a4faeefeecd24a9f44, type: 3}
-      propertyPath: fullyGrownAbilityPower
-      value: 3
-      objectReference: {fileID: 0}
     - target: {fileID: 6794809191556961585, guid: 9d6bc5b7f8a717a4faeefeecd24a9f44, type: 3}
       propertyPath: m_Name
       value: Bloomburst
@@ -806976,14 +806960,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: -302508068204371113, guid: ccb0ff220d228d24eb18daa4c85aba62, type: 3}
-      propertyPath: currentStage
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: -302508068204371113, guid: ccb0ff220d228d24eb18daa4c85aba62, type: 3}
-      propertyPath: transitionFinish
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 257691232243731048, guid: ccb0ff220d228d24eb18daa4c85aba62, type: 3}
       propertyPath: m_LocalPosition.x
       value: -4.5
