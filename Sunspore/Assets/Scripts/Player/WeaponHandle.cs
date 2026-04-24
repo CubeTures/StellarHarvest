@@ -13,16 +13,16 @@ using UnityEngine;
             public SpriteRenderer headSr;
 
             int _currentDirection = -1;
-            int sortOrder = 0;
-            int playerSortOrder = 0;
+            int _sortOffset = 100; // default offset
 
-            
+
             void Awake()
             {
                 _anim = GetComponent<Animator>();
                 _sr = GetComponent<SpriteRenderer>();
-                _playerSr = GetComponentInParent<SpriteRenderer>();
-
+                // Go up to the parent transform directly, avoiding the current GameObject
+                _playerSr = transform.parent.GetComponent<SpriteRenderer>();
+                
                 var headTransform = transform.Find("WeaponHead");
                 if (headTransform != null)
                 {
@@ -45,8 +45,18 @@ using UnityEngine;
 
             void Update()
             {
-                sortOrder = _playerSr.sortingOrder;
-                headSr.sortingOrder = sortOrder;
+                int playerSortOrder = _playerSr.sortingOrder;
+                _sr.sortingOrder = playerSortOrder + 100; // base always in front
+                headSr.sortingOrder = playerSortOrder + _sortOffset; // head varies by direction
+            }
+
+            public void SetWeaponBaseTransform(int dir, bool flipped)
+            {
+                _anim.SetInteger("Direction", dir);
+                _currentDirection = dir;
+
+                // Only the head changes depth based on direction
+                _sortOffset = (dir == 3) ? -100 : 100;
             }
 
             public void TypeUpdate(HandHeld.WeaponHandle newHandle)
@@ -66,22 +76,5 @@ using UnityEngine;
             {
                 _anim.SetInteger("Direction", _currentDirection);
                 _anim.SetTrigger("Swing");
-            }
-            public void SetWeaponBaseTransform(int dir, bool flipped)
-            {
-                /*_sr.flipX = flipped;
-                _head.flipX = flipped;*/
-
-                _anim.SetInteger("Direction", dir);
-                _currentDirection = dir;
-
-                if (dir == 3)
-                {
-                    sortOrder -= 100;
-                }
-                else
-                {
-                    sortOrder += 100;
-                }
             }
         }

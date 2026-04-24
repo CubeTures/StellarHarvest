@@ -271375,10 +271375,6 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3626389671406537930, guid: 906065912e6b61a45858656fdfb13bd3, type: 3}
-      propertyPath: Priority
-      value: 10
-      objectReference: {fileID: 0}
     - target: {fileID: 3649257803423816698, guid: 906065912e6b61a45858656fdfb13bd3, type: 3}
       propertyPath: m_AnchorMax.y
       value: 1
@@ -272222,8 +272218,8 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 3487351974474608840}
     - target: {fileID: 7067304971246511516, guid: 906065912e6b61a45858656fdfb13bd3, type: 3}
-      propertyPath: dayLengthSeconds
-      value: 180
+      propertyPath: initialTimeOfDay
+      value: 0.477
       objectReference: {fileID: 0}
     - target: {fileID: 7099081830056554203, guid: 906065912e6b61a45858656fdfb13bd3, type: 3}
       propertyPath: m_AnchorMax.y
@@ -272630,10 +272626,6 @@ PrefabInstance:
     - target: {fileID: 9144797887828690116, guid: 906065912e6b61a45858656fdfb13bd3, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9154883875026680414, guid: 906065912e6b61a45858656fdfb13bd3, type: 3}
-      propertyPath: groupRecipes.Array.data[1].members.Array.data[0].spread
-      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 9191174918149629724, guid: 906065912e6b61a45858656fdfb13bd3, type: 3}
       propertyPath: m_AnchorMax.y
@@ -424011,6 +424003,11 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!95 &1027322802 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 4820590456694821891, guid: cd92bf394b984c74ab2de96981ca7661, type: 3}
+  m_PrefabInstance: {fileID: 1794464200}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1027460063
 GameObject:
   m_ObjectHideFlags: 0
@@ -662229,63 +662226,6 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 1
---- !u!1001 &1637423346
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 355423213755701724, guid: cd92bf394b984c74ab2de96981ca7661, type: 3}
-      propertyPath: m_Name
-      value: Tutorial Bloomburst
-      objectReference: {fileID: 0}
-    - target: {fileID: 6525849548227995146, guid: cd92bf394b984c74ab2de96981ca7661, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6525849548227995146, guid: cd92bf394b984c74ab2de96981ca7661, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 7.321061e-18
-      objectReference: {fileID: 0}
-    - target: {fileID: 6525849548227995146, guid: cd92bf394b984c74ab2de96981ca7661, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -103.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 6525849548227995146, guid: cd92bf394b984c74ab2de96981ca7661, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6525849548227995146, guid: cd92bf394b984c74ab2de96981ca7661, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6525849548227995146, guid: cd92bf394b984c74ab2de96981ca7661, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6525849548227995146, guid: cd92bf394b984c74ab2de96981ca7661, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6525849548227995146, guid: cd92bf394b984c74ab2de96981ca7661, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6525849548227995146, guid: cd92bf394b984c74ab2de96981ca7661, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6525849548227995146, guid: cd92bf394b984c74ab2de96981ca7661, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: cd92bf394b984c74ab2de96981ca7661, type: 3}
 --- !u!1 &1637450818
 GameObject:
   m_ObjectHideFlags: 0
@@ -723230,6 +723170,67 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!1001 &1794464200
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 355423213755701724, guid: cd92bf394b984c74ab2de96981ca7661, type: 3}
+      propertyPath: m_Name
+      value: Tutorial Bloomburst
+      objectReference: {fileID: 0}
+    - target: {fileID: 1232203935441706218, guid: cd92bf394b984c74ab2de96981ca7661, type: 3}
+      propertyPath: _anim
+      value: 
+      objectReference: {fileID: 1027322802}
+    - target: {fileID: 6525849548227995146, guid: cd92bf394b984c74ab2de96981ca7661, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6525849548227995146, guid: cd92bf394b984c74ab2de96981ca7661, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 7.321061e-18
+      objectReference: {fileID: 0}
+    - target: {fileID: 6525849548227995146, guid: cd92bf394b984c74ab2de96981ca7661, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -103.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6525849548227995146, guid: cd92bf394b984c74ab2de96981ca7661, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6525849548227995146, guid: cd92bf394b984c74ab2de96981ca7661, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6525849548227995146, guid: cd92bf394b984c74ab2de96981ca7661, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6525849548227995146, guid: cd92bf394b984c74ab2de96981ca7661, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6525849548227995146, guid: cd92bf394b984c74ab2de96981ca7661, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6525849548227995146, guid: cd92bf394b984c74ab2de96981ca7661, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6525849548227995146, guid: cd92bf394b984c74ab2de96981ca7661, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: cd92bf394b984c74ab2de96981ca7661, type: 3}
 --- !u!1 &1794875907
 GameObject:
   m_ObjectHideFlags: 0
@@ -870582,6 +870583,6 @@ SceneRoots:
   - {fileID: 1439138749}
   - {fileID: 9184373300584171571}
   - {fileID: 3487351974474608839}
+  - {fileID: 1794464200}
   - {fileID: 1535812840}
   - {fileID: 5990174519368901529}
-  - {fileID: 1637423346}
