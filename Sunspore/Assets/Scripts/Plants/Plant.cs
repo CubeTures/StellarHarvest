@@ -50,6 +50,7 @@ namespace Sunspore
         protected float _initialSeedToJuvenileTime;
         protected float _initialJuvenileToFullyGrownTime;
         protected Animator _anim;
+        protected float _maxHealth = 150f;
         protected float _health = 150f;
         protected Pathfinding pathfinding;
         public bool transitionFinish;
@@ -60,6 +61,7 @@ namespace Sunspore
 
         protected virtual void Start()
         {
+            _maxHealth = _health;
             pathfinding = Pathfinding.Instance;
             pathfinding.AddPlant(this);
 
@@ -84,6 +86,8 @@ namespace Sunspore
 
         protected virtual void LateUpdate()
         {
+            float healthPercent = _health / _maxHealth; // 1 = full health, 0 = dead
+            _spriteRenderer.color = Color.Lerp(Color.red, Color.white, healthPercent);;
             // Handle growth progression
             if (currentStage == GrowthStage.Seed)
             {
