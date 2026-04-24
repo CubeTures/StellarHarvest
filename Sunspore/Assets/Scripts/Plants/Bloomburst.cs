@@ -143,7 +143,7 @@ namespace Sunspore
             if (closestEnemy != null)
             {
                 if (_animator != null)
-                    _animator.SetTrigger("JuvenileAttack");
+                    _animator.SetTrigger("Attack");
 
                 StartCoroutine(SpawnBulletsOverTime(closestEnemy, juvenileAbilityPower));
             }
@@ -175,7 +175,7 @@ namespace Sunspore
             if (closestEnemy != null)
             {
                 if (_animator != null)
-                    _animator.SetTrigger("FullyGrownAttack");
+                    _animator.SetTrigger("Attack");
 
                 StartCoroutine(SpawnBulletsOverTime(closestEnemy, fullyGrownAbilityPower));
             }

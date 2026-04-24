@@ -272217,6 +272217,10 @@ PrefabInstance:
       propertyPath: nightVolume
       value: 
       objectReference: {fileID: 3487351974474608840}
+    - target: {fileID: 7067304971246511516, guid: 906065912e6b61a45858656fdfb13bd3, type: 3}
+      propertyPath: initialTimeOfDay
+      value: 0.477
+      objectReference: {fileID: 0}
     - target: {fileID: 7099081830056554203, guid: 906065912e6b61a45858656fdfb13bd3, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -423999,6 +424003,11 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!95 &1027322802 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 4820590456694821891, guid: cd92bf394b984c74ab2de96981ca7661, type: 3}
+  m_PrefabInstance: {fileID: 1794464200}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1027460063
 GameObject:
   m_ObjectHideFlags: 0
@@ -723173,6 +723182,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Tutorial Bloomburst
       objectReference: {fileID: 0}
+    - target: {fileID: 1232203935441706218, guid: cd92bf394b984c74ab2de96981ca7661, type: 3}
+      propertyPath: _anim
+      value: 
+      objectReference: {fileID: 1027322802}
     - target: {fileID: 6525849548227995146, guid: cd92bf394b984c74ab2de96981ca7661, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
