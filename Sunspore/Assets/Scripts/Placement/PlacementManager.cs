@@ -313,13 +313,12 @@ public class PlacementManager : MonoBehaviour
         player.Planting();
 
         yield return new WaitUntil(() => player.animFinished);
-
+        player.anim.SetTrigger("Finished");
         //Debug.Log(player.animFinished);
 
         Instantiate(prefab, currPlace, Quaternion.identity);
 
         inventoryManager.UseThisItem(slot);
-        player.animFinished = false;
         isPlacing = false;
         TutorialManager.Instance.BroadcastSignal(TutorialManager.Actions.PLANT);
         placingCoroutine = null;

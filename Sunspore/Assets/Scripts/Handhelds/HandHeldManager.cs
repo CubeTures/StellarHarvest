@@ -116,7 +116,39 @@ namespace Sunspore
                     Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
                     if (abilityCoroutine == null && handHeld.CheckRange(player.GetComponent<Player>(), ray))
                     {
-                        abilityCoroutine = StartCoroutine(AbilityDelayCoroutine(player.GetComponent<Player>(), ray, handHeld.abilityDuration));
+                        abilityCoroutine = StartCoroutine(AbilityDelayCoroutine(player.GetComponent<Player>(), ray, handHeld.abilityDuration, handHeld));
+                        lastAttackTime = Time.time;
+                    }
+                    else
+                    {
+                        OutOfRange();
+                    }
+                }
+            }
+
+            // If right click cast ability
+
+            if (enabled && handHeld.tool && Input.GetMouseButtonUp(0) && Time.time >= lastAttackTime + handHeld.attackCooldown && (!player.GetComponent<Player>().anim.GetBool("isMoving") || handHeld.weapon))
+            {
+                HandHeld tempHandHeld = InventoryManager.Instance.GetDraggedInventoryItem() != null ? InventoryManager.Instance.GetDraggedItemSO().prefab.GetComponent<HandHeld>() : null;
+
+                if(tempHandHeld == null)
+                {
+                    Debug.Log("pooP");
+                    return;
+                }
+
+                if (tempHandHeld.weapon)
+                {
+                    Vector3 mouseWorldPos = GetMouseWorldPosition();
+                    Attack(mouseWorldPos, true);
+                }
+                else
+                {
+                    Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                    if (abilityCoroutine == null && tempHandHeld.CheckRange(player.GetComponent<Player>(), ray))
+                    {
+                        abilityCoroutine = StartCoroutine(AbilityDelayCoroutine(player.GetComponent<Player>(), ray, tempHandHeld.abilityDuration, tempHandHeld));
                         lastAttackTime = Time.time;
                     }
                     else
@@ -218,14 +250,13 @@ namespace Sunspore
             Gizmos.DrawWireCube(Vector3.zero, hitArea * 1.5f);
         }
 
-        private IEnumerator AbilityDelayCoroutine(Player player, Ray ray, float delay)
+        private IEnumerator AbilityDelayCoroutine(Player player, Ray ray, float delay, HandHeld abilityHandHeld)
         {
             player.anim.SetTrigger("Plant");
-            player.animFinished = false;
             castTime = Time.time;
             yield return new WaitForSeconds(delay);
             //Debug.Log("ability cast");
-            handHeld.Ability(player, ray);
+            abilityHandHeld.Ability(player, ray);
             OnAbility?.Invoke(0);
             player.anim.SetInteger("Direction", player.currentDirection);
             player.anim.SetTrigger("Finished");
