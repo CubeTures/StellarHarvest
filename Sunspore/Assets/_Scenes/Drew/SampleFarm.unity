@@ -30516,10 +30516,6 @@ PrefabInstance:
       propertyPath: currentStage
       value: 2
       objectReference: {fileID: 0}
-    - target: {fileID: -302508068204371113, guid: ccb0ff220d228d24eb18daa4c85aba62, type: 3}
-      propertyPath: transitionFinish
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 257691232243731048, guid: ccb0ff220d228d24eb18daa4c85aba62, type: 3}
       propertyPath: m_LocalPosition.x
       value: -3
@@ -270845,7 +270841,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 187919005278313147, guid: 906065912e6b61a45858656fdfb13bd3, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.000030517578
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 212730433687688374, guid: 906065912e6b61a45858656fdfb13bd3, type: 3}
       propertyPath: m_SizeDelta.x
@@ -272643,7 +272639,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7864977170856320259, guid: 906065912e6b61a45858656fdfb13bd3, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -0.000030517578
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7894266894853363348, guid: 906065912e6b61a45858656fdfb13bd3, type: 3}
       propertyPath: m_AnchorMax.y
@@ -272892,96 +272888,56 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 9154883875026680414, guid: 906065912e6b61a45858656fdfb13bd3, type: 3}
-      propertyPath: maxWavesPerNight
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 9154883875026680414, guid: 906065912e6b61a45858656fdfb13bd3, type: 3}
-      propertyPath: baseWavesPerNight
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 9154883875026680414, guid: 906065912e6b61a45858656fdfb13bd3, type: 3}
       propertyPath: groupRecipes.Array.size
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 9154883875026680414, guid: 906065912e6b61a45858656fdfb13bd3, type: 3}
-      propertyPath: groupRecipes.Array.data[0].name
-      value: Basic Wave
-      objectReference: {fileID: 0}
-    - target: {fileID: 9154883875026680414, guid: 906065912e6b61a45858656fdfb13bd3, type: 3}
-      propertyPath: groupRecipes.Array.data[1].name
-      value: Niblet Overload
-      objectReference: {fileID: 0}
-    - target: {fileID: 9154883875026680414, guid: 906065912e6b61a45858656fdfb13bd3, type: 3}
-      propertyPath: groupRecipes.Array.data[2].name
-      value: Boss Wave
-      objectReference: {fileID: 0}
-    - target: {fileID: 9154883875026680414, guid: 906065912e6b61a45858656fdfb13bd3, type: 3}
-      propertyPath: groupRecipes.Array.data[3].name
-      value: Skybite + Gnahser
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 9154883875026680414, guid: 906065912e6b61a45858656fdfb13bd3, type: 3}
       propertyPath: groupRecipes.Array.data[4].name
+      value: SkyGnashHard
+      objectReference: {fileID: 0}
+    - target: {fileID: 9154883875026680414, guid: 906065912e6b61a45858656fdfb13bd3, type: 3}
+      propertyPath: groupRecipes.Array.data[5].name
       value: Glutton + Niblet
       objectReference: {fileID: 0}
     - target: {fileID: 9154883875026680414, guid: 906065912e6b61a45858656fdfb13bd3, type: 3}
-      propertyPath: groupRecipes.Array.data[2].hardWave
+      propertyPath: groupRecipes.Array.data[6].name
+      value: NoGnash
+      objectReference: {fileID: 0}
+    - target: {fileID: 9154883875026680414, guid: 906065912e6b61a45858656fdfb13bd3, type: 3}
+      propertyPath: groupRecipes.Array.data[7].name
+      value: NoNiblet
+      objectReference: {fileID: 0}
+    - target: {fileID: 9154883875026680414, guid: 906065912e6b61a45858656fdfb13bd3, type: 3}
+      propertyPath: groupRecipes.Array.data[4].hardWave
       value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 9154883875026680414, guid: 906065912e6b61a45858656fdfb13bd3, type: 3}
-      propertyPath: groupRecipes.Array.data[0].chanceWeight
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 9154883875026680414, guid: 906065912e6b61a45858656fdfb13bd3, type: 3}
-      propertyPath: groupRecipes.Array.data[1].chanceWeight
-      value: 0.25
-      objectReference: {fileID: 0}
-    - target: {fileID: 9154883875026680414, guid: 906065912e6b61a45858656fdfb13bd3, type: 3}
-      propertyPath: groupRecipes.Array.data[2].chanceWeight
-      value: 0.1
-      objectReference: {fileID: 0}
-    - target: {fileID: 9154883875026680414, guid: 906065912e6b61a45858656fdfb13bd3, type: 3}
-      propertyPath: groupRecipes.Array.data[3].chanceWeight
-      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 9154883875026680414, guid: 906065912e6b61a45858656fdfb13bd3, type: 3}
       propertyPath: groupRecipes.Array.data[4].chanceWeight
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9154883875026680414, guid: 906065912e6b61a45858656fdfb13bd3, type: 3}
+      propertyPath: groupRecipes.Array.data[5].chanceWeight
       value: 0.25
       objectReference: {fileID: 0}
     - target: {fileID: 9154883875026680414, guid: 906065912e6b61a45858656fdfb13bd3, type: 3}
-      propertyPath: groupRecipes.Array.data[0].members.Array.size
-      value: 4
+      propertyPath: groupRecipes.Array.data[6].chanceWeight
+      value: 0.25
       objectReference: {fileID: 0}
     - target: {fileID: 9154883875026680414, guid: 906065912e6b61a45858656fdfb13bd3, type: 3}
-      propertyPath: groupRecipes.Array.data[1].members.Array.size
-      value: 1
+      propertyPath: groupRecipes.Array.data[7].chanceWeight
+      value: 0.25
       objectReference: {fileID: 0}
     - target: {fileID: 9154883875026680414, guid: 906065912e6b61a45858656fdfb13bd3, type: 3}
-      propertyPath: groupRecipes.Array.data[2].members.Array.size
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 9154883875026680414, guid: 906065912e6b61a45858656fdfb13bd3, type: 3}
-      propertyPath: groupRecipes.Array.data[3].members.Array.size
+      propertyPath: groupRecipes.Array.data[5].members.Array.size
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 9154883875026680414, guid: 906065912e6b61a45858656fdfb13bd3, type: 3}
-      propertyPath: groupRecipes.Array.data[4].members.Array.size
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 9154883875026680414, guid: 906065912e6b61a45858656fdfb13bd3, type: 3}
-      propertyPath: groupRecipes.Array.data[0].members.Array.data[1].type
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 9154883875026680414, guid: 906065912e6b61a45858656fdfb13bd3, type: 3}
-      propertyPath: groupRecipes.Array.data[0].members.Array.data[2].type
+      propertyPath: groupRecipes.Array.data[6].members.Array.size
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 9154883875026680414, guid: 906065912e6b61a45858656fdfb13bd3, type: 3}
-      propertyPath: groupRecipes.Array.data[0].members.Array.data[3].type
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 9154883875026680414, guid: 906065912e6b61a45858656fdfb13bd3, type: 3}
-      propertyPath: groupRecipes.Array.data[1].members.Array.data[0].type
-      value: 0
+      propertyPath: groupRecipes.Array.data[7].members.Array.size
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 9154883875026680414, guid: 906065912e6b61a45858656fdfb13bd3, type: 3}
       propertyPath: groupRecipes.Array.data[1].members.Array.data[1].type
@@ -272992,72 +272948,44 @@ PrefabInstance:
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 9154883875026680414, guid: 906065912e6b61a45858656fdfb13bd3, type: 3}
-      propertyPath: groupRecipes.Array.data[2].members.Array.data[1].type
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 9154883875026680414, guid: 906065912e6b61a45858656fdfb13bd3, type: 3}
-      propertyPath: groupRecipes.Array.data[2].members.Array.data[2].type
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9154883875026680414, guid: 906065912e6b61a45858656fdfb13bd3, type: 3}
-      propertyPath: groupRecipes.Array.data[2].members.Array.data[3].type
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 9154883875026680414, guid: 906065912e6b61a45858656fdfb13bd3, type: 3}
-      propertyPath: groupRecipes.Array.data[2].members.Array.data[4].type
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 9154883875026680414, guid: 906065912e6b61a45858656fdfb13bd3, type: 3}
-      propertyPath: groupRecipes.Array.data[3].members.Array.data[0].type
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 9154883875026680414, guid: 906065912e6b61a45858656fdfb13bd3, type: 3}
-      propertyPath: groupRecipes.Array.data[3].members.Array.data[1].type
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 9154883875026680414, guid: 906065912e6b61a45858656fdfb13bd3, type: 3}
       propertyPath: groupRecipes.Array.data[3].members.Array.data[2].type
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 9154883875026680414, guid: 906065912e6b61a45858656fdfb13bd3, type: 3}
       propertyPath: groupRecipes.Array.data[4].members.Array.data[0].type
-      value: 0
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 9154883875026680414, guid: 906065912e6b61a45858656fdfb13bd3, type: 3}
       propertyPath: groupRecipes.Array.data[4].members.Array.data[1].type
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 9154883875026680414, guid: 906065912e6b61a45858656fdfb13bd3, type: 3}
+      propertyPath: groupRecipes.Array.data[5].members.Array.data[1].type
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9154883875026680414, guid: 906065912e6b61a45858656fdfb13bd3, type: 3}
+      propertyPath: groupRecipes.Array.data[6].members.Array.data[1].type
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9154883875026680414, guid: 906065912e6b61a45858656fdfb13bd3, type: 3}
+      propertyPath: groupRecipes.Array.data[6].members.Array.data[2].type
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 9154883875026680414, guid: 906065912e6b61a45858656fdfb13bd3, type: 3}
+      propertyPath: groupRecipes.Array.data[7].members.Array.data[0].type
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 9154883875026680414, guid: 906065912e6b61a45858656fdfb13bd3, type: 3}
+      propertyPath: groupRecipes.Array.data[7].members.Array.data[1].type
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9154883875026680414, guid: 906065912e6b61a45858656fdfb13bd3, type: 3}
+      propertyPath: groupRecipes.Array.data[7].members.Array.data[2].type
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 9154883875026680414, guid: 906065912e6b61a45858656fdfb13bd3, type: 3}
       propertyPath: groupRecipes.Array.data[1].members.Array.data[0].spread
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9154883875026680414, guid: 906065912e6b61a45858656fdfb13bd3, type: 3}
-      propertyPath: groupRecipes.Array.data[2].members.Array.data[0].spread
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 9154883875026680414, guid: 906065912e6b61a45858656fdfb13bd3, type: 3}
-      propertyPath: groupRecipes.Array.data[2].members.Array.data[1].spread
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9154883875026680414, guid: 906065912e6b61a45858656fdfb13bd3, type: 3}
-      propertyPath: groupRecipes.Array.data[2].members.Array.data[2].spread
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9154883875026680414, guid: 906065912e6b61a45858656fdfb13bd3, type: 3}
-      propertyPath: groupRecipes.Array.data[2].members.Array.data[3].spread
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9154883875026680414, guid: 906065912e6b61a45858656fdfb13bd3, type: 3}
-      propertyPath: groupRecipes.Array.data[2].members.Array.data[4].spread
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9154883875026680414, guid: 906065912e6b61a45858656fdfb13bd3, type: 3}
-      propertyPath: groupRecipes.Array.data[3].members.Array.data[0].spread
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 9154883875026680414, guid: 906065912e6b61a45858656fdfb13bd3, type: 3}
-      propertyPath: groupRecipes.Array.data[3].members.Array.data[1].spread
-      value: 1
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 9154883875026680414, guid: 906065912e6b61a45858656fdfb13bd3, type: 3}
       propertyPath: groupRecipes.Array.data[3].members.Array.data[2].spread
@@ -273065,47 +272993,39 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9154883875026680414, guid: 906065912e6b61a45858656fdfb13bd3, type: 3}
       propertyPath: groupRecipes.Array.data[4].members.Array.data[0].spread
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9154883875026680414, guid: 906065912e6b61a45858656fdfb13bd3, type: 3}
-      propertyPath: groupRecipes.Array.data[4].members.Array.data[1].spread
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9154883875026680414, guid: 906065912e6b61a45858656fdfb13bd3, type: 3}
-      propertyPath: groupRecipes.Array.data[0].members.Array.data[0].maxCount
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 9154883875026680414, guid: 906065912e6b61a45858656fdfb13bd3, type: 3}
-      propertyPath: groupRecipes.Array.data[0].members.Array.data[0].minCount
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 9154883875026680414, guid: 906065912e6b61a45858656fdfb13bd3, type: 3}
-      propertyPath: groupRecipes.Array.data[0].members.Array.data[1].maxCount
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 9154883875026680414, guid: 906065912e6b61a45858656fdfb13bd3, type: 3}
-      propertyPath: groupRecipes.Array.data[0].members.Array.data[2].maxCount
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 9154883875026680414, guid: 906065912e6b61a45858656fdfb13bd3, type: 3}
-      propertyPath: groupRecipes.Array.data[0].members.Array.data[2].minCount
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 9154883875026680414, guid: 906065912e6b61a45858656fdfb13bd3, type: 3}
-      propertyPath: groupRecipes.Array.data[0].members.Array.data[3].maxCount
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 9154883875026680414, guid: 906065912e6b61a45858656fdfb13bd3, type: 3}
-      propertyPath: groupRecipes.Array.data[0].members.Array.data[3].minCount
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9154883875026680414, guid: 906065912e6b61a45858656fdfb13bd3, type: 3}
-      propertyPath: groupRecipes.Array.data[1].members.Array.data[0].maxCount
-      value: 100
+      propertyPath: groupRecipes.Array.data[4].members.Array.data[1].spread
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9154883875026680414, guid: 906065912e6b61a45858656fdfb13bd3, type: 3}
-      propertyPath: groupRecipes.Array.data[1].members.Array.data[0].minCount
-      value: 50
+      propertyPath: groupRecipes.Array.data[6].members.Array.data[0].spread
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 9154883875026680414, guid: 906065912e6b61a45858656fdfb13bd3, type: 3}
+      propertyPath: groupRecipes.Array.data[6].members.Array.data[1].spread
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 9154883875026680414, guid: 906065912e6b61a45858656fdfb13bd3, type: 3}
+      propertyPath: groupRecipes.Array.data[6].members.Array.data[2].spread
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 9154883875026680414, guid: 906065912e6b61a45858656fdfb13bd3, type: 3}
+      propertyPath: groupRecipes.Array.data[7].members.Array.data[0].spread
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 9154883875026680414, guid: 906065912e6b61a45858656fdfb13bd3, type: 3}
+      propertyPath: groupRecipes.Array.data[7].members.Array.data[1].spread
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 9154883875026680414, guid: 906065912e6b61a45858656fdfb13bd3, type: 3}
+      propertyPath: groupRecipes.Array.data[7].members.Array.data[2].spread
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 9154883875026680414, guid: 906065912e6b61a45858656fdfb13bd3, type: 3}
+      propertyPath: groupRecipes.Array.data[1].members.Array.data[0].maxCount
+      value: 75
       objectReference: {fileID: 0}
     - target: {fileID: 9154883875026680414, guid: 906065912e6b61a45858656fdfb13bd3, type: 3}
       propertyPath: groupRecipes.Array.data[1].members.Array.data[1].maxCount
@@ -273124,60 +273044,12 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 9154883875026680414, guid: 906065912e6b61a45858656fdfb13bd3, type: 3}
-      propertyPath: groupRecipes.Array.data[2].members.Array.data[0].maxCount
-      value: 20
-      objectReference: {fileID: 0}
-    - target: {fileID: 9154883875026680414, guid: 906065912e6b61a45858656fdfb13bd3, type: 3}
-      propertyPath: groupRecipes.Array.data[2].members.Array.data[0].minCount
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 9154883875026680414, guid: 906065912e6b61a45858656fdfb13bd3, type: 3}
       propertyPath: groupRecipes.Array.data[2].members.Array.data[1].maxCount
-      value: 5
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 9154883875026680414, guid: 906065912e6b61a45858656fdfb13bd3, type: 3}
       propertyPath: groupRecipes.Array.data[2].members.Array.data[1].minCount
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 9154883875026680414, guid: 906065912e6b61a45858656fdfb13bd3, type: 3}
-      propertyPath: groupRecipes.Array.data[2].members.Array.data[2].maxCount
-      value: 20
-      objectReference: {fileID: 0}
-    - target: {fileID: 9154883875026680414, guid: 906065912e6b61a45858656fdfb13bd3, type: 3}
-      propertyPath: groupRecipes.Array.data[2].members.Array.data[2].minCount
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 9154883875026680414, guid: 906065912e6b61a45858656fdfb13bd3, type: 3}
-      propertyPath: groupRecipes.Array.data[2].members.Array.data[3].maxCount
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 9154883875026680414, guid: 906065912e6b61a45858656fdfb13bd3, type: 3}
-      propertyPath: groupRecipes.Array.data[2].members.Array.data[3].minCount
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 9154883875026680414, guid: 906065912e6b61a45858656fdfb13bd3, type: 3}
-      propertyPath: groupRecipes.Array.data[2].members.Array.data[4].maxCount
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 9154883875026680414, guid: 906065912e6b61a45858656fdfb13bd3, type: 3}
-      propertyPath: groupRecipes.Array.data[2].members.Array.data[4].minCount
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 9154883875026680414, guid: 906065912e6b61a45858656fdfb13bd3, type: 3}
-      propertyPath: groupRecipes.Array.data[3].members.Array.data[0].maxCount
-      value: 8
-      objectReference: {fileID: 0}
-    - target: {fileID: 9154883875026680414, guid: 906065912e6b61a45858656fdfb13bd3, type: 3}
-      propertyPath: groupRecipes.Array.data[3].members.Array.data[0].minCount
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 9154883875026680414, guid: 906065912e6b61a45858656fdfb13bd3, type: 3}
-      propertyPath: groupRecipes.Array.data[3].members.Array.data[1].maxCount
-      value: 8
-      objectReference: {fileID: 0}
-    - target: {fileID: 9154883875026680414, guid: 906065912e6b61a45858656fdfb13bd3, type: 3}
-      propertyPath: groupRecipes.Array.data[3].members.Array.data[1].minCount
-      value: 5
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 9154883875026680414, guid: 906065912e6b61a45858656fdfb13bd3, type: 3}
       propertyPath: groupRecipes.Array.data[3].members.Array.data[2].maxCount
@@ -273189,7 +273061,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9154883875026680414, guid: 906065912e6b61a45858656fdfb13bd3, type: 3}
       propertyPath: groupRecipes.Array.data[4].members.Array.data[0].maxCount
-      value: 20
+      value: 13
       objectReference: {fileID: 0}
     - target: {fileID: 9154883875026680414, guid: 906065912e6b61a45858656fdfb13bd3, type: 3}
       propertyPath: groupRecipes.Array.data[4].members.Array.data[0].minCount
@@ -273197,11 +273069,75 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9154883875026680414, guid: 906065912e6b61a45858656fdfb13bd3, type: 3}
       propertyPath: groupRecipes.Array.data[4].members.Array.data[1].maxCount
-      value: 4
+      value: 13
       objectReference: {fileID: 0}
     - target: {fileID: 9154883875026680414, guid: 906065912e6b61a45858656fdfb13bd3, type: 3}
       propertyPath: groupRecipes.Array.data[4].members.Array.data[1].minCount
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 9154883875026680414, guid: 906065912e6b61a45858656fdfb13bd3, type: 3}
+      propertyPath: groupRecipes.Array.data[5].members.Array.data[0].maxCount
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 9154883875026680414, guid: 906065912e6b61a45858656fdfb13bd3, type: 3}
+      propertyPath: groupRecipes.Array.data[5].members.Array.data[0].minCount
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 9154883875026680414, guid: 906065912e6b61a45858656fdfb13bd3, type: 3}
+      propertyPath: groupRecipes.Array.data[5].members.Array.data[1].maxCount
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 9154883875026680414, guid: 906065912e6b61a45858656fdfb13bd3, type: 3}
+      propertyPath: groupRecipes.Array.data[5].members.Array.data[1].minCount
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9154883875026680414, guid: 906065912e6b61a45858656fdfb13bd3, type: 3}
+      propertyPath: groupRecipes.Array.data[6].members.Array.data[0].maxCount
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 9154883875026680414, guid: 906065912e6b61a45858656fdfb13bd3, type: 3}
+      propertyPath: groupRecipes.Array.data[6].members.Array.data[0].minCount
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 9154883875026680414, guid: 906065912e6b61a45858656fdfb13bd3, type: 3}
+      propertyPath: groupRecipes.Array.data[6].members.Array.data[1].maxCount
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 9154883875026680414, guid: 906065912e6b61a45858656fdfb13bd3, type: 3}
+      propertyPath: groupRecipes.Array.data[6].members.Array.data[1].minCount
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9154883875026680414, guid: 906065912e6b61a45858656fdfb13bd3, type: 3}
+      propertyPath: groupRecipes.Array.data[6].members.Array.data[2].maxCount
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 9154883875026680414, guid: 906065912e6b61a45858656fdfb13bd3, type: 3}
+      propertyPath: groupRecipes.Array.data[6].members.Array.data[2].minCount
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 9154883875026680414, guid: 906065912e6b61a45858656fdfb13bd3, type: 3}
+      propertyPath: groupRecipes.Array.data[7].members.Array.data[0].maxCount
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 9154883875026680414, guid: 906065912e6b61a45858656fdfb13bd3, type: 3}
+      propertyPath: groupRecipes.Array.data[7].members.Array.data[0].minCount
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 9154883875026680414, guid: 906065912e6b61a45858656fdfb13bd3, type: 3}
+      propertyPath: groupRecipes.Array.data[7].members.Array.data[1].maxCount
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 9154883875026680414, guid: 906065912e6b61a45858656fdfb13bd3, type: 3}
+      propertyPath: groupRecipes.Array.data[7].members.Array.data[1].minCount
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9154883875026680414, guid: 906065912e6b61a45858656fdfb13bd3, type: 3}
+      propertyPath: groupRecipes.Array.data[7].members.Array.data[2].maxCount
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 9154883875026680414, guid: 906065912e6b61a45858656fdfb13bd3, type: 3}
+      propertyPath: groupRecipes.Array.data[7].members.Array.data[2].minCount
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 9191174918149629724, guid: 906065912e6b61a45858656fdfb13bd3, type: 3}
       propertyPath: m_AnchorMax.y
@@ -638457,10 +638393,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: -6818443432358529746, guid: a04df716ccf5ac34ca462fc44cab7823, type: 3}
-      propertyPath: currentStage
-      value: 2
-      objectReference: {fileID: 0}
     - target: {fileID: 257691232243731048, guid: a04df716ccf5ac34ca462fc44cab7823, type: 3}
       propertyPath: m_LocalPosition.x
       value: -3

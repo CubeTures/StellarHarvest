@@ -21,5 +21,5 @@ MonoBehaviour:
   resultItem: []
   description: A fully grown spiky plant. Deals melee damage.
   creditCost: 0
-  creditReward: 450
+  creditReward: 750
   disabled: 0
