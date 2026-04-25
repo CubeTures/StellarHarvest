@@ -74,7 +74,7 @@ namespace Sunspore
 
             if (pathfinding.GetEnemyTarget(this, juvenileAbilityRange) is Enemy enemy)
             {
-                _animator.SetTrigger("FullyGrownAttack");
+                _animator.SetTrigger("Attack");
                 enemy.TakeDamage((int)fullyGrownAbilityPower, Vector2.zero, 0f);
             }
         }
@@ -85,7 +85,7 @@ namespace Sunspore
 
             if (pathfinding.GetEnemyTarget(this, fullyGrownAbilityRange) is Enemy enemy)
             {
-                _animator.SetTrigger("FullyGrownAttack");
+                _animator.SetTrigger("Attack");
                 enemy.TakeDamage((int)fullyGrownAbilityPower, Vector2.zero, 0f);
                 SFXManager.Play("spikebramblehit");
             }
