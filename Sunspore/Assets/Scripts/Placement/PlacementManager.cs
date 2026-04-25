@@ -11,7 +11,7 @@ public class PlacementManager : MonoBehaviour
 {
     [SerializeField] LayerMask groundLayer, ignoreCastLayer;
     private const int NonClickableLayer = 1; // "Non Clickable"
-    [SerializeField]  Player player;
+    [SerializeField] Player player;
 
     Camera cam;
     InventoryManager inventoryManager;
@@ -41,7 +41,7 @@ public class PlacementManager : MonoBehaviour
 
     void Awake()
     {
-        if(player == null)
+        if (player == null)
         {
             player = FindFirstObjectByType<Player>();
         }
@@ -109,7 +109,8 @@ public class PlacementManager : MonoBehaviour
                 {
                     currentItem = item;
                     GetFootprints(item);
-                } else
+                }
+                else
                 {
                     currentItem = null;
                     footprints.Clear();
@@ -313,14 +314,13 @@ public class PlacementManager : MonoBehaviour
         player.Planting();
 
         yield return new WaitUntil(() => player.animFinished);
+        player.anim.SetTrigger("Finished");
         SFXManager.Play("plant");
-        
         //Debug.Log(player.animFinished);
 
         Instantiate(prefab, currPlace, Quaternion.identity);
 
         inventoryManager.UseThisItem(slot);
-        player.animFinished = false;
         isPlacing = false;
         TutorialManager.Instance.BroadcastSignal(TutorialManager.Actions.PLANT);
         placingCoroutine = null;
