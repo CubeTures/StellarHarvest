@@ -22,15 +22,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 909548397648102177, guid: 04fad9b53f5c6004ea1d478f93f95fd0, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -1.5
       objectReference: {fileID: 0}
     - target: {fileID: 909548397648102177, guid: 04fad9b53f5c6004ea1d478f93f95fd0, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -0.000000115928174
       objectReference: {fileID: 0}
     - target: {fileID: 909548397648102177, guid: 04fad9b53f5c6004ea1d478f93f95fd0, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -101.25
       objectReference: {fileID: 0}
     - target: {fileID: 909548397648102177, guid: 04fad9b53f5c6004ea1d478f93f95fd0, type: 3}
       propertyPath: m_LocalRotation.w
@@ -80,6 +80,10 @@ PrefabInstance:
       propertyPath: m_Center.y
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 3398733058535274052, guid: 04fad9b53f5c6004ea1d478f93f95fd0, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 3a8edec7173538c4584f0ee5811e42f2, type: 3}
     - target: {fileID: 4044746103206823721, guid: 04fad9b53f5c6004ea1d478f93f95fd0, type: 3}
       propertyPath: m_LocalPosition.y
       value: 0
@@ -156,12 +160,13 @@ MonoBehaviour:
   _transitionTimer: 0
   currentStage: 0
   transitionFinish: 0
-  juvenileAbilityPower: 5
-  fullyGrownAbilityPower: 15
-  juvenileAbilityRange: 10
+  juvenileAbilityPower: 3
+  fullyGrownAbilityPower: 5
+  juvenileAbilityRange: 7
   fullyGrownAbilityRange: 10
   _juvenileAbilityCooldown: 3
   _fullyGrownAbilityCooldown: 2
+  bulletDelay: 1
   _homingBulletPrefab: {fileID: 2510335163322140385, guid: 6dc1efe34b88f384bb554626513d40de, type: 3}
   snapToGridOnStart: 0
   gridSizeX: 1.5

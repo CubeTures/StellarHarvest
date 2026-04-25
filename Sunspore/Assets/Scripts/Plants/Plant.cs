@@ -252,7 +252,7 @@ namespace Sunspore
             waterDropInstance.SetActive(false);
         }
 
-        void OnDestroy()
+        protected virtual void OnDestroy()
         {
             Pathfinding.Instance.RemovePlant(this);
         }

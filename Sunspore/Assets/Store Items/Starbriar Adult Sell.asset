@@ -21,5 +21,5 @@ MonoBehaviour:
     amount: 1
   description: A fully grown wall plant. Makes good use for barricades.
   creditCost: 0
-  creditReward: 2800
+  creditReward: 300
   disabled: 0

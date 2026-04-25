@@ -1,6 +1,5 @@
 using System.Collections;
 using UnityEngine;
-using UnityEngine.UI;
 using TMPro;
 using System;
 using UnityEngine.Rendering;
@@ -12,6 +11,7 @@ namespace Sunspore
     {
         public static DayNightManager Instance;
         private Vector3 rotation = Vector3.zero;
+
         [SerializeField] EnemySpawner spawner;
         [SerializeField] MusicManager musicManager;
         [SerializeField] GameObject Light;
@@ -28,14 +28,17 @@ namespace Sunspore
         private int totalDays = 0;
         private int totalNights = 0;
 
+        public int TotalDays => totalDays;
+        public int TotalNights => totalNights;
+
         Volume nightVolumeComponent;
         private Vignette _vignette;
         private WhiteBalance _whiteBalance;
 
         GameManager gm;
-
         private float timeOfDay = 0f;
         public bool timeStopped = false;
+
         private bool isNight = false;
         private bool isDay = false;
 
@@ -55,22 +58,16 @@ namespace Sunspore
         {
             spawner = GameObject.Find("Enemy Spawner").GetComponent<EnemySpawner>();
             Light = GameObject.Find("Directional Light");
-            // timeSelector = GameObject.Find("Dropdown").GetComponent<TMP_Dropdown>();
             gm = GameManager.gm;
 
-            // Ensure a deterministic start position for the day/night cycle and clock UI.
             timeOfDay = Mathf.Repeat(initialTimeOfDay, 1f);
             float sunAngle = Mathf.Lerp(0f, 360f, timeOfDay);
             Light.transform.rotation = Quaternion.Euler(sunAngle, 0, 0);
 
             if (nightVolume != null)
-            {
                 nightVolumeComponent = nightVolume.GetComponent<Volume>();
-            }
             else
-            {
                 nightVolumeComponent = GameObject.Find("Night Volume").GetComponent<Volume>();
-            }
 
             if (nightVolumeComponent != null && nightVolumeComponent.profile != null)
             {
@@ -79,16 +76,12 @@ namespace Sunspore
             }
 
             if (TutorialManager.Instance != null)
-            {
                 stopTime();
-            }
 
             if (musicManager != null)
             {
-                if (timeOfDay < 0.5f)
-                    musicManager.PlayDayMusic();
-                else
-                    musicManager.PlayNightMusic();
+                if (timeOfDay < 0.5f) musicManager.PlayDayMusic();
+                else musicManager.PlayNightMusic();
             }
         }
 
@@ -96,41 +89,39 @@ namespace Sunspore
         {
             if (!timeStopped)
             {
-                // Calculate angle based off percentage of day passed.
                 float prevTimeOfDay = timeOfDay;
+
                 timeOfDay += Time.deltaTime / dayLengthSeconds;
                 timeOfDay = timeOfDay % 1;
 
                 float sunAngle = Mathf.Lerp(0f, 360f, timeOfDay);
                 Light.transform.rotation = Quaternion.Euler(sunAngle, 0, 0);
 
-                // Seamless 0..1 cycle (same value at timeOfDay 0 and 1).
                 float nightBlend = (1f - Mathf.Cos(timeOfDay * Mathf.PI * 2f)) * 0.5f;
-                if (_vignette != null)
-                {
-                    _vignette.intensity.value = nightBlend * 0.4f;
-                }
-                if (_whiteBalance != null)
-                {
-                    _whiteBalance.temperature.value = nightBlend * -50f;
-                }
 
-                // Day counter: when timeOfDay wraps around to 0
+                if (_vignette != null) _vignette.intensity.value = nightBlend * 0.4f;
+                if (_whiteBalance != null) _whiteBalance.temperature.value = nightBlend * -50f;
+
+                // Day starts when timeOfDay wraps around
                 if (prevTimeOfDay > timeOfDay)
                 {
                     days++;
                     totalDays++;
-                    spawner.spawning = false;
+
+                    spawner.EndNight();
+
                     if (musicManager != null) musicManager.PlayDayMusic();
                     ShowAnnouncement("Day " + totalDays);
                 }
 
+                // Night starts at 0.5
                 if (prevTimeOfDay < 0.5f && timeOfDay >= 0.5f)
                 {
                     nights++;
                     totalNights++;
-                    spawner.SetEnemiesPerWave();
-                    spawner.spawning = true;
+
+                    spawner.BeginNight();
+
                     if (musicManager != null) musicManager.PlayNightMusic();
                     ShowAnnouncement("Night " + totalNights);
                 }
@@ -138,20 +129,12 @@ namespace Sunspore
                 if (days == 7 && nights == 7)
                 {
                     weeks++;
-                    // Debug.Log("Weeks: " + weeks);
                     days = 0;
                     nights = 0;
-                    // Bank.Instance.CheckPayment(weeks);
                 }
             }
 
             TimeOfDayChanged?.Invoke(timeOfDay);
-
-            if (isNight)
-            {
-                spawner.SetEnemiesPerWave();
-                spawner.spawning = true;
-            }
         }
 
         public void startTime()
@@ -163,10 +146,10 @@ namespace Sunspore
 
         IEnumerator DeferredStartAnnouncement()
         {
-            // Wait until DebtManager is initialized and has payments set up
             float timeout = 2f;
             float waited = 0f;
             DebtManager debt = null;
+
             while (debt == null || debt.RemainingPayments == 0)
             {
                 yield return null;
@@ -174,6 +157,7 @@ namespace Sunspore
                 debt = DebtManager.Instance ?? FindFirstObjectByType<DebtManager>(FindObjectsInactive.Include);
                 if (waited >= timeout) break;
             }
+
             if (timeOfDay < 0.5f)
             {
                 totalDays++;
@@ -190,6 +174,7 @@ namespace Sunspore
         {
             timeStopped = true;
             isNight = false;
+            spawner.EndNight();
         }
 
         public void setDay()
@@ -197,7 +182,7 @@ namespace Sunspore
             timeStopped = true;
             isNight = false;
             Light.transform.rotation = Quaternion.Euler(90, 0, 0);
-            //Debug.Log("Day");
+            spawner.EndNight();
         }
 
         public void setNight()
@@ -205,7 +190,7 @@ namespace Sunspore
             timeStopped = true;
             isNight = true;
             Light.transform.rotation = Quaternion.Euler(270, 0, 0);
-            //Debug.Log("Night");
+            spawner.BeginNight();
         }
 
         private Coroutine _announcementCoroutine;
@@ -216,6 +201,7 @@ namespace Sunspore
 
             string subtitle = "";
             var debt = DebtManager.Instance ?? FindFirstObjectByType<DebtManager>(FindObjectsInactive.Include);
+
             if (debt != null)
             {
                 int remaining = debt.RemainingPayments;
@@ -226,6 +212,7 @@ namespace Sunspore
 
             if (_announcementCoroutine != null)
                 StopCoroutine(_announcementCoroutine);
+
             _announcementCoroutine = StartCoroutine(AnnouncementCoroutine(title, subtitle));
         }
 
@@ -239,6 +226,7 @@ namespace Sunspore
             if (anim != null) anim.SetTrigger("Enter");
 
             yield return StartCoroutine(TypewriterCoroutine(announcementTitle, title));
+
             if (announcementSubtitle != null)
                 yield return StartCoroutine(TypewriterCoroutine(announcementSubtitle, subtitle));
 
@@ -251,6 +239,7 @@ namespace Sunspore
         {
             label.text = "";
             float delay = typewriterSpeed > 0f ? 1f / typewriterSpeed : 0f;
+
             foreach (char c in fullText)
             {
                 label.text += c;

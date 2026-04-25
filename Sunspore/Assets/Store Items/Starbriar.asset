@@ -20,6 +20,6 @@ MonoBehaviour:
   - item: {fileID: 11400000, guid: 3712edf31b8c2ce4aba4ec39cc6479b6, type: 2}
     amount: 1
   description: A wall plant seed. Makes good use for barricades.
-  creditCost: 2400
+  creditCost: 300
   creditReward: 0
   disabled: 0

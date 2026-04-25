@@ -48,7 +48,6 @@ namespace Sunspore
             base.UpdateJuvenileAbilities();
 
             _juvenileAbilityTimer += Time.deltaTime;
-            // If timer reached cooldown, stop munch loop and perform ability
             if (_juvenileAbilityTimer >= _juvenileAbilityCooldown)
             {
                 SFXManager.StopLoop("pitsnappermunch");
@@ -57,11 +56,11 @@ namespace Sunspore
             }
             else
             {
-                // If there is an enemy in range while on cooldown, ensure munch loop is playing
-                if (pathfinding != null && pathfinding.GetEnemyTarget(this, juvenileAbilityRange) != null && _juvenileAbilityTimer > 0f)
-                {
+                bool enemyInRange = pathfinding != null && pathfinding.GetEnemyTarget(this, juvenileAbilityRange) != null && _juvenileAbilityTimer > 0f;
+                if (enemyInRange)
                     SFXManager.PlayLoop("pitsnappermunch");
-                }
+                else
+                    SFXManager.StopLoop("pitsnappermunch");
             }
         }
 
@@ -70,7 +69,6 @@ namespace Sunspore
             base.UpdateFullyGrownAbilities();
 
             _fullyGrownAbilityTimer += Time.deltaTime;
-            // Stop munch loop when ready, otherwise play munch loop while on cooldown if enemy present
             if (_fullyGrownAbilityTimer >= _fullyGrownAbilityCooldown)
             {
                 SFXManager.StopLoop("pitsnappermunch");
@@ -79,11 +77,18 @@ namespace Sunspore
             }
             else
             {
-                if (pathfinding != null && pathfinding.GetEnemyTarget(this, fullyGrownAbilityRange) != null && _fullyGrownAbilityTimer > 0f)
-                {
+                bool enemyInRange = pathfinding != null && pathfinding.GetEnemyTarget(this, fullyGrownAbilityRange) != null && _fullyGrownAbilityTimer > 0f;
+                if (enemyInRange)
                     SFXManager.PlayLoop("pitsnappermunch");
-                }
+                else
+                    SFXManager.StopLoop("pitsnappermunch");
             }
+        }
+
+        protected override void OnDestroy()
+        {
+            base.OnDestroy();
+            SFXManager.StopLoop("pitsnappermunch");
         }
 
         private void UseJuvenileAbility()

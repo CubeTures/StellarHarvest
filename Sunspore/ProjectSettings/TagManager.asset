@@ -73,7 +73,7 @@ TagManager:
   m_RenderingLayers:
   - Default
   - Non Clickable
-  - Light Layer 2
+  - MinimapIcons
   - Light Layer 3
   - Light Layer 4
   - Light Layer 5

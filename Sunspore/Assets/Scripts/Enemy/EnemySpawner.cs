@@ -4,115 +4,272 @@ namespace Sunspore
 {
     public class EnemySpawner : MonoBehaviour
     {
-        [SerializeField] GameObject niblet;
-        [SerializeField] GameObject glutton;
-        [SerializeField] GameObject gnasher;
-        [SerializeField] GameObject skybite;
+        [Header("Enemy Prefabs")]
+        [SerializeField] private GameObject niblet;
+        [SerializeField] private GameObject glutton;
+        [SerializeField] private GameObject gnasher;
+        [SerializeField] private GameObject skybite;
 
-        private GameObject[] enemies;
+        [Header("Refs")]
+        [SerializeField] private DayNightManager dayNightManager;
+        [SerializeField] private GameObject player;
 
-        [SerializeField] DayNightManager dayNightManager;
-        [SerializeField] GameObject player;
-        private float lastSpawnTime = -Mathf.Infinity;
+        public enum EnemyType { Niblet, Glutton, Gnasher, Skybite }
 
-        [SerializeField] private float baseWaveAmount = 5f;
-        [SerializeField] private float enemiesPerSecond = 0.5f;
-        private float waveAmount = 0f;
-        private float difficultyScale = 0.75f;
-        public bool spawning = false;
+        [System.Serializable]
+        public class GroupMember
+        {
+            public EnemyType type;
+            public int minCount = 1;
+            public int maxCount = 1;
+            public float spread = 2f;
+        }
 
-        private float totalSpawnWeight;
+        [System.Serializable]
+        public class EnemyGroupRecipe
+        {
+            public string name;
+            public float chanceWeight = 1f;
+
+            [Tooltip("If true, this recipe is only eligible for the LAST wave of the night.")]
+            public bool hardWave = false;
+
+            public GroupMember[] members;
+        }
+
+        [Header("Group Recipes")]
+        [SerializeField] private EnemyGroupRecipe[] groupRecipes;
+
+        private float totalGroupWeightAll = 1f;
+        private float totalGroupWeightNonHard = 1f;
+
+        [Header("Wave Timing")]
+        [SerializeField] private float waveJitterSeconds = 0.5f;
+
+        [Header("Waves scale per NIGHT survived")]
+        [SerializeField] private int baseWavesPerNight = 3;
+        [SerializeField] private float wavesPerNightGrowth = 0.25f;
+        [SerializeField] private int maxWavesPerNight = 25;
+
+        private bool spawning = false;
+        private float nextWaveTime = -Mathf.Infinity;
+
+        private int wavesThisNight = 0;
+        private int waveIndexThisNight = 0; // 0-based
 
         private void Start()
         {
-            player = GameObject.FindGameObjectWithTag("Player");
-            enemies = new GameObject[] { niblet, glutton, gnasher, skybite };
-            enemiesPerSecond = baseWaveAmount / (dayNightManager.dayLengthSeconds / 2);
-            waveAmount = baseWaveAmount;
-            CacheTotalSpawnWeight();
+            if (player == null)
+                player = GameObject.FindGameObjectWithTag("Player");
+
+            CacheRecipeWeights();
         }
 
-        private void CacheTotalSpawnWeight()
+        private void Update()
         {
-            totalSpawnWeight = 0f;
-            foreach (var enemy in enemies)
-                totalSpawnWeight += enemy.GetComponent<Enemy>().spawnChance;
-        }
+            if (!spawning) return;
+            if (Time.time < nextWaveTime) return;
 
-        void Update()
-        {
-            if (!spawning || Time.time - lastSpawnTime < 1f / enemiesPerSecond || waveAmount <= 0)
+            if (groupRecipes == null || groupRecipes.Length == 0)
+                return;
+
+            bool isLastWave = (waveIndexThisNight >= wavesThisNight - 1);
+
+            var recipe = PickWeightedRecipe(allowHard: isLastWave);
+            SpawnRecipeGroup(recipe);
+
+            waveIndexThisNight++;
+            if (waveIndexThisNight >= wavesThisNight)
             {
+                // We’ve spawned all waves for this night; wait until EndNight()/BeginNight() resets it.
+                nextWaveTime = Mathf.Infinity;
+            }
+            else
+            {
+                ScheduleNextWave(immediate: false);
+            }
+        }
+
+        public void BeginNight()
+        {
+            spawning = true;
+
+            wavesThisNight = GetWavesThisNight();
+            waveIndexThisNight = 0;
+
+            ScheduleNextWave(immediate: true);
+        }
+
+        public void EndNight()
+        {
+            spawning = false;
+            nextWaveTime = -Mathf.Infinity;
+            wavesThisNight = 0;
+            waveIndexThisNight = 0;
+        }
+
+        private int GetWavesThisNight()
+        {
+            // per-night scaling (swap to TotalDays if you truly want day-based difficulty)
+            int n = (dayNightManager != null) ? dayNightManager.TotalNights : 0;
+
+            int waves = Mathf.FloorToInt(baseWavesPerNight + n * wavesPerNightGrowth);
+            return Mathf.Clamp(waves, 1, maxWavesPerNight);
+        }
+
+        private void ScheduleNextWave(bool immediate)
+        {
+            float nightSeconds = (dayNightManager != null) ? (dayNightManager.dayLengthSeconds / 2f) : 45f;
+            float interval = (wavesThisNight > 0) ? (nightSeconds / wavesThisNight) : nightSeconds;
+
+            float jitter = Random.Range(-waveJitterSeconds, waveJitterSeconds);
+
+            if (immediate)
+                nextWaveTime = Time.time + Mathf.Max(0f, jitter);
+            else
+                nextWaveTime = Time.time + Mathf.Max(0.05f, interval + jitter);
+        }
+
+        private void CacheRecipeWeights()
+        {
+            totalGroupWeightAll = 0f;
+            totalGroupWeightNonHard = 0f;
+
+            if (groupRecipes == null || groupRecipes.Length == 0)
+            {
+                totalGroupWeightAll = 1f;
+                totalGroupWeightNonHard = 1f;
                 return;
             }
 
-            var prefab = PickWeightedEnemy();
-            var stats = prefab.GetComponent<Enemy>();
+            foreach (var r in groupRecipes)
+            {
+                if (r == null) continue;
 
-            if (Random.value < stats.groupSpawnChance)
-                SpawnGroup(prefab, stats);
-            else
-                SpawnEnemy(prefab, stats);
+                float w = Mathf.Max(0f, r.chanceWeight);
+                totalGroupWeightAll += w;
+                if (!r.hardWave) totalGroupWeightNonHard += w;
+            }
+
+            if (totalGroupWeightAll <= 0f) totalGroupWeightAll = 1f;
+            if (totalGroupWeightNonHard <= 0f) totalGroupWeightNonHard = totalGroupWeightAll; // fallback
         }
 
-        private GameObject PickWeightedEnemy()
+        private EnemyGroupRecipe PickWeightedRecipe(bool allowHard)
         {
-            float roll = Random.Range(0f, totalSpawnWeight);
-            float cumulative = 0f;
-            foreach (var enemy in enemies)
+            // 1) compute total weight of eligible recipes
+            float total = 0f;
+            for (int i = 0; i < groupRecipes.Length; i++)
             {
-                cumulative += enemy.GetComponent<Enemy>().spawnChance;
-                if (roll <= cumulative)
-                    return enemy;
+                var r = groupRecipes[i];
+                if (r == null) continue;
+                if (!allowHard && r.hardWave) continue;
+
+                float w = Mathf.Max(0f, r.chanceWeight);
+                total += w;
             }
-            return enemies[enemies.Length - 1];
+
+            // If all weights are 0, fall back to uniform random among eligible
+            if (total <= 0f)
+            {
+                // pick any eligible recipe uniformly
+                int eligibleCount = 0;
+                for (int i = 0; i < groupRecipes.Length; i++)
+                {
+                    var r = groupRecipes[i];
+                    if (r == null) continue;
+                    if (!allowHard && r.hardWave) continue;
+                    eligibleCount++;
+                }
+                if (eligibleCount == 0) return null;
+
+                int pick = Random.Range(0, eligibleCount);
+                for (int i = 0; i < groupRecipes.Length; i++)
+                {
+                    var r = groupRecipes[i];
+                    if (r == null) continue;
+                    if (!allowHard && r.hardWave) continue;
+
+                    if (pick-- == 0) return r;
+                }
+                return null;
+            }
+
+            // 2) weighted roll among eligible recipes
+            float roll = Random.Range(0f, total);
+            float cum = 0f;
+
+            for (int i = 0; i < groupRecipes.Length; i++)
+            {
+                var r = groupRecipes[i];
+                if (r == null) continue;
+                if (!allowHard && r.hardWave) continue;
+
+                float w = Mathf.Max(0f, r.chanceWeight);
+                cum += w;
+
+                if (roll <= cum)
+                    return r;
+            }
+
+            // should never happen, but safe fallback
+            return null;
+        }
+
+        private GameObject GetPrefab(EnemyType type)
+        {
+            return type switch
+            {
+                EnemyType.Niblet => niblet,
+                EnemyType.Glutton => glutton,
+                EnemyType.Gnasher => gnasher,
+                EnemyType.Skybite => skybite,
+                _ => niblet
+            };
         }
 
         private Vector3 GetRingSpawnPoint()
         {
-            Vector3 center = player.transform.position;
+            Vector3 center = (player != null) ? player.transform.position : Vector3.zero;
             float innerRadius = 12f;
             float outerRadius = 15f;
 
-            float angle = Random.Range(0f, Mathf.PI * 2);
+            float angle = Random.Range(0f, Mathf.PI * 2f);
             float radius = Mathf.Sqrt(Random.Range(innerRadius * innerRadius, outerRadius * outerRadius));
 
             float x = center.x + radius * Mathf.Cos(angle);
             float z = center.z + radius * Mathf.Sin(angle);
-            return new Vector3(x, 0, z);
+            return new Vector3(x, 0f, z);
         }
 
-        private void SpawnEnemy(GameObject prefab, Enemy stats)
+        private void SpawnRecipeGroup(EnemyGroupRecipe recipe)
         {
-            Vector3 spawnPoint = GetRingSpawnPoint();
-            Instantiate(prefab, spawnPoint, Quaternion.identity);
-            lastSpawnTime = Time.time;
-            waveAmount -= stats.cost;
-        }
-
-        private void SpawnGroup(GameObject prefab, Enemy stats)
-        {
-            int scaledMax = Mathf.RoundToInt(stats.maxGroupSize + (dayNightManager.weeks * stats.groupSizeScale));
-            int groupSize = Random.Range(stats.minGroupSize, scaledMax + 1);
-
+            if (recipe == null || recipe.members == null) return;
+            Debug.Log($"[EnemySpawner] Spawned wave '{recipe.name}' ({waveIndexThisNight + 1}/{wavesThisNight}) hard={recipe.hardWave}");
             Vector3 groupCenter = GetRingSpawnPoint();
 
-            for (int i = 0; i < groupSize && waveAmount > 0; i++)
+            foreach (var m in recipe.members)
             {
-                Vector2 offset = Random.insideUnitCircle * stats.groupSpread;
-                Vector3 spawnPoint = groupCenter + new Vector3(offset.x, 0, offset.y);
+                GameObject prefab = GetPrefab(m.type);
+                if (prefab == null) continue;
 
-                Instantiate(prefab, spawnPoint, Quaternion.identity);
-                waveAmount -= stats.cost;
+                int count = Random.Range(m.minCount, m.maxCount + 1);
+
+                for (int i = 0; i < count; i++)
+                {
+                    Vector2 offset = Random.insideUnitCircle * m.spread;
+                    Vector3 spawnPoint = groupCenter + new Vector3(offset.x, 0f, offset.y);
+                    Instantiate(prefab, spawnPoint, Quaternion.identity);
+                }
             }
-
-            lastSpawnTime = Time.time;
         }
 
-        public void SetEnemiesPerWave()
+#if UNITY_EDITOR
+        // Helps if you tweak weights in inspector while playing.
+        private void OnValidate()
         {
-            waveAmount = baseWaveAmount * Mathf.Pow(dayNightManager.weeks + 1, difficultyScale);
-            enemiesPerSecond = waveAmount / (dayNightManager.dayLengthSeconds / 2);
+            CacheRecipeWeights();
         }
+#endif
     }
 }

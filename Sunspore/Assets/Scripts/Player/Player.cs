@@ -363,7 +363,6 @@ public class Player : MonoBehaviour
         animFinished = false;
         yield return new WaitUntil(() => animFinished);
         anim.SetInteger("Direction", currentDirection);
-        anim.SetTrigger("Finished");
         Debug.Log("finished animation" + animFinished);
     }
 }
