@@ -22,15 +22,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 909548397648102177, guid: 04fad9b53f5c6004ea1d478f93f95fd0, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -3
       objectReference: {fileID: 0}
     - target: {fileID: 909548397648102177, guid: 04fad9b53f5c6004ea1d478f93f95fd0, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -0.000000115928174
       objectReference: {fileID: 0}
     - target: {fileID: 909548397648102177, guid: 04fad9b53f5c6004ea1d478f93f95fd0, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -96.75
       objectReference: {fileID: 0}
     - target: {fileID: 909548397648102177, guid: 04fad9b53f5c6004ea1d478f93f95fd0, type: 3}
       propertyPath: m_LocalRotation.w
@@ -140,8 +140,8 @@ MonoBehaviour:
   seedSprite: {fileID: 21300000, guid: 25aef3d5bcb218747b766953d22f751d, type: 3}
   juvenileSprite: {fileID: 21300000, guid: 89e38ca5437c35e4a8ac5ebd854b2a2f, type: 3}
   fullyGrownSprite: {fileID: 21300000, guid: 293b6cb8899a3f946a3a96f7ee27f249, type: 3}
-  seedToJuvenileTime: 15
-  juvenileToFullyGrownTime: 15
+  seedToJuvenileTime: 5
+  juvenileToFullyGrownTime: 5
   growthTimeVariance: 5
   watered: 0
   harvestSound: {fileID: 8300000, guid: 35cccfa738cfa6743ba1d2f761199e1d, type: 3}

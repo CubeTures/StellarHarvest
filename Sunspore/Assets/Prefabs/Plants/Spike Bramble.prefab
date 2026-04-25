@@ -10,15 +10,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 909548397648102177, guid: 04fad9b53f5c6004ea1d478f93f95fd0, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -4.5
       objectReference: {fileID: 0}
     - target: {fileID: 909548397648102177, guid: 04fad9b53f5c6004ea1d478f93f95fd0, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -0.000000115928174
       objectReference: {fileID: 0}
     - target: {fileID: 909548397648102177, guid: 04fad9b53f5c6004ea1d478f93f95fd0, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -101.25
       objectReference: {fileID: 0}
     - target: {fileID: 909548397648102177, guid: 04fad9b53f5c6004ea1d478f93f95fd0, type: 3}
       propertyPath: m_LocalRotation.w
@@ -105,7 +105,7 @@ MonoBehaviour:
   seedSprite: {fileID: 21300000, guid: 2350b5047fd45ec45ab87d3a9cf2abb8, type: 3}
   juvenileSprite: {fileID: 21300000, guid: d2fe2761928172040a07ce6cd98aa77d, type: 3}
   fullyGrownSprite: {fileID: 21300000, guid: 0c45ad8cb1cd0244cbb79a37867c1e0e, type: 3}
-  seedToJuvenileTime: 15
+  seedToJuvenileTime: 7.5
   juvenileToFullyGrownTime: 15
   growthTimeVariance: 5
   watered: 0
@@ -121,8 +121,8 @@ MonoBehaviour:
   currentStage: 0
   transitionFinish: 0
   juvenileAbilityPower: 5
-  fullyGrownAbilityPower: 15
+  fullyGrownAbilityPower: 20
   juvenileAbilityRange: 1
   fullyGrownAbilityRange: 2
   _juvenileAbilityCooldown: 2
-  _fullyGrownAbilityCooldown: 1
+  _fullyGrownAbilityCooldown: 0.5

@@ -24234,9 +24234,87 @@ MonoBehaviour:
   skybite: {fileID: 4210650941200008513, guid: 381e6d23dd7ea4d49a81c7df77cfd4f3, type: 3}
   dayNightManager: {fileID: 7067304971246511516}
   player: {fileID: 0}
-  baseWaveAmount: 5
-  enemiesPerSecond: 0.5
-  spawning: 0
+  groupRecipes:
+  - name: Basic Wave
+    chanceWeight: 0.5
+    hardWave: 0
+    members:
+    - type: 0
+      minCount: 5
+      maxCount: 10
+      spread: 0
+    - type: 1
+      minCount: 0
+      maxCount: 2
+      spread: 0
+    - type: 3
+      minCount: 3
+      maxCount: 5
+      spread: 0
+    - type: 2
+      minCount: 1
+      maxCount: 4
+      spread: 0
+  - name: Niblet Overload
+    chanceWeight: 0.25
+    hardWave: 0
+    members:
+    - type: 0
+      minCount: 50
+      maxCount: 100
+      spread: 0
+  - name: Boss Wave
+    chanceWeight: 0.1
+    hardWave: 1
+    members:
+    - type: 0
+      minCount: 10
+      maxCount: 20
+      spread: 5
+    - type: 1
+      minCount: 4
+      maxCount: 5
+      spread: 0
+    - type: 0
+      minCount: 10
+      maxCount: 20
+      spread: 0
+    - type: 2
+      minCount: 4
+      maxCount: 6
+      spread: 0
+    - type: 3
+      minCount: 4
+      maxCount: 6
+      spread: 0
+  - name: Skybite + Gnahser
+    chanceWeight: 0.1
+    hardWave: 0
+    members:
+    - type: 2
+      minCount: 5
+      maxCount: 8
+      spread: 1
+    - type: 3
+      minCount: 5
+      maxCount: 8
+      spread: 1
+  - name: Glutton + Niblet
+    chanceWeight: 0.25
+    hardWave: 0
+    members:
+    - type: 0
+      minCount: 10
+      maxCount: 20
+      spread: 0
+    - type: 1
+      minCount: 2
+      maxCount: 4
+      spread: 0
+  waveJitterSeconds: 0.5
+  baseWavesPerNight: 4
+  wavesPerNightGrowth: 0.25
+  maxWavesPerNight: 10
 --- !u!1 &7649559746188697910
 GameObject:
   m_ObjectHideFlags: 0

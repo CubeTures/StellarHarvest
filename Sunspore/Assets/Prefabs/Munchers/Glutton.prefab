@@ -150,8 +150,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a3537091193071345ae9db3684290147, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Sunspore::TankEnemy
-  health: 200
-  maxHealth: 200
+  health: 150
+  maxHealth: 150
   enemyType: 2
   flyingState: 0
   damage: 10

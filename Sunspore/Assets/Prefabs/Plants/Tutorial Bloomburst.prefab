@@ -271,12 +271,13 @@ MonoBehaviour:
   _transitionTimer: 0
   currentStage: 2
   transitionFinish: 0
-  juvenileAbilityPower: 5
-  fullyGrownAbilityPower: 15
-  juvenileAbilityRange: 10
+  juvenileAbilityPower: 3
+  fullyGrownAbilityPower: 5
+  juvenileAbilityRange: 7
   fullyGrownAbilityRange: 10
   _juvenileAbilityCooldown: 3
   _fullyGrownAbilityCooldown: 2
+  bulletDelay: 1
   _homingBulletPrefab: {fileID: 2510335163322140385, guid: 6dc1efe34b88f384bb554626513d40de, type: 3}
   snapToGridOnStart: 1
   gridSizeX: 1.5
