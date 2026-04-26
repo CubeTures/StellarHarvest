@@ -39,28 +39,33 @@ namespace Sunspore
 
 		private void HandleTimeChanged(float normalizedTime)
 		{
-			// Rotate 0->180 during day (0..0.5), 180->360 during night (0.5..1)
 			float angle = normalizedTime * 360f + 180;
 			dialImage.localEulerAngles = new Vector3(0f, 0f, -angle);
 
 			bool isNight = normalizedTime >= 0.5f;
-			float halfCycle = dayNightManager.dayLengthSeconds * 0.5f;
 
 			float secondsLeft;
+			int cycleNumber;
+			string cycleLabel;
+
 			if (!isNight)
 			{
 				secondsLeft = (0.5f - normalizedTime) * dayNightManager.dayLengthSeconds;
-				timerText.text = Mathf.CeilToInt(secondsLeft) + " sec left";
+				cycleNumber = dayNightManager.TotalDays;
+				cycleLabel = "Day";
 				if (iconImage != null && dayIcon != null)
 					iconImage.sprite = dayIcon;
 			}
 			else
 			{
 				secondsLeft = (1f - normalizedTime) * dayNightManager.dayLengthSeconds;
-				timerText.text = Mathf.CeilToInt(secondsLeft) + " sec left";
+				cycleNumber = dayNightManager.TotalNights;
+				cycleLabel = "Night";
 				if (iconImage != null && nightIcon != null)
 					iconImage.sprite = nightIcon;
 			}
+
+			timerText.text = $"Cycle {cycleNumber}: {cycleLabel}\n{Mathf.CeilToInt(secondsLeft)} sec left";
 		}
 	}
 }
