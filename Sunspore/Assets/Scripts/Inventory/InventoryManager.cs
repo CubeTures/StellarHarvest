@@ -118,6 +118,7 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
                 else
                 {
                     isStoreOpened = false;
+                    isDebtOpened = true;
                     isInventoryOpened = true;
                     SFXManager.Play("inventoryopenclose");
                     PlayerPrefManager.SetInventoryOpenCount(PlayerPrefManager.GetInventoryOpenCount() + 1);
