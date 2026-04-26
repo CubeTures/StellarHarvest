@@ -11,19 +11,20 @@ class TutorialSkipper : MonoBehaviour
 	[SerializeField] ItemSO glowbudSeed;
 	[SerializeField] GameObject visual;
 
-	bool visible = false;
+	bool skipped = false;
 
 	void Update()
 	{
 		if (Application.isEditor && Input.GetKey(KeyCode.LeftControl) && Input.GetKey(KeyCode.LeftAlt) && Input.GetKey(KeyCode.LeftShift) && Input.GetKey(KeyCode.P))
 		{
-			visible = true;
+			SkipTutorial();
 		}
-		visual.SetActive(tm.IsTutorialActive && visible);
 	}
 
 	public void SkipTutorial()
 	{
+		if (skipped) return;
+		skipped = true;
 		dl.CompleteDialog();
 		tm.CompleteTutorial();
 		im.AddItem(glowbudSeed, 1);

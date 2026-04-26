@@ -4047,11 +4047,6 @@ MonoBehaviour:
   - {fileID: 6148742807832732865}
   - {fileID: 8716846452116049476}
   - {fileID: 3469606589760428418}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
   hotbarSlots:
   - {fileID: 4236161380456706494}
   - {fileID: 4556191210048074878}
@@ -8705,7 +8700,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2607863889659625385
 RectTransform:
   m_ObjectHideFlags: 0
@@ -19275,7 +19270,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -340, y: -20}
+  m_AnchoredPosition: {x: -1415, y: -25}
   m_SizeDelta: {x: 1010, y: 0}
   m_Pivot: {x: 1, y: 1}
 --- !u!222 &9198035814044065870
@@ -19303,7 +19298,7 @@ MonoBehaviour:
     m_Right: 24
     m_Top: 24
     m_Bottom: 24
-  m_ChildAlignment: 2
+  m_ChildAlignment: 1
   m_Spacing: 24
   m_ChildForceExpandWidth: 1
   m_ChildForceExpandHeight: 1
