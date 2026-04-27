@@ -157,8 +157,8 @@ MonoBehaviour:
   _speed: 5
   _damage: 15
   _lifetime: 5
-  _hitSound: {fileID: 0}
-  _missSound: {fileID: 0}
+  _hitSound: {fileID: 8300000, guid: a1c235be1c85cc6469c0c305778bd5c1, type: 3}
+  _missSound: {fileID: 8300000, guid: 267d649f47575b9458995114b58b448c, type: 3}
   _hitEffect: {fileID: 8612311270224035912, guid: 18af14b0c37bb22479300738975c54de, type: 3}
   _missEffect: {fileID: 8873088851218833594, guid: cc8952f86cdf2914facb569bfc19bea2, type: 3}
   _retargetRange: 10
