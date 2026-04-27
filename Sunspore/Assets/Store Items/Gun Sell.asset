@@ -12,14 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1bca075d7798bd4c821b96710b40382, type: 3}
   m_Name: Gun Sell
   m_EditorClassIdentifier: Sunspore::Sunspore.StoreRecipeSO
-  recipeName: Gun Sell
   recipeType: 1
   category: 2
   ingredients:
   - item: {fileID: 11400000, guid: 58d6f416806a6564bb13c2c1cfd41088, type: 2}
     amount: 1
   resultItem: []
-  description: Forged from ceremonial grade Bloombursts. Deals 50 damage.
-  creditCost: 375
-  creditReward: 0
-  disabled: 1
+  creditCost: 0
+  creditReward: 375
+  disabled: 0

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b55df8fc0627f99cbf602cf22f90418, type: 3}
   m_Name: SpikeBramble(Seed)
   m_EditorClassIdentifier: Sunspore::ItemSO
-  displayName: Spike Bramble(Seed)
+  displayName: Spike Bramble Seed
   description: A spiky plant seed. Deals melee damage.
   icon: {fileID: 21300000, guid: 2350b5047fd45ec45ab87d3a9cf2abb8, type: 3}
   stackable: 1
@@ -20,4 +20,4 @@ MonoBehaviour:
   placeable: 1
   prefab: {fileID: 6794809191556961585, guid: ccb0ff220d228d24eb18daa4c85aba62, type: 3}
   sellPrice: 0
-  category: 2
+  category: 3

@@ -12,14 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1bca075d7798bd4c821b96710b40382, type: 3}
   m_Name: Sword Sell
   m_EditorClassIdentifier: Sunspore::Sunspore.StoreRecipeSO
-  recipeName: Sword Sell
   recipeType: 1
   category: 2
   ingredients:
   - item: {fileID: 11400000, guid: e6a7e8497a422434c9c3d117b7d67aad, type: 2}
     amount: 1
   resultItem: []
-  description: Deals 75 damage. Not bad...
-  creditCost: 375
-  creditReward: 0
-  disabled: 1
+  creditCost: 0
+  creditReward: 375
+  disabled: 0

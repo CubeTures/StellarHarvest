@@ -137,7 +137,7 @@ namespace Sunspore
             {
                 characterImage.sprite = SamSprite;
             }
-            else if (speaker.Equals("THE MAN", System.StringComparison.OrdinalIgnoreCase))
+            else if (speaker.Equals("THE MAN", System.StringComparison.OrdinalIgnoreCase) || speaker.Equals("INTERCOM", System.StringComparison.OrdinalIgnoreCase))
             {
                 characterImage.sprite = TheManSprite;
             }
@@ -189,6 +189,18 @@ namespace Sunspore
         // Update is called once per frame
         void Update()
         {
+            if (!TutorialManager.Instance.IsTutorialActive)
+            {
+                if (!_exitTriggered)
+                {
+                    _exitTriggered = true;
+                    _animator.SetTrigger("Exit");
+                    playerInput.ActivateInput();
+                    Debug.Log("End of tutorial");
+                }
+                return;    
+            }
+
             // Press any key to advance the dialogue
             if (Input.GetMouseButtonDown(0) && dialogueActive && !isEvent)
             {

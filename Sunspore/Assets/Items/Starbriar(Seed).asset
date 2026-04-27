@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b55df8fc0627f99cbf602cf22f90418, type: 3}
   m_Name: Starbriar(Seed)
   m_EditorClassIdentifier: Sunspore::ItemSO
-  displayName: Layerleaf
+  displayName: Layerleaf Seed
   description: A wall plant seed. Makes good use for barricades.
   icon: {fileID: 21300000, guid: 25aef3d5bcb218747b766953d22f751d, type: 3}
   stackable: 1
@@ -20,4 +20,4 @@ MonoBehaviour:
   placeable: 1
   prefab: {fileID: 6794809191556961585, guid: a04df716ccf5ac34ca462fc44cab7823, type: 3}
   sellPrice: 0
-  category: 2
+  category: 3

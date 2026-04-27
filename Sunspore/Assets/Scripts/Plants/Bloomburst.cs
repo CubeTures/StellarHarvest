@@ -143,9 +143,6 @@ namespace Sunspore
             // Shoot at the closest enemy only, with a delay between bullets
             if (closestEnemy != null)
             {
-                if (_animator != null)
-                    _animator.SetTrigger("Attack");
-
                 StartCoroutine(SpawnBulletsOverTime(closestEnemy, juvenileAbilityPower));
             }
         }
@@ -175,9 +172,6 @@ namespace Sunspore
             // Shoot at the closest enemy only, with a delay between bullets
             if (closestEnemy != null)
             {
-                if (_animator != null)
-                    _animator.SetTrigger("Attack");
-
                 StartCoroutine(SpawnBulletsOverTime(closestEnemy, fullyGrownAbilityPower));
             }
         }
@@ -201,6 +195,9 @@ namespace Sunspore
                     Quaternion.identity
                 );
                 PlaySound(attackSound);
+
+                if (_animator != null)
+                    _animator.SetTrigger("Attack");
 
                 var homing = bullet.GetComponent<HomingBullet>();
                 if (homing != null)

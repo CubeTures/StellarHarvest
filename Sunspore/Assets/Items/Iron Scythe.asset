@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b55df8fc0627f99cbf602cf22f90418, type: 3}
   m_Name: Iron Scythe
   m_EditorClassIdentifier: Sunspore::ItemSO
-  displayName: Scythe
+  displayName: Iron Scythe
   description: Harvests crops. A little worn, but it works.
   icon: {fileID: 21300000, guid: debde64097bf4644ca6fc609e8970491, type: 3}
   stackable: 0

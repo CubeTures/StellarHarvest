@@ -560,7 +560,7 @@ public sealed class TerrainTilemap : MonoBehaviour
 		if (!initialBounds.Contains(cell))
 			return;
 
-		Debug.Log("Tilled" + cell);
+		//Debug.Log("Tilled" + cell);
 
 		if (!_tilledCells.Add(cell))
 			return;
@@ -595,23 +595,23 @@ public sealed class TerrainTilemap : MonoBehaviour
 		// 4. Check for Grass in the cell
 		bool hasGrass = HasGrassInCell(cell);
 
-		Debug.Log($"Cell: {cell} | Target Dist: {distance} | Range: {abilityRange} | Has Grass: {hasGrass}");
+		//Debug.Log($"Cell: {cell} | Target Dist: {distance} | Range: {abilityRange} | Has Grass: {hasGrass}");
 
 		return distance <= abilityRange && !hasGrass;
 	}
 
 	public bool CheckTilled(Vector3 worldPos)
 	{
-		Debug.Log("Checking Till For Position: " + worldPos);
+		//Debug.Log("Checking Till For Position: " + worldPos);
 
 		var cell = _tilemap.WorldToCell(worldPos);
-		Debug.Log($"CheckTilled pos={worldPos} → cell={cell}");
-		Debug.Log($"TilledCells: {string.Join(", ", _tilledCells)}");
+		//Debug.Log($"CheckTilled pos={worldPos} → cell={cell}");
+		//Debug.Log($"TilledCells: {string.Join(", ", _tilledCells)}");
 
 		if (_tilledCells.Contains(cell))
 			return true;
 
-		Debug.Log("tilled");
+		//Debug.Log("tilled");
 		return false;
 	}
 
@@ -660,7 +660,7 @@ public sealed class TerrainTilemap : MonoBehaviour
 
 	private void RefreshCell(Vector3Int cell)
 	{
-		Debug.Log("refresheed");
+		//Debug.Log("refresheed");
 		if (!_tilledCells.Contains(cell))
 			return;
 		var canonical = CanonicalMask(RawMask(cell));

@@ -87,7 +87,7 @@ namespace Sunspore
                     Vector3 playerPos = player.transform.position;
                     playerPos.z /= 1.5f;
                     float distance = Vector3.Distance(playerPos, plantDist);
-                    Debug.Log("Player Position: " + playerPos + " Plant: " + plant.transform.position + " Distance: " + distance);
+                    //Debug.Log("Player Position: " + playerPos + " Plant: " + plant.transform.position + " Distance: " + distance);
                     if (distance <= abilityRange)
                     {
                         return true;

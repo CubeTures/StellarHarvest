@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b55df8fc0627f99cbf602cf22f90418, type: 3}
   m_Name: Glowbud(Seed)
   m_EditorClassIdentifier: Sunspore::ItemSO
-  displayName: Glowbud
+  displayName: Glowbud Seed
   description: A defenseless, high value plant seed. Its crystals are rumored to
     be made of shooting stars.
   icon: {fileID: 21300000, guid: 897d4b9e6162339498133441461da7c2, type: 3}
@@ -21,4 +21,4 @@ MonoBehaviour:
   placeable: 1
   prefab: {fileID: 5818691928671189944, guid: 272cfcc7263a5ba4c9ff9738ce30b4a8, type: 3}
   sellPrice: 0
-  category: 2
+  category: 3

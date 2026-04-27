@@ -1,128 +1,105 @@
 using UnityEngine;
+using System.Collections;
 
 namespace Sunspore
 {
-    /// <summary>
-    /// Pit Snapper plant that deals high damage at close range with long cooldowns
-    /// </summary>
     public class PitSnapper : Plant
     {
-        [Header("Pit Snapper Specific Settings")]
+        private enum SnapperState
+        {
+            Idle,
+            Attacking,
+            Cooldown
+        }
+
+        [Header("Pit Snapper Settings")]
         [SerializeField] private float juvenileAbilityPower = 100f;
         [SerializeField] private float fullyGrownAbilityPower = 200f;
+
         [SerializeField] private float juvenileAbilityRange = 0.5f;
         [SerializeField] private float fullyGrownAbilityRange = 1f;
-        [SerializeField] private float _juvenileAbilityCooldown = 30f;
-        [SerializeField] private float _fullyGrownAbilityCooldown = 20f;
 
-        private float _juvenileAbilityTimer = 0f;
-        private float _fullyGrownAbilityTimer = 0f;
+        [SerializeField] private float juvenileCooldown = 30f;
+        [SerializeField] private float fullyGrownCooldown = 20f;
+
+        private bool isAttacking = false;
+
+        private SnapperState currentState = SnapperState.Idle;
         private Animator _animator;
+
         protected override void Start()
         {
             base.Start();
             _animator = GetComponent<Animator>();
-            // Debug.Log("Pit Snapper created!");
-        }
-
-        protected override void OnSeedStage()
-        {
-            base.OnSeedStage();
-            // Debug.Log("Plant is now a seed - no abilities");
-        }
-
-        protected override void OnJuvenileStage()
-        {
-            base.OnJuvenileStage();
-            // Debug.Log("Plant is now juvenile - limited abilities active");
-        }
-
-        protected override void OnFullyGrownStage()
-        {
-            base.OnFullyGrownStage();
-            // Debug.Log("Plant is now fully grown - full abilities active");
         }
 
         protected override void UpdateJuvenileAbilities()
         {
             base.UpdateJuvenileAbilities();
-
-            _juvenileAbilityTimer += Time.deltaTime;
-            if (_juvenileAbilityTimer >= _juvenileAbilityCooldown)
-            {
-                SFXManager.StopLoop("pitsnappermunch");
-                UseJuvenileAbility();
-                _juvenileAbilityTimer = 0f;
-            }
-            else
-            {
-                bool enemyInRange = pathfinding != null && pathfinding.GetEnemyTarget(this, juvenileAbilityRange) != null && _juvenileAbilityTimer > 0f;
-                if (enemyInRange)
-                    SFXManager.PlayLoop("pitsnappermunch");
-                else
-                    SFXManager.StopLoop("pitsnappermunch");
-            }
+            HandleState(juvenileAbilityRange, juvenileAbilityPower, juvenileCooldown);
         }
 
         protected override void UpdateFullyGrownAbilities()
         {
             base.UpdateFullyGrownAbilities();
+            HandleState(fullyGrownAbilityRange, fullyGrownAbilityPower, fullyGrownCooldown);
+        }
 
-            _fullyGrownAbilityTimer += Time.deltaTime;
-            if (_fullyGrownAbilityTimer >= _fullyGrownAbilityCooldown)
+        private void HandleState(float range, float power, float cooldown)
+        {
+            switch (currentState)
             {
-                SFXManager.StopLoop("pitsnappermunch");
-                UseFullAbility();
-                _fullyGrownAbilityTimer = 0f;
-            }
-            else
-            {
-                bool enemyInRange = pathfinding != null && pathfinding.GetEnemyTarget(this, fullyGrownAbilityRange) != null && _fullyGrownAbilityTimer > 0f;
-                if (enemyInRange)
-                    SFXManager.PlayLoop("pitsnappermunch");
-                else
-                    SFXManager.StopLoop("pitsnappermunch");
+                case SnapperState.Idle:
+                    HandleIdle(range, power, cooldown);
+                    break;
+
+                case SnapperState.Attacking:
+                    // Do nothing here; handled by coroutine
+                    break;
+
+                case SnapperState.Cooldown:
+                    // Do nothing here; handled by coroutine
+                    break;
             }
         }
 
-        protected override void OnDestroy()
+        private void HandleIdle(float range, float power, float cooldown)
         {
-            base.OnDestroy();
+            if (pathfinding == null || isAttacking) return;
+
+            Enemy enemy = pathfinding.GetEnemyTarget(this, range) as Enemy;
+
+            if (enemy != null)
+            {
+                StartCoroutine(AttackRoutine(enemy, power, cooldown));
+            }
+        }
+
+        private IEnumerator AttackRoutine(Enemy enemy, float power, float cooldown)
+        {
+            isAttacking = true;
+            currentState = SnapperState.Attacking;
+
+            _animator.ResetTrigger("AttackLoop");
+            _animator.SetTrigger("AttackLoop");
+
+            SFXManager.PlayLoop("pitsnappermunch");
+
+            if (enemy != null)
+            {
+                enemy.TakeDamage((int)power, Vector2.zero, 0f);
+            }
+
+            currentState = SnapperState.Cooldown;
+            yield return new WaitForSeconds(cooldown);
+
             SFXManager.StopLoop("pitsnappermunch");
+            _animator.ResetTrigger("StopLoop");
+            _animator.SetTrigger("StopLoop");
+
+            currentState = SnapperState.Idle;
+            isAttacking = false;
         }
-
-        private void UseJuvenileAbility()
-        {
-            // Debug.Log($"Juvenile ability activated with power: {juvenileAbilityPower}");
-
-            if (pathfinding.GetEnemyTarget(this, juvenileAbilityRange) is Enemy enemy)
-            {
-                _animator.SetTrigger("Attack");
-                enemy.TakeDamage((int)fullyGrownAbilityPower, Vector2.zero, 0f);
-                // start munching loop while on cooldown
-                SFXManager.PlayLoop("pitsnappermunch");
-            }
-        }
-
-        private void UseFullAbility()
-        {
-            // Debug.Log($"Full ability activated with power: {fullyGrownAbilityPower}");
-
-            if (pathfinding.GetEnemyTarget(this, fullyGrownAbilityRange) is Enemy enemy)
-            {
-                _animator.SetTrigger("Attack");
-                enemy.TakeDamage((int)fullyGrownAbilityPower, Vector2.zero, 0f);
-                // start munching loop while on cooldown
-                SFXManager.PlayLoop("pitsnappermunch");
-            }
-        }
-
-        public override void Harvest()
-        {
-            base.Harvest();
-            // Debug.Log("Pit Snapper harvested!");
-        }
-
         private void OnDrawGizmosSelected()
         {
             if (currentStage == GrowthStage.Juvenile)

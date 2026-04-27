@@ -24,8 +24,8 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
     [SerializeField] RectTransform itemsContainer;
     [SerializeField] Sprite hotbarSlotUnselected, hotbarSlotSelected;
 
-    [SerializeField] GameObject[] slots = new GameObject[28];
-    [SerializeField] GameObject[] hotbarSlots = new GameObject[7];
+    [SerializeField] public GameObject[] slots = new GameObject[28];
+    [SerializeField] public GameObject[] hotbarSlots = new GameObject[7];
     [SerializeField] HandHeldManager handHeldManager;
     [SerializeField] ToggleButtonGroup inventoryTabs;
 
@@ -117,7 +117,9 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
                 }
                 else
                 {
+                    NewStoreManager.Instance.Close();
                     isStoreOpened = false;
+                    isDebtOpened = true;
                     isInventoryOpened = true;
                     SFXManager.Play("inventoryopenclose");
                     PlayerPrefManager.SetInventoryOpenCount(PlayerPrefManager.GetInventoryOpenCount() + 1);
@@ -603,6 +605,7 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
         {
             Destroy(invItem.gameObject);
             slot.heldItem = null;
+            slot.RefreshTooltip();
         }
 
         HotBarItemChanged();
@@ -665,6 +668,7 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
         {
             Destroy(invItem.gameObject);
             slot.heldItem = null;
+            slot.RefreshTooltip();
         }
 
         HotBarItemChanged();
@@ -1073,34 +1077,60 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
         }
     }
 
-    // Sell specified items from main inventory slots only (do not touch hotbar).
+    // Sell specified items from both main inventory and hotbar slots.
     public void SellItems(List<ItemTypeAndAmount> itemsToSell)
     {
         if (itemsToSell == null || itemsToSell.Count == 0) return;
 
-        for (int i = 0; i < slots.Length; i++)
+        foreach (ItemTypeAndAmount saleRequest in itemsToSell)
         {
-            if (slots[i].GetComponent<InventorySlot>().heldItem != null)
-            {
-                InventorySlot slotScript = slots[i].GetComponent<InventorySlot>();
-                InventoryItem itemScript = slotScript.heldItem.GetComponent<InventoryItem>();
+            int amountRemaining = saleRequest.amount; // Track how much is left to remove for this specific item
 
-                foreach (ItemTypeAndAmount itemToSell in itemsToSell)
+            // Define which arrays to search (Main Inventory then Hotbar)
+            GameObject[][] allSlotArrays = { slots, hotbarSlots };
+
+            foreach (GameObject[] slotArray in allSlotArrays)
+            {
+                if (slotArray == null) continue;
+
+                for (int i = 0; i < slotArray.Length; i++)
                 {
-                    if (itemToSell.item == itemScript.itemScriptableObject)
+                    // Stop searching if we've already fulfilled this specific sale request
+                    if (amountRemaining <= 0) break;
+
+                    InventorySlot slotScript = slotArray[i].GetComponent<InventorySlot>();
+
+                    if (slotScript != null && slotScript.heldItem != null)
                     {
-                        if (itemToSell.amount >= itemScript.stackCurrent)
+                        InventoryItem itemScript = slotScript.heldItem.GetComponent<InventoryItem>();
+
+                        // Check if the item in this slot matches the one we want to sell
+                        if (itemScript != null && itemScript.itemScriptableObject == saleRequest.item)
                         {
-                            slotScript.heldItem = null;
-                            Destroy(itemScript.gameObject);
-                        }
-                        else if (itemToSell.amount < itemScript.stackCurrent)
-                        {
-                            itemScript.stackCurrent -= itemToSell.amount;
+                            if (itemScript.stackCurrent <= amountRemaining)
+                            {
+                                // This stack is smaller than or equal to what we still need to remove
+                                amountRemaining -= itemScript.stackCurrent;
+                                Destroy(itemScript.gameObject);
+                                slotScript.heldItem = null;
+                                slotScript.RefreshTooltip(); // Ensure UI updates correctly
+                            }
+                            else
+                            {
+                                // This stack has more than we need; just subtract the remaining amount
+                                itemScript.stackCurrent -= amountRemaining;
+                                amountRemaining = 0;
+                            }
                         }
                     }
                 }
+
+                // If the item is fully removed across these slots, move to the next item in the sale list
+                if (amountRemaining <= 0) break;
             }
         }
+
+        // Refresh visuals in case a held item was sold
+        HotBarItemChanged();
     }
 }

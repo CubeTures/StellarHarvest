@@ -165,8 +165,8 @@ MonoBehaviour:
   juvenileAbilityRange: 7
   fullyGrownAbilityRange: 10
   _juvenileAbilityCooldown: 3
-  _fullyGrownAbilityCooldown: 2
-  bulletDelay: 1
+  _fullyGrownAbilityCooldown: 1.5
+  bulletDelay: 0.3
   _homingBulletPrefab: {fileID: 2510335163322140385, guid: 6dc1efe34b88f384bb554626513d40de, type: 3}
   snapToGridOnStart: 0
   gridSizeX: 1.5
