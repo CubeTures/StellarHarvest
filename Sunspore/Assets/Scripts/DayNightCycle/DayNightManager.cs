@@ -109,6 +109,8 @@ namespace Sunspore
                     totalDays++;
 
                     spawner.EndNight();
+                    if (Pathfinding.Instance != null)
+                        Pathfinding.Instance.KillAllEnemies();
 
                     if (musicManager != null) musicManager.PlayDayMusic();
                     ShowAnnouncement("Day " + totalDays);
@@ -183,6 +185,8 @@ namespace Sunspore
             isNight = false;
             Light.transform.rotation = Quaternion.Euler(90, 0, 0);
             spawner.EndNight();
+            if (Pathfinding.Instance != null)
+                Pathfinding.Instance.KillAllEnemies();
         }
 
         public void setNight()
@@ -205,9 +209,20 @@ namespace Sunspore
             if (debt != null)
             {
                 int remaining = debt.RemainingPayments;
-                subtitle = remaining > 0
-                    ? remaining + " payment" + (remaining != 1 ? "s" : "") + " remaining"
-                    : "All payments complete";
+                if (remaining > 0)
+                {
+                    int daysLeft = debt.GetDaysLeftUntilNextPayment();
+                    if (daysLeft <= 0)
+                        subtitle = "Next payment due today";
+                    else if (daysLeft == 1)
+                        subtitle = "1 day until next payment";
+                    else
+                        subtitle = daysLeft + " days until next payment";
+                }
+                else
+                {
+                    subtitle = "All payments complete";
+                }
             }
 
             if (_announcementCoroutine != null)

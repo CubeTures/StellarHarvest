@@ -44,6 +44,13 @@ class DebtManager : MonoBehaviour
 		? upcomingParent.childCount + (OwedAmount() > 0 ? 1 : 0)
 		: payments.Length;
 
+	/// <summary>Whole days until the current payment is due (same basis as <see cref="PaymentTimeline.DaysLeft"/>).</summary>
+	public int GetDaysLeftUntilNextPayment()
+	{
+		if (currentTimeline == null) return 0;
+		return Mathf.Max(0, currentTimeline.DaysLeft());
+	}
+
 	void Start()
 	{
 		_initialized = true;
