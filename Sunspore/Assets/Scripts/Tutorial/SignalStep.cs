@@ -16,6 +16,16 @@ public class SignalStep : TutorialStep
             return;
         }
 
+        // First payment was made before this step; DEBT broadcast was not received by a subscribed step (same as PLANT).
+        if (signal == TutorialManager.Actions.DEBT
+            && TutorialManager.Instance.IsTutorialActive
+            && DebtManager.Instance != null
+            && DebtManager.Instance.HasCompletedFirstInstallment)
+        {
+            TutorialManager.Instance.CompleteStep();
+            return;
+        }
+
         TutorialManager.Instance.SubscribeBroadcast(OnSignal);
     }
 

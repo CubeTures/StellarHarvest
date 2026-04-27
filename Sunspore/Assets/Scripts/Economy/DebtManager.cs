@@ -24,6 +24,7 @@ class DebtManager : MonoBehaviour
 	List<Item> receipt = new();
 	int currentPayment = 0;
 	int missedPayments = 0;
+	int completedInstallments = 0;
 	float startTime = 0;
 	int lastNotification = 0;
 
@@ -43,6 +44,9 @@ class DebtManager : MonoBehaviour
 	public int RemainingPayments => _initialized
 		? upcomingParent.childCount + (OwedAmount() > 0 ? 1 : 0)
 		: payments.Length;
+
+	/// <summary>True after the first successful <see cref="MakePayment"/> (used for tutorial DEBT step).</summary>
+	public bool HasCompletedFirstInstallment => completedInstallments >= 1;
 
 	/// <summary>Whole days until the current payment is due (same basis as <see cref="PaymentTimeline.DaysLeft"/>).</summary>
 	public int GetDaysLeftUntilNextPayment()
@@ -129,7 +133,11 @@ class DebtManager : MonoBehaviour
 	void UpdatePayable()
 	{
 		int diff = wallet.GetAmount() - OwedAmount();
-		if (diff >= 0)
+		bool tutorialBlocksFurtherPayments = TutorialManager.Instance != null
+			&& TutorialManager.Instance.IsTutorialActive
+			&& completedInstallments >= 1;
+
+		if (diff >= 0 && !tutorialBlocksFurtherPayments)
 		{
 			currentTimeline.SetCanPay(true);
 			balanceLabel.color = blue;
@@ -181,11 +189,19 @@ class DebtManager : MonoBehaviour
 
 	public void MakePayment()
 	{
+		if (TutorialManager.Instance != null
+			&& TutorialManager.Instance.IsTutorialActive
+			&& completedInstallments >= 1)
+		{
+			return;
+		}
+
 		if (wallet.GetAmount() >= OwedAmount())
 		{
 			TutorialManager.Instance.BroadcastSignal(TutorialManager.Actions.DEBT);
 			wallet.Subtract(OwedAmount());
 			receipt.Clear();
+			completedInstallments++;
 			AddNextPayment();
 			UpdateText();
 		}

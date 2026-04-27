@@ -17,7 +17,9 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
     [SerializeField] GameObject milestoneParent;
     [SerializeField] GameObject inventoryParent;
     [SerializeField] GameObject storeParent;
-    [SerializeField] Transform handParent;
+    [SerializeField]
+    [Tooltip("Optional. Parent for per-item hand mesh previews when a weapon/tool is selected. Leave empty to skip hand visuals.")]
+    Transform handParent;
     [SerializeField] GameObject itemPrefab;
     [SerializeField] Camera cam;
     [SerializeField] ScrollRect scrollRect;
@@ -40,7 +42,6 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
     public int SelectedHotbarIndex => selectedHotbarIndex;
     GameObject draggedObject;
     GameObject lastItemSlot;
-    bool hasLoggedMissingHandParent = false;
     public bool pointerDown = false;
     public bool IsStoreOpened => isStoreOpened;
     void Awake()
@@ -255,15 +256,7 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
         if (selectedHotbarIndex < 0) selectedHotbarIndex = 0;
         if (selectedHotbarIndex >= hotbarSlots.Length) selectedHotbarIndex = hotbarSlots.Length - 1;
 
-        if (handParent == null)
-        {
-            if (!hasLoggedMissingHandParent)
-            {
-                Debug.LogWarning("InventoryManager: 'handParent' is not assigned in the inspector. Hand visuals will be disabled.");
-                hasLoggedMissingHandParent = true;
-            }
-        }
-        else
+        if (handParent != null)
         {
             for (int i = 0; i < handParent.childCount; i++)
             {
@@ -305,7 +298,6 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
 
                 if (invSlot != null && invSlot.heldItem != null && handParent != null)
                 {
-                    Debug.Log("we are in");
                     var heldInvItem = invSlot.heldItem.GetComponent<InventoryItem>();
                     if (heldInvItem != null)
                     {
@@ -1039,11 +1031,10 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
 
     public ItemSO GetDraggedItemSO()
     {
-        if (draggedObject != null)
-        {
-            return draggedObject.GetComponent<InventoryItem>().itemScriptableObject;
-        }
-        return null;
+        if (draggedObject == null) return null;
+        InventoryItem inv = draggedObject.GetComponent<InventoryItem>();
+        if (inv == null) return null;
+        return inv.itemScriptableObject;
     }
     public void CraftItem(List<ItemTypeAndAmount> itemsToCraft, List<ItemTypeAndAmount> itemsToDestroy)
     {
