@@ -66,6 +66,20 @@ public class Pathfinding
     public void RegisterEnemy(Enemy enemy) => enemies.Add(enemy);
     public void UnregisterEnemy(Enemy enemy) => enemies.Remove(enemy);
 
+    /// <summary>
+    /// Kills all registered enemies (e.g. at sunrise). Snapshot avoids mutation while enumerating.
+    /// </summary>
+    public void KillAllEnemies()
+    {
+        if (enemies.Count == 0) return;
+        var snapshot = new List<Enemy>(enemies);
+        foreach (var e in snapshot)
+        {
+            if (e == null) continue;
+            e.TakeDamage(e.health, Vector2.zero, 0f);
+        }
+    }
+
     public Transform GetNextTarget(Enemy enemy)
     {
         return enemy.enemyType switch
