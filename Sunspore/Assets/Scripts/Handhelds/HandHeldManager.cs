@@ -35,11 +35,14 @@ namespace Sunspore
 
         private float castTime = 0;
         public UnityEvent<float> OnAbility;
+        private HandHeld lastUsedHandHeld; // Track which handHeld was last used
 
         private float zScale = 1.0f;
         private float xScale = 1.0f;
         private float zOffset = 1.5f;
         private bool z = false;
+
+        private HandHeld draggedHandHeld;
 
         private void Awake()
         {
@@ -94,18 +97,19 @@ namespace Sunspore
         private void Update()
         {
             // If left click attack
-
-            if (enabled && !EventSystem.current.IsPointerOverGameObject() && Input.GetMouseButtonDown(0) && Time.time >= lastAttackTime + handHeld.attackCooldown && !TutorialManager.Instance.IsTutorialActive)
+            if (enabled && handHeld != null && !EventSystem.current.IsPointerOverGameObject() && Input.GetMouseButtonDown(0) && Time.time >= lastAttackTime + handHeld.attackCooldown && !TutorialManager.Instance.IsTutorialActive)
             {
                 Vector3 mouseWorldPos = GetMouseWorldPosition();
                 Attack(mouseWorldPos, false);
                 lastAttackTime = Time.time;
+                lastUsedHandHeld = handHeld;
             }
 
             // If right click cast ability
-
-            if (enabled && handHeld.tool && !EventSystem.current.IsPointerOverGameObject() && Input.GetMouseButtonDown(1) && Time.time >= lastAttackTime + handHeld.attackCooldown && (!player.GetComponent<Player>().anim.GetBool("isMoving") || handHeld.weapon))
+            Debug.Log(EventSystem.current.IsPointerOverGameObject() + " " + EventSystem.current.gameObject.name);
+            if (enabled && handHeld!=null && handHeld.tool && !EventSystem.current.IsPointerOverGameObject() && Input.GetMouseButtonDown(1) && Time.time >= lastAttackTime + handHeld.attackCooldown && (!player.GetComponent<Player>().anim.GetBool("isMoving") || handHeld.weapon))
             {
+                lastUsedHandHeld = handHeld;
                 if (handHeld.weapon)
                 {
                     Vector3 mouseWorldPos = GetMouseWorldPosition();
@@ -114,6 +118,10 @@ namespace Sunspore
                 else
                 {
                     Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+                    bool canCast = abilityCoroutine == null && handHeld.CheckRange(player.GetComponent<Player>(), ray);
+                    Debug.Log($"HandHeld: {handHeld.name}, CheckRange: {canCast}, AbilityCooldown Ready: {Time.time >= lastAttackTime + handHeld.attackCooldown}");
+
                     if (abilityCoroutine == null && handHeld.CheckRange(player.GetComponent<Player>(), ray))
                     {
                         abilityCoroutine = StartCoroutine(AbilityDelayCoroutine(player.GetComponent<Player>(), ray, handHeld.abilityDuration, handHeld));
@@ -126,30 +134,19 @@ namespace Sunspore
                 }
             }
 
-            // If right click cast ability
+            // If click and drag tool cast ability
 
-            if (enabled && handHeld.tool && Input.GetMouseButtonUp(0) && Time.time >= lastAttackTime + handHeld.attackCooldown && (!player.GetComponent<Player>().anim.GetBool("isMoving") || handHeld.weapon))
+            if (draggedHandHeld != null && draggedHandHeld.tool && !EventSystem.current.IsPointerOverGameObject() && Input.GetMouseButtonUp(0) && Time.time >= lastAttackTime + draggedHandHeld.attackCooldown && (!player.GetComponent<Player>().anim.GetBool("isMoving") || draggedHandHeld.weapon))
             {
-                HandHeld tempHandHeld = InventoryManager.Instance.GetDraggedInventoryItem() != null ? InventoryManager.Instance.GetDraggedItemSO().prefab.GetComponent<HandHeld>() : null;
-
-                if (tempHandHeld == null)
+                if (!draggedHandHeld.weapon)
                 {
-                    Debug.Log("pooP");
-                    return;
-                }
-
-                if (tempHandHeld.weapon)
-                {
-                    Vector3 mouseWorldPos = GetMouseWorldPosition();
-                    Attack(mouseWorldPos, true);
-                }
-                else
-                {
+                    lastUsedHandHeld = draggedHandHeld;
                     Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-                    if (abilityCoroutine == null && tempHandHeld.CheckRange(player.GetComponent<Player>(), ray))
+                    if (abilityCoroutine == null && draggedHandHeld.CheckRange(player.GetComponent<Player>(), ray))
                     {
-                        abilityCoroutine = StartCoroutine(AbilityDelayCoroutine(player.GetComponent<Player>(), ray, tempHandHeld.abilityDuration, tempHandHeld));
+                        abilityCoroutine = StartCoroutine(AbilityDelayCoroutine(player.GetComponent<Player>(), ray, draggedHandHeld.abilityDuration, draggedHandHeld));
                         lastAttackTime = Time.time;
+                        draggedHandHeld = null;
                     }
                     else
                     {
@@ -159,19 +156,19 @@ namespace Sunspore
             }
 
             // Update direction based off player movement
-
             if (enabled)
             {
                 updateDirection();
             }
 
-            if (enabled && handHeld != null && (handHeld.tool || handHeld is Scythe))
+            if ((enabled && handHeld != null && (handHeld.tool || handHeld is Scythe)) || draggedHandHeld != null)
             {
+                HandHeld handHeldPreview = draggedHandHeld != null ? draggedHandHeld : handHeld;
                 // Show the ring at the player's position with the ability range
-                DrawAbilityRangeRing(player.transform.position, handHeld.abilityRange);
+                DrawAbilityRangeRing(player.transform.position, handHeldPreview.abilityRange);
 
                 Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-                if (handHeld.TryGetAbilityPreview(playerScript, ray, out Vector3 previewCenter, out Vector3 previewSize, out bool canUse))
+                if (handHeldPreview.TryGetAbilityPreview(playerScript, ray, out Vector3 previewCenter, out Vector3 previewSize, out bool canUse))
                 {
                     DrawTargetPreviewRing(previewCenter, previewSize, canUse ? Color.green : Color.red);
                 }
@@ -190,9 +187,19 @@ namespace Sunspore
             }
 
             // Show ability cooldown ring if ability is active
-            if (abilityCoroutine != null)
+            if (abilityCoroutine != null && lastUsedHandHeld != null)
             {
-                OnAbility?.Invoke((Time.time - castTime) / handHeld.abilityDuration);
+                OnAbility?.Invoke((Time.time - castTime) / lastUsedHandHeld.abilityDuration);
+            }
+
+            // Get dragged item
+            if (InventoryManager.Instance.pointerDown)
+            {
+                draggedHandHeld = InventoryManager.Instance.GetDraggedItemSO().prefab.GetComponent<HandHeld>();
+            }
+            else
+            {
+                draggedHandHeld = null;
             }
         }
         private Vector3 GetMouseWorldPosition()
@@ -255,7 +262,7 @@ namespace Sunspore
             player.anim.SetTrigger("Plant");
             castTime = Time.time;
             // If the current handHeld declares a looping SFX key, start looping now
-            string loopKey = handHeld != null ? handHeld.AbilityLoopSfxKey() : null;
+            string loopKey = abilityHandHeld != null ? abilityHandHeld.AbilityLoopSfxKey() : null;
             bool loopStarted = false;
             if (!string.IsNullOrEmpty(loopKey))
             {
@@ -289,15 +296,15 @@ namespace Sunspore
             OnAbility?.Invoke(0);
 
             // Stop any looping SFX that was started by AbilityDelayCoroutine
-            if (handHeld != null)
+            if (lastUsedHandHeld != null)
             {
-                string loopKey = handHeld.AbilityLoopSfxKey();
+                string loopKey = lastUsedHandHeld.AbilityLoopSfxKey();
                 if (!string.IsNullOrEmpty(loopKey))
                     SFXManager.StopLoop(loopKey);
             }
 
-            if (handHeld != null && handHeld.cancelable)
-                handHeld.CancelAbility();
+            if (lastUsedHandHeld != null && lastUsedHandHeld.cancelable)
+                lastUsedHandHeld.CancelAbility();
         }
 
         public void OutOfRange()
@@ -342,7 +349,7 @@ namespace Sunspore
         // Updates currDirection
         public void setDirection(int dir)
         {
-            if (handHeld != null && handHeld.cancelable)
+            if (lastUsedHandHeld != null && lastUsedHandHeld.cancelable)
             {
                 CancelAbility();
             }
@@ -377,7 +384,7 @@ namespace Sunspore
             boxRotation = currDirection != Vector3.zero
                 ? Quaternion.LookRotation(currDirection)
                 : player.transform.rotation;
-            boxCenter = player.transform.position + currDirection.normalized * offset + new Vector3(0, 0, zOffset);
+            boxCenter = player.transform.position + currDirection.normalized * offset;
         }
 
         // Assign Stats 
