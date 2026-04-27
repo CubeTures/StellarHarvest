@@ -26,6 +26,7 @@ class StoreSell : MonoBehaviour
 		this.recipes = recipes;
 		Clear();
 		storeItems = CreateStoreItems(recipes, items);
+		Update();
 	}
 
 	public void Clear()

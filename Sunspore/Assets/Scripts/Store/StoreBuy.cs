@@ -28,6 +28,7 @@ class StoreBuy : MonoBehaviour
 		Clear();
 		storeItems = CreateStoreItems(recipes, items);
 		selected = storeItems.First();
+		Update();
 	}
 
 	public void Clear()

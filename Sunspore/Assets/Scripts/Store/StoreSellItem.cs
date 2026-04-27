@@ -22,6 +22,7 @@ class StoreSellItem: MonoBehaviour
 		this.storeSell = storeSell;
 		this.storeItem = storeItem;
 		quantity = storeItem.amount;
+		Update();
 	}
 
 	public void Increment()

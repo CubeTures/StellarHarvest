@@ -38,6 +38,7 @@ class StoreItem : MonoBehaviour
 		item = ExtractItem(recipe);
 		money = ExtractCost(recipe);
 		amount = FindAmountHeld(items);
+		Update();
 	}
 
 	ItemSO ExtractItem(StoreRecipeSO recipe)
