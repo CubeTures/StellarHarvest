@@ -26,7 +26,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1583885426664768335, guid: 4393b48af626182408c439887b60415a, type: 3}
       propertyPath: m_Height
-      value: 1.2
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1583885426664768335, guid: 4393b48af626182408c439887b60415a, type: 3}
       propertyPath: m_Radius
@@ -34,7 +34,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1583885426664768335, guid: 4393b48af626182408c439887b60415a, type: 3}
       propertyPath: m_Center.y
-      value: 0.6
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1583885426664768335, guid: 4393b48af626182408c439887b60415a, type: 3}
       propertyPath: m_IsTrigger
@@ -106,11 +106,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6822131166460621233, guid: 4393b48af626182408c439887b60415a, type: 3}
       propertyPath: m_Height
-      value: 1
+      value: 1.75
       objectReference: {fileID: 0}
     - target: {fileID: 6822131166460621233, guid: 4393b48af626182408c439887b60415a, type: 3}
       propertyPath: m_Radius
-      value: 0.6
+      value: 0.75
       objectReference: {fileID: 0}
     - target: {fileID: 6822131166460621233, guid: 4393b48af626182408c439887b60415a, type: 3}
       propertyPath: m_BaseOffset
