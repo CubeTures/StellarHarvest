@@ -18985,6 +18985,7 @@ MonoBehaviour:
   storeBuy: {fileID: 6254456393463451185}
   storeSell: {fileID: 456728561228098662}
   storeItemPrefab: {fileID: 3502892523942584558, guid: 952d92f8bc3809d4ea0bc0f27ca96ab0, type: 3}
+  filters: {fileID: 4639300827491718310}
   recipes:
   - {fileID: 11400000, guid: c7c3ad577bb61204395be108e7f49dbe, type: 2}
   - {fileID: 11400000, guid: e3b658bfe82d56b40b90e1a2ebca6c54, type: 2}
@@ -28172,9 +28173,9 @@ MonoBehaviour:
     onClick:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 4196356726159557498}
-          m_TargetAssemblyTypeName: InventoryManager, Sunspore
-          m_MethodName: SelectedInventoryCategory_All
+        - m_Target: {fileID: 7069176760502434238}
+          m_TargetAssemblyTypeName: NewStoreManager, Sunspore
+          m_MethodName: SetFilterAll
           m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -28195,9 +28196,9 @@ MonoBehaviour:
     onClick:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 4196356726159557498}
-          m_TargetAssemblyTypeName: InventoryManager, Sunspore
-          m_MethodName: SelectedInventoryCategory_Tools
+        - m_Target: {fileID: 7069176760502434238}
+          m_TargetAssemblyTypeName: NewStoreManager, Sunspore
+          m_MethodName: SetFilterTools
           m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -28218,9 +28219,9 @@ MonoBehaviour:
     onClick:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 4196356726159557498}
-          m_TargetAssemblyTypeName: InventoryManager, Sunspore
-          m_MethodName: SelectedInventoryCategory_Plants
+        - m_Target: {fileID: 7069176760502434238}
+          m_TargetAssemblyTypeName: NewStoreManager, Sunspore
+          m_MethodName: SetFilterPlants
           m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -28241,9 +28242,9 @@ MonoBehaviour:
     onClick:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 4196356726159557498}
-          m_TargetAssemblyTypeName: InventoryManager, Sunspore
-          m_MethodName: SelectedInventoryCategory_Weapons
+        - m_Target: {fileID: 7069176760502434238}
+          m_TargetAssemblyTypeName: NewStoreManager, Sunspore
+          m_MethodName: SetFilterWeapons
           m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}

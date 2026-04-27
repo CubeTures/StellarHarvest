@@ -23,6 +23,14 @@ class StoreBuy : MonoBehaviour
 		this.storeItemPrefab = storeItemPrefab;
 	}
 
+	public void Filter(ItemCategory cat)
+	{
+		foreach(var si in storeItems)
+		{
+			si.gameObject.SetActive(si.item.category == cat || cat == ItemCategory.All);
+		}
+	}
+
 	public void Populate(List<StoreRecipeSO> recipes, List<InventorySlot> items)
 	{
 		Clear();

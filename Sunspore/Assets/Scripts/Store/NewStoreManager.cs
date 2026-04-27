@@ -17,6 +17,7 @@ class NewStoreManager : MonoBehaviour
 	[SerializeField] StoreBuy storeBuy;
 	[SerializeField] StoreSell storeSell;
 	[SerializeField] GameObject storeItemPrefab;
+	[SerializeField] ToggleButtonGroup filters;
 
 	[Serializable]
 	public enum StoreMode
@@ -31,6 +32,7 @@ class NewStoreManager : MonoBehaviour
 	List<InventorySlot> items;
 	bool visible = false;
 	public bool IsOpen => visible;
+	ItemCategory currentFilter = ItemCategory.All;
 
 
 	void Awake()
@@ -61,6 +63,7 @@ class NewStoreManager : MonoBehaviour
 
 	void Open()
 	{
+		filters.Reset();
 		SFXManager.Play("inventoryopenclose");
 		items = CollectItems();
 		PopulateSidebars();
@@ -73,6 +76,7 @@ class NewStoreManager : MonoBehaviour
 		SFXManager.Play("inventoryopenclose");
 		visible = false;
 		visuals.SetActive(false);
+		currentFilter = ItemCategory.All;
 	}
 
 	public List<InventorySlot> UpdateItems()
@@ -109,6 +113,7 @@ class NewStoreManager : MonoBehaviour
 					.ToList(),
 				items
 			);
+			storeBuy.Filter(currentFilter);
 			storeBuy.gameObject.SetActive(true);
 		}
 		else
@@ -121,6 +126,7 @@ class NewStoreManager : MonoBehaviour
 					.ToList(),
 				items
 			);
+			storeSell.Filter(currentFilter);
 			storeSell.gameObject.SetActive(true);
 		}
 	}
@@ -139,5 +145,32 @@ class NewStoreManager : MonoBehaviour
 	public void SetStoreModeSell()
 	{
 		SetStoreMode(StoreMode.SELL);
+	}
+
+	public void SetFilter(ItemCategory cat)
+	{
+		currentFilter = cat;
+		storeBuy.Filter(cat);
+		storeSell.Filter(cat);
+	}
+
+	public void SetFilterAll()
+	{
+		SetFilter(ItemCategory.All);
+	}
+
+	public void SetFilterTools()
+	{
+		SetFilter(ItemCategory.Tools);
+	}
+
+	public void SetFilterPlants()
+	{
+		SetFilter(ItemCategory.Plants);
+	}
+
+	public void SetFilterWeapons()
+	{
+		SetFilter(ItemCategory.Weapons);
 	}
 }
