@@ -4,10 +4,20 @@ using UnityEngine.UI;
 
 public class Wallet : MonoBehaviour
 {
+    public static Wallet Instance
+    {
+        get; private set;
+    }
+
     [SerializeField] TMP_Text creditsText;
 
     [SerializeField] int startingAmount = 0;
     int amount = 0;
+
+    void Awake()
+    {
+        Instance = this;
+    }
 
     void Start()
     {
