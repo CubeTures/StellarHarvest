@@ -12,14 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1bca075d7798bd4c821b96710b40382, type: 3}
   m_Name: Plasma Watering Can
   m_EditorClassIdentifier: Sunspore::Sunspore.StoreRecipeSO
-  recipeName: Plasma Watering Can
   recipeType: 0
   category: 3
   ingredients: []
   resultItem:
   - item: {fileID: 11400000, guid: 9fbee52fd6db748458396dc28aa61753, type: 2}
     amount: 1
-  description: Upgraded watering can; lets you target specific squares from far away
   creditCost: 6000
   creditReward: 0
-  disabled: 0
+  disabled: 1

@@ -19,6 +19,11 @@ class PaymentTimeline : MonoBehaviour
 	bool canPay = false;
 	float startTime, dueTime, gameTime;
 
+	void Start()
+	{
+		UpdateMe.Instance.Subscribe(_Update);
+	}
+
 	public void SetDayNightManager(DayNightManager dayNightManager)
 	{
 		this.dayNightManager = dayNightManager;
@@ -57,11 +62,6 @@ class PaymentTimeline : MonoBehaviour
 
 	void Update()
 	{
-		if (!dayNightManager.timeStopped)
-		{
-			gameTime += Time.deltaTime;
-		}
-
 		float remaining = (dueTime - gameTime) / (dueTime - startTime);
 		timelineInner.sizeDelta = new(timelineOuter.sizeDelta.x * (1 - remaining), timelineInner.sizeDelta.y);
 
@@ -82,6 +82,14 @@ class PaymentTimeline : MonoBehaviour
 		timeLabel.text = label;
 	}
 
+	void _Update()
+	{
+		if (!dayNightManager.timeStopped)
+		{
+			gameTime += Time.deltaTime;
+		}
+	}
+
 	public bool IsDue()
 	{
 		return gameTime >= dueTime;
@@ -92,8 +100,18 @@ class PaymentTimeline : MonoBehaviour
 		return dueTime;
 	}
 
+	public int DaysLeft()
+	{
+		return (int)((dueTime - gameTime) / dayNightManager.dayLengthSeconds);
+	}
+
 	public int GetAmount()
 	{
 		return amount;
+	}
+
+	void Oestroy()
+	{
+		UpdateMe.Instance.Unsubscribe(_Update);		
 	}
 }

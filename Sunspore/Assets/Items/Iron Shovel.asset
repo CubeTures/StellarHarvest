@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b55df8fc0627f99cbf602cf22f90418, type: 3}
   m_Name: Iron Shovel
   m_EditorClassIdentifier: Sunspore::ItemSO
-  displayName: 
-  description: 
+  displayName: Iron Shovel
+  description: Digs up unwanted plants. Bends a little too much to do anything more
+    than that.
   icon: {fileID: 21300000, guid: 02013d33f8a52294fb8a4487237ba6bd, type: 3}
   stackable: 0
   maxStackSize: 1

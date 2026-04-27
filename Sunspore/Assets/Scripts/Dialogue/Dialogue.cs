@@ -189,6 +189,18 @@ namespace Sunspore
         // Update is called once per frame
         void Update()
         {
+            if (!TutorialManager.Instance.IsTutorialActive)
+            {
+                if (!_exitTriggered)
+                {
+                    _exitTriggered = true;
+                    _animator.SetTrigger("Exit");
+                    playerInput.ActivateInput();
+                    Debug.Log("End of tutorial");
+                }
+                return;    
+            }
+
             // Press any key to advance the dialogue
             if (Input.GetMouseButtonDown(0) && dialogueActive && !isEvent)
             {

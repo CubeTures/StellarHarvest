@@ -12,13 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1bca075d7798bd4c821b96710b40382, type: 3}
   m_Name: Snapper Suction Sell
   m_EditorClassIdentifier: Sunspore::Sunspore.StoreRecipeSO
-  recipeName: Snapper Suction Sell
   recipeType: 1
   category: 2
   ingredients:
   - item: {fileID: 0}
     amount: 1
   resultItem: []
-  description: Crafted from Pit Snapper (Stage 3). Pulls enemies in.
   creditCost: 0
   creditReward: 1200
+  disabled: 1

@@ -26,6 +26,7 @@ class TutorialSkipper : MonoBehaviour
 		if (skipped) return;
 		skipped = true;
 		dl.CompleteDialog();
+		NotificationManager.Instance.PopFixedNotification();
 		tm.CompleteTutorial();
 		im.AddItem(glowbudSeed, 1);
 	}

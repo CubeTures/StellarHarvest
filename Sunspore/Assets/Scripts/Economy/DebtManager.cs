@@ -25,6 +25,7 @@ class DebtManager : MonoBehaviour
 	int currentPayment = 0;
 	int missedPayments = 0;
 	float startTime = 0;
+	int lastNotification = 0;
 
 	class Item
 	{
@@ -72,12 +73,15 @@ class DebtManager : MonoBehaviour
 		}
 
 		UpdateText();
+		UpdateMe.Instance.Subscribe(_Update);
 	}
 
-	void Update()
+	void _Update()
 	{
+		Debug.Log("here");
 		CheckExpiration();
 		UpdatePayable();
+		SetNotification();
 	}
 
 	void CheckExpiration()
@@ -135,6 +139,25 @@ class DebtManager : MonoBehaviour
 		balancePrice.text = diff.ToString("N0") + " credits";
 	}
 
+	void SetNotification()
+	{
+		if (!TutorialManager.Instance.IsTutorialActive)
+		{
+			int daysLeft = currentTimeline.DaysLeft();
+			if (daysLeft != lastNotification)
+			{
+				NotificationManager.Instance.PopFixedNotification();
+
+				string daysText = $"in {daysLeft} day{(daysLeft == 1 ? "" : "s")}";
+				if (daysLeft == 0)
+				{
+					daysText = "today";
+				}
+				NotificationManager.Instance.PushFixedNotification($"Pay off your debt {daysText}.");
+			}
+		}
+	}
+
 	int OwedAmount()
 	{
 		return receipt.Aggregate(0, (acc, x) => acc + x.price);
@@ -150,7 +173,7 @@ class DebtManager : MonoBehaviour
 		return payments[currentPayment..].Aggregate(0, (acc, x) => acc + x);
 	}
 
-	void MakePayment()
+	public void MakePayment()
 	{
 		if (wallet.GetAmount() >= OwedAmount())
 		{

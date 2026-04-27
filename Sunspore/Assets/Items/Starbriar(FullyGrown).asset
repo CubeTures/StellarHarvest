@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b55df8fc0627f99cbf602cf22f90418, type: 3}
   m_Name: Starbriar(FullyGrown)
   m_EditorClassIdentifier: Sunspore::ItemSO
-  displayName: Layerleaf
-  description: A fully grown wall plant. Makes good use for barricades.
+  displayName: Layerleaf Leaf
+  description: The harvest of a Layerleaf. Makes surprisingly good tea.
   icon: {fileID: 21300000, guid: 474c32f567c6d9b46b9e3e084173e133, type: 3}
   stackable: 1
   maxStackSize: 16

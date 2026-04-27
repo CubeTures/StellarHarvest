@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b55df8fc0627f99cbf602cf22f90418, type: 3}
   m_Name: Bloomburst(Fully Grown)
   m_EditorClassIdentifier: Sunspore::ItemSO
-  displayName: Bloomburst(Fully Grown)
-  description: A fully grown standard projectile plant. Shoots bursts of homing bullets.
+  displayName: Bloomburst Stem
+  description: 'The harvest of a Bloomburst. Stronger than diamond and as light as
+    aluminium. '
   icon: {fileID: 21300000, guid: 3a8edec7173538c4584f0ee5811e42f2, type: 3}
   stackable: 1
   maxStackSize: 16

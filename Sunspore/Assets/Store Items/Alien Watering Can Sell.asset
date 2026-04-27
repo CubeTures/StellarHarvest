@@ -12,14 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1bca075d7798bd4c821b96710b40382, type: 3}
   m_Name: Alien Watering Can Sell
   m_EditorClassIdentifier: Sunspore::Sunspore.StoreRecipeSO
-  recipeName: Alien Shovel Sell
   recipeType: 1
   category: 3
   ingredients:
   - item: {fileID: 11400000, guid: 6ba99592e06e657438104785f2ae041c, type: 2}
     amount: 1
   resultItem: []
-  description: 2nd watering can upgrade
   creditCost: 0
   creditReward: 4000
-  disabled: 0
+  disabled: 1
