@@ -54,17 +54,13 @@ class StoreItem : MonoBehaviour
 	{
 		foreach (InventorySlot slot in items)
 		{
-			if (slot.heldItem != null)
+			ItemSO itemSO = slot.GetItemSO();
+			if (itemSO != null)
 			{
-				InventoryItem heldItem = slot.heldItem.GetComponent<InventoryItem>();
-				if (heldItem != null)
+				if (itemSO.displayName == item.displayName)
 				{
-					ItemSO itemSO = heldItem.itemScriptableObject;
-					if (itemSO != null && itemSO.displayName == item.displayName)
-					{
-						return slot.quantity;
-					}	
-				} 
+					return slot.GetStackCount();
+				}
 			}
 		}
 
@@ -88,7 +84,8 @@ class StoreItem : MonoBehaviour
 		amountText.text = amount.ToString();
 		moneyText.text = money.ToString();
 
-		bool buyMode = mode == NewStoreManager.StoreMode.BUY;
+		// number always is more helpful imo
+		bool buyMode =false; // mode == NewStoreManager.StoreMode.BUY;
 		bool any = amount != 0;
 		amountBg.enabled = any;
 		checkmark.enabled = buyMode && any;

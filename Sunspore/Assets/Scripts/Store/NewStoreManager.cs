@@ -3,6 +3,7 @@ using Sunspore;
 using UnityEngine;
 using System.Linq;
 using NUnit.Framework.Interfaces;
+using System;
 
 class NewStoreManager : MonoBehaviour
 {
@@ -17,6 +18,7 @@ class NewStoreManager : MonoBehaviour
 	[SerializeField] StoreSell storeSell;
 	[SerializeField] GameObject storeItemPrefab;
 
+	[Serializable]
 	public enum StoreMode
 	{
 		BUY,
@@ -28,6 +30,9 @@ class NewStoreManager : MonoBehaviour
 	[SerializeField] StoreRecipeSO[] recipes;
 	List<InventorySlot> items;
 	bool visible = false;
+	public bool IsOpen => visible;
+
+
 	void Awake()
 	{
 		Instance = this;
@@ -42,7 +47,6 @@ class NewStoreManager : MonoBehaviour
 
 	public bool Toggle()
 	{
-		SFXManager.Play("inventoryopenclose");
 		if (visible)
 		{
 			Close();
@@ -57,14 +61,16 @@ class NewStoreManager : MonoBehaviour
 
 	void Open()
 	{
+		SFXManager.Play("inventoryopenclose");
 		items = CollectItems();
 		PopulateSidebars();
 		visible = true;
 		visuals.SetActive(true);
 	}
 
-	void Close()
+	public void Close()
 	{
+		SFXManager.Play("inventoryopenclose");
 		visible = false;
 		visuals.SetActive(false);
 	}
@@ -93,22 +99,45 @@ class NewStoreManager : MonoBehaviour
 
 	void PopulateSidebars()
 	{
-		storeBuy.Populate(
-			recipes
-				.Where(r => r.recipeType == StoreRecipeType.buy && !r.disabled)
-				.ToList(),
-			items
-		);
-		storeSell.Populate(
-			recipes
-				.Where(r => r.recipeType == StoreRecipeType.sell && !r.disabled)
-				.ToList(),
-			items
-		);
+		if (mode == StoreMode.BUY)
+		{
+			storeSell.Clear();
+			storeSell.gameObject.SetActive(false);
+			storeBuy.Populate(
+				recipes
+					.Where(r => r.recipeType == StoreRecipeType.buy && !r.disabled)
+					.ToList(),
+				items
+			);
+			storeBuy.gameObject.SetActive(true);
+		}
+		else
+		{
+			storeBuy.Clear();
+			storeBuy.gameObject.SetActive(false);
+			storeSell.Populate(
+				recipes
+					.Where(r => r.recipeType == StoreRecipeType.sell && !r.disabled)
+					.ToList(),
+				items
+			);
+			storeSell.gameObject.SetActive(true);
+		}
 	}
 
 	public void SetStoreMode(StoreMode mode)
 	{
 		this.mode = mode;
+		PopulateSidebars();
+	}
+
+	public void SetStoreModeBuy()
+	{
+		SetStoreMode(StoreMode.BUY);
+	}
+
+	public void SetStoreModeSell()
+	{
+		SetStoreMode(StoreMode.SELL);
 	}
 }

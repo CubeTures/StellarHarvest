@@ -77,23 +77,24 @@ public class StoreWorldInteractable : MonoBehaviour
             _playerInRange = distance <= interactionRadius;
             if (interactPrompt != null)
             {
-                bool shouldShowPrompt = _playerInRange && (InventoryManager.Instance == null || !InventoryManager.Instance.IsStoreOpened);
+                bool shouldShowPrompt = _playerInRange && (NewStoreManager.Instance == null || !NewStoreManager.Instance.IsOpen);
                 interactPrompt.SetActive(shouldShowPrompt);
             }
 
             if (_playerInRange)
             {
-                UpdatePromptText(InventoryManager.Instance != null && InventoryManager.Instance.IsStoreOpened);
+                UpdatePromptText(NewStoreManager.Instance != null && NewStoreManager.Instance.IsOpen);
             }
         }
 
-        if (!_playerInRange || InventoryManager.Instance == null)
+        if (!_playerInRange || NewStoreManager.Instance == null)
         {
             return;
         }
 
         if (Input.GetKeyDown(interactKey))
         {
+            InventoryManager.Instance.CloseInventory();
             bool isStoreOpen = NewStoreManager.Instance.Toggle();
             UpdatePromptText(isStoreOpen);
             if (interactPrompt != null)
@@ -137,9 +138,9 @@ public class StoreWorldInteractable : MonoBehaviour
             SFXManager.Play("hologramdeactivate");
         }
 
-        if (closeStoreWhenPlayerLeaves && InventoryManager.Instance != null && InventoryManager.Instance.IsStoreOpened)
+        if (closeStoreWhenPlayerLeaves && NewStoreManager.Instance != null && NewStoreManager.Instance.IsOpen)
         {
-            InventoryManager.Instance.CloseStoreFromEnvironment();
+            NewStoreManager.Instance.Close();
         }
     }
 

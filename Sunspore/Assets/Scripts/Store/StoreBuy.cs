@@ -30,7 +30,7 @@ class StoreBuy : MonoBehaviour
 		selected = storeItems.First();
 	}
 
-	void Clear()
+	public void Clear()
 	{
 		foreach(var i in storeItems)
 		{

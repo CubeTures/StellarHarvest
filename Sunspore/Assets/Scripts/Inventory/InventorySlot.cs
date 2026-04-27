@@ -67,4 +67,36 @@ public class InventorySlot: MonoBehaviour
             Debug.Log(heldItem.GetComponent<InventoryItem>().itemScriptableObject.displayName + " @ " + heldItem.transform.position + " vs " + transform.position);
         }
     }
+
+    public ItemSO GetItemSO()
+    {
+        if (heldItem != null)
+        {
+            InventoryItem inventoryItem = heldItem.GetComponent<InventoryItem>();
+            if (inventoryItem != null)
+            {
+                ItemSO itemSO = inventoryItem.itemScriptableObject;
+                if (itemSO != null)
+                {
+                    return itemSO;
+                }
+            }
+        }
+
+        return null;
+    }
+
+    public int GetStackCount()
+    {
+        if (heldItem != null)
+        {
+            InventoryItem inventoryItem = heldItem.GetComponent<InventoryItem>();
+            if (inventoryItem != null)
+            {
+                return inventoryItem.stackCurrent;
+            }
+        }
+
+        return 0;
+    }
 }
