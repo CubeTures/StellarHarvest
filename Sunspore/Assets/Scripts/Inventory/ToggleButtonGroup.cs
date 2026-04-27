@@ -18,7 +18,7 @@ class ToggleButtonGroup : MonoBehaviour
 			int capture = i;
 			buttons[i].onClick.AddListener(() => Intercept(capture));
 			toggles[i].img = buttons[i].GetComponent<Image>();
-			selected = toggles[i].selected ? i : selected;
+			selected = toggles[i].defaultSelected ? i : selected;
 
 			if (!string.IsNullOrEmpty(toggles[i].tooltipText))
 			{

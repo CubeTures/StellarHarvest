@@ -78,7 +78,6 @@ class DebtManager : MonoBehaviour
 
 	void _Update()
 	{
-		Debug.Log("here");
 		CheckExpiration();
 		UpdatePayable();
 		SetNotification();
