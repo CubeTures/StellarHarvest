@@ -45,6 +45,13 @@ public class StoreWorldInteractable : MonoBehaviour
         if (hologram != null)
         {
             holoAnim = hologram.GetComponent<Animator>();
+
+            var srThis = GetComponent<SpriteRenderer>();
+            var srHolo = hologram.GetComponent<SpriteRenderer>();
+            if (srThis != null && srHolo != null)
+            {
+                srThis.sortingOrder = srHolo.sortingOrder;
+            }
         }
 
         if (autoUpdatePromptText && interactPromptLabel == null && interactPrompt != null)
@@ -58,6 +65,8 @@ public class StoreWorldInteractable : MonoBehaviour
         {
             interactPrompt.SetActive(false);
         }
+
+        
     }
 
     private void Update()
