@@ -87,7 +87,7 @@ namespace Sunspore
         protected virtual void LateUpdate()
         {
             float healthPercent = _health / _maxHealth; // 1 = full health, 0 = dead
-            _spriteRenderer.color = Color.Lerp(Color.red, Color.white, healthPercent);;
+            _spriteRenderer.color = Color.Lerp(Color.red, Color.white, healthPercent);
             // Handle growth progression
             if (currentStage == GrowthStage.Seed)
             {
@@ -249,7 +249,11 @@ namespace Sunspore
         public void WaterPlant()
         {
             watered = true;
-            waterDropInstance.SetActive(false);
+            if (waterDropInstance != null)
+                waterDropInstance.SetActive(false);
+
+            if (_maxHealth > 0f)
+                _health = Mathf.Min(_maxHealth, _health + _maxHealth * 0.25f);
         }
 
         protected virtual void OnDestroy()

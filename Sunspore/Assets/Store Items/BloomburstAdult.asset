@@ -12,14 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1bca075d7798bd4c821b96710b40382, type: 3}
   m_Name: BloomburstAdult
   m_EditorClassIdentifier: Sunspore::Sunspore.StoreRecipeSO
-  recipeName: Bloomburst Adult
   recipeType: 1
   category: 1
   ingredients:
   - item: {fileID: 11400000, guid: b216deef74420864cba9d71bb224dd60, type: 2}
     amount: 1
   resultItem: []
-  description: A fully grown standard projectile plant. Shoots bursts of homing bullets.
   creditCost: 0
   creditReward: 750
   disabled: 0
