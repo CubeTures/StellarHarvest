@@ -7,6 +7,8 @@ using UnityEngine;
 class StoreSell : MonoBehaviour
 {
 	[SerializeField] RectTransform content;
+	[SerializeField] Canvas rootCanvas;
+	[SerializeField] GameObject dropZone;
 	[SerializeField] RectTransform contentSell;
 	[SerializeField] GameObject storeSellItemPrefab;
 	[SerializeField] TMP_Text previewSell;
@@ -66,8 +68,9 @@ class StoreSell : MonoBehaviour
 
 			GameObject storeItemObj = Instantiate(storeItemPrefab, content);
 			StoreItem storeItem = storeItemObj.GetComponent<StoreItem>();
-			storeItem.SetFields(NewStoreManager.StoreMode.SELL, recipe, items);
+			storeItem.SetFields(NewStoreManager.StoreMode.SELL, recipe, items, rootCanvas);
 			storeItem.RegisterOnClick(Select);
+			storeItem.RegisterDropZone(dropZone);
 			sis.Add(storeItem);
 		}
 

@@ -8,6 +8,8 @@ using UnityEngine.UI;
 class StoreBuy : MonoBehaviour
 {
 	[SerializeField] RectTransform content;
+	[SerializeField] GameObject dropZone;
+	[SerializeField] Canvas rootCanvas;
 
 	List<StoreItem> storeItems = new();
 	GameObject storeItemPrefab;
@@ -56,8 +58,9 @@ class StoreBuy : MonoBehaviour
 		{
 			GameObject storeItemObj = Instantiate(storeItemPrefab, content);
 			StoreItem storeItem = storeItemObj.GetComponent<StoreItem>();
-			storeItem.SetFields(NewStoreManager.StoreMode.BUY, recipe, items);
+			storeItem.SetFields(NewStoreManager.StoreMode.BUY, recipe, items, rootCanvas);
 			storeItem.RegisterOnClick(Select);
+			storeItem.RegisterDropZone(dropZone);
 			sis.Add(storeItem);
 		}
 

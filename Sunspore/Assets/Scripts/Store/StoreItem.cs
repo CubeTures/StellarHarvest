@@ -3,13 +3,17 @@ using Sunspore;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-class StoreItem : MonoBehaviour
+class StoreItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
 	// logic for clicking and dragging in store
 	public delegate void OnClick(StoreItem storeItem);
 	Button button;
+	GameObject dropZone;
+	Canvas rootCanvas;
+	GameObject ghost;
 
 	[SerializeField] Image image;
 	[SerializeField] Image amountBg, checkmark;
@@ -30,9 +34,10 @@ class StoreItem : MonoBehaviour
 		get; private set;
 	}
 
-	public void SetFields(NewStoreManager.StoreMode mode, StoreRecipeSO recipe, List<InventorySlot> items)
+	public void SetFields(NewStoreManager.StoreMode mode, StoreRecipeSO recipe, List<InventorySlot> items, Canvas rootCanvas)
 	{
 		button = GetComponent<Button>();
+		this.rootCanvas = rootCanvas;
 		this.mode = mode;
 		this.recipe = recipe;
 		item = ExtractItem(recipe);
@@ -79,17 +84,57 @@ class StoreItem : MonoBehaviour
 		button.onClick.AddListener(action);
 	}
 
+	public void RegisterDropZone(GameObject dropZone)
+	{
+		this.dropZone = dropZone;
+	}
+
 	void Update()
 	{
+		if (item == null) return;
+		
 		image.sprite = item.icon;
 		amountText.text = amount.ToString();
 		moneyText.text = money.ToString();
 
 		// number always is more helpful imo
-		bool buyMode =false; // mode == NewStoreManager.StoreMode.BUY;
+		bool buyMode = false; // mode == NewStoreManager.StoreMode.BUY;
 		bool any = amount != 0;
 		amountBg.enabled = any;
 		checkmark.enabled = buyMode && any;
 		amountText.enabled = !buyMode && any;
+	}
+
+	public void OnBeginDrag(PointerEventData eventData)
+	{
+		ghost = Instantiate(gameObject, rootCanvas.transform, true);
+		ghost.GetComponent<CanvasGroup>().blocksRaycasts = false;
+
+		foreach (var component in ghost.GetComponents<MonoBehaviour>())
+			component.enabled = false;
+	}
+
+	public void OnDrag(PointerEventData eventData)
+	{
+		if (ghost != null)
+			ghost.transform.position = eventData.position;
+	}
+
+	public void OnEndDrag(PointerEventData eventData)
+	{
+		Destroy(ghost);
+
+		if (dropZone == null) return;
+
+		List<RaycastResult> results = new();
+		EventSystem.current.RaycastAll(eventData, results);
+		foreach (var res in results)
+		{
+			if (res.gameObject == dropZone)
+			{
+				button.onClick.Invoke();
+				break;
+			}
+		}
 	}
 }
