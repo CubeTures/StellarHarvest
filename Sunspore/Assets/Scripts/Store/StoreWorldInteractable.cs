@@ -5,7 +5,7 @@ using Sunspore;
 [RequireComponent(typeof(Collider))]
 public class StoreWorldInteractable : MonoBehaviour
 {
-    [SerializeField] private KeyCode interactKey = KeyCode.I;
+    private KeyCode interactKey = KeyCode.Space;
     [SerializeField] private string playerTag = "Player";
     [SerializeField] private GameObject interactPrompt;
     [SerializeField] private bool autoUpdatePromptText = false;
@@ -66,7 +66,7 @@ public class StoreWorldInteractable : MonoBehaviour
             interactPrompt.SetActive(false);
         }
 
-        
+
     }
 
     private void Update()
@@ -94,7 +94,7 @@ public class StoreWorldInteractable : MonoBehaviour
 
         if (Input.GetKeyDown(interactKey))
         {
-            bool isStoreOpen = InventoryManager.Instance.ToggleStoreFromEnvironment();
+            bool isStoreOpen = NewStoreManager.Instance.Toggle();
             UpdatePromptText(isStoreOpen);
             if (interactPrompt != null)
             {

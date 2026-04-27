@@ -24,8 +24,8 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
     [SerializeField] RectTransform itemsContainer;
     [SerializeField] Sprite hotbarSlotUnselected, hotbarSlotSelected;
 
-    [SerializeField] GameObject[] slots = new GameObject[28];
-    [SerializeField] GameObject[] hotbarSlots = new GameObject[7];
+    [SerializeField] public GameObject[] slots = new GameObject[28];
+    [SerializeField] public GameObject[] hotbarSlots = new GameObject[7];
     [SerializeField] HandHeldManager handHeldManager;
     [SerializeField] ToggleButtonGroup inventoryTabs;
 

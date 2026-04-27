@@ -22,7 +22,7 @@ namespace Sunspore
 
         public bool disabled = false;
 
-        private ItemSO GetItem()
+        public ItemSO GetItem()
         {
             return (ingredients.Length != 0 ? ingredients[0] : resultItem[0]).item;
         }
