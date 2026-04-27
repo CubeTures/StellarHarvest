@@ -330,7 +330,11 @@ public class PlacementManager : MonoBehaviour
 
         inventoryManager.UseThisItem(slot);
         isPlacing = false;
-        TutorialManager.Instance.BroadcastSignal(TutorialManager.Actions.PLANT);
+        if (TutorialManager.Instance != null)
+        {
+            TutorialManager.Instance.OnSuccessfulPlantBeforePlantSignal();
+            TutorialManager.Instance.BroadcastSignal(TutorialManager.Actions.PLANT);
+        }
         placingCoroutine = null;
         //Debug.Log("done placing");
     }

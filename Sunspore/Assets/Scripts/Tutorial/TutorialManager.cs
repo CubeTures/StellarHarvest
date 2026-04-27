@@ -42,6 +42,12 @@ public class TutorialManager : MonoBehaviour
     public bool IsTutorialActive => steps != null && currentStepIndex < steps.Count;
     bool stepActive = false;
 
+    /// <summary>
+    /// Set when a plant is successfully placed while the current step is not the PLANT <see cref="SignalStep"/>,
+    /// so the PLANT signal was not consumed (e.g. planted during tilling / HOE step).
+    /// </summary>
+    bool pendingPlantSatisfiedForNextPlantStep;
+
     [SerializeField] private GameObject cratePrefab;
     [SerializeField] private Vector3 crateSpawnPoint = new Vector3(0, 100, -100);
     Quaternion crateRotation;
@@ -148,5 +154,23 @@ public class TutorialManager : MonoBehaviour
     public void UnsubscribeBroadcast(OnSignal onSignal)
     {
         onSignalSubscribers -= onSignal;
+    }
+
+    /// <summary>Call from <see cref="PlacementManager"/> when a plant is placed, before <see cref="BroadcastSignal(Actions)"/>(PLANT).</summary>
+    public void OnSuccessfulPlantBeforePlantSignal()
+    {
+        if (!IsTutorialActive) return;
+        if (steps == null || currentStepIndex < 0 || currentStepIndex >= steps.Count) return;
+        if (steps[currentStepIndex] is SignalStep s && s.ExpectedAction == Actions.PLANT)
+            return;
+        pendingPlantSatisfiedForNextPlantStep = true;
+    }
+
+    /// <summary>Used by the PLANT <see cref="SignalStep"/> in <c>Begin</c> to skip the step if the player already planted.</summary>
+    public bool ConsumePendingPlantForPlantStep()
+    {
+        if (!pendingPlantSatisfiedForNextPlantStep) return false;
+        pendingPlantSatisfiedForNextPlantStep = false;
+        return true;
     }
 }
