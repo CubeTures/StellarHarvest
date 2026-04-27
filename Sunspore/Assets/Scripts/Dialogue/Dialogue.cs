@@ -137,7 +137,7 @@ namespace Sunspore
             {
                 characterImage.sprite = SamSprite;
             }
-            else if (speaker.Equals("THE MAN", System.StringComparison.OrdinalIgnoreCase))
+            else if (speaker.Equals("THE MAN", System.StringComparison.OrdinalIgnoreCase) || speaker.Equals("INTERCOM", System.StringComparison.OrdinalIgnoreCase))
             {
                 characterImage.sprite = TheManSprite;
             }

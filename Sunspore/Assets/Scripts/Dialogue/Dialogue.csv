@@ -38,6 +38,10 @@ THE MAN,"Until you buy a real weapon, your tools will serve as a suitable replac
 SAM,"Wait, WHAT? THE MUNCHERS??",
 THE MAN,You'll figure it out.,
 THE MAN,...,
-THE MAN,"Don't ruin my investment, chump.",
+INTERCOM,"ATTENTION: CARGO HOLD OPENED"
+THE MAN, CRAP!
+THE MAN,"Uh, I also sent you a shipment to get you started"
+THE MAN,"Definitely didn't drop it"
+THE MAN,"Anyway don't ruin my investment, chump.",
 SAM,"Well, time to get started...",
 ,END,

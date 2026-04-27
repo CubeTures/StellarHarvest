@@ -469415,7 +469415,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.EventSystems.PhysicsRaycaster
   m_EventMask:
     serializedVersion: 2
-    m_Bits: 1
+    m_Bits: 32
   m_MaxRayIntersections: 0
 --- !u!1 &1150013488
 GameObject:
@@ -854067,6 +854067,10 @@ PrefabInstance:
       propertyPath: wallet
       value: 
       objectReference: {fileID: 663981458}
+    - target: {fileID: 1500380645313149561, guid: 604f83d99ad6df74fbf8070044eae5a8, type: 3}
+      propertyPath: orthographic size
+      value: 50
+      objectReference: {fileID: 0}
     - target: {fileID: 3935185873287488858, guid: 604f83d99ad6df74fbf8070044eae5a8, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
