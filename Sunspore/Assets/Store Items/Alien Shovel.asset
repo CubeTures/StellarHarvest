@@ -12,15 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1bca075d7798bd4c821b96710b40382, type: 3}
   m_Name: Alien Shovel
   m_EditorClassIdentifier: Sunspore::Sunspore.StoreRecipeSO
-  recipeName: Alien Shovel
   recipeType: 0
   category: 3
   ingredients: []
   resultItem:
   - item: {fileID: 11400000, guid: 1fb5ff3296b429b408fa388d7a6e3dab, type: 2}
     amount: 1
-  description: 2nd Shovel Upgrade; digs up plants nearly instantly; harvests root
-    plants with better yield
   creditCost: 4000
   creditReward: 0
-  disabled: 0
+  disabled: 1

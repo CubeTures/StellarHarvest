@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b55df8fc0627f99cbf602cf22f90418, type: 3}
   m_Name: SpikeBramble(FullyGrown)
   m_EditorClassIdentifier: Sunspore::ItemSO
-  displayName: Spike Bramble(Fully Grown)
-  description: A fully grown spiky plant. Deals melee damage.
+  displayName: Spike Bramble Spikes
+  description: The harvest of a Spike Bramble. Sharp and useful for a variety of
+    tools.
   icon: {fileID: 21300000, guid: 93dca5b4b25822e48aed3426c4029636, type: 3}
   stackable: 1
   maxStackSize: 16

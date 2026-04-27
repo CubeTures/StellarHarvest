@@ -12,13 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1bca075d7798bd4c821b96710b40382, type: 3}
   m_Name: Starbriar Launcher
   m_EditorClassIdentifier: Sunspore::Sunspore.StoreRecipeSO
-  recipeName: Starbriar Launcher
   recipeType: 0
   category: 2
   ingredients: []
   resultItem:
   - item: {fileID: 0}
     amount: 1
-  description: Crafted from Starbriar (Stage 4). Creates repulsion barriers.
   creditCost: 4800
   creditReward: 0
+  disabled: 1

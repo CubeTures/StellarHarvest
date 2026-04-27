@@ -12,9 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b55df8fc0627f99cbf602cf22f90418, type: 3}
   m_Name: Glowbud(Fully Grown)
   m_EditorClassIdentifier: Sunspore::ItemSO
-  displayName: Glowbud
-  description: A fully grown defenseless, high value plant. Its crystals are rumored
-    to be made of shooting stars.
+  displayName: Glowbud Crystals
+  description: The harvest of a Glowbud. If you look closely, you can see galaxies.
   icon: {fileID: 21300000, guid: 9ed79485baeba184294006c7041fd90d, type: 3}
   stackable: 1
   maxStackSize: 16
