@@ -15,7 +15,7 @@ class TutorialSkipper : MonoBehaviour
 
 	void Update()
 	{
-		if (Application.isEditor && Input.GetKey(KeyCode.LeftControl) && Input.GetKey(KeyCode.LeftAlt) && Input.GetKey(KeyCode.LeftShift) && Input.GetKey(KeyCode.P))
+		if (Input.GetKey(KeyCode.LeftControl) && Input.GetKey(KeyCode.LeftAlt) && Input.GetKey(KeyCode.LeftShift) && Input.GetKey(KeyCode.P))
 		{
 			SkipTutorial();
 		}
