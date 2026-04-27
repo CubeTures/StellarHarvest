@@ -109,7 +109,7 @@ class NewStoreManager : MonoBehaviour
 			storeSell.gameObject.SetActive(false);
 			storeBuy.Populate(
 				recipes
-					.Where(r => r.recipeType == StoreRecipeType.buy && !r.disabled)
+					.Where(r => FilterSidebarContents(StoreRecipeType.buy, r))
 					.ToList(),
 				items
 			);
@@ -122,13 +122,20 @@ class NewStoreManager : MonoBehaviour
 			storeBuy.gameObject.SetActive(false);
 			storeSell.Populate(
 				recipes
-					.Where(r => r.recipeType == StoreRecipeType.sell && !r.disabled)
+					.Where(r => FilterSidebarContents(StoreRecipeType.sell, r))
 					.ToList(),
 				items
 			);
 			storeSell.Filter(currentFilter);
 			storeSell.gameObject.SetActive(true);
 		}
+	}
+
+	bool FilterSidebarContents(StoreRecipeType sidebar, StoreRecipeSO recipe)
+	{
+		bool isTutorial = TutorialManager.Instance != null && TutorialManager.Instance.IsTutorialActive;
+		bool availableDuringTutorial = isTutorial ? ((recipe.name.Contains("Glowbud") && recipe.creditCost > 0) || (recipe.name.Contains("Bloomburst") && recipe.creditReward > 0 && recipe.category == StoreRecipeCategory.Plants)) : true;
+		return availableDuringTutorial && recipe.recipeType == sidebar && !recipe.disabled;
 	}
 
 	public void SetStoreMode(StoreMode mode)

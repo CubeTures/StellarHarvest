@@ -94,6 +94,8 @@ public class StoreWorldInteractable : MonoBehaviour
 
         if (Input.GetKeyDown(interactKey))
         {
+            if (TutorialManager.Instance.IsTutorialActive && !TutorialManager.Instance.availableActions[TutorialManager.Actions.INVENTORY]) return;
+
             InventoryManager.Instance.CloseInventory();
             bool isStoreOpen = NewStoreManager.Instance.Toggle();
             UpdatePromptText(isStoreOpen);

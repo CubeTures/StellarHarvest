@@ -36,20 +36,6 @@ public class BuyStep : TutorialStep
 
     public override void Check()
     {
-        if (!_openedStoreThisStep)
-        {
-            bool storeOpenCountIncreased = PlayerPrefManager.GetStoreOpenCount() > _initialStoreOpenCount;
-            bool storeCurrentlyOpen = InventoryManager.Instance != null && InventoryManager.Instance.IsStoreOpened;
-
-            if (!storeOpenCountIncreased && !storeCurrentlyOpen)
-            {
-                return;
-            }
-
-            _openedStoreThisStep = true;
-            Debug.Log("Dialog: Great. Now use the store to buy the plants you need.");
-        }
-
         if (buyTargets == null || buyAmounts == null)
             return;
         if (buyTargets.Count != buyAmounts.Count || buyTargets.Count != _initialAmounts.Count)
