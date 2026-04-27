@@ -273579,6 +273579,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 9154883875026680414, guid: 906065912e6b61a45858656fdfb13bd3, type: 3}
+      propertyPath: groupRecipes.Array.data[1].members.Array.data[0].spread
+      value: 30
+      objectReference: {fileID: 0}
     - target: {fileID: 9191174918149629724, guid: 906065912e6b61a45858656fdfb13bd3, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
