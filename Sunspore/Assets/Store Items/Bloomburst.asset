@@ -12,14 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1bca075d7798bd4c821b96710b40382, type: 3}
   m_Name: Bloomburst
   m_EditorClassIdentifier: Sunspore::Sunspore.StoreRecipeSO
-  recipeName: Bloomburst
   recipeType: 0
   category: 1
   ingredients: []
   resultItem:
   - item: {fileID: 11400000, guid: 1d325e65992f7924eabffbd694fd446b, type: 2}
     amount: 1
-  description: A standard projectile plant seed. Shoots bursts of homing bullets.
-  creditCost: 600
+  creditCost: 1000
   creditReward: 0
   disabled: 0

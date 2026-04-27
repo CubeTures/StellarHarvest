@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 namespace Sunspore
@@ -20,8 +21,20 @@ namespace Sunspore
 		{
 			base.Start();
 			_animator = GetComponent<Animator>();
-			var collider = GetComponent<BoxCollider>();
-			NavMeshTerrain.Instance.AddObstacle(gameObject, collider);
+			var box = GetComponent<BoxCollider>();
+			if (box == null) return;
+			if (NavMeshTerrain.Instance != null)
+				NavMeshTerrain.Instance.AddObstacle(gameObject, box);
+			else
+				StartCoroutine(RegisterNavObstacleWhenReady(box));
+		}
+
+		IEnumerator RegisterNavObstacleWhenReady(BoxCollider box)
+		{
+			for (int f = 0; f < 32 && NavMeshTerrain.Instance == null; f++)
+				yield return null;
+			if (NavMeshTerrain.Instance != null)
+				NavMeshTerrain.Instance.AddObstacle(gameObject, box);
 		}
 
 		protected override void OnSeedStage()
@@ -101,9 +114,11 @@ namespace Sunspore
 			}
 		}
 
-		private void Oestroy()
+		protected override void OnDestroy()
 		{
-			NavMeshTerrain.Instance.RemoveObstacle(gameObject);			
+			if (NavMeshTerrain.Instance != null)
+				NavMeshTerrain.Instance.RemoveObstacle(gameObject);
+			base.OnDestroy();
 		}
 	}
 }

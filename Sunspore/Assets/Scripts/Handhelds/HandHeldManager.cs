@@ -192,10 +192,18 @@ namespace Sunspore
                 OnAbility?.Invoke((Time.time - castTime) / lastUsedHandHeld.abilityDuration);
             }
 
-            // Get dragged item
-            if (InventoryManager.Instance.pointerDown)
+            // Get dragged item (seeds, etc. have no HandHeld on prefab — must null-check the chain)
+            if (InventoryManager.Instance != null && InventoryManager.Instance.pointerDown)
             {
-                draggedHandHeld = InventoryManager.Instance.GetDraggedItemSO().prefab.GetComponent<HandHeld>();
+                var itemSo = InventoryManager.Instance.GetDraggedItemSO();
+                if (itemSo != null && itemSo.prefab != null)
+                {
+                    draggedHandHeld = itemSo.prefab.GetComponent<HandHeld>();
+                }
+                else
+                {
+                    draggedHandHeld = null;
+                }
             }
             else
             {

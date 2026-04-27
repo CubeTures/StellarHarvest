@@ -29,6 +29,18 @@ public class HarvestStep : TutorialStep
         }
 
         _initialAmount = GetCurrentAmount();
+
+        // If the player already harvested (inventory gained this item before this step), _initialAmount
+        // would make the delta check require an extra impossible harvest — treat as already complete.
+        if (TutorialManager.Instance != null
+            && inventoryManager != null
+            && harvestTarget != null
+            && _initialAmount >= harvestAmount)
+        {
+            TutorialManager.Instance.CompleteStep();
+            return;
+        }
+
         Debug.Log("Harvest native plants");
     }
 
