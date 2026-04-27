@@ -93,10 +93,9 @@ namespace Sunspore
             currentState = SnapperState.Cooldown;
             yield return new WaitForSeconds(cooldown);
 
+            SFXManager.StopLoop("pitsnappermunch");
             _animator.ResetTrigger("StopLoop");
             _animator.SetTrigger("StopLoop");
-
-            SFXManager.StopLoop("pitsnappermunch");
 
             currentState = SnapperState.Idle;
             isAttacking = false;

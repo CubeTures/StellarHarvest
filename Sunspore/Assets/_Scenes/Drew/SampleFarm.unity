@@ -272301,16 +272301,20 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7067304971246511516, guid: 906065912e6b61a45858656fdfb13bd3, type: 3}
+      propertyPath: nightStart
+      value: 0.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 7067304971246511516, guid: 906065912e6b61a45858656fdfb13bd3, type: 3}
       propertyPath: nightVolume
       value: 
       objectReference: {fileID: 3487351974474608840}
     - target: {fileID: 7067304971246511516, guid: 906065912e6b61a45858656fdfb13bd3, type: 3}
       propertyPath: dayLengthSeconds
-      value: 180
+      value: 150
       objectReference: {fileID: 0}
     - target: {fileID: 7067304971246511516, guid: 906065912e6b61a45858656fdfb13bd3, type: 3}
       propertyPath: initialTimeOfDay
-      value: 0.49
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7099081830056554203, guid: 906065912e6b61a45858656fdfb13bd3, type: 3}
       propertyPath: m_AnchorMax.y
@@ -390655,12 +390659,20 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2600775922056441537, guid: 9d6bc5b7f8a717a4faeefeecd24a9f44, type: 3}
+      propertyPath: bulletDelay
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2600775922056441537, guid: 9d6bc5b7f8a717a4faeefeecd24a9f44, type: 3}
       propertyPath: currentStage
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2600775922056441537, guid: 9d6bc5b7f8a717a4faeefeecd24a9f44, type: 3}
       propertyPath: transitionFinish
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2600775922056441537, guid: 9d6bc5b7f8a717a4faeefeecd24a9f44, type: 3}
+      propertyPath: _fullyGrownAbilityCooldown
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 6794809191556961585, guid: 9d6bc5b7f8a717a4faeefeecd24a9f44, type: 3}
       propertyPath: m_Name
