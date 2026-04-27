@@ -40,6 +40,7 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
     public int SelectedHotbarIndex => selectedHotbarIndex;
     GameObject draggedObject;
     GameObject lastItemSlot;
+    readonly Dictionary<Graphic, bool> draggedObjectRaycastStates = new();
     bool hasLoggedMissingHandParent = false;
     public bool pointerDown = false;
     public bool IsStoreOpened => isStoreOpened;
@@ -61,15 +62,6 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
         AutoPopulateHeldItems();
         HotBarItemChanged();
         Cursor.lockState = CursorLockMode.Locked;
-
-        for (int i = 0; i < hotbarSlots.Length; i++)
-        {
-            int index = i;
-            Button btn = hotbarSlots[i].GetComponent<Button>();
-            if (btn == null)
-                btn = hotbarSlots[i].AddComponent<Button>();
-            btn.onClick.AddListener(() => SelectHotbarSlot(index));
-        }
     }
 
     public void SelectHotbarSlot(int index)
@@ -815,16 +807,23 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
         if (eventData.button == PointerEventData.InputButton.Left)
         {
             GameObject clickedObject = eventData.pointerCurrentRaycast.gameObject;
-            InventorySlot slot = clickedObject.GetComponent<InventorySlot>();
+            InventorySlot slot = ResolveSlotFromRaycast(clickedObject);
+            int hotbarIndex = GetHotbarIndex(slot != null ? slot.gameObject : null);
+
+            if (hotbarIndex >= 0)
+            {
+                SelectHotbarSlot(hotbarIndex);
+            }
 
             if (slot != null && slot.heldItem != null)
             {
                 draggedObject = slot.heldItem;
                 slot.heldItem = null;
                 slot.RefreshTooltip();
-                lastItemSlot = clickedObject;
+                lastItemSlot = slot.gameObject;
                 scrollRect.enabled = false;
                 draggedObject.transform.SetParent(transform);
+                BeginDragRaycastOverride(draggedObject);
                 SFXManager.Play("inventoryclick");
             }
         }
@@ -836,7 +835,8 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
         if (draggedObject != null && eventData.pointerCurrentRaycast.gameObject != null && eventData.button == PointerEventData.InputButton.Left)
         {
             GameObject clickedObject = eventData.pointerCurrentRaycast.gameObject;
-            InventorySlot slot = clickedObject.GetComponent<InventorySlot>();
+            InventorySlot slot = ResolveSlotFromRaycast(clickedObject);
+            bool isDropTarget = IsDropItemTarget(clickedObject);
 
             //There isnt item in the slot - place item
             if (slot != null && slot.heldItem == null)
@@ -880,7 +880,7 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
                 }
             }
             //Return item to last slot
-            else if (clickedObject.name != "DropItem")
+            else if (!isDropTarget)
             {
                 if (lastItemSlot != null)
                 {
@@ -920,6 +920,7 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
 
             HotBarItemChanged();
             SFXManager.Play("inventoryclick");
+            EndDragRaycastOverride();
             draggedObject = null;
             scrollRect.enabled = true;
         }
@@ -930,9 +931,98 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
 
             HotBarItemChanged();
             SFXManager.Play("inventoryclick");
+            EndDragRaycastOverride();
             draggedObject = null;
             scrollRect.enabled = true;
         }
+    }
+
+    private void BeginDragRaycastOverride(GameObject itemObject)
+    {
+        draggedObjectRaycastStates.Clear();
+        if (itemObject == null)
+        {
+            return;
+        }
+
+        Graphic[] graphics = itemObject.GetComponentsInChildren<Graphic>(true);
+        foreach (Graphic graphic in graphics)
+        {
+            if (graphic == null)
+            {
+                continue;
+            }
+
+            draggedObjectRaycastStates[graphic] = graphic.raycastTarget;
+            graphic.raycastTarget = false;
+        }
+    }
+
+    private void EndDragRaycastOverride()
+    {
+        foreach (var entry in draggedObjectRaycastStates)
+        {
+            if (entry.Key != null)
+            {
+                entry.Key.raycastTarget = entry.Value;
+            }
+        }
+
+        draggedObjectRaycastStates.Clear();
+    }
+
+    private InventorySlot ResolveSlotFromRaycast(GameObject clickedObject)
+    {
+        if (clickedObject == null)
+        {
+            return null;
+        }
+
+        return clickedObject.GetComponentInParent<InventorySlot>();
+    }
+
+    private bool IsDropItemTarget(GameObject clickedObject)
+    {
+        if (clickedObject == null)
+        {
+            return false;
+        }
+
+        if (clickedObject.name == "DropItem")
+        {
+            return true;
+        }
+
+        Transform dropParent = clickedObject.transform.parent;
+        while (dropParent != null)
+        {
+            if (dropParent.name == "DropItem")
+            {
+                return true;
+            }
+
+            dropParent = dropParent.parent;
+        }
+
+        return false;
+    }
+
+    private int GetHotbarIndex(GameObject slotObject)
+    {
+        if (slotObject == null || hotbarSlots == null)
+        {
+            return -1;
+        }
+
+        for (int i = 0; i < hotbarSlots.Length; i++)
+        {
+            if (hotbarSlots[i] == slotObject)
+            {
+                return i;
+            }
+        }
+
+        return -1;
     }
 
     public void ItemPicked(GameObject pickedItem)
