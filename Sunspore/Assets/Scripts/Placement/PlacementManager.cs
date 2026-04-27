@@ -52,6 +52,12 @@ public class PlacementManager : MonoBehaviour
 
     void Update()
     {
+        // place dragged item before updated previews so allowPlacement doesn't bug out to false
+        if (!EventSystem.current.IsPointerOverGameObject() && Input.GetMouseButtonUp(0))
+        {
+            PlaceDraggedItem(allowPlacement);
+        }
+
         ShowPreview();
         ColorPreviews();
 
@@ -59,11 +65,6 @@ public class PlacementManager : MonoBehaviour
         if (!EventSystem.current.IsPointerOverGameObject() && Input.GetMouseButtonDown(0))
         {
             PlaceItem();
-        }
-
-        if (!EventSystem.current.IsPointerOverGameObject() && Input.GetMouseButtonUp(0))
-        {
-            PlaceDraggedItem();
         }
 
         if (player.anim.GetBool("isMoving") && placingCoroutine != null)
@@ -78,12 +79,12 @@ public class PlacementManager : MonoBehaviour
             draggedPreview = currentPreviews[0].transform.position;
         }
 
-        // Debug.Log("Allow Placement: " + allowPlacement);
+        //Debug.Log("Allow Placement: " + allowPlacement);
     }
 
     void ShowPreview()
     {
-        if (!EventSystem.current.IsPointerOverGameObject() && ScreenToWorld(Input.mousePosition, out Vector3 position))
+        if (ScreenToWorld(Input.mousePosition, out Vector3 position))
         {
             // Debug.Log("Placing Allowed");
             ItemSO item = null;
@@ -127,6 +128,7 @@ public class PlacementManager : MonoBehaviour
                     currentPreviews.Add(inst);
                 }
             }
+
             foreach (var preview in currentPreviews)
             {
                 float sizeX = preview.transform.localScale.x;
@@ -189,7 +191,13 @@ public class PlacementManager : MonoBehaviour
                 continue;
             }
 
-            return true;
+            Player player = collider.GetComponentInParent<Player>();
+            if(player != null)
+            {
+                continue;
+            }
+
+                return true;
         }
 
         return false;
@@ -290,10 +298,10 @@ public class PlacementManager : MonoBehaviour
         }
     }
 
-    void PlaceDraggedItem()
+    void PlaceDraggedItem(bool canPlace)
     {
-        Debug.Log(allowPlacement + " " + isPlacing);
-        if (allowPlacement && !isPlacing)
+        Debug.Log("Allow Placement: " + allowPlacement + " Is Placing: " + isPlacing);
+        if (canPlace && !isPlacing)
         {
             Vector3 currPlace = currentPreviews.Count > 0 ? currentPreviews[0].transform.position : draggedPreview;
             InventorySlot slot = draggedSlot;
@@ -309,7 +317,7 @@ public class PlacementManager : MonoBehaviour
         {
             placingCoroutine = null;
             isPlacing = false;
-            yield return null;
+            yield break;
         }
         player.Planting();
 
