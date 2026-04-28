@@ -3386,6 +3386,7 @@ MonoBehaviour:
     tooltipText: Weapons
     img: {fileID: 0}
     selected: 0
+  buttonReferences: []
 --- !u!1 &1295996034982026932
 GameObject:
   m_ObjectHideFlags: 0
@@ -7499,6 +7500,7 @@ MonoBehaviour:
     tooltipText: Weapons
     img: {fileID: 0}
     selected: 0
+  buttonReferences: []
 --- !u!1 &2293216366086283979
 GameObject:
   m_ObjectHideFlags: 0
@@ -8325,7 +8327,7 @@ MonoBehaviour:
             m_BoolArgument: 0
           m_CallState: 2
     defaultSelected: 1
-    tooltipText: Buy
+    tooltipText: 
     img: {fileID: 0}
     selected: 0
   - unselectedSprite: {fileID: 21300000, guid: 33615adb7ca72c34a8e14a8d6d338cea, type: 3}
@@ -8348,9 +8350,10 @@ MonoBehaviour:
             m_BoolArgument: 0
           m_CallState: 2
     defaultSelected: 0
-    tooltipText: Sell
+    tooltipText: 
     img: {fileID: 0}
     selected: 0
+  buttonReferences: []
 --- !u!1 &2518295720819434174
 GameObject:
   m_ObjectHideFlags: 0
@@ -13973,6 +13976,7 @@ MonoBehaviour:
     tooltipText: Debt
     img: {fileID: 0}
     selected: 0
+  buttonReferences: []
 --- !u!1 &4051543326540435009
 GameObject:
   m_ObjectHideFlags: 0
@@ -18832,7 +18836,7 @@ MonoBehaviour:
             m_BoolArgument: 0
           m_CallState: 2
     defaultSelected: 0
-    tooltipText: Buy
+    tooltipText: 
     img: {fileID: 0}
     selected: 0
   - unselectedSprite: {fileID: 21300000, guid: 33615adb7ca72c34a8e14a8d6d338cea, type: 3}
@@ -18855,9 +18859,10 @@ MonoBehaviour:
             m_BoolArgument: 0
           m_CallState: 2
     defaultSelected: 1
-    tooltipText: Sell
+    tooltipText: 
     img: {fileID: 0}
     selected: 0
+  buttonReferences: []
 --- !u!1 &5595423504693896817
 GameObject:
   m_ObjectHideFlags: 0
@@ -27456,6 +27461,7 @@ MonoBehaviour:
     tooltipText: Weapons
     img: {fileID: 0}
     selected: 0
+  buttonReferences: []
 --- !u!1 &7915155759094037531
 GameObject:
   m_ObjectHideFlags: 0
@@ -28260,6 +28266,7 @@ MonoBehaviour:
     tooltipText: Weapons
     img: {fileID: 0}
     selected: 0
+  buttonReferences: []
 --- !u!1 &8174445689759750798
 GameObject:
   m_ObjectHideFlags: 0
