@@ -58,7 +58,7 @@ namespace Sunspore
                     var e = other.GetComponent<Enemy>();
                     if (e != null)
                     {
-                        e.TakeDamage(_damage, Vector2.zero, 0f);
+                        e.TakeDamage(_damage, Vector2.zero, 0f, damageFromPlayer: true);
                         SFXManager.Play("hitenemy");
                     }
                 }
