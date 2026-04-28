@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.AI;
 using System.Collections;
 namespace Sunspore
 {
@@ -35,6 +36,18 @@ namespace Sunspore
         [SerializeField] protected GameObject glowEffect;
         [SerializeField] protected GameObject waterDropPrefab;
         private GameObject waterDropInstance;
+
+        [Header("Walk sway")]
+        [SerializeField] protected float swayTriggerRadius = 0.55f;
+        [SerializeField] protected float maxSwayDegrees = 10f;
+        [SerializeField] protected float swayFrequency = 9f;
+        [SerializeField] protected float swayBlendInSpeed = 6f;
+        [SerializeField] protected float swayBlendOutSpeed = 2.5f;
+        [SerializeField] protected float swayMinHorizontalSpeed = 0.25f;
+
+        Vector3 _swayBaseEuler;
+        float _swayBlend;
+        bool _movingWalkerThisPhysicsStep;
 
         [Header("Items")]
         [SerializeField] protected ItemSO seedItem;
@@ -82,6 +95,63 @@ namespace Sunspore
 
             // Start as seed
             SetGrowthStage(currentStage);
+
+            _swayBaseEuler = transform.localEulerAngles;
+            EnsurePlantSwayTrigger();
+        }
+
+        void EnsurePlantSwayTrigger()
+        {
+            foreach (var c in GetComponents<Collider>())
+            {
+                if (c.isTrigger)
+                    return;
+            }
+
+            var sphere = gameObject.AddComponent<SphereCollider>();
+            sphere.isTrigger = true;
+            sphere.radius = swayTriggerRadius;
+            sphere.center = Vector3.zero;
+        }
+
+        static bool IsWalkerForPlantSway(Collider c)
+        {
+            return c.GetComponentInParent<Player>() != null
+                || c.GetComponentInParent<Enemy>() != null;
+        }
+
+        /// <summary>XZ horizontal speed – ignores idle jitter.</summary>
+        static float HorizontalPlaneSpeedForPlantSway(Collider other)
+        {
+            var rb =
+                other.attachedRigidbody != null
+                    ? other.attachedRigidbody
+                    : other.GetComponentInParent<Rigidbody>();
+            if (rb != null)
+            {
+                Vector3 v = rb.linearVelocity;
+                v.y = 0f;
+                return v.magnitude;
+            }
+
+            NavMeshAgent agent = other.GetComponentInParent<NavMeshAgent>();
+            if (agent != null && agent.enabled)
+            {
+                Vector3 v = agent.velocity;
+                v.y = 0f;
+                return v.magnitude;
+            }
+
+            return 0f;
+        }
+
+        void OnTriggerStay(Collider other)
+        {
+            if (!IsWalkerForPlantSway(other))
+                return;
+            if (HorizontalPlaneSpeedForPlantSway(other) < swayMinHorizontalSpeed)
+                return;
+            _movingWalkerThisPhysicsStep = true;
         }
 
         protected virtual void LateUpdate()
@@ -119,6 +189,25 @@ namespace Sunspore
                 // Fully grown abilities update
                 UpdateFullyGrownAbilities();
             }
+
+            ApplyWalkerSway();
+        }
+
+        void ApplyWalkerSway()
+        {
+            float target = _movingWalkerThisPhysicsStep ? 1f : 0f;
+            _movingWalkerThisPhysicsStep = false;
+
+            float speed =
+                target > _swayBlend ? swayBlendInSpeed : swayBlendOutSpeed;
+            _swayBlend = Mathf.MoveTowards(_swayBlend, target, Time.deltaTime * speed);
+
+            float sway =
+                Mathf.Sin(Time.time * swayFrequency) * maxSwayDegrees * _swayBlend;
+            transform.localEulerAngles = new Vector3(
+                _swayBaseEuler.x,
+                _swayBaseEuler.y,
+                _swayBaseEuler.z + sway);
         }
 
         protected virtual void SetGrowthStage(GrowthStage stage)
