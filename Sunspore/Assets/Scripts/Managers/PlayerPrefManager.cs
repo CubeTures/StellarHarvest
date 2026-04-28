@@ -1,3 +1,4 @@
+using System.Linq;
 using UnityEngine;
 
 public static class PlayerPrefManager
@@ -140,19 +141,95 @@ public static class PlayerPrefManager
 
     public static void SetResolution(int resolutionIndex)
     {
-        PlayerPrefs.SetInt("Resolution", resolutionIndex);
+        PlayerPrefs.SetInt("ResolutionHighFirst", resolutionIndex);
     }
 
-    public static int GetResolution()
+    /// <summary>
+    /// Same ordering as the options dropdown: largest pixel count first, then highest refresh.
+    /// </summary>
+    public static Resolution[] GetResolutionsSortedHighFirst()
     {
-        if (PlayerPrefs.HasKey("Resolution"))
+        return Screen.resolutions
+            .OrderByDescending(r => r.width * r.height)
+            .ThenByDescending(r => (float)r.refreshRateRatio.value)
+            .ToArray();
+    }
+
+#if !UNITY_EDITOR
+    /// <summary>
+    /// Applies saved resolution before the first scene so gameplay is not stuck at the OS/window default
+    /// until the options menu opens (especially relevant on Linux standalone builds).
+    /// </summary>
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSplashScreen)]
+    static void ApplySavedScreenResolutionBootstrap()
+    {
+        ApplySavedScreenResolution();
+    }
+#endif
+
+    /// <summary>
+    /// Applies width/height/fullscreen from prefs. Safe to call multiple times (e.g. menu + bootstrap).
+    /// </summary>
+    public static void ApplySavedScreenResolution()
+    {
+        Resolution[] sorted = GetResolutionsSortedHighFirst();
+        if (sorted.Length == 0)
+            return;
+
+        int idx = GetResolutionIndex(sorted);
+        Resolution res = sorted[idx];
+        Screen.SetResolution(res.width, res.height, GetFullscreen());
+    }
+
+    /// <summary>
+    /// Index into <paramref name="sortedHighFirst"/> (width×height descending, then refresh descending).
+    /// Defaults to 0 (highest).
+    /// <para>
+    /// Older builds initialized the dropdown index to 0 and only overwrote it when
+    /// <see cref="Screen.currentResolution"/> matched an entry in <see cref="Screen.resolutions"/>.
+    /// On Linux (Wayland/scaling/refresh reporting), that match often failed, leaving index 0 — and Unity lists
+    /// modes ascending, so 0 was the smallest resolution.
+    /// </para>
+    /// Migrates legacy <c>Resolution</c> prefs by matching WxH (and refresh when possible).
+    /// </summary>
+    public static int GetResolutionIndex(Resolution[] sortedHighFirst)
+    {
+        int n = sortedHighFirst.Length;
+        if (n == 0)
+            return 0;
+
+        const string key = "ResolutionHighFirst";
+        if (PlayerPrefs.HasKey(key))
+            return Mathf.Clamp(PlayerPrefs.GetInt(key), 0, n - 1);
+
+        const string legacyKey = "Resolution";
+        if (PlayerPrefs.HasKey(legacyKey))
         {
-            return PlayerPrefs.GetInt("Resolution");
+            var raw = Screen.resolutions;
+            if (raw.Length > 0)
+            {
+                int oldIdx = Mathf.Clamp(PlayerPrefs.GetInt(legacyKey), 0, raw.Length - 1);
+                Resolution r = raw[oldIdx];
+                for (int i = 0; i < sortedHighFirst.Length; i++)
+                {
+                    if (sortedHighFirst[i].width != r.width || sortedHighFirst[i].height != r.height)
+                        continue;
+                    if (Mathf.Approximately(
+                            (float)sortedHighFirst[i].refreshRateRatio.value,
+                            (float)r.refreshRateRatio.value))
+                        return i;
+                }
+
+                // Refresh may differ slightly vs. listed modes (common on Linux); keep WxH.
+                for (int i = 0; i < sortedHighFirst.Length; i++)
+                {
+                    if (sortedHighFirst[i].width == r.width && sortedHighFirst[i].height == r.height)
+                        return i;
+                }
+            }
         }
-        else
-        {
-            return Screen.resolutions.Length - 1;
-        }
+
+        return 0;
     }
 
     public static void SetVolume(float volume)
@@ -376,6 +453,7 @@ public static class PlayerPrefManager
             "MoveCount",
             "CraftingCount",
             "Resolution",
+            "ResolutionHighFirst",
             "Main volume",
             "Music volume",
             "SFX volume",

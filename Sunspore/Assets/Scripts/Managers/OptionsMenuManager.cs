@@ -21,7 +21,7 @@ public class OptionsMenuManager : MonoBehaviour
 
     void Start()
     {
-        resolutions = Screen.resolutions;
+        resolutions = PlayerPrefManager.GetResolutionsSortedHighFirst();
 
         resolutionDropdown.ClearOptions();
 
@@ -33,12 +33,10 @@ public class OptionsMenuManager : MonoBehaviour
             float refreshRate = Mathf.Round((float)resolutions[i].refreshRateRatio.value * 100f) / 100f; // Round to 2 decimal places
             string option = resolutions[i].width + " x " + resolutions[i].height + ", " + refreshRate + " Hz";
             options.Add(option);
-
-            if (resolutions[i].width == Screen.currentResolution.width && resolutions[i].height == Screen.currentResolution.height && resolutions[i].refreshRateRatio.value == Screen.currentResolution.refreshRateRatio.value)
-            {
-                currentResolutionIndex = i;
-            }
         }
+
+        if (resolutions.Length > 0)
+            currentResolutionIndex = PlayerPrefManager.GetResolutionIndex(resolutions);
 
         resolutionDropdown.AddOptions(options);
         resolutionDropdown.value = currentResolutionIndex;
