@@ -6,7 +6,7 @@ using UnityEngine.EventSystems;
 using System;
 using System.Collections;
 
-public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
+public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IPointerClickHandler
 {
     public static InventoryManager Instance { get; private set; }
     private List<ItemTypeAndAmount> items = new List<ItemTypeAndAmount>();
@@ -62,15 +62,6 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
         AutoPopulateHeldItems();
         HotBarItemChanged();
         Cursor.lockState = CursorLockMode.Locked;
-
-        for (int i = 0; i < hotbarSlots.Length; i++)
-        {
-            int index = i;
-            Button btn = hotbarSlots[i].GetComponent<Button>();
-            if (btn == null)
-                btn = hotbarSlots[i].AddComponent<Button>();
-            btn.onClick.AddListener(() => SelectHotbarSlot(index));
-        }
     }
 
     public void SelectHotbarSlot(int index)
@@ -800,6 +791,63 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
         }
     }
 
+    /// <summary>
+    /// Resolves which inventory/hotbar cell was hit. Raycasts often hit child graphics or item icons reparented to a shared container.
+    /// </summary>
+    InventorySlot GetInventorySlotFromRaycastObject(GameObject hitObject)
+    {
+        if (hitObject == null) return null;
+
+        InventorySlot onHit = hitObject.GetComponentInParent<InventorySlot>();
+        if (onHit != null) return onHit;
+
+        InventoryItem item = hitObject.GetComponentInParent<InventoryItem>();
+        if (item == null) return null;
+        return FindSlotHoldingItem(item.gameObject);
+    }
+
+    InventorySlot FindSlotHoldingItem(GameObject itemRoot)
+    {
+        if (itemRoot == null) return null;
+        if (slots != null)
+        {
+            for (int i = 0; i < slots.Length; i++)
+            {
+                if (slots[i] == null) continue;
+                InventorySlot s = slots[i].GetComponent<InventorySlot>();
+                if (s != null && s.heldItem == itemRoot) return s;
+            }
+        }
+        if (hotbarSlots != null)
+        {
+            for (int i = 0; i < hotbarSlots.Length; i++)
+            {
+                if (hotbarSlots[i] == null) continue;
+                InventorySlot s = hotbarSlots[i].GetComponent<InventorySlot>();
+                if (s != null && s.heldItem == itemRoot) return s;
+            }
+        }
+        return null;
+    }
+
+    /// <summary>Select hotbar slot by clicking (keyboard/scroll unchanged). Hotbar slots must not use UI.Button — it blocks drag to InventoryManager.</summary>
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        if (eventData.button != PointerEventData.InputButton.Left) return;
+        if (hotbarSlots == null) return;
+        GameObject go = eventData.pointerPress;
+        if (go == null) return;
+        InventorySlot slot = go.GetComponentInParent<InventorySlot>();
+        if (slot == null) return;
+        for (int i = 0; i < hotbarSlots.Length; i++)
+        {
+            if (hotbarSlots[i] == null) continue;
+            if (hotbarSlots[i].GetComponent<InventorySlot>() != slot) continue;
+            SelectHotbarSlot(i);
+            return;
+        }
+    }
+
     public void OnPointerDown(PointerEventData eventData)
     {
         //if(GetSelectedItem() && (GetSelectedItem().category == ItemCategory.Weapons))
@@ -810,14 +858,14 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
         if (eventData.button == PointerEventData.InputButton.Left)
         {
             GameObject clickedObject = eventData.pointerCurrentRaycast.gameObject;
-            InventorySlot slot = clickedObject.GetComponent<InventorySlot>();
+            InventorySlot slot = GetInventorySlotFromRaycastObject(clickedObject);
 
             if (slot != null && slot.heldItem != null)
             {
                 draggedObject = slot.heldItem;
                 slot.heldItem = null;
                 slot.RefreshTooltip();
-                lastItemSlot = clickedObject;
+                lastItemSlot = slot.gameObject;
                 scrollRect.enabled = false;
                 draggedObject.transform.SetParent(transform);
                 SFXManager.Play("inventoryclick");
@@ -831,7 +879,7 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
         if (draggedObject != null && eventData.pointerCurrentRaycast.gameObject != null && eventData.button == PointerEventData.InputButton.Left)
         {
             GameObject clickedObject = eventData.pointerCurrentRaycast.gameObject;
-            InventorySlot slot = clickedObject.GetComponent<InventorySlot>();
+            InventorySlot slot = GetInventorySlotFromRaycastObject(clickedObject);
 
             //There isnt item in the slot - place item
             if (slot != null && slot.heldItem == null)
