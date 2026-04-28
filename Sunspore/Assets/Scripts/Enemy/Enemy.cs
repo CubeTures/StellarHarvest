@@ -40,6 +40,8 @@ namespace Sunspore
         Pathfinding pathfinding;
         bool attackingPlayer = false;
         bool isAttacking = false;
+        [SerializeField] float playerAggroDuration = 8f;
+        float _playerAggroUntil = -Mathf.Infinity;
         [SerializeField] private GameObject _hitEffect;
         [SerializeField] private GameObject _deathEffect;
         public bool EnableStepSfx = true;
@@ -61,9 +63,11 @@ namespace Sunspore
             pathfinding.RegisterEnemy(this);
         }
 
-        public void TakeDamage(int weaponDamage, Vector2 direction, float knockback)
+        public void TakeDamage(int weaponDamage, Vector2 direction, float knockback, bool damageFromPlayer = false)
         {
             health -= weaponDamage;
+            if (damageFromPlayer)
+                _playerAggroUntil = Time.time + playerAggroDuration;
             Instantiate(_hitEffect, transform.position + new Vector3(0, 1, 0), Quaternion.identity);
             if (_spriteRenderer != null)
             {
@@ -119,7 +123,12 @@ namespace Sunspore
 
             Transform targetPlant = null;
             if (pathfinding != null)
-                targetPlant = pathfinding.GetNextTarget(this);
+            {
+                targetPlant =
+                    Time.time < _playerAggroUntil
+                        ? pathfinding.GetPlayerTransform()
+                        : pathfinding.GetNextTarget(this);
+            }
 
             if (agent != null && agent.enabled && agent.isOnNavMesh && targetPlant != null)
             {

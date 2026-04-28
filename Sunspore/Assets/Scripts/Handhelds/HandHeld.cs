@@ -41,7 +41,7 @@ namespace Sunspore
                 {
                     Vector3 direction = (enemy.transform.position - boxCenter).normalized;
                     Vector2 dir = new Vector2(direction.x, direction.z);
-                    enemy.TakeDamage(damage, dir, knockback);
+                    enemy.TakeDamage(damage, dir, knockback, damageFromPlayer: true);
                     // Play a player-hit SFX when the player damages an enemy
                     SFXManager.Play("hitenemy");
                 }
