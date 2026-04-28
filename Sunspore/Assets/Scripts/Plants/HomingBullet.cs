@@ -131,7 +131,7 @@ namespace Sunspore
         {
             if (_spriteRenderer != null)
             {
-                _spriteRenderer.sortingOrder = (int)(-transform.position.z * 100);
+                _spriteRenderer.sortingOrder = (int)(-transform.position.z * 100) + 1;
             }
         }
 
