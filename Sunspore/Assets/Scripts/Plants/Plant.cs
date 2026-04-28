@@ -35,7 +35,10 @@ namespace Sunspore
         [Header("Effects")]
         [SerializeField] protected GameObject glowEffect;
         [SerializeField] protected GameObject waterDropPrefab;
+        [Tooltip("Draw order above the plant sprite (same layer = larger sorts on top).")]
+        [SerializeField] int waterDropSortingOffset = 1;
         private GameObject waterDropInstance;
+        SpriteRenderer _waterDropSpriteRenderer;
 
         [Header("Walk sway")]
         [SerializeField] protected float swayTriggerRadius = 0.55f;
@@ -90,6 +93,7 @@ namespace Sunspore
             if (waterDropPrefab != null)
             {
                 waterDropInstance = Instantiate(waterDropPrefab, transform);
+                ConfigureWaterDropInstance();
                 waterDropInstance.SetActive(!watered);
             }
 
@@ -98,6 +102,29 @@ namespace Sunspore
 
             _swayBaseEuler = transform.localEulerAngles;
             EnsurePlantSwayTrigger();
+        }
+
+        void ConfigureWaterDropInstance()
+        {
+            if (waterDropInstance == null)
+                return;
+
+            _waterDropSpriteRenderer = waterDropInstance.GetComponent<SpriteRenderer>();
+            if (_waterDropSpriteRenderer == null)
+                _waterDropSpriteRenderer =
+                    waterDropInstance.GetComponentInChildren<SpriteRenderer>(true);
+
+            RefreshWaterDropSorting();
+        }
+
+        void RefreshWaterDropSorting()
+        {
+            if (_waterDropSpriteRenderer == null || _spriteRenderer == null)
+                return;
+
+            _waterDropSpriteRenderer.sortingLayerID = _spriteRenderer.sortingLayerID;
+            _waterDropSpriteRenderer.sortingOrder =
+                _spriteRenderer.sortingOrder + waterDropSortingOffset;
         }
 
         void EnsurePlantSwayTrigger()
@@ -240,6 +267,7 @@ namespace Sunspore
             }
 
             _spriteRenderer.sortingOrder = (int)(-transform.position.z * 100) - 50 * 100;
+            RefreshWaterDropSorting();
         }
 
         protected virtual void GrowToJuvenile()
