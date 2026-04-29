@@ -187,7 +187,7 @@ namespace Sunspore
                 Vector3 offset = new Vector3(
                     Random.Range(-0.5f, 0.5f),
                     Random.Range(-0.5f, 0.5f),
-                    0f
+                    -0.5f
                 );
                 GameObject bullet = Instantiate(
                     _homingBulletPrefab,

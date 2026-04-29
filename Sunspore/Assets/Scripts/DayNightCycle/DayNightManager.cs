@@ -15,7 +15,7 @@ namespace Sunspore
         [SerializeField] EnemySpawner spawner;
         [SerializeField] MusicManager musicManager;
         [SerializeField] GameObject Light;
-        [SerializeField] public float dayLengthSeconds = 30f;
+        [SerializeField] public float dayLengthSeconds = 180f;
         [SerializeField, Range(0f, 1f)] float initialTimeOfDay = 0f;
         [SerializeField] TMP_Dropdown timeSelector;
         [SerializeField] GameObject nightVolume;
