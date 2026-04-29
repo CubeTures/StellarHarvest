@@ -138,7 +138,7 @@ namespace Sunspore
                 bool availableDuringTutorial = isTutorial ? ((recipes[i].name.Contains("Glowbud") && recipes[i].creditCost > 0) || (recipes[i].name.Contains("Bloomburst") && recipes[i].creditReward > 0 && recipes[i].category == StoreRecipeCategory.Plants)) : true;
                 if (typeMatch && categoryMatch && availableDuringTutorial)
                 {
-                    Debug.Log(recipes[i].name);
+                    // Debug.Log(recipes[i].name);
                     matched.Add(recipes[i]);
                 }
             }
@@ -190,13 +190,13 @@ namespace Sunspore
                 }
                 if (storeRecipe == null)
                 {
-                    Debug.LogWarning($"StoreManager: missing StoreRecipe component on '{recipeUIParent.GetChild(i).name}'");
+                    // Debug.LogWarning($"StoreManager: missing StoreRecipe component on '{recipeUIParent.GetChild(i).name}'");
                     continue;
                 }
 
                 if (storeRecipeSO == null)
                 {
-                    Debug.LogWarning($"StoreManager: no StoreRecipeSO found matching UI name '{recipeUIParent.GetChild(i).name}'");
+                    // Debug.LogWarning($"StoreManager: no StoreRecipeSO found matching UI name '{recipeUIParent.GetChild(i).name}'");
                     continue;
                 }
 
@@ -345,7 +345,7 @@ namespace Sunspore
             if (selectedRecipeSO == null) return;
             if (!CanProcessRecipe(selectedRecipeSO))
             {
-                Debug.Log("StoreManager: selected recipe cannot be processed right now.");
+                // Debug.Log("StoreManager: selected recipe cannot be processed right now.");
                 SetButtonState(true, false);
                 return;
             }
@@ -552,7 +552,7 @@ namespace Sunspore
         {
             if (selectedRecipeSO == null)
             {
-                Debug.Log("StoreManager: No recipe selected — will not sell. Select a recipe first.");
+                // Debug.Log("StoreManager: No recipe selected — will not sell. Select a recipe first.");
                 return;
             }
 
@@ -565,7 +565,7 @@ namespace Sunspore
             var all = InventoryManager.Instance.GetInventoryItemsOnly();
             if (all == null || all.Count == 0)
             {
-                Debug.Log("StoreManager: No items in inventory to sell.");
+                // Debug.Log("StoreManager: No items in inventory to sell.");
                 return;
             }
 
@@ -586,7 +586,7 @@ namespace Sunspore
 
             if (match == null)
             {
-                Debug.Log($"StoreManager: No inventory items match the selected recipe '{selectedRecipeSO.recipeName}'.");
+                // Debug.Log($"StoreManager: No inventory items match the selected recipe '{selectedRecipeSO.recipeName}'.");
                 return;
             }
 

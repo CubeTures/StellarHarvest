@@ -8,7 +8,7 @@ public class OpenInventoryStep : TutorialStep
     {
         _openedOnce = false;
         PlayerPrefManager.SetInventoryOpenCount(0);
-        Debug.Log("Dialog: Press E to open your inventory, then press E again to close it.");
+        // Debug.Log("Dialog: Press E to open your inventory, then press E again to close it.");
     }
 
     public override void Check()

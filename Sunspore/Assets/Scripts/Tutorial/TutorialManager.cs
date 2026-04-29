@@ -97,7 +97,7 @@ public class TutorialManager : MonoBehaviour
 
         if (DialogueManager._dm == null)
         {
-            Debug.LogError("DialogueManager not found");
+            // Debug.LogError("DialogueManager not found");
         }
         else
         {
@@ -108,7 +108,7 @@ public class TutorialManager : MonoBehaviour
     public void CompleteTutorial()
     {
         currentStepIndex = steps.Count;
-        Debug.Log("Tutorial Complete");
+        // Debug.Log("Tutorial Complete");
 
         // Spawn crate
         crateSpawnPoint += new Vector3(
@@ -129,7 +129,7 @@ public class TutorialManager : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("Tutorial complete but DayNightManager.Instance is null.");
+            // Debug.LogWarning("Tutorial complete but DayNightManager.Instance is null.");
         }
     }
 

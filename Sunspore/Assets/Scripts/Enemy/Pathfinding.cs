@@ -45,7 +45,7 @@ public class Pathfinding
         if (Instance == null)
             Instance = this;
         else
-            Debug.LogError("Only one instance of Pathfinding should exist");
+            // Debug.LogError("Only one instance of Pathfinding should exist");
 
         player = GameObject.FindGameObjectWithTag("Player").transform;
     }

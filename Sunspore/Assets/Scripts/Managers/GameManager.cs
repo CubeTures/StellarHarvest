@@ -49,9 +49,11 @@ public class GameManager : MonoBehaviour
 
     public void GameLose(int amount)
     {
+        _ = amount;
         SceneManager.LoadScene(3);
         return;
 
+        /*
         if (Time.timeScale > 0f)
         {
             Gamepad.current?.ResetHaptics();
@@ -76,6 +78,7 @@ public class GameManager : MonoBehaviour
             Cursor.lockState = CursorLockMode.None;
         }
         Cursor.visible = true;
+        */
     }
 
     public void GameWin()
@@ -181,7 +184,7 @@ public class GameManager : MonoBehaviour
             }
             else
             {
-                Debug.LogWarning("UI Action Map not found in input actions");
+                // Debug.LogWarning("UI Action Map not found in input actions");
             }
         }
     }

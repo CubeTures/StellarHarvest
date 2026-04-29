@@ -32,7 +32,6 @@ public class PlacementManager : MonoBehaviour
 
     private Coroutine placingCoroutine = null;
     private bool isPlacing = false;
-    private float animTime = 0.75f;
 
     // SET TO SAME NUMBERS AS TERRAINTILEMAP SCALES
     private float zScale = 2.25f;
@@ -300,7 +299,7 @@ public class PlacementManager : MonoBehaviour
 
     void PlaceDraggedItem(bool canPlace)
     {
-        Debug.Log("Allow Placement: " + allowPlacement + " Is Placing: " + isPlacing);
+        // Debug.Log("Allow Placement: " + allowPlacement + " Is Placing: " + isPlacing);
         if (canPlace && !isPlacing)
         {
             Vector3 currPlace = currentPreviews.Count > 0 ? currentPreviews[0].transform.position : draggedPreview;

@@ -30,7 +30,7 @@ public class CraftStep : TutorialStep
             _initialAmountsByItem[requirement.Key] = GetCurrentAmount(requirement.Key);
         }
 
-        Debug.Log("Dialog: Craft a sword using some of your harvested plants.");
+        // Debug.Log("Dialog: Craft a sword using some of your harvested plants.");
     }
 
     public override void Check()

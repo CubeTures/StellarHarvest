@@ -64,7 +64,7 @@ public class InventorySlot: MonoBehaviour
 
         if (heldItem != null)
         {
-            Debug.Log(heldItem.GetComponent<InventoryItem>().itemScriptableObject.displayName + " @ " + heldItem.transform.position + " vs " + transform.position);
+            // Debug.Log(heldItem.GetComponent<InventoryItem>().itemScriptableObject.displayName + " @ " + heldItem.transform.position + " vs " + transform.position);
         }
     }
 

@@ -106,13 +106,13 @@ namespace Sunspore
                 }
                 if (itemRecipe == null)
                 {
-                    Debug.LogWarning($"CraftingManager: missing ItemRecipe component on '{recipeUIParent.GetChild(i).name}'");
+                    // Debug.LogWarning($"CraftingManager: missing ItemRecipe component on '{recipeUIParent.GetChild(i).name}'");
                     continue;
                 }
 
                 if (itemRecipeSO == null)
                 {
-                    Debug.LogWarning($"CraftingManager: no ItemRecipeSO found matching UI name '{recipeUIParent.GetChild(i).name}'");
+                    // Debug.LogWarning($"CraftingManager: no ItemRecipeSO found matching UI name '{recipeUIParent.GetChild(i).name}'");
                     continue;
                 }
                 itemRecipe.UpdateRecipeUI(itemRecipeSO);
@@ -214,7 +214,7 @@ namespace Sunspore
             }
             else
             {
-                Debug.Log("CraftingManager: selected recipe cannot be crafted right now.");
+                // Debug.Log("CraftingManager: selected recipe cannot be crafted right now.");
                 // keep selection but update button to show it's not craftable
                 SetCraftButtonState(true, false);
             }

@@ -22,17 +22,17 @@ class ToggleButtonGroup : MonoBehaviour
 		Button[] buttons = ResolveButtons();
 		if (buttons == null || buttons.Length == 0)
 		{
-			Debug.LogWarning("ToggleButtonGroup: no Button components available. Assign buttonReferences (same size as toggles) or add child Button components on " + name + ".");
+			// Debug.LogWarning("ToggleButtonGroup: no Button components available. Assign buttonReferences (same size as toggles) or add child Button components on " + name + ".");
 			return;
 		}
 
 		_pairedCount = Mathf.Min(toggles.Length, buttons.Length);
 		if (_pairedCount < toggles.Length)
 		{
-			Debug.LogWarning(
-				"ToggleButtonGroup: more toggles than buttons on "
-					+ name
-					+ ". Either shrink the Toggles list, or assign Button References (one per tab, same order).");
+			// Debug.LogWarning(
+				// "ToggleButtonGroup: more toggles than buttons on "
+					// + name
+					// + ". Either shrink the Toggles list, or assign Button References (one per tab, same order).");
 		}
 
 		int selected = 0;
@@ -65,7 +65,7 @@ class ToggleButtonGroup : MonoBehaviour
 			{
 				if (buttonReferences[i] == null)
 				{
-					Debug.LogError("ToggleButtonGroup on " + name + ": buttonReferences[" + i + "] is null. Assign all entries.");
+					// Debug.LogError("ToggleButtonGroup on " + name + ": buttonReferences[" + i + "] is null. Assign all entries.");
 					return null;
 				}
 			}
@@ -73,14 +73,14 @@ class ToggleButtonGroup : MonoBehaviour
 		}
 		if (buttonReferences != null && buttonReferences.Length > 0)
 		{
-			Debug.LogWarning(
-				"ToggleButtonGroup on "
-					+ name
-					+ ": buttonReferences length ("
-					+ buttonReferences.Length
-					+ ") must match toggles length ("
-					+ toggles.Length
-					+ "). Clearing buttonReferences and scanning children — prefer fixing the assignment.");
+			// Debug.LogWarning(
+				// "ToggleButtonGroup on "
+					// + name
+					// + ": buttonReferences length ("
+					// + buttonReferences.Length
+					// + ") must match toggles length ("
+					// + toggles.Length
+					// + "). Clearing buttonReferences and scanning children — prefer fixing the assignment.");
 		}
 		return GetComponentsInChildren<Button>(true);
 	}

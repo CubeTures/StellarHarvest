@@ -15,13 +15,11 @@ public class BuyStep : TutorialStep
 
     private List<int> _initialAmounts = new();
     private int _initialStoreOpenCount;
-    private bool _openedStoreThisStep;
 
     public override void Begin()
     {
         _initialAmounts.Clear();
         _initialStoreOpenCount = PlayerPrefManager.GetStoreOpenCount();
-        _openedStoreThisStep = false;
 
         if (buyTargets != null)
         {
@@ -31,7 +29,7 @@ public class BuyStep : TutorialStep
             }
         }
 
-        Debug.Log("Dialog: Walk to the market and press I to open the store.");
+        // Debug.Log("Dialog: Walk to the market and press I to open the store.");
     }
 
     public override void Check()

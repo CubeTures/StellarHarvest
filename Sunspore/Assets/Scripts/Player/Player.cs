@@ -50,12 +50,6 @@ public class Player : MonoBehaviour
     float _vy;
     float _vz;
 
-    // Camera rotation tracking
-    float _rotationX = 0f; // Horizontal rotation (Y-axis)
-    float _rotationY = 0f; // Vertical rotation (X-axis)
-
-    bool _facingRight = true;
-    bool _facingFront = true;
     public int currentDirection = -1;
 
     void Start()
@@ -150,14 +144,12 @@ public class Player : MonoBehaviour
             // Horizontal wins
             if (_vx > 0)
             {
-                _facingRight = true;
                 SetDirection(2); // Right
                 spriteRenderer.flipX = true;
 
             }
             else
             {
-                _facingRight = false;
                 SetDirection(4); // Left
                 spriteRenderer.flipX = false;
             }
@@ -167,13 +159,11 @@ public class Player : MonoBehaviour
             // Vertical wins
             if (_vz > 0)
             {
-                _facingFront = true;
                 SetDirection(3); // Forward
                 spriteRenderer.flipX = false;
             }
             else
             {
-                _facingFront = false;
                 SetDirection(1); // Back     
                 spriteRenderer.flipX = false;
             }
@@ -232,7 +222,7 @@ public class Player : MonoBehaviour
     {
         playerCanMove = true;
         _rb.isKinematic = false;
-        Debug.Log("Player unfrozen");
+        // Debug.Log("Player unfrozen");
     }
 
     public void PlaySound(AudioClip clip)
@@ -363,6 +353,6 @@ public class Player : MonoBehaviour
         animFinished = false;
         yield return new WaitUntil(() => animFinished);
         anim.SetInteger("Direction", currentDirection);
-        Debug.Log("finished animation" + animFinished);
+        // Debug.Log("finished animation" + animFinished);
     }
 }

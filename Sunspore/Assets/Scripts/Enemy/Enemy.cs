@@ -185,6 +185,9 @@ namespace Sunspore
 
             // if (flyingState == FlyingState.LANDING && Mathf.Approximately(transform.position.y, 0f))
             //     flyingState = FlyingState.LANDED;
+
+            _ = flyHeight;
+            _ = descentSpeed;
         }
         void updateDirection()
         {

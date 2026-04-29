@@ -20,11 +20,11 @@ public sealed class InputDebugger : MonoBehaviour
 
 		if (_results.Count == 0)
 		{
-			Debug.Log("[InputDebugger] Click hit nothing.");
+			// Debug.Log("[InputDebugger] Click hit nothing.");
 			return;
 		}
 
-		Debug.Log($"[InputDebugger] Click raycast hit {_results.Count} object(s):");
+		// Debug.Log($"[InputDebugger] Click raycast hit {_results.Count} object(s):");
 		foreach (RaycastResult result in _results)
 		{
 			GameObject go = result.gameObject;
@@ -32,9 +32,9 @@ public sealed class InputDebugger : MonoBehaviour
 			{
 				continue;
 			}
-			Debug.Log($"  → {go.name} | depth: {result.depth} | sortingOrder: {result.sortingOrder} | module: {result.module.GetType().Name}", go);
+			// Debug.Log($"  → {go.name} | depth: {result.depth} | sortingOrder: {result.sortingOrder} | module: {result.module.GetType().Name}", go);
 		}
 
-		Debug.Log($"[InputDebugger] Top consumer: {_results[0].gameObject.name}", _results[0].gameObject);
+		// Debug.Log($"[InputDebugger] Top consumer: {_results[0].gameObject.name}", _results[0].gameObject);
 	}
 }

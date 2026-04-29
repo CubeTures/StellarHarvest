@@ -5,9 +5,9 @@ public class TutorialCompleteStep : TutorialStep
 {
     public override void Begin()
     {
-        Debug.Log(
-            "Tutorial complete: the full game is now unlocked. You can buy any available item and the day-night cycle will continue."
-        );
+        // Debug.Log(
+            // "Tutorial complete: the full game is now unlocked. You can buy any available item and the day-night cycle will continue."
+        // );
         TutorialManager.Instance.CompleteStep();
     }
 

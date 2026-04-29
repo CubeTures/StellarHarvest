@@ -56,7 +56,7 @@ namespace Sunspore
 
             if (storeSO == null || storeSO.ingredients == null || itemIconPrefab == null)
             {
-                Debug.LogError("StoreRecipe: Missing references in UpdateRecipeUI.");
+                // Debug.LogError("StoreRecipe: Missing references in UpdateRecipeUI.");
                 return;
             }
 

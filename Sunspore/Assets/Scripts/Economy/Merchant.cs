@@ -31,11 +31,11 @@ public class Merchant : MonoBehaviour
                 decimal before = wallet.GetAmount();
                 wallet.Add(item.sellPrice);
                 decimal after = wallet.GetAmount();
-                Debug.Log($"[Merchant] Sold item {item.name}. sellPrice={item.sellPrice}, wallet before={before}, wallet after={after}");
+                // Debug.Log($"[Merchant] Sold item {item.name}. sellPrice={item.sellPrice}, wallet before={before}, wallet after={after}");
             }
             else
             {
-                Debug.LogWarning("[Merchant] No Wallet assigned to Merchant.wallet");
+                // Debug.LogWarning("[Merchant] No Wallet assigned to Merchant.wallet");
             }
         }
     }

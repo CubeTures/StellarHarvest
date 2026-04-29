@@ -245,7 +245,7 @@ namespace Sunspore
         private void SpawnRecipeGroup(EnemyGroupRecipe recipe)
         {
             if (recipe == null || recipe.members == null) return;
-            Debug.Log($"[EnemySpawner] Spawned wave '{recipe.name}' ({waveIndexThisNight + 1}/{wavesThisNight}) hard={recipe.hardWave}");
+            // Debug.Log($"[EnemySpawner] Spawned wave '{recipe.name}' ({waveIndexThisNight + 1}/{wavesThisNight}) hard={recipe.hardWave}");
             Vector3 groupCenter = GetRingSpawnPoint();
 
             foreach (var m in recipe.members)

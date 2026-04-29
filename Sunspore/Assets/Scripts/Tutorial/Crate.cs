@@ -33,7 +33,7 @@ namespace Sunspore
 
             if (collision.gameObject.CompareTag("Ground"))
             {
-                Debug.Log("Crate hit ground");
+                // Debug.Log("Crate hit ground");
                 SFXManager.Play("gethit");
             }
         }

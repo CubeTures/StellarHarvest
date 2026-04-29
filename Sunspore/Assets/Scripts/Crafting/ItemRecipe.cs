@@ -57,7 +57,7 @@ namespace Sunspore
 
             if (itemSO == null || itemSO.ingredients == null || itemSO.resultItem == null || itemIconPrefab == null)
             {
-                Debug.LogError("ItemRecipe: Missing references in UpdateRecipeUI. Ensure itemSO, ingredients, resultItem and itemIconPrefab are assigned.");
+                // Debug.LogError("ItemRecipe: Missing references in UpdateRecipeUI. Ensure itemSO, ingredients, resultItem and itemIconPrefab are assigned.");
                 return;
             }
 
@@ -82,7 +82,7 @@ namespace Sunspore
                 var ingredient = itemSO.ingredients[i];
                 if (ingredient == null || ingredient.item == null)
                 {
-                    Debug.LogWarning($"ItemRecipe: missing ingredient or item at index {i} in recipe '{itemSO.recipeName}'.");
+                    // Debug.LogWarning($"ItemRecipe: missing ingredient or item at index {i} in recipe '{itemSO.recipeName}'.");
                     continue;
                 }
 
@@ -109,7 +109,7 @@ namespace Sunspore
                 var result = itemSO.resultItem[i];
                 if (result == null || result.item == null)
                 {
-                    Debug.LogWarning($"ItemRecipe: missing result or item at index {i} in recipe '{itemSO.recipeName}'.");
+                    // Debug.LogWarning($"ItemRecipe: missing result or item at index {i} in recipe '{itemSO.recipeName}'.");
                     continue;
                 }
 

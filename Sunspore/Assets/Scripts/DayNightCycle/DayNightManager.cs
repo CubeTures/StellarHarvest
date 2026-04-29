@@ -39,9 +39,6 @@ namespace Sunspore
         private float timeOfDay = 0f;
         public bool timeStopped = false;
 
-        private bool isNight = false;
-        private bool isDay = false;
-
         private int days = 0;
         private int nights = 0;
         public int weeks = 0;
@@ -142,7 +139,6 @@ namespace Sunspore
         public void startTime()
         {
             timeStopped = false;
-            isNight = false;
             StartCoroutine(DeferredStartAnnouncement());
         }
 
@@ -175,14 +171,12 @@ namespace Sunspore
         public void stopTime()
         {
             timeStopped = true;
-            isNight = false;
             spawner.EndNight();
         }
 
         public void setDay()
         {
             timeStopped = true;
-            isNight = false;
             Light.transform.rotation = Quaternion.Euler(90, 0, 0);
             spawner.EndNight();
             if (Pathfinding.Instance != null)
@@ -192,7 +186,6 @@ namespace Sunspore
         public void setNight()
         {
             timeStopped = true;
-            isNight = true;
             Light.transform.rotation = Quaternion.Euler(270, 0, 0);
             spawner.BeginNight();
         }
@@ -268,7 +261,7 @@ namespace Sunspore
             {
                 startTime();
             }
-            else if (isDay && timeSelector.value == 1)
+            else if (!timeStopped && timeOfDay < 0.5f && timeSelector.value == 1)
             {
                 stopTime();
             }

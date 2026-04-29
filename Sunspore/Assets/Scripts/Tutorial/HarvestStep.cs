@@ -20,12 +20,12 @@ public class HarvestStep : TutorialStep
         TutorialManager.Instance.availableActions[TutorialManager.Actions.INVENTORY] = false;
         if (inventoryManager == null)
         {
-            Debug.LogWarning("HarvestStep: inventoryManager is not assigned.");
+            // Debug.LogWarning("HarvestStep: inventoryManager is not assigned.");
         }
 
         if (harvestTarget == null)
         {
-            Debug.LogWarning("HarvestStep: harvestTarget is not assigned.");
+            // Debug.LogWarning("HarvestStep: harvestTarget is not assigned.");
         }
 
         _initialAmount = GetCurrentAmount();
@@ -41,7 +41,7 @@ public class HarvestStep : TutorialStep
             return;
         }
 
-        Debug.Log("Harvest native plants");
+        // Debug.Log("Harvest native plants");
     }
 
     public override void Check()

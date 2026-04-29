@@ -473,16 +473,16 @@ public static class PlayerPrefManager
             {
                 if (value == "Main volume" || value == "Music volume" || value == "SFX volume")
                 {
-                    Debug.Log(value + " = " + PlayerPrefs.GetFloat(value));
+                    // Debug.Log(value + " = " + PlayerPrefs.GetFloat(value));
                 }
                 else
                 {
-                    Debug.Log(value + " = " + PlayerPrefs.GetInt(value));
+                    // Debug.Log(value + " = " + PlayerPrefs.GetInt(value));
                 }
             }
             else
             {
-                Debug.Log(value + " is not set.");
+                // Debug.Log(value + " is not set.");
             }
         }
     }

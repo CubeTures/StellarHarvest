@@ -6,8 +6,8 @@ namespace Sunspore
 	public class Starbriar : Plant
 	{
 		[Header("Starbriar Specific Settings")]
-		[SerializeField] private float juvenileAbilityPower = 5f;
-		[SerializeField] private float fullyGrownAbilityPower = 15f;
+		[SerializeField] private float juvenileAbilityPower = 0f;
+		[SerializeField] private float fullyGrownAbilityPower = 0f;
 		[SerializeField] private float juvenileAbilityRange = 1f;
 		[SerializeField] private float fullyGrownAbilityRange = 2f;
 		[SerializeField] private float _juvenileAbilityCooldown = 2f;
@@ -81,7 +81,13 @@ namespace Sunspore
 
 		private void UseJuvenileAbility()
 		{
-			// no ability
+			// Debug.Log($"Juvenile ability activated with power: {juvenileAbilityPower}");
+
+			if (pathfinding.GetEnemyTarget(this, juvenileAbilityRange) is Enemy enemy)
+			{
+				_animator.SetTrigger("Attack");
+				enemy.TakeDamage((int)juvenileAbilityPower, Vector2.zero, 0f);
+			}
 		}
 
 		private void UseFullAbility()

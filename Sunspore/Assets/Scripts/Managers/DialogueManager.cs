@@ -32,14 +32,14 @@ namespace Sunspore
         {
             if (dialogue == null)
             {
-                Debug.LogWarning("CompleteEvent called but dialogue reference is missing.");
+                // Debug.LogWarning("CompleteEvent called but dialogue reference is missing.");
                 return;
             }
 
             Dialogue dialogueComponent = dialogue.GetComponent<Dialogue>();
             if (dialogueComponent == null)
             {
-                Debug.LogWarning("CompleteEvent called but Dialogue component is missing.");
+                // Debug.LogWarning("CompleteEvent called but Dialogue component is missing.");
                 return;
             }
 

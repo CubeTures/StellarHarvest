@@ -38,7 +38,7 @@ namespace Sunspore
                 bodyText.text = body;
 
             // int headerLength = headerText.preferredWidth > maxWidth ? maxWidth : 0;
-            // int bodyLength = bodyText.preferredWidth > maxWidth ? maxWidth : 0;
+            // int bodyLength = hasBody && bodyText.preferredWidth > maxWidth ? maxWidth : 0;
             // layoutElement.enabled = headerLength > 0 || bodyLength > 0;
             // if (layoutElement.enabled)
             //     layoutElement.preferredWidth = maxWidth;

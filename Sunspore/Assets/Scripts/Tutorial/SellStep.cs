@@ -19,16 +19,16 @@ public class SellStep : TutorialStep
     public override void Begin()
     {
         _initialAmount = wallet.GetAmount();
-        Debug.Log(
-            "Dialog: Go to the shop in the world, press I to open it, and sell some of your harvested plants."
-        );
+        // Debug.Log(
+            // "Dialog: Go to the shop in the world, press I to open it, and sell some of your harvested plants."
+        // );
     }
 
     public override void Check()
     {
         int currentAmount = wallet.GetAmount();
 
-        if (currentAmount > _initialAmount)
+        if (currentAmount >= _initialAmount + sellAmount)
         {
             TutorialManager.Instance.CompleteStep();
         }

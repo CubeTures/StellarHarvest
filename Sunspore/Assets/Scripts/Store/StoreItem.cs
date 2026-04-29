@@ -108,7 +108,10 @@ class StoreItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandle
 	public void OnBeginDrag(PointerEventData eventData)
 	{
 		ghost = Instantiate(gameObject, rootCanvas.transform, true);
-		ghost.GetComponent<CanvasGroup>().blocksRaycasts = false;
+		var cg = ghost.GetComponent<CanvasGroup>();
+		if (cg == null)
+			cg = ghost.AddComponent<CanvasGroup>();
+		cg.blocksRaycasts = false;
 
 		foreach (var component in ghost.GetComponents<MonoBehaviour>())
 			component.enabled = false;

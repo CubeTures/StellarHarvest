@@ -25,7 +25,6 @@ class DebtManager : MonoBehaviour
 	int currentPayment = 0;
 	int missedPayments = 0;
 	int completedInstallments = 0;
-	float startTime = 0;
 	int lastNotification = 0;
 
 	class Item
@@ -69,7 +68,6 @@ class DebtManager : MonoBehaviour
 		unityEvent.AddListener(MakePayment);
 		currentTimeline.SetOnClick(unityEvent);
 
-		startTime = 0;
 		currentTimeline.SetAmount(receipt[0].price);
 		currentTimeline.SetDueDate(0.001f);
 		currentTimeline.SetCanPay(true);

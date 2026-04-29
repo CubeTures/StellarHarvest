@@ -39,7 +39,6 @@ namespace Sunspore
 
         private float zScale = 1.0f;
         private float xScale = 1.0f;
-        private float zOffset = 1.5f;
         private bool z = false;
 
         private HandHeld draggedHandHeld;
@@ -106,7 +105,7 @@ namespace Sunspore
             }
 
             // If right click cast ability
-            Debug.Log(EventSystem.current.IsPointerOverGameObject() + " " + EventSystem.current.gameObject.name);
+            // Debug.Log(EventSystem.current.IsPointerOverGameObject() + " " + EventSystem.current.gameObject.name);
             if (enabled && handHeld!=null && handHeld.tool && !EventSystem.current.IsPointerOverGameObject() && Input.GetMouseButtonDown(1) && Time.time >= lastAttackTime + handHeld.attackCooldown && (!player.GetComponent<Player>().anim.GetBool("isMoving") || handHeld.weapon))
             {
                 lastUsedHandHeld = handHeld;
@@ -120,7 +119,7 @@ namespace Sunspore
                     Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
                     bool canCast = abilityCoroutine == null && handHeld.CheckRange(player.GetComponent<Player>(), ray);
-                    Debug.Log($"HandHeld: {handHeld.name}, CheckRange: {canCast}, AbilityCooldown Ready: {Time.time >= lastAttackTime + handHeld.attackCooldown}");
+                    // Debug.Log($"HandHeld: {handHeld.name}, CheckRange: {canCast}, AbilityCooldown Ready: {Time.time >= lastAttackTime + handHeld.attackCooldown}");
 
                     if (abilityCoroutine == null && handHeld.CheckRange(player.GetComponent<Player>(), ray))
                     {
@@ -289,7 +288,7 @@ namespace Sunspore
             OnAbility?.Invoke(0);
             player.anim.SetInteger("Direction", player.currentDirection);
             player.anim.SetTrigger("Finished");
-            Debug.Log("Player animFinished: " + player.animFinished);
+            // Debug.Log("Player animFinished: " + player.animFinished);
             abilityCoroutine = null;
         }
 
@@ -317,7 +316,7 @@ namespace Sunspore
 
         public void OutOfRange()
         {
-            Debug.Log("out of range");
+            // Debug.Log("out of range");
         }
 
         private void DrawAbilityRangeRing(Vector3 center, float radius)
@@ -362,7 +361,7 @@ namespace Sunspore
                 CancelAbility();
             }
             currDirection = directions[dir - 1];
-            Debug.Log("Direction set to: " + currDirection);
+            // Debug.Log("Direction set to: " + currDirection);
         }
 
         // Sets attackBox direction to currDirection

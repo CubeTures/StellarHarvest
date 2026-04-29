@@ -41,17 +41,17 @@ using UnityEngine;
                 {
                     case HandHeld.WeaponHead.SHOVEL:
                         _anim.SetInteger("Type", (int)SlashEffect.METAL);
-                        Debug.Log("Shovel equipped");
+                        // Debug.Log("Shovel equipped");
                         break;
 
                     case HandHeld.WeaponHead.HOE:
                         _anim.SetInteger("Type", (int)SlashEffect.METAL);
-                        Debug.Log("Hoe equipped");
+                        // Debug.Log("Hoe equipped");
                         break;
 
                     case HandHeld.WeaponHead.SCYTHE:
                         _anim.SetInteger("Type", (int)SlashEffect.METAL);
-                        Debug.Log("Scythe equipped");
+                        // Debug.Log("Scythe equipped");
                         break;
 
                     default:

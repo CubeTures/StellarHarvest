@@ -40,7 +40,6 @@ namespace Sunspore
         AudioSource _audioSource;
         private bool _exitTriggered = false;
         private PlayerInput playerInput;
-        private int completeEventsQueue = 0;
 
         void Awake()
         {
@@ -51,21 +50,13 @@ namespace Sunspore
 
             if (_animator == null)
             {
-                Debug.LogError("Animator not found on character!");
+                // Debug.LogError("Animator not found on character!");
             }
 
-            // Play tutorial dialogue if no steps have been completed (first time playing the game)
-            if ( /*PlayerPrefManager.GetEventCount() == 0*/
-                true
-            )
-            {
-                _animator.SetTrigger("Enter");
-                dialogueTypeToUse = "TUTORIAL";
-            }
-            else
-            {
-                dialogueTypeToUse = "";
-            }
+            // Play tutorial dialogue
+            _animator.SetTrigger("Enter");
+            dialogueTypeToUse = "TUTORIAL";
+
 
             // If a CSV is provided, load dialogue from it
             if (csvFile != null)
@@ -170,7 +161,7 @@ namespace Sunspore
             if (firstMessage == "EVENT")
             {
                 isEvent = true;
-                Debug.Log("EVENT detected at start - pausing dialogue");
+                // Debug.Log("EVENT detected at start - pausing dialogue");
                 TutorialManager.Instance.StartStep();
                 // messageText.text = ""; // Clear the text so "EVENT" doesn't show
                 // Debug.Log("EVENT detected at start - pausing dialogue");
@@ -196,9 +187,9 @@ namespace Sunspore
                     _exitTriggered = true;
                     _animator.SetTrigger("Exit");
                     playerInput.ActivateInput();
-                    Debug.Log("End of tutorial");
+                    // Debug.Log("End of tutorial");
                 }
-                return;    
+                return;
             }
 
             // Press any key to advance the dialogue
@@ -228,7 +219,7 @@ namespace Sunspore
                                 _exitTriggered = true;
                                 _animator.SetTrigger("Exit");
                                 playerInput.ActivateInput();
-                                Debug.Log("End of tutorial");
+                                // Debug.Log("End of tutorial");
                                 TutorialManager.Instance.CompleteTutorial();
                             }
                         }
@@ -236,7 +227,7 @@ namespace Sunspore
                     else if (nextMessage == "EVENT")
                     {
                         isEvent = true;
-                        Debug.Log("EVENT detected - pausing dialogue");
+                        // Debug.Log("EVENT detected - pausing dialogue");
                         string objective = characterNameList[currentMessageIndex]?.Trim();
                         NotificationManager.Instance.PushFixedNotification(objective);
                         playerInput.ActivateInput();
@@ -257,7 +248,7 @@ namespace Sunspore
                         _exitTriggered = true;
                         _animator.SetTrigger("Exit");
                         playerInput.ActivateInput();
-                        Debug.Log("End of tutorial");
+                        // Debug.Log("End of tutorial");
                         TutorialManager.Instance.CompleteTutorial();
                     }
                 }
@@ -303,7 +294,7 @@ namespace Sunspore
             _exitTriggered = true;
             _animator.SetTrigger("Exit");
             playerInput.ActivateInput();
-            Debug.Log("End of tutorial");
+            // Debug.Log("End of tutorial");
         }
 
         void SkipTypewriter()
@@ -329,13 +320,13 @@ namespace Sunspore
         {
             if (!isEvent)
             {
-                Debug.LogError("Tried to complete dialog event when none was active");
+                // Debug.LogError("Tried to complete dialog event when none was active");
                 return false;
             }
 
             // Debug.Log("CompleteEvent called - resuming dialogue");
             isEvent = false;
-            Debug.Log("EVENT completed - resuming dialogue");
+            // Debug.Log("EVENT completed - resuming dialogue");
             NotificationManager.Instance.PopFixedNotification();
             playerInput.DeactivateInput();
             _animator.SetTrigger("Enter");
@@ -350,7 +341,7 @@ namespace Sunspore
                 if (nextMessage == "EVENT")
                 {
                     isEvent = true;
-                    Debug.Log("Another EVENT detected - pausing dialogue again");
+                    // Debug.Log("Another EVENT detected - pausing dialogue again");
                     TutorialManager.Instance.StartStep();
                     // messageText.text = ""; // Clear the text so "EVENT" doesn't show
                     // Debug.Log("Another EVENT detected - pausing dialogue again");
@@ -369,7 +360,7 @@ namespace Sunspore
                 TutorialManager.Instance.CompleteTutorial();
             }
 
-            Debug.Log("CompleteEvent called - dialogue complete");
+            // Debug.Log("CompleteEvent called - dialogue complete");
             return true;
         }
 
@@ -434,9 +425,9 @@ namespace Sunspore
 
             if (dialogueColumnIndex == -1)
             {
-                Debug.LogWarning(
-                    $"Could not find dialogue type '{dialogueType}' in CSV headers. Available headers: {string.Join(", ", headerFields)}"
-                );
+                // Debug.LogWarning(
+                // $"Could not find dialogue type '{dialogueType}' in CSV headers. Available headers: {string.Join(", ", headerFields)}"
+                // );
                 return;
             }
 
@@ -593,7 +584,7 @@ namespace Sunspore
         {
             if (csvFile == null)
             {
-                Debug.LogWarning("No CSV file assigned to Dialogue component!");
+                // Debug.LogWarning("No CSV file assigned to Dialogue component!");
                 return new string[0];
             }
 
@@ -624,7 +615,7 @@ namespace Sunspore
 
             if (columnIndex == -1)
             {
-                Debug.LogWarning($"Could not find column '{columnName}' in CSV headers.");
+                // Debug.LogWarning($"Could not find column '{columnName}' in CSV headers.");
                 return new string[0];
             }
 
@@ -661,7 +652,7 @@ namespace Sunspore
         {
             if (csvFile == null)
             {
-                Debug.LogWarning("CSV file is null!");
+                // Debug.LogWarning("CSV file is null!");
                 return "";
             }
 
@@ -672,7 +663,7 @@ namespace Sunspore
             );
             if (lines.Length == 0)
             {
-                Debug.LogWarning("CSV file is empty!");
+                // Debug.LogWarning("CSV file is empty!");
                 return "";
             }
 
@@ -693,17 +684,17 @@ namespace Sunspore
 
             if (typeColumnIndex == -1)
             {
-                Debug.LogWarning(
-                    $"Could not find type column '{type}' in CSV headers. Available: {string.Join(", ", headerFields)}"
-                );
+                // Debug.LogWarning(
+                // $"Could not find type column '{type}' in CSV headers. Available: {string.Join(", ", headerFields)}"
+                // );
                 return "";
             }
 
             if (typeColumnIndex == 0)
             {
-                Debug.LogWarning(
-                    $"Type column '{type}' is the first column, no trigger column to the left."
-                );
+                // Debug.LogWarning(
+                // $"Type column '{type}' is the first column, no trigger column to the left."
+                // );
                 return "";
             }
 
@@ -735,9 +726,9 @@ namespace Sunspore
 
             if (rowIndex == -1)
             {
-                Debug.LogWarning(
-                    $"Could not find row with trigger value '{trigger}' in column {triggerColumnIndex} ('{headerFields[triggerColumnIndex]}')"
-                );
+                // Debug.LogWarning(
+                // $"Could not find row with trigger value '{trigger}' in column {triggerColumnIndex} ('{headerFields[triggerColumnIndex]}')"
+                // );
                 return "";
             }
 
@@ -750,9 +741,9 @@ namespace Sunspore
             }
             else
             {
-                Debug.LogWarning(
-                    $"Type column index {typeColumnIndex} out of range for row {rowIndex}."
-                );
+                // Debug.LogWarning(
+                // $"Type column index {typeColumnIndex} out of range for row {rowIndex}."
+                // );
                 return "";
             }
         }

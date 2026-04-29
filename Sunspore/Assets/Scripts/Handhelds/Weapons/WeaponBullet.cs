@@ -31,7 +31,7 @@ namespace Sunspore
 
         public void Shoot(float attackDuration, int damage, float speed, Vector3 mouseDir)
         {
-            Debug.Log(attackDuration);
+            // Debug.Log(attackDuration);
             _damage = damage;
             direction = mouseDir;
             _speed = speed;

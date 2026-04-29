@@ -578,7 +578,7 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
         ItemSO itemSO = invItem.itemScriptableObject;
         if (itemSO == null)
         {
-            Debug.Log("itemSO is problem");
+            // Debug.Log("itemSO is problem");
             return;
         }
 
@@ -618,7 +618,7 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
             InventoryItem draggedItem = GetDraggedInventoryItem();
             if (draggedItem == null)
             {
-                Debug.Log("dragging is probmel");
+                // Debug.Log("dragging is probmel");
                 return;
             }
             else
@@ -634,14 +634,14 @@ public class InventoryManager : MonoBehaviour, IPointerDownHandler, IPointerUpHa
 
         if (invItem == null)
         {
-            Debug.Log("invitme is prlbme");
+            // Debug.Log("invitme is prlbme");
             return;
         }
 
         ItemSO itemSO = invItem.itemScriptableObject;
         if (itemSO == null)
         {
-            Debug.Log("itemSO is problem");
+            // Debug.Log("itemSO is problem");
             return;
         }
 

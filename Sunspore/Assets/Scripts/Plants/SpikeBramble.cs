@@ -75,7 +75,7 @@ namespace Sunspore
             if (pathfinding.GetEnemyTarget(this, juvenileAbilityRange) is Enemy enemy)
             {
                 _animator.SetTrigger("Attack");
-                enemy.TakeDamage((int)fullyGrownAbilityPower, Vector2.zero, 0f);
+                enemy.TakeDamage((int)juvenileAbilityPower, Vector2.zero, 0f);
             }
         }
 
